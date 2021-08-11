@@ -62,6 +62,18 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
+  {
+    path: '/tutormainboard',
+    component: Layout,
+    redirect: '/tutormainboard/index',
+    children: [{
+      path: 'index',
+      name: 'tutormainboard',
+      // redirect: 'noRedirect',
+      component: () => import('@/views/tutormainboard/index'),
+      meta: { title: '教师申请', icon: 'dashboard' }
+    }]
+  },
 
   {
     path: '/example',
@@ -101,7 +113,8 @@ export const constantRoutes = [
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/menu1',
+    // redirect: '/nested/menu1',
+    redirect: 'noRedirect',
     name: 'Nested',
     meta: {
       title: 'Nested',
@@ -112,31 +125,33 @@ export const constantRoutes = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
+        redirect: 'noRedirect',
         meta: { title: 'Menu1' },
         children: [
           {
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            
+            meta: { title: 'Menu1-1'}
           },
           {
             path: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
+            meta: { title: 'Menu1-2'},
             children: [
               {
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
+                meta: { title: 'Menu1-2-1'}
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
+                meta: { title: 'Menu1-2-2'}
               }
             ]
           },
@@ -167,10 +182,25 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: 'tutormainboard',
+  //   component: Layout,
+  //   name: tutormainboard,
+  //   redirect: 'tutormainboard', //面包屑中
+  //   meta: { title: '教师申请', icon: 'dashboard'}
+  //   // children: [{
+  //   //   path: 'tutormainboard',
+  //   //   name: 'tutormainboard',
+  //   //   component:  
+  //   //   meta: { title: 'tutormainboard', icon: 'dashboard'}
+  //   // }]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
