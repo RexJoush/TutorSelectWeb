@@ -35,7 +35,17 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+// 引入axios实现跨域请求
+import axios from 'axios'
+import qs from 'qs'
 
+// 挂载，使全局能用
+Vue.prototype.$http = axios
+
+// 设置请求的初始信息
+// 设置访问根路径,后端项目的根路径
+axios.defaults.baseURL = 'http://127.0.0.1:8081'
+Vue.prototype.qs = qs
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

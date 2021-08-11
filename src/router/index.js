@@ -171,7 +171,27 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/basicManagement',
+    component: Layout,
+    redirect: '/basicManagement/user',
+    name: 'BasicManagement',
+    meta: { title: '基础管理', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'user' }
+      },
+      {
+        path: 'systemTime',
+        name: 'SystemTime',
+        component: () => import('@/views/systemTime/index'),
+        meta: { title: '设置系统时间', icon: 'tree' }
+      }
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,
