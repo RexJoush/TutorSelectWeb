@@ -8,7 +8,8 @@ import request from '@/utils/request'
 import {baseUrl} from '@/api/url';
 export function login(data) {
   return request({
-    url: baseUrl + '/user/login',
+    // url: baseUrl + '/user/login',
+    url: baseUrl+'/user/login',
     method: 'post',
     data
   })

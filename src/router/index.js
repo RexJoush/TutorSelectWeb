@@ -75,6 +75,35 @@ export const constantRoutes = [
       }
     ]
   },
+  //导师选择界面
+  {
+    path: '/tutorapply',
+    component: Layout,
+    // name: 'tutormainboard',
+    redirect: '/tutorapply/tutormainboard',
+    // alwaysShow: true,
+    meta: { title: '教师申请', icon: 'dashboard' },
+    children: [
+      {
+        path: 'tutormainboard',
+        name: 'tutormainboard',
+        // hidden:true,
+        // redirect: 'noRedirect',
+        component: () => import('@/views/tutormainboard/index'),
+        meta: { title: '教师申请'},
+      },
+      {
+        path: 'firstapplydoctor/:applyId',
+        name: 'firstapplydoctor',
+        hidden: true,
+        component: () => import('@/views/tutormainboard/firstapplydoctor/index'),
+        meta: { title: '首次申请博士生导师' },
+      },
+    ]
+  },
+
+
+
 ]
 
 /**
