@@ -1,11 +1,3 @@
-<!--
- * @Description: your project
- * @version: 1.0
- * @Author: Rex Joush
- * @Date: 2021-08-08 17:21:01
- * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-08 20:13:57
--->
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
@@ -27,7 +19,11 @@ export default {
     }
   },
   watch: {
-    $route() {
+    $route(route) {
+      // if you go to the redirect page, do not update the breadcrumbs
+      if (route.path.startsWith('/redirect/')) {
+        return
+      }
       this.getBreadcrumb()
     }
   },
@@ -40,19 +36,19 @@ export default {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
       const first = matched[0]
 
-      // if (!this.isDashboard(first)) {
-      //   matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
-      // }
+      if (!this.isDashboard(first)) {
+        matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
+      }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },
-    // isDashboard(route) {
-    //   const name = route && route.name
-    //   if (!name) {
-    //     return false
-    //   }
-    //   return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
-    // },
+    isDashboard(route) {
+      const name = route && route.name
+      if (!name) {
+        return false
+      }
+      return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
+    },
     pathCompile(path) {
       // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
       const { params } = this.$route

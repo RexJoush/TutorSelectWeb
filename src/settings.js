@@ -1,24 +1,41 @@
 /*
- * @Description: your project
- * @version: 1.0
  * @Author: Rex Joush
- * @Date: 2021-08-08 17:21:01
+ * @Date: 2021-08-11 15:19:50
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-08 20:28:32
+ * @LastEditTime: 2021-08-11 16:08:57
  */
 module.exports = {
-
   title: '导师遴选系统',
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the settings right-panel
+   */
+  showSettings: true,
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether need tagsView
+   */
+  tagsView: false,
 
   /**
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false
+  sidebarLogo: true,
+
+  /**
+   * @type {string | array} 'production' | ['production', 'development']
+   * @description Need show err logs component.
+   * The default is only used in the production env
+   * If you want to also use it in dev, you can pass ['production', 'development']
+   */
+  errorLog: 'production'
 }

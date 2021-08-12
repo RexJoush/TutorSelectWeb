@@ -1,3 +1,9 @@
+<!--
+ * @Author: Rex Joush
+ * @Date: 2021-08-11 15:19:50
+ * @LastEditors: Rex Joush
+ * @LastEditTime: 2021-08-11 16:22:06
+-->
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
@@ -24,8 +30,8 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '导师遴选系统',
+      logo: "https://www.rexjoush.com/img/tutor/nwu.png"
     }
   }
 }

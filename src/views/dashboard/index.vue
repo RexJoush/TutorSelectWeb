@@ -1,30 +1,34 @@
+<!--
+ * @Author: Rex Joush
+ * @Date: 2021-08-11 15:19:50
+ * @LastEditors: Rex Joush
+ * @LastEditTime: 2021-08-11 16:25:46
+-->
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <h1>Hello Dashboard</h1>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  
+  data() {
+    return {
+      
+    }
+  },
+  
+  created() {
+    
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
+<style scoped>
+.dashboard-container {
+  margin-left: 20px;
 }
 </style>

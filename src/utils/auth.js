@@ -1,6 +1,12 @@
+/*
+ * @Author: Rex Joush
+ * @Date: 2021-08-11 15:19:50
+ * @LastEditors: Rex Joush
+ * @LastEditTime: 2021-08-11 15:40:39
+ */
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
+const TokenKey = 'token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

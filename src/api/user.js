@@ -1,8 +1,14 @@
+/*
+ * @Author: Rex Joush
+ * @Date: 2021-08-11 15:19:50
+ * @LastEditors: Rex Joush
+ * @LastEditTime: 2021-08-11 15:29:22
+ */
 import request from '@/utils/request'
-
+import {baseUrl} from '@/api/url';
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: baseUrl + '/user/login',
     method: 'post',
     data
   })
@@ -10,7 +16,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: baseUrl + '/user/info',
     method: 'get',
     params: { token }
   })
@@ -18,7 +24,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/vue-admin-template/user/logout',
+    url: baseUrl + '/user/logout',
     method: 'post'
   })
 }
