@@ -2,7 +2,7 @@
  * @Author: Rex Joush
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-13 22:09:57
+ * @LastEditTime: 2021-08-13 23:25:30
 -->
 <template>
   <div class="main">
@@ -140,6 +140,7 @@
     </el-card>
 
     <!-- 第二页研究信息 -->
+    <transition name="el-fade-in-linear">
     <el-card class="box-card" v-if="formVisible.second">
       <div slot="header" class="clearfix">
         <h2>研究信息</h2>
@@ -255,6 +256,8 @@
         </Row>
       </el-form>
     </el-card>
+    </transition>
+
   </div>
 </template>
 
