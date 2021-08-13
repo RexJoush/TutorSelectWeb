@@ -93,11 +93,18 @@ export const constantRoutes = [
         meta: { title: '教师申请'},
       },
       {
-        path: 'firstapplydoctor/:applyId',
-        name: 'firstapplydoctor',
+        path: 'firstApplyDoctor/:applyId',
+        name: 'firstApplyDoctor',
         hidden: true,
-        component: () => import('@/views/tutormainboard/firstapplydoctor/index'),
+        component: () => import('@/views/tutormainboard/FirstApplyDoctor/index'),
         meta: { title: '首次申请博士生导师' },
+      },
+      {
+        path: 'firstApplyMaster/:applyId',
+        name: 'firstApplyMaster',
+        hidden: true,
+        component: () => import('@/views/tutormainboard/FirstApplyMaster/index'),
+        meta: { title: '首次申请硕士生导师（学术学位）' },
       },
     ]
   },
