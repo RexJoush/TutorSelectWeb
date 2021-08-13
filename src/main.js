@@ -25,7 +25,8 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
-
+//引入icon-font
+import './assets/alifont/iconfont.css'
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
