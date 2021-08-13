@@ -2,7 +2,7 @@
  * @Author: Rex Joush
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-13 22:08:04
+ * @LastEditTime: 2021-08-13 22:09:57
 -->
 <template>
   <div class="main">
@@ -180,7 +180,7 @@
                   <template slot-scope="scope">
                     <el-date-picker
                       v-model="scope.row.time"
-                      type="date"
+                      type="month"
                       style="width: 100%"
                       placeholder="选择日期"
                     >
