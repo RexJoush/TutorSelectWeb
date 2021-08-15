@@ -13,6 +13,13 @@
       "unicode_decimal": 58884
     },
     {
+      "icon_id": "23588181",
+      "name": "必填",
+      "font_class": "bitian-copy",
+      "unicode": "e7b5",
+      "unicode_decimal": 59317
+    },
+    {
       "icon_id": "1077",
       "name": "食物",
       "font_class": "shiwu",

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2371702 */
-  src: url('iconfont.woff2?t=1628824720271') format('woff2'),
-       url('iconfont.woff?t=1628824720271') format('woff'),
-       url('iconfont.ttf?t=1628824720271') format('truetype');
+  src: url('iconfont.woff2?t=1628928942141') format('woff2'),
+       url('iconfont.woff?t=1628928942141') format('woff'),
+       url('iconfont.ttf?t=1628928942141') format('truetype');
 }
 
 .iconfont {
@@ -15,6 +15,10 @@
 
 .icon-bitian:before {
   content: "\e604";
+}
+
+.icon-bitian-copy:before {
+  content: "\e7b5";
 }
 
 .icon-shiwu:before {
