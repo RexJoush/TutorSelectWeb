@@ -1,275 +1,316 @@
 <template>
   <div>
+    <el-row>
+      <el-col :span="8" :offset="8">
+        <el-steps :active="active" finish-status="success">
+          <el-step title="基本信息"></el-step>
+          <el-step title="研究信息"></el-step>
+          <el-step title="学术信息"></el-step>
+          <el-step title="教学信息"></el-step>
+        </el-steps>
+      </el-col>
+    </el-row>
+    <br />
     <!-- 第一页内容 -->
-    <div v-if="formVisible.first">
-      <el-row>
-        <el-col :span="18" :offset="3">
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span>首次申请博士导师</span>
-            </div>
-            <div>
-              <el-form ref="form" :model="form" label-width="80px">
-                <!-- 基本信息 -->
-                <el-descriptions
-                  class="margin-top"
-                  :column="2"
-                  :size="size"
-                  border
-                >
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      所在单位</template
-                    >
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-
-                  <el-descriptions-item>
-                    <template slot="label"> 照片 </template>
-                    <el-button style="margin-bottom: 5px" type="success"
-                      >上传照片</el-button
-                    ><br />
-                    <el-image
-                      style="width: 150px; height: 150px"
-                      :src="url"
-                      :fit="fit"
-                    ></el-image>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      工号
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      姓名
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      性别
-                    </template>
-                    <el-radio v-model="form.name" label="男">男</el-radio>
-                    <el-radio v-model="form.name" label="女">女</el-radio>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      证件号码
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      出生年月
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      电子邮箱
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      联系电话
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      学科属性(文理科)
-                    </template>
-                    <el-select
-                      v-model="form.name"
-                      style="width: 100%"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        key="交叉学科"
-                        lable="交叉学科"
-                        value="交叉学科"
-                      ></el-option>
-                      <el-option
-                        key="理工类"
-                        lable="理工类"
-                        value="理工类"
-                      ></el-option>
-                      <el-option
-                        key="文史类"
-                        lable="文史类"
-                        value="文史类"
-                      ></el-option>
-                    </el-select>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      最后学位
-                    </template>
-                    <el-select
-                      v-model="form.name"
-                      style="width: 100%"
-                      placeholder="请选择"
-                    >
-                      <el-option
-                        key="学士"
-                        lable="学士"
-                        value="学士"
-                      ></el-option>
-                      <el-option
-                        key="硕士"
-                        lable="硕士"
-                        value="硕士"
-                      ></el-option>
-                      <el-option
-                        key="博士"
-                        lable="博士"
-                        value="博士"
-                      ></el-option>
-                    </el-select>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      授予单位及时间
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label"> 职称 </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label"> 评定时间 </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label"> 任硕导时间 </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item>
-                    <template slot="label"> 任硕导一级学科 </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                </el-descriptions>
-                <el-descriptions :column="1" :size="size" border>
-                  <el-descriptions-item label-class-name="my-label">
-                    <template slot="label">
-                      主要研究方向的内容及其意义
-                    </template>
-                    <el-input
-                      type="textarea"
-                      :rows="6"
-                      v-model="form.name"
-                    ></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item label-class-name="my-label">
-                    <template slot="label">
-                      何时参加何种学术 团体、任何种职务有何社会兼职
-                    </template>
-                    <el-input
-                      type="textarea"
-                      :rows="6"
-                      v-model="form.name"
-                    ></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item label-class-name="my-label">
-                    <template slot="label"> 获何专家称号及时间 </template>
-                    <el-input
-                      type="textarea"
-                      :rows="6"
-                      v-model="form.name"
-                    ></el-input>
-                  </el-descriptions-item>
-                </el-descriptions>
-                <!-- 申请学科 -->
-                <el-divider></el-divider>
-                <el-descriptions
-                  class="margin-top"
-                  title="申请学科"
-                  :column="1"
-                  :size="size"
-                  border
-                >
-                  <el-descriptions-item label-class-name="my-applysubject">
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      负责单位名称
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item label-class-name="my-applysubject">
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      名称
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                  <el-descriptions-item label-class-name="my-applysubject">
-                    <template slot="label">
-                      <span class="svg-container">
-                        <svg-icon icon-class="bitian" />
-                      </span>
-                      代码
-                    </template>
-                    <el-input v-model="form.name"></el-input>
-                  </el-descriptions-item>
-                </el-descriptions>
-                <br />
-                <br />
-                <el-row>
-                  <el-col offset="10"
-                    ><el-button type="primary" @click="onSubmitFirstPage"
-                      >保存并进入下一页</el-button
-                    ></el-col
+    <el-row>
+      <el-col :span="18" :offset="3">
+        <el-card class="box-card" v-if="formVisible.first">
+          <div slot="header" class="clearfix">
+            <h2>基本信息</h2>
+          </div>
+          <el-form
+            ref="formFirst"
+            :model="formFirst"
+            label-width="100px"
+            label-position="right"
+          >
+            <Row type="flex" justify="center" align="top" class="code-row-bg">
+              <Col span="16">
+                <Row>
+                  <Col :span="12">
+                    <el-form-item label="姓名">
+                      <el-input v-model="formFirst.name"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="性别">
+                      <el-radio v-model="formFirst.sex" label="男">男</el-radio>
+                      <el-radio v-model="formFirst.sex" label="女">女</el-radio>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="所在单位">
+                      <el-input v-model="formFirst.department"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="出生年月">
+                      <el-date-picker
+                        v-model="formFirst.birthday"
+                        type="date"
+                        style="width: 100%"
+                        placeholder="选择日期"
+                      >
+                      </el-date-picker>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="24">
+                    <el-form-item label="证件号码">
+                      <el-input v-model="formFirst.idNumber"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="联系电话">
+                      <el-input v-model="formFirst.phone"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="电子邮箱">
+                      <el-input v-model="formFirst.email"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="职称">
+                      <el-input v-model="formFirst.title"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="评定时间">
+                      <el-date-picker
+                        v-model="formFirst.titleAwardTime"
+                        type="month"
+                        style="width: 100%"
+                        placeholder="选择日期"
+                      >
+                      </el-date-picker>
+                    </el-form-item>
+                  </Col>
+                </Row>
+              </Col>
+              <Col span="8">
+                <el-form-item>
+                  <el-image
+                    style="width: 100px; height: 140px"
+                    src="https://www.rexjoush.com/img/1.jpg"
+                    fit="fit"
+                    ><div slot="placeholder" class="image-slot">
+                      <i class="el-icon-picture-outline"></i></div
+                  ></el-image>
+                  <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
                   >
-                </el-row>
-              </el-form>
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">
+                      只能上传jpg/png文件, 500kb以下
+                    </div>
+                  </el-upload>
+                </el-form-item>
+              </Col>
+              <Col :span="8">
+                <el-form-item label="最后学位">
+                  <el-select
+                    v-model="formFirst.lastDegree"
+                    style="width: 100%"
+                    placeholder="请选择"
+                  >
+                    <el-option key="学士" lable="学士" value="学士"></el-option>
+                    <el-option key="硕士" lable="硕士" value="硕士"></el-option>
+                    <el-option key="博士" lable="博士" value="博士"></el-option>
+                  </el-select>
+                </el-form-item>
+              </Col>
+              <Col :span="8">
+                <el-form-item label="授予单位">
+                  <el-input v-model="formFirst.awardDepartment"></el-input>
+                </el-form-item>
+              </Col>
+              <Col :span="8">
+                <el-form-item label="授予时间">
+                  <el-date-picker
+                    v-model="formFirst.awardTime"
+                    type="month"
+                    style="width: 100%"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+              </Col>
+            </Row>
+            <Row>
+              <Col :offset="8">
+                <el-form-item style="margin-top: 20px">
+                  <el-button type="primary" @click="onSubmitFirstPage"
+                    >保存此部分，填写下一项</el-button
+                  >
+                </el-form-item>
+              </Col>
+            </Row>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
+    <!-- 第二页研究信息 -->
+    <Row>
+      <Col :span="18" :offset="3">
+        <transition name="el-fade-in-linear">
+          <el-card class="box-card" v-if="formVisible.second">
+            <div slot="header" class="clearfix">
+              <h2>研究信息</h2>
             </div>
+            <el-form
+              ref="formSecond"
+              :model="formSecond"
+              label-width="100px"
+              label-position="top"
+              v-if="formVisible.second"
+            >
+              <Row>
+                <Col :span="24">
+                  <Row>
+                    <Col :span="6">
+                      <el-form-item label="申请学科负责单位：">
+                        <el-input></el-input>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="6" :offset="1">
+                      <el-form-item label="一级学科代码">
+                        <el-input></el-input>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="6" :offset="1">
+                      <el-form-item label="一级学科名称">
+                        <el-input></el-input>
+                      </el-form-item>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col :span="24">
+                  <el-form-item label="主要研究方向的内容及其意义">
+                    <el-input
+                      type="textarea"
+                      v-model="formSecond.major"
+                      :autosize="{ minRows: 6 }"
+                    ></el-input>
+                  </el-form-item>
+                </Col>
+                <Col :span="24">
+                  <el-form-item
+                    v-model="formSecond.groupsOrPartTimeJobs"
+                    label="何时参加何种学术团体、任何种职务，有何社会兼职"
+                  >
+                    <el-button
+                      @click="addGroupsOrPartTimeJob"
+                      type="primary"
+                      style="margin: 0 0 10px 10px"
+                      >添加</el-button
+                    >
+                    <el-table
+                      :data="formSecond.groupsOrPartTimeJobs"
+                      style="width: 100%"
+                    >
+                      <el-table-column label="参加时间" width="180">
+                        <template slot-scope="scope">
+                          <el-date-picker
+                            v-model="scope.row.time"
+                            type="month"
+                            style="width: 100%"
+                            placeholder="选择日期"
+                          >
+                          </el-date-picker>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="学术团体或兼职" width="200">
+                        <template slot-scope="scope">
+                          <el-input v-model="scope.row.groups"></el-input>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="所任职务">
+                        <template slot-scope="scope">
+                          <el-input v-model="scope.row.job"></el-input>
+                        </template>
+                      </el-table-column>
+                      <el-table-column width="100">
+                        <template slot-scope="scope">
+                          <el-button
+                            type="danger"
+                            @click="delGroupsOrPartTimeJob(scope.$index)"
+                            >删除</el-button
+                          >
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                 
+                  </el-form-item>
+                </Col>
+
+                <Col :span="24">
+                  <el-form-item
+                    v-model="formSecond.expertTitles"
+                    label="获何专家称号及时间"
+                  >
+                    <el-button
+                      @click="addExpertTitle"
+                      type="primary"
+                      style="margin: 0 0 10px 10px"
+                      >添加</el-button
+                    >
+                    <el-table
+                      :data="formSecond.expertTitles"
+                      style="width: 100%"
+                    >
+                      <el-table-column label="获得时间" width="180">
+                        <template slot-scope="scope">
+                          <el-date-picker
+                            v-model="scope.row.time"
+                            type="month"
+                            style="width: 100%"
+                            placeholder="选择日期"
+                          >
+                          </el-date-picker>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="称号名称">
+                        <template slot-scope="scope">
+                          <el-input v-model="scope.row.title"></el-input>
+                        </template>
+                      </el-table-column>
+                      <!-- <el-table-column label="所任职务">
+                    <template slot-scope="scope">
+                      <el-input v-model="scope.row.job"></el-input>
+                    </template>
+                  </el-table-column> -->
+                      <el-table-column width="100">
+                        <template slot-scope="scope">
+                          <el-button
+                            type="danger"
+                            @click="delExpertTitle(scope.$index)"
+                            >删除</el-button
+                          >
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </el-form-item>
+                </Col>
+              </Row>
+              <Row>
+                <Col :offset="8">
+                <el-form-item style="margin-top: 20px">
+                <el-button @click="backFirstPage">返回上一页</el-button>
+                <el-button type="primary" @click="onSubmitSecondPage"
+                  >保存此部分，填写下一项</el-button
+                >
+              </el-form-item>
+                </Col>
+              </Row>
+              
+            </el-form>
           </el-card>
-        </el-col>
-      </el-row>
-    </div>
-    <!-- 第二页内容 -->
-    <div v-if="formVisible.second">
+        </transition>
+      </Col>
+    </Row>
+    <!-- 第三页内容 -->
+    <div v-if="formVisible.third">
       <el-row>
         <el-col :span="18" :offset="3">
           <div>
@@ -307,8 +348,8 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
+                <!-- <el-table-column fixed type="selection" width="55">
+                </el-table-column> -->
                 <el-table-column
                   prop="name"
                   label="序号"
@@ -371,7 +412,7 @@
                   width="180"
                   show-overflow-tooltip="true"
                 >
-                </el-table-column>               
+                </el-table-column>
               </el-table>
             </el-card>
             <br />
@@ -401,8 +442,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column
                   prop="name"
                   label="序号"
@@ -488,8 +527,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column
                   prop="name"
                   label="序号"
@@ -556,8 +593,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column prop="name" label="序号" width="50">
                 </el-table-column>
                 <el-table-column prop="name" label="名称"> </el-table-column>
@@ -597,8 +632,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column prop="name" label="序号" width="50">
                 </el-table-column>
                 <el-table-column prop="name" label="名称"> </el-table-column>
@@ -648,12 +681,12 @@
             </div>
             <el-row>
               <el-col offset="8" :span="3"
-                ><el-button type="primary" @click="backFirstPage"
+                ><el-button type="primary" @click="backSecondPage"
                   >返回上一页</el-button
                 ></el-col
               >
               <el-col :span="3"
-                ><el-button type="primary" @click="onSubmitSecondPage"
+                ><el-button type="primary" @click="onSubmitThirdPage"
                   >保存并进入下一页</el-button
                 ></el-col
               >
@@ -662,9 +695,9 @@
         </el-col>
       </el-row>
     </div>
-    <!-- 第二页内容结束 -->
-    <!-- 第三页内容 -->
-    <div v-if="formVisible.third">
+    <!-- 第三页内容结束 -->
+    <!-- 第四页内容 -->
+    <div v-if="formVisible.fourth">
       <el-row>
         <el-col :span="18" :offset="3">
           <div>
@@ -691,8 +724,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column prop="name" label="研究生姓名">
                 </el-table-column>
                 <el-table-column prop="name" label="入学时间">
@@ -731,8 +762,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column prop="name" label="本科生姓名">
                 </el-table-column>
                 <el-table-column prop="name" label="毕业时间">
@@ -765,8 +794,6 @@
                 border
                 style="width: 100%"
               >
-                <el-table-column fixed type="selection" width="55">
-                </el-table-column>
                 <el-table-column prop="name" label="授课时间">
                 </el-table-column>
                 <el-table-column prop="name" label="课程名称">
@@ -782,12 +809,12 @@
 
             <el-row>
               <el-col offset="10" :span="3"
-                ><el-button type="primary" @click="backSecondPage"
+                ><el-button type="primary" @click="backThirdPage"
                   >返回上一页</el-button
                 ></el-col
               >
               <el-col :span="3"
-                ><el-button type="primary" @click="onSubmitFirstPage"
+                ><el-button type="primary" @click="onSubmitFourthPage"
                   >提交</el-button
                 ></el-col
               >
@@ -799,9 +826,9 @@
       <br />
       <br />
     </div>
-    <!-- 第三页内容 结束-->
+    <!-- 第四页内容 结束-->
 
-    <!-- 第二页操作内容 -->
+    <!-- 第三页操作内容 -->
     <!-- 学术论文 社科成果增加-->
     <el-dialog
       title="学术论文管理>社科成果增加"
@@ -905,11 +932,49 @@ export default {
   components: { index },
   data() {
     return {
+      // 步骤条
+      active: 0,
       // 页数的隐藏和展示
       formVisible: {
         first: true,
         second: false,
         third: false,
+        fourth: false,
+      },
+      /**第一页 */
+      // 第 1 页表单
+      formFirst: {
+        name: "", // 姓名
+        sex: "", // 性别
+        department: "", // 所在单位
+        birthday: "", // 出生年月
+        idNumber: "", // 证件号码
+        phone: "", // 联系电话
+        email: "", // 电子邮箱
+        title: "", // 职称
+        titleAwardTime: "", // 评定时间
+        lastDegree: "", // 最后学位
+        awardDepartment: "", // 授予单位
+        awardTime: "", // 授予时间
+      },
+      // 第 2 页表单
+      formSecond: {
+        major: "", // 主要研究方向的内容及其意义
+        groupsOrPartTimeJobs: [
+          // 何时参加何种学术团体、任何种职务，有何社会兼职
+          {
+            time: "",
+            groups: "",
+            job: "",
+          },
+        ],
+        expertTitles: [
+          // 获何专家称号及时间
+          {
+            time: "",
+            title: "",
+          },
+        ],
       },
       form: {
         name: "",
@@ -927,18 +992,27 @@ export default {
       tableData: [
         {
           date: "2016-05-03",
-          name: "1",        
+          name: "1",
         },
         {
           date: "2016-05-03",
-          name: "1",         
+          name: "1",
         },
       ],
       //第二页操作内容
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
       //学术论文 上传文件按钮
-      fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+      fileList: [
+        {
+          name: "food.jpeg",
+          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+        },
+        {
+          name: "food2.jpeg",
+          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+        },
+      ],
       //学术论文 理工科成果增加
       ScienceEngineeringPaperAdd: false,
     };
@@ -953,6 +1027,7 @@ export default {
         .then(() => {
           this.formVisible.first = false; // 关闭第一项
           this.formVisible.second = true; // 打开第二项
+          this.active = 1;
         })
         .catch(() => {
           console.log("cancel");
@@ -960,14 +1035,14 @@ export default {
     },
     /*第二页 */
 
-
     // 完成第二页基本信息的填写
     onSubmitSecondPage: function () {
       this.$confirm("提交填写?")
-        // 提交保存第一页
+        // 提交保存第二页
         .then(() => {
           this.formVisible.second = false; // 关闭第二项
           this.formVisible.third = true; // 打开第三项
+          this.active = 2;
         })
         .catch(() => {
           console.log("cancel");
@@ -980,24 +1055,62 @@ export default {
     },
     //第二页对话框
     //社科类上传文件按钮
-     handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
-      },
-    
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+
     /* 第三页 */
+
+    // 完成第 3 页学术信息的填写
+    onSubmitThirdPage: function () {
+      this.$confirm("提交填写?")
+        // 提交保存第 3 页
+        .then(() => {
+          this.formVisible.third = false; // 关闭第 3 页
+          this.formVisible.fourth = true; // 打开第 4 页
+          this.active = 3;
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
+    },
     //返回第二页
     backSecondPage: function () {
       this.formVisible.third = false;
       this.formVisible.second = true;
+    },
+
+    /* 第 4 页 */
+    // 完成第 4 页学术信息的填写
+    onSubmitFourthPage: function () {
+      this.$confirm("提交填写?")
+        // 提交保存第 4 页
+        .then(() => {
+          this.formVisible.third = false; // 关闭第 4 页
+          this.$router.push("/tutorapply"); // 回到首页
+          this.active = 0;
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
+    },
+    //返回第三页
+    backThirdPage: function () {
+      this.formVisible.fourth = false;
+      this.formVisible.third = true;
     },
   },
 };
