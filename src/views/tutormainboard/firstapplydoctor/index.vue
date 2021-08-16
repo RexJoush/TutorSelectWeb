@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 第一页内容 -->
-    <div class="bg-purple" v-if="false">
+    <div v-if="formVisible.first">
       <el-row>
         <el-col :span="18" :offset="3">
           <el-card class="box-card" shadow="always">
@@ -24,11 +24,7 @@
                       </span>
                       所在单位</template
                     >
-                    <el-input
-                      type="textarea"
-                      :rows="6"
-                      v-model="form.name"
-                    ></el-input>
+                    <el-input v-model="form.name"></el-input>
                   </el-descriptions-item>
 
                   <el-descriptions-item>
@@ -67,7 +63,8 @@
                       </span>
                       性别
                     </template>
-                    <el-input v-model="form.name"></el-input>
+                    <el-radio v-model="form.name" label="男">男</el-radio>
+                    <el-radio v-model="form.name" label="女">女</el-radio>
                   </el-descriptions-item>
                   <el-descriptions-item>
                     <template slot="label">
@@ -112,7 +109,27 @@
                       </span>
                       学科属性(文理科)
                     </template>
-                    <el-input v-model="form.name"></el-input>
+                    <el-select
+                      v-model="form.name"
+                      style="width: 100%"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        key="交叉学科"
+                        lable="交叉学科"
+                        value="交叉学科"
+                      ></el-option>
+                      <el-option
+                        key="理工类"
+                        lable="理工类"
+                        value="理工类"
+                      ></el-option>
+                      <el-option
+                        key="文史类"
+                        lable="文史类"
+                        value="文史类"
+                      ></el-option>
+                    </el-select>
                   </el-descriptions-item>
                   <el-descriptions-item>
                     <template slot="label">
@@ -121,7 +138,27 @@
                       </span>
                       最后学位
                     </template>
-                    <el-input v-model="form.name"></el-input>
+                    <el-select
+                      v-model="form.name"
+                      style="width: 100%"
+                      placeholder="请选择"
+                    >
+                      <el-option
+                        key="学士"
+                        lable="学士"
+                        value="学士"
+                      ></el-option>
+                      <el-option
+                        key="硕士"
+                        lable="硕士"
+                        value="硕士"
+                      ></el-option>
+                      <el-option
+                        key="博士"
+                        lable="博士"
+                        value="博士"
+                      ></el-option>
+                    </el-select>
                   </el-descriptions-item>
                   <el-descriptions-item>
                     <template slot="label">
@@ -232,7 +269,7 @@
       </el-row>
     </div>
     <!-- 第二页内容 -->
-    <div v-if="true">
+    <div v-if="formVisible.second">
       <el-row>
         <el-col :span="18" :offset="3">
           <div>
@@ -243,12 +280,18 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success" @click="dialogFormVisible = true"
+                  ><el-button
+                    type="success"
+                    @click="SocialSciencesPaperAdd = true"
                     >社科成果增加</el-button
                   ></el-col
                 >
                 <el-col :span="4"
-                  ><el-button type="success">理工成果增加</el-button></el-col
+                  ><el-button
+                    type="success"
+                    @click="ScienceEngineeringPaperAdd = true"
+                    >理工成果增加</el-button
+                  ></el-col
                 >
                 <el-col :span="4"
                   ><el-button type="success">编辑</el-button></el-col
@@ -328,14 +371,7 @@
                   width="180"
                   show-overflow-tooltip="true"
                 >
-                </el-table-column>
-                <el-table-column
-                  prop="address"
-                  label="地址"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
+                </el-table-column>               
               </el-table>
             </el-card>
             <br />
@@ -612,12 +648,12 @@
             </div>
             <el-row>
               <el-col offset="8" :span="3"
-                ><el-button type="primary" @click="onSubmitFirstPage"
+                ><el-button type="primary" @click="backFirstPage"
                   >返回上一页</el-button
                 ></el-col
               >
               <el-col :span="3"
-                ><el-button type="primary" @click="onSubmitFirstPage"
+                ><el-button type="primary" @click="onSubmitSecondPage"
                   >保存并进入下一页</el-button
                 ></el-col
               >
@@ -628,7 +664,7 @@
     </div>
     <!-- 第二页内容结束 -->
     <!-- 第三页内容 -->
-    <div v-if="false">
+    <div v-if="formVisible.third">
       <el-row>
         <el-col :span="18" :offset="3">
           <div>
@@ -746,7 +782,7 @@
 
             <el-row>
               <el-col offset="10" :span="3"
-                ><el-button type="primary" @click="onSubmitFirstPage"
+                ><el-button type="primary" @click="backSecondPage"
                   >返回上一页</el-button
                 ></el-col
               >
@@ -767,21 +803,24 @@
 
     <!-- 第二页操作内容 -->
     <!-- 学术论文 社科成果增加-->
-    <el-dialog title="学术论文管理>新增" :visible.sync="dialogFormVisible"  >
+    <el-dialog
+      title="学术论文管理>社科成果增加"
+      :visible.sync="SocialSciencesPaperAdd"
+    >
       <el-form :model="form" :label-position="left">
-        <el-form-item label="论文名称" >
+        <el-form-item label="论文名称">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="第一作者" >
+        <el-form-item label="第一作者">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="期刊名称" >
+        <el-form-item label="期刊名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="发表时间" >
+        <el-form-item label="发表时间">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="期刊等级" >
+        <el-form-item label="期刊等级">
           <el-select v-model="form.region" placeholder="请选择">
             <el-option label="顶级期刊（A类）" value="1"></el-option>
             <el-option label="权威期刊（B类）" value="2"></el-option>
@@ -789,6 +828,22 @@
           </el-select>
         </el-form-item>
       </el-form>
+      <el-upload
+        class="upload-demo"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+        multiple
+        :limit="3"
+        :on-exceed="handleExceed"
+        :file-list="fileList"
+      >
+        <el-button size="small" type="primary">上传证明材料</el-button>
+        <div slot="tip" class="el-upload__tip">
+          证明材料包括论文封面、目录和正文若上传多个文件，请压缩为.rar/.zip文件上传
+        </div>
+      </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false"
@@ -797,7 +852,10 @@
       </div>
     </el-dialog>
     <!-- 学术论文 理工科成果增加-->
-    <!-- <el-dialog title="学术论文管理>新增" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="学术论文管理>理工科成果增加"
+      :visible.sync="ScienceEngineeringPaperAdd"
+    >
       <el-form :model="form" label-position="left">
         <el-form-item label="论文名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -820,7 +878,7 @@
             <el-option label="CSCD" value="5"></el-option>
           </el-select>
         </el-form-item>
-         <el-form-item label="期刊分区" :label-width="formLabelWidth">
+        <el-form-item label="期刊分区" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="期刊名称" :label-width="formLabelWidth">
@@ -836,7 +894,8 @@
           >确 定</el-button
         >
       </div>
-    </el-dialog> -->
+    </el-dialog>
+    <!-- 学术论文 编辑 -->
   </div>
 </template>
 
@@ -846,6 +905,12 @@ export default {
   components: { index },
   data() {
     return {
+      // 页数的隐藏和展示
+      formVisible: {
+        first: true,
+        second: false,
+        third: false,
+      },
       form: {
         name: "",
         region: "",
@@ -862,19 +927,78 @@ export default {
       tableData: [
         {
           date: "2016-05-03",
-          name: "1",
-          address: "上海市普陀区金沙江路 1518 弄sssssssssssss",
+          name: "1",        
         },
         {
           date: "2016-05-03",
-          name: "1",
-          address: "上海市普陀区金沙江路 1518 弄",
+          name: "1",         
         },
       ],
       //第二页操作内容
       //学术论文 社科成果增加
-      dialogFormVisible: false,
+      SocialSciencesPaperAdd: false,
+      //学术论文 上传文件按钮
+      fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+      //学术论文 理工科成果增加
+      ScienceEngineeringPaperAdd: false,
     };
+  },
+  methods: {
+    /* 第一页 */
+
+    // 完成第一页基本信息的填写
+    onSubmitFirstPage: function () {
+      this.$confirm("提交填写?")
+        // 提交保存第一页
+        .then(() => {
+          this.formVisible.first = false; // 关闭第一项
+          this.formVisible.second = true; // 打开第二项
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
+    },
+    /*第二页 */
+
+
+    // 完成第二页基本信息的填写
+    onSubmitSecondPage: function () {
+      this.$confirm("提交填写?")
+        // 提交保存第一页
+        .then(() => {
+          this.formVisible.second = false; // 关闭第二项
+          this.formVisible.third = true; // 打开第三项
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
+    },
+    //返回第一页
+    backFirstPage: function () {
+      this.formVisible.second = false;
+      this.formVisible.first = true;
+    },
+    //第二页对话框
+    //社科类上传文件按钮
+     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+    
+    /* 第三页 */
+    //返回第二页
+    backSecondPage: function () {
+      this.formVisible.third = false;
+      this.formVisible.second = true;
+    },
   },
 };
 </script>
