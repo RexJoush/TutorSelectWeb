@@ -481,7 +481,7 @@
               <!-- <el-table-column fixed type="selection" width="55">
               </el-table-column> -->
               <el-table-column type="index"></el-table-column>
-              </el-table-column>
+              
               <el-table-column
                 prop="projectName"
                 label="项目名称"
