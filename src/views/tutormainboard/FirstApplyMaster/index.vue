@@ -18,70 +18,123 @@
     </el-row>
     <br />
     <!-- 第 1 页基本信息 -->
-    <el-card class="box-card" v-if="formVisible.first">
-      <div slot="header" class="clearfix">
-        <h2>基本信息</h2>
-      </div>
-      <el-form
-        ref="formFirst"
-        :model="formFirst"
-        label-width="100px"
-        label-position="right"
-      >
-        <Row type="flex" justify="center" align="top" class="code-row-bg">
-          <Col span="16">
-            <Row>
-              <Col :span="12">
-                <el-form-item label="姓名">
-                  <el-input v-model="formFirst.name"></el-input>
-                </el-form-item>
+    <el-row>
+      <el-col :span="18" :offset="4">
+        <el-card class="box-card" v-if="formVisible.first">
+          <div slot="header" class="clearfix">
+            <h2>基本信息</h2>
+          </div>
+          <el-form
+            ref="formFirst"
+            :model="formFirst"
+            label-width="100px"
+            label-position="right"
+          >
+            <Row type="flex" justify="center" align="top" class="code-row-bg">
+              <Col :span="16">
+                <Row>
+                  <Col :span="12">
+                    <el-form-item label="姓名">
+                      <el-input v-model="formFirst.name"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="性别">
+                      <el-radio v-model="formFirst.sex" label="男">男</el-radio>
+                      <el-radio v-model="formFirst.sex" label="女">女</el-radio>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="所在单位">
+                      <el-input v-model="formFirst.department"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="出生年月">
+                      <el-date-picker
+                        v-model="formFirst.birthday"
+                        type="date"
+                        style="width: 100%"
+                        placeholder="选择日期"
+                      >
+                      </el-date-picker>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="24">
+                    <el-form-item label="证件号码">
+                      <el-input v-model="formFirst.idNumber"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="联系电话">
+                      <el-input v-model="formFirst.phone"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="电子邮箱">
+                      <el-input v-model="formFirst.email"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="职称">
+                      <el-input v-model="formFirst.title"></el-input>
+                    </el-form-item>
+                  </Col>
+                  <Col :span="12">
+                    <el-form-item label="评定时间">
+                      <el-date-picker
+                        v-model="formFirst.titleAwardTime"
+                        type="month"
+                        style="width: 100%"
+                        placeholder="选择日期"
+                      >
+                      </el-date-picker>
+                    </el-form-item>
+                  </Col>
+                </Row>
               </Col>
-              <Col :span="12">
-                <el-form-item label="性别">
-                  <el-radio v-model="formFirst.sex" label="男">男</el-radio>
-                  <el-radio v-model="formFirst.sex" label="女">女</el-radio>
-                </el-form-item>
-              </Col>
-              <Col :span="12">
-                <el-form-item label="所在单位">
-                  <el-input v-model="formFirst.department"></el-input>
-                </el-form-item>
-              </Col>
-              <Col :span="12">
-                <el-form-item label="出生年月">
-                  <el-date-picker
-                    v-model="formFirst.birthday"
-                    type="date"
-                    style="width: 100%"
-                    placeholder="选择日期"
+              <Col span="8">
+                <el-form-item>
+                  <el-image
+                    style="width: 100px; height: 140px"
+                    src="https://www.rexjoush.com/img/1.jpg"
+                    fit="fit"
+                    ><div slot="placeholder" class="image-slot">
+                      <i class="el-icon-picture-outline"></i></div
+                  ></el-image>
+                  <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
                   >
-                  </el-date-picker>
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">
+                      只能上传jpg/png文件, 500kb以下
+                    </div>
+                  </el-upload>
                 </el-form-item>
               </Col>
-              <Col :span="24">
-                <el-form-item label="证件号码">
-                  <el-input v-model="formFirst.idNumber"></el-input>
+              <Col :span="8">
+                <el-form-item label="最后学位">
+                  <el-select
+                    v-model="formFirst.lastDegree"
+                    style="width: 100%"
+                    placeholder="请选择"
+                  >
+                    <el-option key="学士" lable="学士" value="学士"></el-option>
+                    <el-option key="硕士" lable="硕士" value="硕士"></el-option>
+                    <el-option key="博士" lable="博士" value="博士"></el-option>
+                  </el-select>
                 </el-form-item>
               </Col>
-              <Col :span="12">
-                <el-form-item label="联系电话">
-                  <el-input v-model="formFirst.phone"></el-input>
+              <Col :span="8">
+                <el-form-item label="授予单位">
+                  <el-input v-model="formFirst.awardDepartment"></el-input>
                 </el-form-item>
               </Col>
-              <Col :span="12">
-                <el-form-item label="电子邮箱">
-                  <el-input v-model="formFirst.email"></el-input>
-                </el-form-item>
-              </Col>
-              <Col :span="12">
-                <el-form-item label="职称">
-                  <el-input v-model="formFirst.title"></el-input>
-                </el-form-item>
-              </Col>
-              <Col :span="12">
-                <el-form-item label="评定时间">
+              <Col :span="8">
+                <el-form-item label="授予时间">
                   <el-date-picker
-                    v-model="formFirst.titleAwardTime"
+                    v-model="formFirst.awardTime"
                     type="month"
                     style="width: 100%"
                     placeholder="选择日期"
@@ -90,586 +143,574 @@
                 </el-form-item>
               </Col>
             </Row>
-          </Col>
-          <Col span="8">
-            <el-form-item>
-              <el-image
-                style="width: 100px; height: 140px"
-                src="https://www.rexjoush.com/img/1.jpg"
-                fit="fit"
-                ><div slot="placeholder" class="image-slot">
-                  <i class="el-icon-picture-outline"></i></div
-              ></el-image>
-              <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
+            <Row>
+                <Col :offset="8">
+            <el-form-item style="margin-top: 20px">
+              <el-button type="primary" @click="onSubmitFirstPage"
+                >保存此部分，填写下一项</el-button
               >
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png文件, 500kb以下
-                </div>
-              </el-upload>
             </el-form-item>
-          </Col>
-          <Col :span="8">
-            <el-form-item label="最后学位">
-              <el-select
-                v-model="formFirst.lastDegree"
-                style="width: 100%"
-                placeholder="请选择"
-              >
-                <el-option key="学士" lable="学士" value="学士"></el-option>
-                <el-option key="硕士" lable="硕士" value="硕士"></el-option>
-                <el-option key="博士" lable="博士" value="博士"></el-option>
-              </el-select>
-            </el-form-item>
-          </Col>
-          <Col :span="8">
-            <el-form-item label="授予单位">
-              <el-input v-model="formFirst.awardDepartment"></el-input>
-            </el-form-item>
-          </Col>
-          <Col :span="8">
-            <el-form-item label="授予时间">
-              <el-date-picker
-                v-model="formFirst.awardTime"
-                type="month"
-                style="width: 100%"
-                placeholder="选择日期"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </Col>
-        </Row>
-
-        <el-form-item style="margin-top: 20px">
-          <el-button type="primary" @click="onSubmitFirstPage"
-            >保存此部分，填写下一项</el-button
-          >
-        </el-form-item>
-      </el-form>
-    </el-card>
+            </Col>
+            </Row>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
 
     <!-- 第 2 页研究信息 -->
-    <transition name="el-fade-in-linear">
-      <el-card class="box-card" v-if="formVisible.second">
-        <div slot="header" class="clearfix">
-          <h2>研究信息</h2>
-        </div>
-        <el-form
-          ref="formSecond"
-          :model="formSecond"
-          label-width="100px"
-          label-position="top"
-          v-if="formVisible.second"
-        >
-          <Row>
-            <Col :span="24">
+    <el-row>
+      <el-col :span="18" :offset="4">
+        <transition name="el-fade-in-linear">
+          <el-card class="box-card" v-if="formVisible.second">
+            <div slot="header" class="clearfix">
+              <h2>研究信息</h2>
+            </div>
+            <el-form
+              ref="formSecond"
+              :model="formSecond"
+              label-width="100px"
+              label-position="top"
+              v-if="formVisible.second"
+            >
               <Row>
-                <Col :span="6">
-                  <el-form-item label="申请学科负责单位：">
-                    <el-input></el-input>
+                <Col :span="24">
+                  <Row>
+                    <Col :span="6">
+                      <el-form-item label="申请学科负责单位：">
+                        <el-input></el-input>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="6" :offset="1">
+                      <el-form-item label="一级学科代码">
+                        <el-input></el-input>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="6" :offset="1">
+                      <el-form-item label="一级学科名称">
+                        <el-input></el-input>
+                      </el-form-item>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col :span="24">
+                  <el-form-item label="主要研究方向的内容及其意义">
+                    <el-input
+                      type="textarea"
+                      v-model="formSecond.major"
+                      :autosize="{ minRows: 6 }"
+                    ></el-input>
                   </el-form-item>
                 </Col>
-                <Col :span="6" :offset="1">
-                  <el-form-item label="一级学科代码">
-                    <el-input></el-input>
+                <Col :span="24">
+                  <el-form-item
+                    v-model="formSecond.groupsOrPartTimeJobs"
+                    label="何时参加何种学术团体、任何种职务，有何社会兼职"
+                  >
+                    <el-button
+                      @click="addGroupsOrPartTimeJob"
+                      type="primary"
+                      class="addButton"
+                      >添加</el-button
+                    >
+                    <el-table
+                      :data="formSecond.groupsOrPartTimeJobs"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column
+                        type="index"
+                        width="40"
+                      ></el-table-column>
+                      <el-table-column
+                        prop="time"
+                        label="参加时间"
+                        width="180"
+                      ></el-table-column>
+                      <el-table-column
+                        prop="groups"
+                        label="学术团体或兼职"
+                        width="200"
+                      ></el-table-column>
+                      <el-table-column
+                        prop="job"
+                        label="所任职务"
+                      ></el-table-column>
+                    </el-table>
                   </el-form-item>
                 </Col>
-                <Col :span="6" :offset="1">
-                  <el-form-item label="一级学科名称">
-                    <el-input></el-input>
-                  </el-form-item>
-                </Col>
-              </Row>
-            </Col>
-            <Col :span="24">
-              <el-form-item label="主要研究方向的内容及其意义">
-                <el-input
-                  type="textarea"
-                  v-model="formSecond.major"
-                  :autosize="{ minRows: 6 }"
-                ></el-input>
-              </el-form-item>
-            </Col>
-            <Col :span="24">
-              <el-form-item
-                v-model="formSecond.groupsOrPartTimeJobs"
-                label="何时参加何种学术团体、任何种职务，有何社会兼职"
-              >
-                <el-button
-                  @click="addGroupsOrPartTimeJob"
-                  type="primary"
-                  class="addButton"
-                  >添加</el-button
-                >
-                <el-table
-                  :data="formSecond.groupsOrPartTimeJobs"
-                  border
-                  style="width: 100%"
-                >
-                  <el-table-column type="index" width="40"></el-table-column>
-                  <el-table-column
-                    prop="time"
-                    label="参加时间"
-                    width="180"
-                  ></el-table-column>
-                  <el-table-column
-                    prop="groups"
-                    label="学术团体或兼职"
-                    width="200"
-                  ></el-table-column>
-                  <el-table-column
-                    prop="job"
-                    label="所任职务"
-                  ></el-table-column>
-                </el-table>
-              </el-form-item>
-            </Col>
 
-            <Col :span="24">
-              <el-form-item
-                v-model="formSecond.expertTitles"
-                label="获何专家称号及时间"
-              >
-                <el-button
-                  @click="addExpertTitle"
-                  type="primary"
-                  class="addButton"
-                  >添加</el-button
-                >
-                <el-table :data="formSecond.expertTitles" border style="width: 100%">
-                  <el-table-column type="index" width="40"></el-table-column>
-                  <el-table-column label="获得时间" width="180">
-                    <template slot-scope="scope">
-                      <el-date-picker
-                        v-model="scope.row.time"
-                        type="month"
-                        style="width: 100%"
-                        placeholder="选择日期"
-                      >
-                      </el-date-picker>
-                    </template>
-                  </el-table-column>
-                  <el-table-column label="称号名称">
-                    <template slot-scope="scope">
-                      <el-input v-model="scope.row.title"></el-input>
-                    </template>
-                  </el-table-column>
-                  <!-- <el-table-column label="所任职务">
+                <Col :span="24">
+                  <el-form-item
+                    v-model="formSecond.expertTitles"
+                    label="获何专家称号及时间"
+                  >
+                    <el-button
+                      @click="addExpertTitle"
+                      type="primary"
+                      class="addButton"
+                      >添加</el-button
+                    >
+                    <el-table
+                      :data="formSecond.expertTitles"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column
+                        type="index"
+                        width="40"
+                      ></el-table-column>
+                      <el-table-column label="获得时间" width="180">
+                        <template slot-scope="scope">
+                          <el-date-picker
+                            v-model="scope.row.time"
+                            type="month"
+                            style="width: 100%"
+                            placeholder="选择日期"
+                          >
+                          </el-date-picker>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="称号名称">
+                        <template slot-scope="scope">
+                          <el-input v-model="scope.row.title"></el-input>
+                        </template>
+                      </el-table-column>
+                      <!-- <el-table-column label="所任职务">
                     <template slot-scope="scope">
                       <el-input v-model="scope.row.job"></el-input>
                     </template>
                   </el-table-column> -->
-                  <el-table-column width="100">
-                    <template slot-scope="scope">
-                      <el-button
-                        type="danger"
-                        @click="delExpertTitle(scope.$index)"
-                        >删除</el-button
-                      >
-                    </template>
-                  </el-table-column>
-                </el-table>
+                      <el-table-column width="100">
+                        <template slot-scope="scope">
+                          <el-button
+                            type="danger"
+                            @click="delExpertTitle(scope.$index)"
+                            >删除</el-button
+                          >
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </el-form-item>
+                </Col>
+              </Row>
+              <Row>
+                <Col :offset="8">
+              <el-form-item style="margin-top: 20px">
+                <el-button @click="backToFirstPage">返回上一页</el-button>
+                <el-button type="primary" @click="onSubmitSecondPage"
+                  >保存此部分，填写下一项</el-button
+                >
               </el-form-item>
-            </Col>
-          </Row>
-          <el-form-item style="margin-top: 20px">
-            <el-button @click="backToFirstPage">返回上一页</el-button>
-            <el-button type="primary" @click="onSubmitSecondPage"
-              >保存此部分，填写下一项</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </el-card>
-    </transition>
+              </Col>
+              </Row>
+            </el-form>
+          </el-card>
+        </transition>
+      </el-col>
+    </el-row>
 
     <!-- 第 3 页学术信息 -->
-    <transition name="el-fade-in-linear">
-      <el-card class="box-card" v-if="formVisible.third">
-        <div slot="header" class="clearfix">
-          <h2>学术信息</h2>
-        </div>
-        <el-form
-          ref="formThird"
-          :model="formThird"
-          label-width="150px"
-          label-position="top"
-          v-if="formVisible.third"
-        >
-          <!-- 学术论文(近五年) -->
-          <el-card class="box-card" shadow="always">
+    <el-row>
+      <el-col :span="18" :offset="4">
+        <transition name="el-fade-in-linear">
+          <el-card class="box-card" v-if="formVisible.third">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">科研项目（近五年）</span>
+              <h2>学术信息</h2>
             </div>
-            <el-row>
-              <el-col :span="4">
-                <el-button
-                  class="addButton"
-                  type="primary"
-                  @click="dialogAcademicPaper = true"
-                  >添加学术论文</el-button
-                >
-              </el-col>
-            </el-row>
-            <el-table :data="academicPapers" border style="width: 100%">
-              <el-table-column type="index" width="40"></el-table-column>
-              <el-table-column
-                prop="paperName"
-                label="论文名称"
-              ></el-table-column>
-              <el-table-column
-                prop="paperNumber"
-                label="论文编号"
-              ></el-table-column>
-              <el-table-column
-                prop="authorName"
-                label="作者姓名"
-              ></el-table-column>
-              <el-table-column
-                prop="firstAuthorName"
-                label="第一作者"
-              ></el-table-column>
-              <el-table-column
-                prop="communicationAuthorName"
-                label="通讯作者"
-              ></el-table-column>
-              <el-table-column
-                prop="paperPublicationTime"
-                label="发表时间"
-              ></el-table-column>
-              <el-table-column
-                prop="journalName"
-                label="期刊名称"
-              ></el-table-column>
-              <el-table-column
-                prop="journalCategory"
-                label="期刊类别"
-              ></el-table-column>
-              <el-table-column
-                prop="journalLevel"
-                label="期刊分区"
-              ></el-table-column>
-              <el-table-column
-                prop="impactFactors"
-                label="影响因子"
-              ></el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <!-- 科研项目（近五年） -->
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">科研项目（近五年）</span>
-            </div>
-            <el-row>
-              <el-col :span="4"
-                ><el-button class="addButton" type="primary"
-                  >添加科研项目</el-button
-                ></el-col
-              >
-            </el-row>
-            <el-table :data="researchProjects" border style="width: 100%">
-              <el-table-column type="index" width="40"></el-table-column>
-              <el-table-column
-                prop="projectName"
-                label="项目名称"
-              ></el-table-column>
-              <el-table-column
-                prop="projectNumber"
-                label="项目编号"
-              ></el-table-column>
-              <el-table-column
-                prop="approvalNumber"
-                label="批准号"
-              ></el-table-column>
-              <el-table-column
-                prop="projectChargeName"
-                label="负责人姓名"
-              ></el-table-column>
-              <el-table-column
-                prop="projectStartTime"
-                label="开始日期"
-              ></el-table-column>
-              <el-table-column
-                prop="projectEndTime"
-                label="结束日期"
-              ></el-table-column>
-              <el-table-column
-                prop="projectSourceUnit"
-                label="项目来源单位"
-                width="120px"
-              ></el-table-column>
-              <el-table-column
-                prop="projectTotalPrice"
-                label="总经费（万元）"
-                width="120px"
-              ></el-table-column>
-              <el-table-column
-                prop="projectLevel"
-                label="项目级别"
-              ></el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <!-- 教材或学术著作（近五年） -->
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">教材或学术著作（近五年）</span>
-            </div>
-            <el-row>
-              <el-col :span="4"
-                ><el-button class="addButton" type="primary"
-                  >添加教材或学术著作</el-button
-                ></el-col
-              >
-            </el-row>
-            <el-table :data="academicWorks" border style="width: 100%">
-              <el-table-column type="index" width="40px"></el-table-column>
-              <el-table-column
-                prop="worksName"
-                label="著作名称"
-              ></el-table-column>
-              <el-table-column
-                prop="worksNumber"
-                label="标准书号"
-              ></el-table-column>
-              <el-table-column
-                prop="worksPublicationTime"
-                label="出版日期"
-              ></el-table-column>
-              <el-table-column
-                prop="worksPublicationUnit"
-                label="出版单位"
-              ></el-table-column>
-              <el-table-column
-                prop="totalWords"
-                label="完成字数（万字）"
-              ></el-table-column>
-              <el-table-column
-                prop="authorName"
-                label="作者姓名"
-              ></el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <!-- 科研教学奖励（近五年） -->
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">科研教学奖励（近五年）</span>
-            </div>
-            <el-row>
-              <el-col :span="4"
-                ><el-button class="addButton" type="primary"
-                  >添加科研教学奖励</el-button
-                ></el-col
-              >
-            </el-row>
-            <el-table :data="teachingAwards" border style="width: 100%">
-              <el-table-column type="index" width="40px"></el-table-column>
-              <el-table-column prop="awardsName" label="奖励名称">
-              </el-table-column>
-              <el-table-column prop="awardsUnit" label="颁奖单位">
-              </el-table-column>
-              <el-table-column prop="awardsLevel" label="获奖级别">
-              </el-table-column>
-              <el-table-column prop="awardsTime" label="获奖日期">
-              </el-table-column>
-              <el-table-column prop="awardsAuthorName" label="获奖人姓名">
-              </el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <!-- 发明专利（近五年） -->
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">发明专利（近五年）</span>
-            </div>
-            <el-row>
-              <el-col :span="4"
-                ><el-button class="addButton" type="primary"
-                  >添加发明专利</el-button
-                ></el-col
-              >
-            </el-row>
-            <el-table :data="inventionPatents" border style="width: 100%">
-              <el-table-column type="index" width="40px"></el-table-column>
-              <el-table-column prop="patentName" label="专利名称">
-              </el-table-column>
-              <el-table-column prop="patentNumber" label="专利编号">
-              </el-table-column>
-              <el-table-column prop="patentGrantTime" label="专利授权日期">
-              </el-table-column>
-              <el-table-column prop="patentGrantNumber" label="专利授权号">
-              </el-table-column>
-              <el-table-column prop="patentType" label="专利类型">
-              </el-table-column>
-              <el-table-column prop="patentAuthorName" label="作者姓名">
-              </el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <el-form-item style="margin-top: 20px">
-            <el-button @click="backToSecondPage">返回上一页</el-button>
-            <el-button type="primary" @click="onSubmitThirdPage"
-              >保存此部分，填写下一项</el-button
+            <el-form
+              ref="formThird"
+              :model="formThird"
+              label-width="150px"
+              label-position="top"
+              v-if="formVisible.third"
             >
-          </el-form-item>
-        </el-form>
-      </el-card>
-    </transition>
+              <!-- 学术论文(近五年) -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研项目（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4">
+                    <el-button
+                      class="addButton"
+                      type="primary"
+                      @click="dialogAcademicPaper = true"
+                      >添加学术论文</el-button
+                    >
+                  </el-col>
+                </el-row>
+                <el-table :data="academicPapers" border style="width: 100%">
+                  <el-table-column type="index" width="40"></el-table-column>
+                  <el-table-column
+                    prop="paperName"
+                    label="论文名称"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="paperNumber"
+                    label="论文编号"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="authorName"
+                    label="作者姓名"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="firstAuthorName"
+                    label="第一作者"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="communicationAuthorName"
+                    label="通讯作者"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="paperPublicationTime"
+                    label="发表时间"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="journalName"
+                    label="期刊名称"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="journalCategory"
+                    label="期刊类别"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="journalLevel"
+                    label="期刊分区"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="impactFactors"
+                    label="影响因子"
+                  ></el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 科研项目（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研项目（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button class="addButton" type="primary"
+                      >添加科研项目</el-button
+                    ></el-col
+                  >
+                </el-row>
+                <el-table :data="researchProjects" border style="width: 100%">
+                  <el-table-column type="index" width="40"></el-table-column>
+                  <el-table-column
+                    prop="projectName"
+                    label="项目名称"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectNumber"
+                    label="项目编号"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="approvalNumber"
+                    label="批准号"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectChargeName"
+                    label="负责人姓名"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectStartTime"
+                    label="开始日期"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectEndTime"
+                    label="结束日期"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectSourceUnit"
+                    label="项目来源单位"
+                    width="120px"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectTotalPrice"
+                    label="总经费（万元）"
+                    width="120px"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="projectLevel"
+                    label="项目级别"
+                  ></el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 教材或学术著作（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">教材或学术著作（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button class="addButton" type="primary"
+                      >添加教材或学术著作</el-button
+                    ></el-col
+                  >
+                </el-row>
+                <el-table :data="academicWorks" border style="width: 100%">
+                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column
+                    prop="worksName"
+                    label="著作名称"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="worksNumber"
+                    label="标准书号"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="worksPublicationTime"
+                    label="出版日期"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="worksPublicationUnit"
+                    label="出版单位"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="totalWords"
+                    label="完成字数（万字）"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="authorName"
+                    label="作者姓名"
+                  ></el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 科研教学奖励（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研教学奖励（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button class="addButton" type="primary"
+                      >添加科研教学奖励</el-button
+                    ></el-col
+                  >
+                </el-row>
+                <el-table :data="teachingAwards" border style="width: 100%">
+                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column prop="awardsName" label="奖励名称">
+                  </el-table-column>
+                  <el-table-column prop="awardsUnit" label="颁奖单位">
+                  </el-table-column>
+                  <el-table-column prop="awardsLevel" label="获奖级别">
+                  </el-table-column>
+                  <el-table-column prop="awardsTime" label="获奖日期">
+                  </el-table-column>
+                  <el-table-column prop="awardsAuthorName" label="获奖人姓名">
+                  </el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 发明专利（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">发明专利（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button class="addButton" type="primary"
+                      >添加发明专利</el-button
+                    ></el-col
+                  >
+                </el-row>
+                <el-table :data="inventionPatents" border style="width: 100%">
+                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column prop="patentName" label="专利名称">
+                  </el-table-column>
+                  <el-table-column prop="patentNumber" label="专利编号">
+                  </el-table-column>
+                  <el-table-column prop="patentGrantTime" label="专利授权日期">
+                  </el-table-column>
+                  <el-table-column prop="patentGrantNumber" label="专利授权号">
+                  </el-table-column>
+                  <el-table-column prop="patentType" label="专利类型">
+                  </el-table-column>
+                  <el-table-column prop="patentAuthorName" label="作者姓名">
+                  </el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              
+              <el-row>
+                <el-col :offset="8"><el-form-item style="margin-top: 20px">
+                <el-button @click="backToSecondPage">返回上一页</el-button>
+                <el-button type="primary" @click="onSubmitThirdPage"
+                  >保存此部分，填写下一项</el-button
+                >
+              </el-form-item></el-col>
+              </el-row>
+              
+            </el-form>
+          </el-card>
+        </transition>
+      </el-col>
+    </el-row>
 
     <!-- 第 4 页教学信息 -->
-    <transition name="el-fade-in-linear">
-      <el-card class="box-card" v-if="formVisible.fourth">
-        <div slot="header" class="clearfix">
-          <h2>教学信息</h2>
-        </div>
-        <el-form
-          ref="formFourth"
-          :model="formFourth"
-          label-width="150px"
-          label-position="top"
-          v-if="formVisible.fourth"
-        >
-          <!-- 协助指导硕士生情况 -->
-          <el-card class="box-card" shadow="always">
+    <el-row>
+      <el-col :span="18" :offset="4">
+        <transition name="el-fade-in-linear">
+          <el-card class="box-card" v-if="formVisible.fourth">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">协助指导硕士生情况</span>
+              <h2>教学信息</h2>
             </div>
-            <el-row>
-              <el-col :span="4">
-                <el-button
-                  class="addButton"
-                  type="primary"
-                  @click="dialogAddStudent = true"
-                  >添加学生</el-button
-                >
-              </el-col>
-            </el-row>
-            <el-table :data="guidingStudents" border style="width: 100%">
-              <el-table-column type="index" width="40px"></el-table-column>
-              <el-table-column
-                prop="studentName"
-                label="学生姓名"
-                width="100"
-              ></el-table-column>
-              <el-table-column
-                prop="studentType"
-                label="学生类型"
-                width="100"
-              ></el-table-column>
-              <el-table-column
-                prop="studentEntryTime"
-                label="学生入学时间"
-                width="180"
-              ></el-table-column>
-              <el-table-column
-                prop="degreePaperTitle"
-                label="学位论文题目"
-              ></el-table-column>
-              <el-table-column
-                prop="isGainDegree"
-                label="是否获得学位"
-              ></el-table-column>
-              <el-table-column
-                prop="graduateTime"
-                label="毕业时间"
-                width="180"
-              ></el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <!-- 指导本科生毕业情况 -->
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">指导本科生毕业情况</span>
-            </div>
-            <el-row>
-              <el-col :span="4">
-                <el-button
-                  type="primary"
-                  class="addButton"
-                  @click="dialogAddStudent = true"
-                  >添加学生</el-button
-                >
-              </el-col>
-            </el-row>
-            <el-table :data="guidingStudents" border style="width: 100%">
-              <el-table-column type="index" width="40px"></el-table-column>
-              <el-table-column
-                prop="studentName"
-                label="学生姓名"
-                width="100"
-              ></el-table-column>
-              <el-table-column
-                prop="studentType"
-                label="学生类型"
-                width="100"
-              ></el-table-column>
-              <el-table-column
-                prop="studentEntryTime"
-                label="学生入学时间"
-                width="180"
-              ></el-table-column>
-              <el-table-column
-                prop="degreePaperTitle"
-                label="学位论文题目"
-              ></el-table-column>
-              <el-table-column
-                prop="isGainDegree"
-                label="是否获得学位"
-              ></el-table-column>
-              <el-table-column
-                prop="graduateTime"
-                label="毕业时间"
-                width="180"
-              ></el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <!-- 研究生课程教学情况 -->
-          <el-card class="box-card" shadow="always">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">研究生课程教学情况</span>
-            </div>
-            <el-row>
-              <el-col :span="4"
-                ><el-button class="addButton" type="primary"
-                  >添加研究生课程教学信息</el-button
-                ></el-col
-              >
-            </el-row>
-            <el-table :data="courseTeachings" border style="width: 100%">
-              <el-table-column type="index" width="40px"></el-table-column>
-              <el-table-column
-                prop="courseName"
-                label="课程名称"
-              ></el-table-column>
-              <el-table-column
-                prop="courseTime"
-                label="课程时间"
-              ></el-table-column>
-              <el-table-column
-                prop="courseDuration"
-                label="授课总课时"
-              ></el-table-column>
-              <el-table-column
-                prop="courseObject"
-                label="授课对象"
-              ></el-table-column>
-            </el-table>
-          </el-card>
-          <br />
-          <el-form-item style="margin-top: 20px">
-            <el-button @click="backToThirdPage">返回上一页</el-button>
-            <el-button type="primary" @click="onSubmitFourthPage"
-              >提交本次申请</el-button
+            <el-form
+              ref="formFourth"
+              :model="formFourth"
+              label-width="150px"
+              label-position="top"
+              v-if="formVisible.fourth"
             >
-          </el-form-item>
-        </el-form>
-      </el-card>
-    </transition>
+              <!-- 协助指导硕士生情况 -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">协助指导硕士生情况</span>
+                </div>
+                <el-row>
+                  <el-col :span="4">
+                    <el-button
+                      class="addButton"
+                      type="primary"
+                      @click="dialogAddStudent = true"
+                      >添加学生</el-button
+                    >
+                  </el-col>
+                </el-row>
+                <el-table :data="guidingStudents" border style="width: 100%">
+                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column
+                    prop="studentName"
+                    label="学生姓名"
+                    width="100"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="studentType"
+                    label="学生类型"
+                    width="100"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="studentEntryTime"
+                    label="学生入学时间"
+                    width="180"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="degreePaperTitle"
+                    label="学位论文题目"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="isGainDegree"
+                    label="是否获得学位"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="graduateTime"
+                    label="毕业时间"
+                    width="180"
+                  ></el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 指导本科生毕业情况 -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">指导本科生毕业情况</span>
+                </div>
+                <el-row>
+                  <el-col :span="4">
+                    <el-button
+                      type="primary"
+                      class="addButton"
+                      @click="dialogAddStudent = true"
+                      >添加学生</el-button
+                    >
+                  </el-col>
+                </el-row>
+                <el-table :data="guidingStudents" border style="width: 100%">
+                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column
+                    prop="studentName"
+                    label="学生姓名"
+                    width="100"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="studentType"
+                    label="学生类型"
+                    width="100"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="studentEntryTime"
+                    label="学生入学时间"
+                    width="180"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="degreePaperTitle"
+                    label="学位论文题目"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="isGainDegree"
+                    label="是否获得学位"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="graduateTime"
+                    label="毕业时间"
+                    width="180"
+                  ></el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 研究生课程教学情况 -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">研究生课程教学情况</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button class="addButton" type="primary"
+                      >添加研究生课程教学信息</el-button
+                    ></el-col
+                  >
+                </el-row>
+                <el-table :data="courseTeachings" border style="width: 100%">
+                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column
+                    prop="courseName"
+                    label="课程名称"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="courseTime"
+                    label="课程时间"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="courseDuration"
+                    label="授课总课时"
+                  ></el-table-column>
+                  <el-table-column
+                    prop="courseObject"
+                    label="授课对象"
+                  ></el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <el-row>
+                <el-col :offset="8">
+              <el-form-item style="margin-top: 20px">
+                <el-button @click="backToThirdPage">返回上一页</el-button>
+                <el-button type="primary" @click="onSubmitFourthPage"
+                  >提交本次申请</el-button
+                >
+              </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </el-card>
+        </transition>
+      </el-col>
+    </el-row>
 
     <!-- 第一页 弹框部分 -->
     <!-- 第二页 弹框部分 -->

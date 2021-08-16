@@ -34,13 +34,13 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="性别">
-                      <el-radio v-model="formFirst.sex" label="男">男</el-radio>
-                      <el-radio v-model="formFirst.sex" label="女">女</el-radio>
+                      <el-radio v-model="formFirst.gender" label="男">男</el-radio>
+                      <el-radio v-model="formFirst.gender" label="女">女</el-radio>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="所在单位">
-                      <el-input v-model="formFirst.department"></el-input>
+                      <el-input v-model="formFirst.organizationId"></el-input>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -56,7 +56,7 @@
                   </Col>
                   <Col :span="24">
                     <el-form-item label="证件号码">
-                      <el-input v-model="formFirst.idNumber"></el-input>
+                      <el-input v-model="formFirst.identity"></el-input>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -110,7 +110,7 @@
               <Col :span="8">
                 <el-form-item label="最后学位">
                   <el-select
-                    v-model="formFirst.lastDegree"
+                    v-model="formFirst.finalDegree"
                     style="width: 100%"
                     placeholder="请选择"
                   >
@@ -122,13 +122,13 @@
               </Col>
               <Col :span="8">
                 <el-form-item label="授予单位">
-                  <el-input v-model="formFirst.awardDepartment"></el-input>
+                  <el-input v-model="this.awardDepartment"></el-input>
                 </el-form-item>
               </Col>
               <Col :span="8">
                 <el-form-item label="授予时间">
                   <el-date-picker
-                    v-model="formFirst.awardTime"
+                    v-model="this.awardTime"
                     type="month"
                     style="width: 100%"
                     placeholder="选择日期"
@@ -322,24 +322,18 @@
               <el-row>
                 <el-col :span="4"
                   ><el-button
-                    type="success"
+                    type="primary"
                     @click="SocialSciencesPaperAdd = true"
                     >社科成果增加</el-button
                   ></el-col
                 >
                 <el-col :span="4"
                   ><el-button
-                    type="success"
+                    type="primary"
                     @click="ScienceEngineeringPaperAdd = true"
                     >理工成果增加</el-button
                   ></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+                >               
               </el-row>
               <br />
               <el-table
@@ -423,17 +417,12 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">社科成果增加</el-button></el-col
+                  ><el-button type="primary">社科成果增加</el-button></el-col
                 >
                 <el-col :span="4"
-                  ><el-button type="success">理工成果增加</el-button></el-col
+                  ><el-button type="primary">理工成果增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+               
               </el-row>
               <br />
               <el-table
@@ -508,17 +497,12 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">社科成果增加</el-button></el-col
+                  ><el-button type="primary">社科成果增加</el-button></el-col
                 >
                 <el-col :span="4"
-                  ><el-button type="success">理工成果增加</el-button></el-col
+                  ><el-button type="primary">理工成果增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+               
               </el-row>
               <br />
               <el-table
@@ -574,17 +558,12 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">社科成果增加</el-button></el-col
+                  ><el-button type="primary">社科成果增加</el-button></el-col
                 >
                 <el-col :span="4"
-                  ><el-button type="success">理工成果增加</el-button></el-col
+                  ><el-button type="primary">理工成果增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+                
               </el-row>
               <br />
               <el-table
@@ -613,17 +592,12 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">社科成果增加</el-button></el-col
+                  ><el-button type="primary">社科成果增加</el-button></el-col
                 >
                 <el-col :span="4"
-                  ><el-button type="success">理工成果增加</el-button></el-col
+                  ><el-button type="primary">理工成果增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+               
               </el-row>
               <br />
               <el-table
@@ -708,14 +682,9 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">增加</el-button></el-col
+                  ><el-button type="primary">增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+               
               </el-row>
               <br />
               <el-table
@@ -746,14 +715,9 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">增加</el-button></el-col
+                  ><el-button type="primary">增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+                
               </el-row>
               <br />
               <el-table
@@ -778,14 +742,9 @@
               </div>
               <el-row>
                 <el-col :span="4"
-                  ><el-button type="success">增加</el-button></el-col
+                  ><el-button type="primary">增加</el-button></el-col
                 >
-                <el-col :span="4"
-                  ><el-button type="success">编辑</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="success">删除</el-button></el-col
-                >
+                
               </el-row>
               <br />
               <el-table
@@ -943,20 +902,22 @@ export default {
       },
       /**第一页 */
       // 第 1 页表单
+      awardDepartment: "", // 授予单位
+      awardTime: "", // 授予时间
       formFirst: {
         name: "", // 姓名
-        sex: "", // 性别
-        department: "", // 所在单位
+        gender: "", // 性别
+        organizationId: "", // 所在单位
         birthday: "", // 出生年月
-        idNumber: "", // 证件号码
+        identity: "", // 证件号码
         phone: "", // 联系电话
         email: "", // 电子邮箱
         title: "", // 职称
-        titleAwardTime: "", // 评定时间
-        lastDegree: "", // 最后学位
-        awardDepartment: "", // 授予单位
-        awardTime: "", // 授予时间
+        evaluateTime: "", // 评定时间
+        finalDegree: "", // 最后学位
+        awardingUnitTime: "", //授予单位及时间       
       },
+      
       // 第 2 页表单
       formSecond: {
         major: "", // 主要研究方向的内容及其意义
@@ -990,14 +951,7 @@ export default {
       url: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
       // 第二页
       tableData: [
-        {
-          date: "2016-05-03",
-          name: "1",
-        },
-        {
-          date: "2016-05-03",
-          name: "1",
-        },
+        
       ],
       //第二页操作内容
       //学术论文 社科成果增加
@@ -1019,12 +973,15 @@ export default {
   },
   methods: {
     /* 第一页 */
-
-    // 完成第一页基本信息的填写
+    
+    //提交第一页表单 完成第一页基本信息的填写
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
         .then(() => {
+          //提交到后台
+
+
           this.formVisible.first = false; // 关闭第一项
           this.formVisible.second = true; // 打开第二项
           this.active = 1;
