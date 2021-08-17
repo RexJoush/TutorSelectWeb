@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 15:23:58
+ * @LastEditTime: 2021-08-17 20:01:55
 -->
 <template>
   <div class="main">
@@ -174,7 +174,7 @@
             >
               <Row>
                 <Col :span="24">
-                  <Row :gutter="10">
+                  <Row>
                     <Col :span="8">
                       <el-form-item label="申请学科">
                         <el-select
@@ -202,28 +202,17 @@
                     <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
                         <el-select
-                          v-model="formSecond.doctoralMasterSubjectCode"
+                          v-model="currentDepartment"
                           placeholder="请选择"
+                          @change="setChildNode"
                         >
                           <el-option
-                            v-for="item in masterPrimaryDiscipline"
-                            :key="item.code"
-                            :label="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
-                            :value="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
+                            v-for="item in academicMasterPrimaryDiscipline"
+                            :key="item.department"
+                            :label="item.department"
+                            :value="item"
+                            style="color: #606266; font-weight: normal"
                           >
-                            <span style="float: left">{{ item.code }}</span>
-                            <span
-                              style="
-                                float: right;
-                                color: #8492a6;
-                                font-size: 13px;
-                              "
-                              >{{ item.degreeAuthorizationPoint }}</span
-                            >
                           </el-option>
                         </el-select>
                       </el-form-item>
@@ -231,28 +220,15 @@
                     <Col :span="8">
                       <el-form-item label="一级学科代码及名称">
                         <el-select
-                          v-model="formSecond.doctoralMasterSubjectCode"
+                          v-model="formSecond.doctoralMasterSubjectCodeName"
                           placeholder="请选择"
                         >
                           <el-option
-                            v-for="item in masterPrimaryDiscipline"
+                            v-for="item in childNodes"
                             :key="item.code"
-                            :label="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
-                            :value="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
+                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
                           >
-                            <span style="float: left">{{ item.code }}</span>
-                            <span
-                              style="
-                                float: right;
-                                color: #8492a6;
-                                font-size: 13px;
-                              "
-                              >{{ item.degreeAuthorizationPoint }}</span
-                            >
                           </el-option>
                         </el-select>
                       </el-form-item>
@@ -874,21 +850,19 @@
 </template>
 
 <script>
-import { masterPrimaryDiscipline, doctorPrimaryDiscipline } from "@/utils/data";
+import { academicMasterPrimaryDiscipline } from "@/utils/data";
 export default {
   data() {
     return {
       // 硕士学科代码
-      masterPrimaryDiscipline: masterPrimaryDiscipline,
-      // 博士学科代码
-      doctorPrimaryDiscipline: doctorPrimaryDiscipline,
+      academicMasterPrimaryDiscipline: academicMasterPrimaryDiscipline,
 
       // 步骤条
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: true,
-        second: false,
+        first: false,
+        second: true,
         third: false,
         fourth: false,
       },
@@ -909,11 +883,12 @@ export default {
       },
 
       // 第 2 页表单
+      childNodes: [], // 院系的子专业信息
+      currentDepartment: "", // 院系信息
       formSecond: {
         applySubject: "", // 申请学科
         doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
-        doctoralMasterSubjectCode: "", // 一级学科代码
-        doctoralMasterSubjectName: "", // 一级学科名称
+        doctoralMasterSubjectCodeName: "", // 一级学科代码 + " " + 名称
         major: "", // 主要研究方向的内容及其意义
         groupsOrPartTimeJob: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         groupsOrPartTimeJob: {
@@ -1056,6 +1031,17 @@ export default {
         .catch(() => {
           console.log("cancel");
         });
+    },
+    // 设置选择院系的子专业
+    setChildNode: function (value) {
+      // 将子列表的选择置空
+      this.formSecond.doctoralMasterSubjectCodeName = "";
+      // 将当前选择加入 form 提交中
+      this.formSecond.doctoralMasterApplicationSubjectUnit = value.department;
+      // 修改当前页面的显示院系
+      this.currentDepartment = value.department;
+      // 设置子项目为当前院系的专业
+      this.childNodes = value.professional;
     },
     // 返回第 1 页
     backToFirstPage: function () {
