@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 20:01:55
+ * @LastEditTime: 2021-08-17 20:03:25
 -->
 <template>
   <div class="main">
@@ -861,8 +861,8 @@ export default {
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: false,
-        second: true,
+        first: true,
+        second: false,
         third: false,
         fourth: false,
       },
