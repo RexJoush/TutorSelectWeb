@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 11:45:32
+ * @LastEditTime: 2021-08-17 15:23:58
 -->
 <template>
   <div class="main">
@@ -174,7 +174,7 @@
             >
               <Row>
                 <Col :span="24">
-                  <Row>
+                  <Row :gutter="10">
                     <Col :span="8">
                       <el-form-item label="申请学科">
                         <el-select
@@ -196,6 +196,35 @@
                             lable="交叉学科"
                             value="交叉学科"
                           ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
+                      <el-form-item label="申请学科负责单位：">
+                        <el-select
+                          v-model="formSecond.doctoralMasterSubjectCode"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in masterPrimaryDiscipline"
+                            :key="item.code"
+                            :label="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
+                            :value="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
+                          >
+                            <span style="float: left">{{ item.code }}</span>
+                            <span
+                              style="
+                                float: right;
+                                color: #8492a6;
+                                font-size: 13px;
+                              "
+                              >{{ item.degreeAuthorizationPoint }}</span
+                            >
+                          </el-option>
                         </el-select>
                       </el-form-item>
                     </Col>
@@ -226,15 +255,6 @@
                             >
                           </el-option>
                         </el-select>
-                      </el-form-item>
-                    </Col>
-                    <Col :span="8">
-                      <el-form-item label="申请学科负责单位：">
-                        <el-input
-                          v-model="
-                            formSecond.doctoralMasterApplicationSubjectUnit
-                          "
-                        ></el-input>
                       </el-form-item>
                     </Col>
                     <!-- <Col :span="6" :offset="1">
