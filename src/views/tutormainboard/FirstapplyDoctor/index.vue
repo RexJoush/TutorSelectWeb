@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <el-row>
       <el-col :span="8" :offset="8">
         <el-steps :active="active" finish-status="success">
@@ -887,6 +887,8 @@
 
 <script>
 import index from "@/components/Breadcrumb/index.vue";
+import {masterPrimaryDiscipline, doctorPrimaryDiscipline} from "@/utils/data";
+
 export default {
   components: { index },
   data() {

@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-16 20:54:02
+ * @LastEditTime: 2021-08-17 11:45:32
 -->
 <template>
   <div class="main">
@@ -19,7 +19,7 @@
     <br />
     <!-- 第 1 页基本信息 -->
     <el-row>
-      <el-col :span="18" :offset="4">
+      <el-col :span="18" :offset="3">
         <el-card class="box-card" v-if="formVisible.first">
           <div slot="header" class="clearfix">
             <h2>基本信息</h2>
@@ -144,13 +144,13 @@
               </Col>
             </Row>
             <Row>
-                <Col :offset="8">
-            <el-form-item style="margin-top: 20px">
-              <el-button type="primary" @click="onSubmitFirstPage"
-                >保存此部分，填写下一项</el-button
-              >
-            </el-form-item>
-            </Col>
+              <Col :offset="8">
+                <el-form-item style="margin-top: 20px">
+                  <el-button type="primary" @click="onSubmitFirstPage"
+                    >保存此部分，填写下一项</el-button
+                  >
+                </el-form-item>
+              </Col>
             </Row>
           </el-form>
         </el-card>
@@ -159,7 +159,7 @@
 
     <!-- 第 2 页研究信息 -->
     <el-row>
-      <el-col :span="18" :offset="4">
+      <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
           <el-card class="box-card" v-if="formVisible.second">
             <div slot="header" class="clearfix">
@@ -175,21 +175,85 @@
               <Row>
                 <Col :span="24">
                   <Row>
-                    <Col :span="6">
+                    <Col :span="8">
+                      <el-form-item label="申请学科">
+                        <el-select
+                          v-model="formFirst.applySubject"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            key="文史"
+                            lable="文史"
+                            value="文史"
+                          ></el-option>
+                          <el-option
+                            key="理工"
+                            lable="理工"
+                            value="理工"
+                          ></el-option>
+                          <el-option
+                            key="交叉学科"
+                            lable="交叉学科"
+                            value="交叉学科"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
+                      <el-form-item label="一级学科代码及名称">
+                        <el-select
+                          v-model="formSecond.doctoralMasterSubjectCode"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in masterPrimaryDiscipline"
+                            :key="item.code"
+                            :label="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
+                            :value="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
+                          >
+                            <span style="float: left">{{ item.code }}</span>
+                            <span
+                              style="
+                                float: right;
+                                color: #8492a6;
+                                font-size: 13px;
+                              "
+                              >{{ item.degreeAuthorizationPoint }}</span
+                            >
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
-                        <el-input></el-input>
+                        <el-input
+                          v-model="
+                            formSecond.doctoralMasterApplicationSubjectUnit
+                          "
+                        ></el-input>
                       </el-form-item>
                     </Col>
-                    <Col :span="6" :offset="1">
-                      <el-form-item label="一级学科代码">
-                        <el-input></el-input>
-                      </el-form-item>
-                    </Col>
-                    <Col :span="6" :offset="1">
+                    <!-- <Col :span="6" :offset="1">
                       <el-form-item label="一级学科名称">
-                        <el-input></el-input>
+                        <el-select
+                          @change="doctoralMasterSubjectNameChange"
+                          v-model="formSecond.doctoralMasterSubjectName"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in masterPrimaryDiscipline"
+                            :key="item.code"
+                            :label="item.degreeAuthorizationPoint"
+                            :value="item.degreeAuthorizationPoint"
+                          >
+                          </el-option>
+                        </el-select>
                       </el-form-item>
-                    </Col>
+                    </Col> -->
                   </Row>
                 </Col>
                 <Col :span="24">
@@ -295,13 +359,13 @@
               </Row>
               <Row>
                 <Col :offset="8">
-              <el-form-item style="margin-top: 20px">
-                <el-button @click="backToFirstPage">返回上一页</el-button>
-                <el-button type="primary" @click="onSubmitSecondPage"
-                  >保存此部分，填写下一项</el-button
-                >
-              </el-form-item>
-              </Col>
+                  <el-form-item style="margin-top: 20px">
+                    <el-button @click="backToFirstPage">返回上一页</el-button>
+                    <el-button type="primary" @click="onSubmitSecondPage"
+                      >保存此部分，填写下一项</el-button
+                    >
+                  </el-form-item>
+                </Col>
               </Row>
             </el-form>
           </el-card>
@@ -311,7 +375,7 @@
 
     <!-- 第 3 页学术信息 -->
     <el-row>
-      <el-col :span="18" :offset="4">
+      <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
           <el-card class="box-card" v-if="formVisible.third">
             <div slot="header" class="clearfix">
@@ -329,13 +393,21 @@
                 <div slot="header" class="clearfix">
                   <span style="font-size: 18px">科研项目（近五年）</span>
                 </div>
-                <el-row>
+                <el-row :gutter="100">
                   <el-col :span="4">
                     <el-button
                       class="addButton"
                       type="primary"
                       @click="dialogAcademicPaper = true"
-                      >添加学术论文</el-button
+                      >添加社科类论文</el-button
+                    >
+                  </el-col>
+                  <el-col :span="4">
+                    <el-button
+                      class="addButton"
+                      type="primary"
+                      @click="dialogAcademicPaper = true"
+                      >添加理工类论文</el-button
                     >
                   </el-col>
                 </el-row>
@@ -536,16 +608,50 @@
                 </el-table>
               </el-card>
               <br />
-              
+              <!-- 科研汇总 -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研成果汇总</span>
+                  <el-button style="float: right" type="primary"
+                    >汇总生成</el-button
+                  >
+                </div>
+                <div>
+                  <h2>
+                    1.以第一作者或通讯作者在核心及以上期刊发表与本学科相关的学术论文共___
+                    篇，其中权威___篇，EI___篇，CSSCI___篇，SSCI___篇，核心共___篇。
+                  </h2>
+                  <br />
+                  <h2>
+                    2.主持在研科研项目共___项，其中国家级___项，省部级___
+                    项；在研项目中累计到款科研经费___万元，其中横向项目到款经费___万元。
+                  </h2>
+                  <br />
+                  <h2>
+                    3.出版本专业领域内研究生教材或学术著作（译著）___部，每部本人完成
+                    ___ 万字。
+                  </h2>
+                  <br />
+                  <h2>4.科研教学获奖共___项，其中国家级___项，省部级___项。</h2>
+                  <br />
+                  <h2>
+                    5.以第一发明人授权职务发明专利___项或实用新型专利___项。
+                  </h2>
+                  <br />
+                  <br />
+                </div>
+              </el-card>
+
               <el-row>
-                <el-col :offset="8"><el-form-item style="margin-top: 20px">
-                <el-button @click="backToSecondPage">返回上一页</el-button>
-                <el-button type="primary" @click="onSubmitThirdPage"
-                  >保存此部分，填写下一项</el-button
+                <el-col :offset="8"
+                  ><el-form-item style="margin-top: 20px">
+                    <el-button @click="backToSecondPage">返回上一页</el-button>
+                    <el-button type="primary" @click="onSubmitThirdPage"
+                      >保存此部分，填写下一项</el-button
+                    >
+                  </el-form-item></el-col
                 >
-              </el-form-item></el-col>
               </el-row>
-              
             </el-form>
           </el-card>
         </transition>
@@ -554,7 +660,7 @@
 
     <!-- 第 4 页教学信息 -->
     <el-row>
-      <el-col :span="18" :offset="4">
+      <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
           <el-card class="box-card" v-if="formVisible.fourth">
             <div slot="header" class="clearfix">
@@ -698,12 +804,12 @@
               <br />
               <el-row>
                 <el-col :offset="8">
-              <el-form-item style="margin-top: 20px">
-                <el-button @click="backToThirdPage">返回上一页</el-button>
-                <el-button type="primary" @click="onSubmitFourthPage"
-                  >提交本次申请</el-button
-                >
-              </el-form-item>
+                  <el-form-item style="margin-top: 20px">
+                    <el-button @click="backToThirdPage">返回上一页</el-button>
+                    <el-button type="primary" @click="onSubmitFourthPage"
+                      >提交本次申请</el-button
+                    >
+                  </el-form-item>
                 </el-col>
               </el-row>
             </el-form>
@@ -748,17 +854,23 @@
 </template>
 
 <script>
+import { masterPrimaryDiscipline, doctorPrimaryDiscipline } from "@/utils/data";
 export default {
   data() {
     return {
+      // 硕士学科代码
+      masterPrimaryDiscipline: masterPrimaryDiscipline,
+      // 博士学科代码
+      doctorPrimaryDiscipline: doctorPrimaryDiscipline,
+
       // 步骤条
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: false,
+        first: true,
         second: false,
         third: false,
-        fourth: true,
+        fourth: false,
       },
       // 第 1 页表单
       formFirst: {
@@ -778,6 +890,10 @@ export default {
 
       // 第 2 页表单
       formSecond: {
+        applySubject: "", // 申请学科
+        doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
+        doctoralMasterSubjectCode: "", // 一级学科代码
+        doctoralMasterSubjectName: "", // 一级学科名称
         major: "", // 主要研究方向的内容及其意义
         groupsOrPartTimeJob: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         groupsOrPartTimeJob: {
@@ -926,6 +1042,7 @@ export default {
       this.formVisible.first = true; // 打开第 1 页
       this.formVisible.second = false; // 关闭第 2 页
     },
+
     // 第 2 页添加学术团体项
     addGroupsOrPartTimeJob: function () {
       // let obj = {
