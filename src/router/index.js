@@ -173,8 +173,32 @@ export const constantRoutes = [
     ]
   },
 
-
-
+  {
+    path: '/sd',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'systemTime_department',
+        component: () => import('@/views/departmentSecretary/systemTime_department'),
+        name: 'systemTime_department',
+        meta: { title: '设置院系时间', icon: 'dashboard', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/departmentSecretary',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'systemFirst',
+        component: () => import('@/views/departmentSecretary/secretaryFirst'),
+        name: 'systemFirst',
+        meta: { title: '院系秘书初审', icon: 'dashboard', affix: true }
+      }
+    ]
+  }
 ]
 
 /**
