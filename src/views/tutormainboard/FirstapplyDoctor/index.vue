@@ -34,8 +34,12 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="性别">
-                      <el-radio v-model="formFirst.gender" label="男">男</el-radio>
-                      <el-radio v-model="formFirst.gender" label="女">女</el-radio>
+                      <el-radio v-model="formFirst.gender" label="男"
+                        >男</el-radio
+                      >
+                      <el-radio v-model="formFirst.gender" label="女"
+                        >女</el-radio
+                      >
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -77,7 +81,7 @@
                   <Col :span="12">
                     <el-form-item label="评定时间">
                       <el-date-picker
-                        v-model="formFirst.titleAwardTime"
+                        v-model="formFirst.evaluateTime"
                         type="month"
                         style="width: 100%"
                         placeholder="选择日期"
@@ -91,7 +95,7 @@
                 <el-form-item>
                   <el-image
                     style="width: 100px; height: 140px"
-                    src="https://www.rexjoush.com/img/1.jpg"
+                    :src="formFirst.image"
                     fit="fit"
                     ><div slot="placeholder" class="image-slot">
                       <i class="el-icon-picture-outline"></i></div
@@ -165,7 +169,7 @@
               label-position="top"
               v-if="formVisible.second"
             >
-            <Row>
+              <Row>
                 <Col :span="24">
                   <Row>
                     <Col :span="8">
@@ -219,13 +223,17 @@
                           <el-option
                             v-for="item in childNodes"
                             :key="item.code"
-                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
-                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :label="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
+                            :value="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
                           >
                           </el-option>
                         </el-select>
                       </el-form-item>
-                    </Col>                   
+                    </Col>
                   </Row>
                 </Col>
                 <Col :span="24">
@@ -331,15 +339,14 @@
               </Row>
               <Row>
                 <Col :offset="8">
-                <el-form-item style="margin-top: 20px">
-                <el-button @click="backFirstPage">返回上一页</el-button>
-                <el-button type="primary" @click="onSubmitSecondPage"
-                  >保存此部分，填写下一项</el-button
-                >
-              </el-form-item>
+                  <el-form-item style="margin-top: 20px">
+                    <el-button @click="backFirstPage">返回上一页</el-button>
+                    <el-button type="primary" @click="onSubmitSecondPage"
+                      >保存此部分，填写下一项</el-button
+                    >
+                  </el-form-item>
                 </Col>
               </Row>
-              
             </el-form>
           </el-card>
         </transition>
@@ -350,360 +357,435 @@
       <el-row>
         <el-col :span="18" :offset="3">
           <div>
-            <!-- 学术论文(近五年) -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">学术论文(近五年)</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button
-                    type="primary"
-                    @click="SocialSciencesPaperAdd = true"
-                    >社科成果增加</el-button
-                  ></el-col
+            <el-form
+              ref="formThird"
+              :model="formThird"
+              label-width="150px"
+              label-position="top"
+              v-if="formVisible.third"
+            >
+              <!-- 学术论文(近五年) -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">学术论文(近五年)</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button
+                      type="primary"
+                      @click="SocialSciencesPaperAdd = true"
+                      >社科成果增加</el-button
+                    ></el-col
+                  >
+                  <el-col :span="4"
+                    ><el-button
+                      type="primary"
+                      @click="ScienceEngineeringPaperAdd = true"
+                      >理工成果增加</el-button
+                    ></el-col
+                  >
+                </el-row>
+                <br />
+                <el-table
+                  :data="tableData"
+                  height="250"
+                  border
+                  style="width: 100%"
                 >
-                <el-col :span="4"
-                  ><el-button
-                    type="primary"
-                    @click="ScienceEngineeringPaperAdd = true"
-                    >理工成果增加</el-button
-                  ></el-col
-                >               
-              </el-row>
-              <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <!-- <el-table-column fixed type="selection" width="55">
+                  <!-- <el-table-column fixed type="selection" width="55">
                 </el-table-column> -->
-                <el-table-column
-                  prop="name"
-                  label="序号"
-                  width="50"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="名称"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="第一作者"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="通信作者"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="发表时间"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="期刊名称"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="期刊类别"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="期刊分区"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="影响因子"
-                  width="180"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <!-- 科研项目（近五年） -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">科研项目（近五年）</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">社科成果增加</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="primary">理工成果增加</el-button></el-col
-                >
-               
-              </el-row>
+                  <el-table-column
+                    prop="name"
+                    label="序号"
+                    width="50"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="名称"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="第一作者"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="通信作者"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="发表时间"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="期刊名称"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="期刊类别"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="期刊分区"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="影响因子"
+                    width="180"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                </el-table>
+              </el-card>
               <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column
-                  prop="name"
-                  label="序号"
-                  width="50"
-                  show-overflow-tooltip="true"
+              <!-- 科研项目（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研项目（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button type="primary">社科成果增加</el-button></el-col
+                  >
+                  <el-col :span="4"
+                    ><el-button type="primary">理工成果增加</el-button></el-col
+                  >
+                </el-row>
+                <br />
+                <el-table
+                  :data="tableData"
+                  height="250"
+                  border
+                  style="width: 100%"
                 >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="名称"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="批准号"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="负责人"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="开始时间"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="结束时间"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="项目级别"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="总经费（万元）"
-                  width="200"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <!-- 教材或学术著作（近五年） -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">教材或学术著作（近五年）</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">社科成果增加</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="primary">理工成果增加</el-button></el-col
-                >
-               
-              </el-row>
+                  <el-table-column
+                    prop="name"
+                    label="序号"
+                    width="50"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="名称"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="批准号"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="负责人"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="开始时间"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="结束时间"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="项目级别"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="总经费（万元）"
+                    width="200"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                </el-table>
+              </el-card>
               <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column
-                  prop="name"
-                  label="序号"
-                  width="50"
-                  show-overflow-tooltip="true"
+              <!-- 教材或学术著作（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">教材或学术著作（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button type="primary">社科成果增加</el-button></el-col
+                  >
+                  <el-col :span="4"
+                    ><el-button type="primary">理工成果增加</el-button></el-col
+                  >
+                </el-row>
+                <br />
+                <el-table
+                  :data="tableData"
+                  height="250"
+                  border
+                  style="width: 100%"
                 >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="名称"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="排名"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="出版时间"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="出版单位"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="完成字数（万字）"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <!-- 科研教学奖励（近五年） -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">科研教学奖励（近五年）</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">社科成果增加</el-button></el-col
-                >
-                <el-col :span="4"
-                  ><el-button type="primary">理工成果增加</el-button></el-col
-                >
-                
-              </el-row>
+                  <el-table-column
+                    prop="name"
+                    label="序号"
+                    width="50"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="名称"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="排名"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="出版时间"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="出版单位"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="完成字数（万字）"
+                    show-overflow-tooltip="true"
+                  >
+                  </el-table-column>
+                </el-table>
+              </el-card>
               <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column prop="name" label="序号" width="50">
-                </el-table-column>
-                <el-table-column prop="name" label="名称"> </el-table-column>
-                <el-table-column prop="name" label="排名"> </el-table-column>
-                <el-table-column prop="name" label="颁奖单位">
-                </el-table-column>
-                <el-table-column prop="name" label="级别"> </el-table-column>
-                <el-table-column prop="name" label="等级"> </el-table-column>
-                <el-table-column prop="name" label="获奖时间">
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <!-- 发明专利（近五年） -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">发明专利（近五年）</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">社科成果增加</el-button></el-col
+              <!-- 科研教学奖励（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研教学奖励（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button type="primary">社科成果增加</el-button></el-col
+                  >
+                  <el-col :span="4"
+                    ><el-button type="primary">理工成果增加</el-button></el-col
+                  >
+                </el-row>
+                <br />
+                <el-table
+                  :data="tableData"
+                  height="250"
+                  border
+                  style="width: 100%"
                 >
-                <el-col :span="4"
-                  ><el-button type="primary">理工成果增加</el-button></el-col
-                >
-               
-              </el-row>
+                  <el-table-column prop="name" label="序号" width="50">
+                  </el-table-column>
+                  <el-table-column prop="name" label="名称"> </el-table-column>
+                  <el-table-column prop="name" label="排名"> </el-table-column>
+                  <el-table-column prop="name" label="颁奖单位">
+                  </el-table-column>
+                  <el-table-column prop="name" label="级别"> </el-table-column>
+                  <el-table-column prop="name" label="等级"> </el-table-column>
+                  <el-table-column prop="name" label="获奖时间">
+                  </el-table-column>
+                </el-table>
+              </el-card>
               <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column prop="name" label="序号" width="50">
-                </el-table-column>
-                <el-table-column prop="name" label="名称"> </el-table-column>
-                <el-table-column prop="name" label="第一作者">
-                </el-table-column>
-                <el-table-column prop="name" label="授权（颁奖）时间">
-                </el-table-column>
-                <el-table-column prop="name" label="专利授权号">
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
+              <!-- 发明专利（近五年） -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">发明专利（近五年）</span>
+                </div>
+                <el-row>
+                  <el-col :span="4"
+                    ><el-button type="primary">社科成果增加</el-button></el-col
+                  >
+                  <el-col :span="4"
+                    ><el-button type="primary">理工成果增加</el-button></el-col
+                  >
+                </el-row>
+                <br />
+                <el-table
+                  :data="tableData"
+                  height="250"
+                  border
+                  style="width: 100%"
+                >
+                  <el-table-column prop="name" label="序号" width="50">
+                  </el-table-column>
+                  <el-table-column prop="name" label="名称"> </el-table-column>
+                  <el-table-column prop="name" label="第一作者">
+                  </el-table-column>
+                  <el-table-column prop="name" label="授权（颁奖）时间">
+                  </el-table-column>
+                  <el-table-column prop="name" label="专利授权号">
+                  </el-table-column>
+                </el-table>
+              </el-card>
+              <br />
+              <!-- 科研汇总 -->
+              <el-card class="box-card" shadow="always">
+                <div slot="header" class="clearfix">
+                  <span style="font-size: 18px">科研成果汇总</span>
+                  <el-button style="float: right" type="primary"
+                    >汇总生成</el-button
+                  >
+                </div>
+                <div>
+                  <p>
+                    1.以第一作者或通讯作者在核心及以上期刊发表与本学科相关的学术论文共
+                    <span class="summary">{{
+                      formThird.summary.firstAuthorPaper
+                    }}</span>
+                    篇，其中权威
+                    <span class="summary">{{
+                      formThird.summary.authorityAmount
+                    }}</span>
+                    篇，EI
+                    <span class="summary">{{
+                      formThird.summary.eiAmount
+                    }}</span>
+                    篇，CSSCI
+                    <span class="summary">{{
+                      formThird.summary.cssciAmount
+                    }}</span>
+                    篇，SSCI
+                    <span class="summary">{{
+                      formThird.summary.ssciAmount
+                    }}</span>
+                    篇
+                    <!--，核心共 <span class="summary">{{ formThird.summary.directProject }}</span> 篇。 -->
+                  </p>
+                  <br />
+                  <p>
+                    2.主持在研科研项目共
+                    <span class="summary">{{
+                      formThird.summary.directProject
+                    }}</span>
+                    项，其中国家级
+                    <span class="summary">{{
+                      formThird.summary.projectNationalLevel
+                    }}</span>
+                    项，省部级
+                    <span class="summary">{{
+                      formThird.summary.projectProvinceLevel
+                    }}</span>
+                    项；在研项目中累计到款科研经费
+                    <span class="summary">{{
+                      formThird.summary.accumulatedFunds
+                    }}</span>
+                    万元，其中横向项目到款经费
+                    <span class="summary">{{
+                      formThird.summary.horizontalProject
+                    }}</span>
+                    万元。
+                  </p>
+                  <br />
+                  <p>
+                    3.出版本专业领域内研究生教材或学术著作（译著）
+                    <span class="summary">{{
+                      formThird.summary.publishWorks
+                    }}</span>
+                    部，每部本人完成
+                    <span class="summary">{{
+                      formThird.summary.publishWorksWords
+                    }}</span>
+                    万字。
+                  </p>
+                  <br />
+                  <p>
+                    4.科研教学获奖共
+                    <span class="summary">{{
+                      formThird.summary.scientificAwards
+                    }}</span>
+                    项，其中国家级
+                    <span class="summary">{{
+                      formThird.summary.awardsNationalLevel
+                    }}</span>
+                    项，省部级
+                    <span class="summary">{{
+                      formThird.summary.awardsProvinceLevel
+                    }}</span>
+                    项。
+                  </p>
+                  <br />
+                  <p>
+                    5.以第一发明人授权职务发明专利
+                    <span class="summary">{{
+                      formThird.summary.inventionPatentAmount
+                    }}</span>
+                    项或实用新型专利
+                    <span class="summary">{{
+                      formThird.summary.newUtilityPatent
+                    }}</span>
+                    项。
+                  </p>
+                  <br />
+                  <br />
+                  <el-row>
+                    <el-col :offset="8"
+                      ><el-form-item style="margin-top: 20px">
+                        <el-button @click="backToSecondPage"
+                          >返回上一页</el-button
+                        >
+                        <el-button type="primary" @click="onSubmitThirdPage"
+                          >保存此部分，填写下一项</el-button
+                        >
+                      </el-form-item></el-col
+                    >
+                  </el-row>
+                </div>
+              </el-card>
+            </el-form>
           </div>
         </el-col>
       </el-row>
-      <el-row>
+      <!-- <el-row>
         <el-col :span="18" :offset="3">
-          <!-- 科研汇总 -->
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 18px">科研成果汇总</span>
-              <el-button style="float: right" type="primary"
-                >汇总生成</el-button
-              >
-            </div>
-            <div>
-              <h2>
-                1.以第一作者或通讯作者在核心及以上期刊发表与本学科相关的学术论文共___
-                篇，其中权威___篇，EI___篇，CSSCI___篇，SSCI___篇，核心共___篇。
-              </h2>
-              <br />
-              <h2>
-                2.主持在研科研项目共___项，其中国家级___项，省部级___
-                项；在研项目中累计到款科研经费___万元，其中横向项目到款经费___万元。
-              </h2>
-              <br />
-              <h2>
-                3.出版本专业领域内研究生教材或学术著作（译著）___部，每部本人完成
-                ___ 万字。
-              </h2>
-              <br />
-              <h2>4.科研教学获奖共___项，其中国家级___项，省部级___项。</h2>
-              <br />
-              <h2>5.以第一发明人授权职务发明专利___项或实用新型专利___项。</h2>
-              <br />
-              <br />
-            </div>
-            <el-row>
-              <el-col offset="8" :span="3"
-                ><el-button type="primary" @click="backSecondPage"
-                  >返回上一页</el-button
-                ></el-col
-              >
-              <el-col :span="3"
-                ><el-button type="primary" @click="onSubmitThirdPage"
-                  >保存并进入下一页</el-button
-                ></el-col
-              >
-            </el-row>
-          </el-card>
+         
         </el-col>
-      </el-row>
+      </el-row> -->
     </div>
     <!-- 第三页内容结束 -->
     <!-- 第四页内容 -->
@@ -720,7 +802,6 @@
                 <el-col :span="4"
                   ><el-button type="primary">增加</el-button></el-col
                 >
-               
               </el-row>
               <br />
               <el-table
@@ -753,7 +834,6 @@
                 <el-col :span="4"
                   ><el-button type="primary">增加</el-button></el-col
                 >
-                
               </el-row>
               <br />
               <el-table
@@ -780,7 +860,6 @@
                 <el-col :span="4"
                   ><el-button type="primary">增加</el-button></el-col
                 >
-                
               </el-row>
               <br />
               <el-table
@@ -923,13 +1002,14 @@
 
 <script>
 import index from "@/components/Breadcrumb/index.vue";
-import {doctorPrimaryDiscipline} from "@/utils/data";
+import { doctorPrimaryDiscipline } from "@/utils/data";
+import { saveFirstform } from "@/api/ApplyDoctor/FirstApplyDoctor";
 
 export default {
   components: { index },
   data() {
     return {
-       // 硕士学科代码
+      // 硕士学科代码
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       // 步骤条
       active: 0,
@@ -942,22 +1022,30 @@ export default {
       },
       /**第一页 */
       // 第 1 页表单
-      awardDepartment: "", // 授予单位
-      awardTime: "", // 授予时间
-      formFirst: {
-        name: "", // 姓名
-        gender: "", // 性别
-        organizationId: "", // 所在单位
-        birthday: "", // 出生年月
-        identity: "", // 证件号码
-        phone: "", // 联系电话
-        email: "", // 电子邮箱
-        title: "", // 职称
-        evaluateTime: "", // 评定时间
-        finalDegree: "", // 最后学位
-        awardingUnitTime: "", //授予单位及时间       
+      awardDepartment: "西北大学", // 授予单位
+      awardTime: "2016/8/9", // 授予时间
+      FirstAllformlist:[], //formFirst + apply表字段
+      //apply表提交的数据
+      applyForm:{
+          tutorId: "202032978", //导师工号
+          applyId: 1,           //申请的类别 首次博士
+          status: 0             //当前申请的状态 未提交
       },
-      
+      formFirst: {        
+        name: "李一航", // 姓名
+        gender: "男", // 性别
+        image : "https://www.rexjoush.com/img/1.jpg",
+        organizationId: "24", // 所在单位
+        birthday: "1997/10/1", // 出生年月
+        identity: "411422199712195117", // 证件号码
+        phone: "13598892696", // 联系电话
+        email: "7772854362@qq.com", // 电子邮箱
+        title: "教授", // 职称
+        evaluateTime: "2021-07", // 评定时间
+        finalDegree: "博士", // 最后学位
+        awardingUnitTime: "", //授予单位及时间
+      },
+
       // 第 2 页表单
       childNodes: [], // 院系的子专业信息
       currentDepartment: "", // 院系信息
@@ -978,7 +1066,35 @@ export default {
           title: "",
         },
       },
-
+      /**第三页表单 */
+      dialogAcademicPaper: false, // 学术论文添加按钮
+      formThird: {
+        academicPapers: [], // 学术论文列表
+        researchProjects: [], // 科研项目列表
+        academicWorks: [], // 教材或学术著作列表
+        teachingAwards: [], // 科研教学奖励列表
+        inventionPatents: [], // 发明专利列表
+        summary: {
+          // 科研汇总信息
+          firstAuthorPaper: 0, // 以第一作者或通讯在 核心及以上期刊发表与本学科发表的论文篇数
+          authorityAmount: 0, // 权威篇数
+          eiAmount: 0, // EI 篇数
+          cssciAmount: 0, // CSSCI 篇数
+          ssciAmount: 0, // SSCI 篇数
+          directProject: 0, // 主持科研项目
+          projectNationalLevel: 0, // 国家级项目
+          projectProvinceLevel: 0, // 省部级项目
+          accumulatedFunds: 0, // 累计科研经费，万元
+          horizontalProject: 0, // 横向项目到款经费，万元
+          publishWorks: 0, // 出版专业领域专著数
+          publishWorksWords: 0, // 本人完成字数
+          scientificAwards: 0, // 科研教学获奖项数
+          awardsNationalLevel: 0, // 国家级奖项
+          awardsProvinceLevel: 0, // 省部级奖项
+          inventionPatentAmount: 0, // 发明专利
+          newUtilityPatent: 0, // 新型实用专利
+        },
+      },
       form: {
         name: "",
         region: "",
@@ -990,11 +1106,8 @@ export default {
         desc: "",
       },
 
-      url: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
       // 第二页
-      tableData: [
-        
-      ],
+      tableData: [],
       //第二页操作内容
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
@@ -1014,19 +1127,35 @@ export default {
     };
   },
   methods: {
-    /* 第一页 */
-    
+    /*============================================= 第一页 =====================================*/
+
     //提交第一页表单 完成第一页基本信息的填写
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
         .then(() => {
+          //授予单位及时间
+          this.awardingUnitTime=this.awardDepartment+"-"+this.awardTime;
+          //apply表存入list 基本信息存入list
+          this.FirstAllformlist.push(this.applyForm);
+          this.FirstAllformlist.push(this.formFirst);          
           //提交到后台
-
-
-          this.formVisible.first = false; // 关闭第一项
-          this.formVisible.second = true; // 打开第二项
-          this.active = 1;
+         saveFirstform( this.FirstAllformlist).then((res)=>{
+            console.log(res)
+            if(res.code == 20000){ 
+              this.$message.success("保存成功！")
+              this.formVisible.first = false; // 关闭第一项
+              this.formVisible.second = true; // 打开第二项
+              this.active = 1;
+            }
+            else
+            {
+                 this.$message.error;("保存失败！")
+            }           
+            
+         })
+         .catch(() => {});
+         
         })
         .catch(() => {
           console.log("cancel");
@@ -1098,7 +1227,7 @@ export default {
         });
     },
     //返回第二页
-    backSecondPage: function () {
+    backToSecondPage: function () {
       this.formVisible.third = false;
       this.formVisible.second = true;
     },
@@ -1146,7 +1275,11 @@ export default {
 .my-applysubject {
   width: 230px;
 }
-h2 {
-  font-weight: 400;
+p {
+  font-size: 20px;
+}
+.summary {
+  font-weight: bold;
+  color: #f56c6c;
 }
 </style>

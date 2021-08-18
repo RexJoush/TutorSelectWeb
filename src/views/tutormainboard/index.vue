@@ -24,7 +24,7 @@
             <el-button
               class="grid-content"
               type="primary"
-              @click="firstApplyDoctor"
+              @click="firstApplyDoctor(1)"
               >首次申请博士导师岗位</el-button
             >
           </div></el-col
@@ -106,11 +106,33 @@
 </template>
 
 <script>
+import { IfApply } from '@/api/ApplyDoctor/FirstApplyDoctor'
 export default {
+  data(){
+    return{
+      tutorId:"202032969"
+    }
+  },
   methods: {
     //首次申请博士导师岗位
-    firstApplyDoctor() {
-      this.$router.push("firstApplyDoctor/1");
+    async firstApplyDoctor() {
+      //去数据库里判断是否有申请过的
+      IfApply(this.tutorId,1).then((res)=>{
+        console.log(res)
+         if (res.data =="101"){
+           //博士首次未申请
+            this.$router.push("firstApplyDoctor/1");
+         }
+         else 
+         {
+           //博士首次申请过
+            this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then((res) => {
+            this.$router.push("/"); // 去我的申请页面
+        }
+      );
+         }
+      })
+     
     },
 
     // 首次申请硕士导师岗位（学术硕士）
