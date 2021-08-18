@@ -2,44 +2,103 @@
  * @Author: Rex Joush
  * @Date: 2021-08-13 15:16:36
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 11:06:44
+ * @LastEditTime: 2021-08-17 21:56:31
 -->
 <template>
-  <div>    
+  <div>
     <el-row>
       <el-col :span="24">
-        <el-divider content-position="left"><span class="divider-title">申请类别选择</span></el-divider>
+        <el-divider content-position="left"
+          ><span class="divider-title">申请类别选择</span></el-divider
+        >
       </el-col>
     </el-row>
-  
+
     <el-card class="box-card" shadow="always">
       <div slot="header" class="clearfix">
-        <span style="font-size:18px">申请博士生导师</span>
+        <span style="font-size: 18px">申请博士生导师</span>
       </div>
-      <el-row :gutter="20" >
-        <el-col :span="7" :offset="3"><div><el-button class="grid-content" type="primary" @click="firstApplyDoctor">首次申请博士导师岗位</el-button></div></el-col>
-        <el-col :span="7"><div><el-button class="grid-content" type="primary">博士导师增列学科岗位</el-button></div></el-col>
-        <el-col :span="7"><div><el-button class="grid-content" type="primary">博士研究生导师免审上岗</el-button></div></el-col>
+      <el-row :gutter="20">
+        <el-col :span="7" :offset="3"
+          ><div>
+            <el-button
+              class="grid-content"
+              type="primary"
+              @click="firstApplyDoctor"
+              >首次申请博士导师岗位</el-button
+            >
+          </div></el-col
+        >
+        <el-col :span="7"
+          ><div>
+            <el-button class="grid-content" type="primary"
+              >博士导师增列学科岗位</el-button
+            >
+          </div></el-col
+        >
+        <el-col :span="7"
+          ><div>
+            <el-button class="grid-content" type="primary"
+              >博士研究生导师免审上岗</el-button
+            >
+          </div></el-col
+        >
       </el-row>
     </el-card>
 
     <el-card class="box-card" shadow="always">
       <div slot="header" class="clearfix">
-        <span style="font-size:18px">申请硕士生导师（学术学位）</span>
+        <span style="font-size: 18px">申请硕士生导师（学术学位）</span>
       </div>
-      <el-row :gutter="20" >
-        <el-col :span="7" :offset="3"><div><el-button class="grid-content" type="primary" @click="firstApplyMaster">首次申请学硕导师岗位</el-button></div></el-col>
-        <el-col :span="7"><div><el-button class="grid-content" type="primary">学硕导师增列学科岗位</el-button></div></el-col>
-        <el-col :span="7"><div><el-button class="grid-content" type="primary">硕士研究生导师免审上岗</el-button></div></el-col>
+      <el-row :gutter="20">
+        <el-col :span="7" :offset="3"
+          ><div>
+            <el-button
+              class="grid-content"
+              type="primary"
+              @click="firstApplyMaster"
+              >首次申请学硕导师岗位</el-button
+            >
+          </div></el-col
+        >
+        <el-col :span="7"
+          ><div>
+            <el-button class="grid-content" type="primary"
+              >学硕导师增列学科岗位</el-button
+            >
+          </div></el-col
+        >
+        <el-col :span="7"
+          ><div>
+            <el-button class="grid-content" type="primary"
+              >硕士研究生导师免审上岗</el-button
+            >
+          </div></el-col
+        >
       </el-row>
     </el-card>
     <el-card class="box-card" shadow="always">
       <div slot="header" class="clearfix">
-        <span style="font-size:18px">申请硕士生导师（专业学位）</span>
+        <span style="font-size: 18px">申请硕士生导师（专业学位）</span>
       </div>
-      <el-row :gutter="20" >
-        <el-col :span="7" :offset="3"><div><el-button class="grid-content" type="primary">首次申请专硕导师岗位</el-button></div></el-col>
-        <el-col :span="7"><div><el-button class="grid-content" type="primary">专硕导师增列学科岗位</el-button></div></el-col>
+      <el-row :gutter="20">
+        <el-col :span="7" :offset="3"
+          ><div>
+            <el-button
+              class="grid-content"
+              type="primary"
+              @click="firstApplyProfessionalMaster"
+              >首次申请专硕导师岗位</el-button
+            >
+          </div></el-col
+        >
+        <el-col :span="7"
+          ><div>
+            <el-button class="grid-content" type="primary"
+              >专硕导师增列学科岗位</el-button
+            >
+          </div></el-col
+        >
         <el-col :span="7"><div></div></el-col>
       </el-row>
     </el-card>
@@ -48,17 +107,26 @@
 
 <script>
 export default {
-    methods:{
-        //首次申请博士导师岗位
-        firstApplyDoctor(){
-          this.$router.push('firstApplyDoctor/1');
-        },
+  methods: {
+    //首次申请博士导师岗位
+    firstApplyDoctor() {
+      this.$router.push("firstApplyDoctor/1");
+    },
 
-        // 首次申请硕士导师岗位（学术硕士）
-        firstApplyMaster: function () {
-          this.$router.push('firstApplyMaster/1');
+    // 首次申请硕士导师岗位（学术硕士）
+    firstApplyMaster: function () {
+      this.$router.push("firstApplyMaster/1");
+    },
+
+    // 首次申请专硕导师岗位
+    firstApplyProfessionalMaster: function () {
+      this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then(
+        (res) => {
+          this.$router.push("/"); // 去我的申请页面
         }
-    }
+      );
+    },
+  },
 };
 </script>
 
@@ -93,7 +161,7 @@ export default {
   border-radius: 4px;
   min-height: 80px;
   height: 60px;
-//   background-color: #304156;
+  //   background-color: #304156;
 }
 /**
 el-card 卡片

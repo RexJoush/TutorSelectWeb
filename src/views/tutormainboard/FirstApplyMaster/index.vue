@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 20:03:25
+ * @LastEditTime: 2021-08-17 21:52:25
 -->
 <template>
   <div class="main">
@@ -178,7 +178,7 @@
                     <Col :span="8">
                       <el-form-item label="申请学科">
                         <el-select
-                          v-model="formFirst.applySubject"
+                          v-model="formSecond.applySubject"
                           placeholder="请选择"
                         >
                           <el-option
@@ -226,8 +226,12 @@
                           <el-option
                             v-for="item in childNodes"
                             :key="item.code"
-                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
-                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :label="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
+                            :value="
+                              item.code + ' ' + item.degreeAuthorizationPoint
+                            "
                           >
                           </el-option>
                         </el-select>
@@ -279,7 +283,8 @@
                     >
                       <el-table-column
                         type="index"
-                        width="40"
+                        width="50"
+                        label="序号"
                       ></el-table-column>
                       <el-table-column
                         prop="time"
@@ -317,7 +322,8 @@
                     >
                       <el-table-column
                         type="index"
-                        width="40"
+                        width="50"
+                        label="序号"
                       ></el-table-column>
                       <el-table-column label="获得时间" width="180">
                         <template slot-scope="scope">
@@ -407,8 +413,8 @@
                     >
                   </el-col>
                 </el-row>
-                <el-table :data="academicPapers" border style="width: 100%">
-                  <el-table-column type="index" width="40"></el-table-column>
+                <el-table :data="formThird.academicPapers" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50"></el-table-column>
                   <el-table-column
                     prop="paperName"
                     label="论文名称"
@@ -464,8 +470,8 @@
                     ></el-col
                   >
                 </el-row>
-                <el-table :data="researchProjects" border style="width: 100%">
-                  <el-table-column type="index" width="40"></el-table-column>
+                <el-table :data="formThird.researchProjects" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50"></el-table-column>
                   <el-table-column
                     prop="projectName"
                     label="项目名称"
@@ -519,8 +525,8 @@
                     ></el-col
                   >
                 </el-row>
-                <el-table :data="academicWorks" border style="width: 100%">
-                  <el-table-column type="index" width="40px"></el-table-column>
+                <el-table :data="formThird.academicWorks" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50px"></el-table-column>
                   <el-table-column
                     prop="worksName"
                     label="著作名称"
@@ -560,8 +566,8 @@
                     ></el-col
                   >
                 </el-row>
-                <el-table :data="teachingAwards" border style="width: 100%">
-                  <el-table-column type="index" width="40px"></el-table-column>
+                <el-table :data="formThird.teachingAwards" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50px"></el-table-column>
                   <el-table-column prop="awardsName" label="奖励名称">
                   </el-table-column>
                   <el-table-column prop="awardsUnit" label="颁奖单位">
@@ -587,8 +593,8 @@
                     ></el-col
                   >
                 </el-row>
-                <el-table :data="inventionPatents" border style="width: 100%">
-                  <el-table-column type="index" width="40px"></el-table-column>
+                <el-table :data="formThird.inventionPatents" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50px"></el-table-column>
                   <el-table-column prop="patentName" label="专利名称">
                   </el-table-column>
                   <el-table-column prop="patentNumber" label="专利编号">
@@ -613,26 +619,26 @@
                   >
                 </div>
                 <div>
-                  <h2>
-                    1.以第一作者或通讯作者在核心及以上期刊发表与本学科相关的学术论文共___
-                    篇，其中权威___篇，EI___篇，CSSCI___篇，SSCI___篇，核心共___篇。
-                  </h2>
+                  <p>
+                    1.以第一作者或通讯作者在核心及以上期刊发表与本学科相关的学术论文共 <span class="summary">{{ formThird.summary.firstAuthorPaper }}</span> 
+                    篇，其中权威 <span class="summary">{{ formThird.summary.authorityAmount }}</span> 篇，EI <span class="summary">{{ formThird.summary.eiAmount }}</span> 篇，CSSCI <span class="summary">{{ formThird.summary.cssciAmount }}</span> 篇，SSCI <span class="summary">{{ formThird.summary.ssciAmount }}</span> 篇 <!--，核心共 <span class="summary">{{ formThird.summary.directProject }}</span> 篇。 -->
+                  </p>
                   <br />
-                  <h2>
-                    2.主持在研科研项目共___项，其中国家级___项，省部级___
-                    项；在研项目中累计到款科研经费___万元，其中横向项目到款经费___万元。
-                  </h2>
+                  <p>
+                    2.主持在研科研项目共 <span class="summary">{{ formThird.summary.directProject }}</span> 项，其中国家级 <span class="summary">{{ formThird.summary.projectNationalLevel }}</span> 项，省部级 <span class="summary">{{ formThird.summary.projectProvinceLevel }}</span> 
+                    项；在研项目中累计到款科研经费 <span class="summary">{{ formThird.summary.accumulatedFunds }}</span> 万元，其中横向项目到款经费 <span class="summary">{{ formThird.summary.horizontalProject }}</span> 万元。
+                  </p>
                   <br />
-                  <h2>
-                    3.出版本专业领域内研究生教材或学术著作（译著）___部，每部本人完成
-                    ___ 万字。
-                  </h2>
+                  <p>
+                    3.出版本专业领域内研究生教材或学术著作（译著） <span class="summary">{{ formThird.summary.publishWorks }}</span> 部，每部本人完成
+                     <span class="summary">{{ formThird.summary.publishWorksWords }}</span>  万字。
+                  </p>
                   <br />
-                  <h2>4.科研教学获奖共___项，其中国家级___项，省部级___项。</h2>
+                  <p>4.科研教学获奖共 <span class="summary">{{ formThird.summary.scientificAwards }}</span> 项，其中国家级 <span class="summary">{{ formThird.summary.awardsNationalLevel }}</span> 项，省部级 <span class="summary">{{ formThird.summary.awardsProvinceLevel }}</span> 项。</p>
                   <br />
-                  <h2>
-                    5.以第一发明人授权职务发明专利___项或实用新型专利___项。
-                  </h2>
+                  <p>
+                    5.以第一发明人授权职务发明专利 <span class="summary">{{ formThird.summary.inventionPatentAmount }}</span> 项或实用新型专利 <span class="summary">{{ formThird.summary.newUtilityPatent }}</span> 项。
+                  </p>
                   <br />
                   <br />
                 </div>
@@ -685,7 +691,7 @@
                   </el-col>
                 </el-row>
                 <el-table :data="guidingStudents" border style="width: 100%">
-                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column type="index" label="序号" width="50px"></el-table-column>
                   <el-table-column
                     prop="studentName"
                     label="学生姓名"
@@ -733,7 +739,7 @@
                   </el-col>
                 </el-row>
                 <el-table :data="guidingStudents" border style="width: 100%">
-                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column type="index" label="序号" width="50px"></el-table-column>
                   <el-table-column
                     prop="studentName"
                     label="学生姓名"
@@ -778,7 +784,7 @@
                   >
                 </el-row>
                 <el-table :data="courseTeachings" border style="width: 100%">
-                  <el-table-column type="index" width="40px"></el-table-column>
+                  <el-table-column type="index" label="序号" width="50px"></el-table-column>
                   <el-table-column
                     prop="courseName"
                     label="课程名称"
@@ -890,22 +896,47 @@ export default {
         doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
         doctoralMasterSubjectCodeName: "", // 一级学科代码 + " " + 名称
         major: "", // 主要研究方向的内容及其意义
-        groupsOrPartTimeJob: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
-        groupsOrPartTimeJob: {
-          time: "",
-          groups: "",
-          job: "",
-        },
+        groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         expertTitles: [], // 获何专家称号及时间列表
-        expertTitle: {
-          time: "",
-          title: "",
-        },
+      },
+      groupsOrPartTimeJob: {
+        time: "",
+        groups: "",
+        job: "",
+      },
+      expertTitle: {
+        time: "",
+        title: "",
       },
 
       // 第 3 页表单
       dialogAcademicPaper: false, // 学术论文添加按钮
-      academicPapers: [], // 学术论文列表
+      formThird: {
+        academicPapers: [], // 学术论文列表
+        researchProjects: [], // 科研项目列表
+        academicWorks: [], // 教材或学术著作列表
+        teachingAwards: [], // 科研教学奖励列表
+        inventionPatents: [], // 发明专利列表
+        summary: { // 科研汇总信息
+          firstAuthorPaper: 0, // 以第一作者或通讯在 核心及以上期刊发表与本学科发表的论文篇数
+          authorityAmount: 0, // 权威篇数
+          eiAmount: 0, // EI 篇数
+          cssciAmount: 0, // CSSCI 篇数
+          ssciAmount: 0, // SSCI 篇数
+          directProject: 0, // 主持科研项目
+          projectNationalLevel: 0, // 国家级项目
+          projectProvinceLevel: 0, // 省部级项目
+          accumulatedFunds: 0, // 累计科研经费，万元
+          horizontalProject: 0, // 横向项目到款经费，万元
+          publishWorks: 0, // 出版专业领域专著数
+          publishWorksWords: 0, // 本人完成字数
+          scientificAwards: 0, // 科研教学获奖项数
+          awardsNationalLevel: 0, // 国家级奖项
+          awardsProvinceLevel: 0, // 省部级奖项
+          inventionPatentAmount: 0, // 发明专利
+          newUtilityPatent: 0, // 新型实用专利
+        }
+      },
       academicPaper: {
         // 学术论文
         paperName: "", // 论文名称
@@ -918,11 +949,9 @@ export default {
         journalCategory: "", // 期刊类别
         journalLevel: "", // 期刊分区
         impactFactors: "", // 影响因子
-        // address : "",  // 地址
       },
 
       // 科研项目
-      researchProjects: [], // 科研项目列表
       researchProject: {
         // 科研项目
         projectName: "", // 项目名称
@@ -938,7 +967,6 @@ export default {
       },
 
       // 教材或学术著作
-      academicWorks: [], // 教材或学术著作列表
       academicWork: {
         // 教材或学术著作
         worksName: "", // 著作名称
@@ -951,7 +979,6 @@ export default {
       },
 
       // 科研教学奖励
-      teachingAwards: [], // 科研教学奖励列表
       teachingAward: {
         // 科研教学奖励
         awardsName: "", // 奖励名称
@@ -963,7 +990,6 @@ export default {
       },
 
       // 发明专利
-      inventionPatents: [], // 发明专利列表
       inventionPatent: {
         // 发明专利
         patentName: "", // 专利名称
@@ -1051,12 +1077,12 @@ export default {
 
     // 第 2 页添加学术团体项
     addGroupsOrPartTimeJob: function () {
-      // let obj = {
-      //   time: "",
-      //   groups: "",
-      //   job: "",
-      // };
-      // this.formSecond.groupsOrPartTimeJobs.push(obj);
+      let obj = {
+        time: "",
+        groups: "",
+        job: "",
+      };
+      this.formSecond.groupsOrPartTimeJobs.push(obj);
     },
     // 删除某项学术团体项
     delGroupsOrPartTimeJob: function (index) {
@@ -1120,6 +1146,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+p {
+  font-size: 20px;
+}
+.summary {
+  font-weight: bold;
+  color: #F56C6C;
+}
 .margin-top {
   border-radius: 20px;
 }

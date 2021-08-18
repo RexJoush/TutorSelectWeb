@@ -2,7 +2,7 @@
  * @Author: Rex Joush
  * @Date: 2021-08-13 22:14:18
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-13 23:26:20
+ * @LastEditTime: 2021-08-17 20:05:59
 -->
 ## 修改记录
 
@@ -13,3 +13,7 @@
     * 添加全局样式自定义文件，位置 `src/styles/styles.scss`
     * 添加样式框架 `View UI`
     * 拉取新版本时需要安装依赖 `npm i`
+
+* 2021.08.17 **Rex Joush**
+    * 添加全局数据文件，位置 `src/utils/data.js`
+    * 包含各个院系和专业和代码信息
