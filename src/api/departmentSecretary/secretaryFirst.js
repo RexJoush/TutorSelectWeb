@@ -18,7 +18,7 @@ export function firstInit(current) {
 //更新操作
 export function updateStatus(data) {
   return request({
-    url: "/department-secretary/update",
+    url: "/update-status/update",
     method: "post",
     data: data
   });

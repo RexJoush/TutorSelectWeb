@@ -112,91 +112,124 @@ export const constantRoutes = [
 
   //******************************研究生管理员---系统设置界面*********************************
   {
-    path: '/graducateManager/basicManagement',
+    path: '/graduateManager/basicManagement',
     component: Layout,
-    redirect: '/graducateManager/basicManagement/user',
+    redirect: '/graduateManager/basicManagement/user',
     name: 'BasicManagement',
     meta: { title: '基础管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'user',
         name: 'User',
-        component: () => import('@/views/graducateManager/userManage/index'),
+        component: () => import('@/views/graduateManager/userManage/index'),
         meta: { title: '用户管理', icon: 'user' }
       },
       {
         path: 'systemTime',
         name: 'SystemTime',
-        component: () => import('@/views/graducateManager/systemTime/index'),
+        component: () => import('@/views/graduateManager/systemTime/index'),
         meta: { title: '设置系统时间', icon: 'tree' }
       }
     ]
   },
    //******************************研究生管理员---申报流程*********************************
    {
-    path: '/graducateManager/auditManager',
+    path: '/graduateManager/auditManager',
     component: Layout,
-    redirect: '/graducateManager/auditManager/check',
+    redirect: '/graduateManager/auditManager/check',
     name: 'AuditManagement',
     meta: { title: '申报流程', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'check',
         name: 'Check',
-        component: () => import('@/views/graducateManager/auditManager/check/index'),
+        component: () => import('@/views/graduateManager/auditManager/check/index'),
         meta: { title: '初审', icon: 'tree' }
       },
       {
         path: 'reCheck',
         name: 'ReCheck',
-        component: () => import('@/views/graducateManager/auditManager/reCheck/index'),
+        component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
         meta: { title: '复审', icon: 'tree' }
       },
       {
         path: 'inputComments',
         name: 'InputComments',
-        component: () => import('@/views/graducateManager/auditManager/inputComments/index'),
+        component: () => import('@/views/graduateManager/auditManager/inputComments/index'),
         meta: { title: '录入校会意见', icon: 'tree' }
       },
       {
         path: 'finalList',
         name: 'FinalList',
-        component: () => import('@/views/graducateManager/auditManager/finalList/index'),
+        component: () => import('@/views/graduateManager/auditManager/finalList/index'),
         meta: { title: '最终通过名单', icon: 'tree' }
       },
       {
         path: 'reject',
         name: 'Reject',
-        component: () => import('@/views/graducateManager/auditManager/reject/index'),
+        component: () => import('@/views/graduateManager/auditManager/reject/index'),
         meta: { title: '院系驳回', icon: 'tree' }
       },
     ]
   },
 
+    //******************************院系秘书管理员---基础管理*********************************
   {
-    path: '/sd',
+    path: '/departmentSecretary/basicManagement',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/departmentSecretary/basicManagement/systemTimeDepartment',
+    name: 'BasicManagementDS',
+    alwaysShow: true,
+    meta: { title: '院系秘书基础管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'systemTime_department',
-        component: () => import('@/views/departmentSecretary/systemTime_department'),
-        name: 'systemTime_department',
-        meta: { title: '设置院系时间', icon: 'dashboard', affix: true }
-      }
+        path: 'systemTimeDepartment',
+        name: 'SystemTimeDepartment',
+        component: () => import('@/views/departmentSecretary/systemTime/index'),
+        meta: { title: '设置院系时间', icon: 'dashboard'}
+      },
     ]
   },
+
+    //******************************院系秘书管理员---申报流程*********************************
+
   {
-    path: '/departmentSecretary',
+    path: '/departmentSecretary/auditManager',
     component: Layout,
     redirect: '/dashboard',
+    name: 'AuditManagementDS',
+    meta: { title: '院系秘书申报流程', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'systemFirst',
-        component: () => import('@/views/departmentSecretary/secretaryFirst'),
-        name: 'systemFirst',
-        meta: { title: '院系秘书初审', icon: 'dashboard', affix: true }
-      }
+        path: 'checkDS',
+        component: () => import('@/views/departmentSecretary/auditManager/check/index'),
+        name: 'CheckDS',
+        meta: { title: '秘书初审', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'submitFh',
+        component: () => import('@/views/departmentSecretary/auditManager/submitFh/index'),
+        name: 'SubmitFh',
+        meta: { title: '提交分会', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'reCheckDS',
+        component: () => import('@/views/departmentSecretary/auditManager/reCheck/index'),
+        name: 'ReCheckDS',
+        meta: { title: '录入分会意见', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'graducateComments',
+        component: () => import('@/views/departmentSecretary/auditManager/graducateComments/index'),
+        name: 'GraducateComments',
+        meta: { title: '查看研究生院意见', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'finalListDS',
+        component: () => import('@/views/departmentSecretary/auditManager/finalList/index'),
+        name: 'FinalListDS',
+        meta: { title: '最终通过名单', icon: 'dashboard', affix: true }
+      },
     ]
   }
 ]
