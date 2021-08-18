@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 21:52:25
+ * @LastEditTime: 2021-08-18 22:06:35
 -->
 <template>
   <div class="main">
@@ -40,13 +40,13 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="性别">
-                      <el-radio v-model="formFirst.sex" label="男">男</el-radio>
-                      <el-radio v-model="formFirst.sex" label="女">女</el-radio>
+                      <el-radio v-model="formFirst.gender" label="男">男</el-radio>
+                      <el-radio v-model="formFirst.gender" label="女">女</el-radio>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="所在单位">
-                      <el-input v-model="formFirst.department"></el-input>
+                      <el-input v-model="formFirst.organizationId"></el-input>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -62,7 +62,7 @@
                   </Col>
                   <Col :span="24">
                     <el-form-item label="证件号码">
-                      <el-input v-model="formFirst.idNumber"></el-input>
+                      <el-input v-model="formFirst.identity"></el-input>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -83,7 +83,7 @@
                   <Col :span="12">
                     <el-form-item label="评定时间">
                       <el-date-picker
-                        v-model="formFirst.titleAwardTime"
+                        v-model="formFirst.evaluateTime"
                         type="month"
                         style="width: 100%"
                         placeholder="选择日期"
@@ -116,7 +116,7 @@
               <Col :span="8">
                 <el-form-item label="最后学位">
                   <el-select
-                    v-model="formFirst.lastDegree"
+                    v-model="formFirst.finalDegree"
                     style="width: 100%"
                     placeholder="请选择"
                   >
@@ -134,7 +134,7 @@
               <Col :span="8">
                 <el-form-item label="授予时间">
                   <el-date-picker
-                    v-model="formFirst.awardTime"
+                    v-model="formFirst.col1"
                     type="month"
                     style="width: 100%"
                     placeholder="选择日期"
@@ -857,6 +857,8 @@
 
 <script>
 import { academicMasterPrimaryDiscipline } from "@/utils/data";
+import { submitFirstPage } from "@/api/tutor/firstApplyMaster/index";
+
 export default {
   data() {
     return {
@@ -874,18 +876,19 @@ export default {
       },
       // 第 1 页表单
       formFirst: {
-        name: "", // 姓名
-        sex: "", // 性别
-        department: "", // 所在单位
-        birthday: "", // 出生年月
-        idNumber: "", // 证件号码
-        phone: "", // 联系电话
-        email: "", // 电子邮箱
-        title: "", // 职称
-        titleAwardTime: "", // 评定时间
-        lastDegree: "", // 最后学位
-        awardDepartment: "", // 授予单位
-        awardTime: "", // 授予时间
+        name: "李一航", // 姓名
+        gender: "男", // 性别
+        image : "https://www.rexjoush.com/img/1.jpg",
+        organizationId: "24", // 所在单位
+        birthday: "1997/10/1", // 出生年月
+        identity: "411422199712195117", // 证件号码
+        phone: "13598892696", // 联系电话
+        email: "7772854362@qq.com", // 电子邮箱
+        title: "教授", // 职称
+        evaluateTime: "2021-07", // 评定时间
+        finalDegree: "博士", // 最后学位
+        awardDepartment: "西北大学", // 授予单位
+        col1: "2021-02", // 授予时间
       },
 
       // 第 2 页表单
@@ -1035,6 +1038,9 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第 1 页
         .then(() => {
+          submitFirstPage(this.formFirst, 4);
+          
+
           this.formVisible.first = false; // 关闭第 1 页
           this.formVisible.second = true; // 打开第 2 页
           this.active = 1;

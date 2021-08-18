@@ -2,7 +2,7 @@
  * @Author: Rex Joush
  * @Date: 2021-08-13 15:16:36
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 21:56:31
+ * @LastEditTime: 2021-08-18 21:40:48
 -->
 <template>
   <div>
@@ -32,6 +32,7 @@
         <el-col :span="7"
           ><div>
             <el-button class="grid-content" type="primary"
+            @click="addApplyDoctor"
               >博士导师增列学科岗位</el-button
             >
           </div></el-col
@@ -106,7 +107,9 @@
 </template>
 
 <script>
-import { IfApply } from '@/api/ApplyDoctor/FirstApplyDoctor'
+
+import { firstApply } from "@/api/tutor/mainboard";
+
 export default {
   data(){
     return{
@@ -115,29 +118,38 @@ export default {
   },
   methods: {
     //首次申请博士导师岗位
-    async firstApplyDoctor() {
-      //去数据库里判断是否有申请过的
-      IfApply(this.tutorId,1).then((res)=>{
-        console.log(res)
-         if (res.data =="101"){
-           //博士首次未申请
-            this.$router.push("firstApplyDoctor/1");
-         }
-         else 
-         {
-           //博士首次申请过
-            this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then((res) => {
-            this.$router.push("/"); // 去我的申请页面
+    firstApplyDoctor() {
+      firstApply(1).then((res) => {
+        if (res.data === '101') {
+          this.$router.push("firstApplyMaster/4");
+        } else {
+          this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then(
+            (res) => {
+              this.$router.push("/"); // 去我的申请页面
+            }
+          );
         }
-      );
-         }
-      })
+      });
      
     },
 
+    // 博士增列
+    addApplyDoctor: function () {
+      this.$router.push("firstApplyMaster/2");
+    },
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function () {
-      this.$router.push("firstApplyMaster/1");
+      firstApply(4).then((res) => {
+        if (res.data === '101') {
+          this.$router.push("firstApplyMaster/4");
+        } else {
+          this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then(
+            (res) => {
+              this.$router.push("/"); // 去我的申请页面
+            }
+          );
+        }
+      });
     },
 
     // 首次申请专硕导师岗位
