@@ -165,24 +165,67 @@
               label-position="top"
               v-if="formVisible.second"
             >
-              <Row>
+            <Row>
                 <Col :span="24">
                   <Row>
-                    <Col :span="6">
+                    <Col :span="8">
+                      <el-form-item label="申请学科">
+                        <el-select
+                          v-model="formFirst.applySubject"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            key="文史"
+                            lable="文史"
+                            value="文史"
+                          ></el-option>
+                          <el-option
+                            key="理工"
+                            lable="理工"
+                            value="理工"
+                          ></el-option>
+                          <el-option
+                            key="交叉学科"
+                            lable="交叉学科"
+                            value="交叉学科"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
-                        <el-input></el-input>
+                        <el-select
+                          v-model="currentDepartment"
+                          placeholder="请选择"
+                          @change="setChildNode"
+                        >
+                          <el-option
+                            v-for="item in doctorPrimaryDiscipline"
+                            :key="item.department"
+                            :label="item.department"
+                            :value="item"
+                            style="color: #606266; font-weight: normal"
+                          >
+                          </el-option>
+                        </el-select>
                       </el-form-item>
                     </Col>
-                    <Col :span="6" :offset="1">
-                      <el-form-item label="一级学科代码">
-                        <el-input></el-input>
+                    <Col :span="8">
+                      <el-form-item label="一级学科代码及名称">
+                        <el-select
+                          v-model="formSecond.doctoralMasterSubjectCodeName"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in childNodes"
+                            :key="item.code"
+                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
+                          >
+                          </el-option>
+                        </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="6" :offset="1">
-                      <el-form-item label="一级学科名称">
-                        <el-input></el-input>
-                      </el-form-item>
-                    </Col>
+                    </Col>                   
                   </Row>
                 </Col>
                 <Col :span="24">
@@ -202,45 +245,33 @@
                     <el-button
                       @click="addGroupsOrPartTimeJob"
                       type="primary"
-                      style="margin: 0 0 10px 10px"
+                      class="addButton"
                       >添加</el-button
                     >
                     <el-table
                       :data="formSecond.groupsOrPartTimeJobs"
+                      border
                       style="width: 100%"
                     >
-                      <el-table-column label="参加时间" width="180">
-                        <template slot-scope="scope">
-                          <el-date-picker
-                            v-model="scope.row.time"
-                            type="month"
-                            style="width: 100%"
-                            placeholder="选择日期"
-                          >
-                          </el-date-picker>
-                        </template>
-                      </el-table-column>
-                      <el-table-column label="学术团体或兼职" width="200">
-                        <template slot-scope="scope">
-                          <el-input v-model="scope.row.groups"></el-input>
-                        </template>
-                      </el-table-column>
-                      <el-table-column label="所任职务">
-                        <template slot-scope="scope">
-                          <el-input v-model="scope.row.job"></el-input>
-                        </template>
-                      </el-table-column>
-                      <el-table-column width="100">
-                        <template slot-scope="scope">
-                          <el-button
-                            type="danger"
-                            @click="delGroupsOrPartTimeJob(scope.$index)"
-                            >删除</el-button
-                          >
-                        </template>
-                      </el-table-column>
+                      <el-table-column
+                        type="index"
+                        width="40"
+                      ></el-table-column>
+                      <el-table-column
+                        prop="time"
+                        label="参加时间"
+                        width="180"
+                      ></el-table-column>
+                      <el-table-column
+                        prop="groups"
+                        label="学术团体或兼职"
+                        width="200"
+                      ></el-table-column>
+                      <el-table-column
+                        prop="job"
+                        label="所任职务"
+                      ></el-table-column>
                     </el-table>
-                 
                   </el-form-item>
                 </Col>
 
@@ -252,13 +283,18 @@
                     <el-button
                       @click="addExpertTitle"
                       type="primary"
-                      style="margin: 0 0 10px 10px"
+                      class="addButton"
                       >添加</el-button
                     >
                     <el-table
                       :data="formSecond.expertTitles"
+                      border
                       style="width: 100%"
                     >
+                      <el-table-column
+                        type="index"
+                        width="40"
+                      ></el-table-column>
                       <el-table-column label="获得时间" width="180">
                         <template slot-scope="scope">
                           <el-date-picker
@@ -887,12 +923,14 @@
 
 <script>
 import index from "@/components/Breadcrumb/index.vue";
-import {masterPrimaryDiscipline, doctorPrimaryDiscipline} from "@/utils/data";
+import {doctorPrimaryDiscipline} from "@/utils/data";
 
 export default {
   components: { index },
   data() {
     return {
+       // 硕士学科代码
+      doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       // 步骤条
       active: 0,
       // 页数的隐藏和展示
@@ -921,24 +959,26 @@ export default {
       },
       
       // 第 2 页表单
+      childNodes: [], // 院系的子专业信息
+      currentDepartment: "", // 院系信息
       formSecond: {
+        applySubject: "", // 申请学科
+        doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
+        doctoralMasterSubjectCodeName: "", // 一级学科代码 + " " + 名称
         major: "", // 主要研究方向的内容及其意义
-        groupsOrPartTimeJobs: [
-          // 何时参加何种学术团体、任何种职务，有何社会兼职
-          {
-            time: "",
-            groups: "",
-            job: "",
-          },
-        ],
-        expertTitles: [
-          // 获何专家称号及时间
-          {
-            time: "",
-            title: "",
-          },
-        ],
+        groupsOrPartTimeJob: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
+        groupsOrPartTimeJob: {
+          time: "",
+          groups: "",
+          job: "",
+        },
+        expertTitles: [], // 获何专家称号及时间列表
+        expertTitle: {
+          time: "",
+          title: "",
+        },
       },
+
       form: {
         name: "",
         region: "",
@@ -994,6 +1034,17 @@ export default {
     },
     /*第二页 */
 
+    // 设置选择院系的子专业
+    setChildNode: function (value) {
+      // 将子列表的选择置空
+      this.formSecond.doctoralMasterSubjectCodeName = "";
+      // 将当前选择加入 form 提交中
+      this.formSecond.doctoralMasterApplicationSubjectUnit = value.department;
+      // 修改当前页面的显示院系
+      this.currentDepartment = value.department;
+      // 设置子项目为当前院系的专业
+      this.childNodes = value.professional;
+    },
     // 完成第二页基本信息的填写
     onSubmitSecondPage: function () {
       this.$confirm("提交填写?")
