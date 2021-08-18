@@ -1,4 +1,3 @@
-
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -12,7 +11,7 @@
         >
           <el-form-item label="工号">
             <el-input
-              v-model="queryParams.tutorId"
+              v-model="queryParams.userId"
               placeholder="请输入工号"
               clearable
               size="small"
@@ -22,7 +21,7 @@
           </el-form-item>
           <el-form-item label="姓名">
             <el-input
-              v-model="queryParams.tutorName"
+              v-model="queryParams.userName"
               placeholder="请输入姓名"
               clearable
               size="small"
@@ -32,7 +31,7 @@
           </el-form-item>
           <el-form-item label="申请类别">
             <el-select
-              v-model="queryParams.applytype"
+              v-model="queryParams.applyType"
               placeholder="请选择"
               clearable
               size="small"
@@ -48,7 +47,7 @@
           </el-form-item>
           <el-form-item label="审核状态">
             <el-select
-              v-model="queryParams.status"
+              v-model="queryParams.applyStatus"
               placeholder="请选择"
               clearable
               size="small"
@@ -62,7 +61,6 @@
               />
             </el-select>
           </el-form-item>
-
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()"
               >搜索</el-button
@@ -114,43 +112,20 @@
         <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
         <el-table
           v-loading="loading"
-          :data="secretaryInitList"
+          :data="tutorList"
           @selection-change="handleSelectionChange"
         >
-        <!-- 工号 姓名  所在单位(院系) 申请学科或类别代码  申请学科或类别名称  申请类别 职称 审核状态 详情 备注-->
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="工号" align="center" prop="number" />
           <el-table-column label="姓名" align="center" prop="name" />
-          <el-table-column
-            label="所在单位"
-            align="center"
-            prop="organizationId"
-          />
-          <el-table-column
-            label="申请学科或类别代码"
-            width="180"
-            align="center"
-            prop="userRole"
-          />
-          <el-table-column
-            label="申请学科或类别名称"
-            width="180"
-            align="center"
-            prop="mr"
-          />
-          <el-table-column
-            label="申请类别"
-            width="180"
-            align="center"
-            prop="applyName"
-          />
-          <el-table-column label="职称" align="center" prop="title" />
+          <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
+          <el-table-column label="申请学科或类别代码" align="center" prop="professionalApplicationSubjectCode" />
+          <el-table-column label="申请学科或类别名称" align="center" prop="professionalApplicationSubjectName" />
+          <el-table-column label="申请类别" align="center" prop="applyName" />
+          <el-table-column label="职称" align="center" prop="professionalTitle" />
+          <el-table-column label="审核状态" align="center" prop="inspectDescribe" />
           <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column
-            label="审核状态"
-            align="center"
-            prop="inspectDescribe"
-          />
+          <el-table-column label="备注" align="center" prop="mr" />
         </el-table>
 
         <el-pagination
@@ -197,10 +172,15 @@ export default {
       multipleSelection: [],
       // 查询参数
       queryParams: {
-        tutorId: null,
-        tutorName: null,
-        applytype: null,
-        status: null,
+        pageNum: 1,
+        pageSize: 10,
+        userId: undefined, // 工号
+        userName: undefined, // 姓名
+        organization: undefined, // 院系id
+        applyType: undefined, // 申请类别id
+        subjectName: undefined, // 学科名称id
+        applyStatus: undefined, // 审核状态码id
+        subjectType: undefined // 学科属性，文科，理科，交叉
       },
       //当前页
       currentPage: 1,
@@ -221,6 +201,7 @@ export default {
       ],
       //审核后需要下发的List数据
       updataList:[],
+      tutorList: [],
     };
   },
   created() {
@@ -235,13 +216,21 @@ export default {
       });
     },
     // 查询院系秘书待初审的数据
-   async getSecretaryInit() {
-      this.loading = true;
-      firstInit(this.currentPage).then((res) => {
-        this.secretaryInitList = res.data.records;
-        this.totalData = res.data.total;
-        this.loading = false
-      });
+    // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
+    async getSecretaryInit() {
+      this.loading = true
+     const { data: res } = await this.$http.get(
+       '/tutor-inspect/getAll', { params: this.queryParams }
+     )
+     this.tutorList = res.data
+     this.total = res.total
+     this.loading = false
+
+      // firstInit(this.currentPage).then((res) => {
+      //   this.secretaryInitList = res.data.records;
+      //   this.totalData = res.data.total;
+      //   this.loading = false
+      // });
     },
     //搜索按钮
     searchQuery(){
@@ -260,11 +249,11 @@ export default {
     },
     //初审通过
     passFun(){
-      this.check(11);     
+      this.check(11);
     },
     //初审不通过
     unPassFun(){
-      this.check(12);     
+      this.check(12);
     },
     //更新操作
     check(status){
@@ -287,13 +276,13 @@ export default {
         this.multiple = true
       }
       this.multipleSelection = val;
-      // 将需要审核后下发的数据对应起来    
+      // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
             let obj = {number_1:'',applyId_1: 0,status_1:0}
             obj.number_1=this.multipleSelection[index].number;
             obj.applyId_1=this.multipleSelection[index].applyId;
             obj.status_1=this.multipleSelection[index].status;
-            this.updataList.push(obj)    
+            this.updataList.push(obj)
       }
     },
     //每页显示条数

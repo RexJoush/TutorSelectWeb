@@ -96,7 +96,7 @@ export const constantRoutes = [
         path: 'firstApplyDoctor/:applyId',
         name: 'firstApplyDoctor',
         hidden: true,
-        component: () => import('@/views/tutormainboard/FirstApplyDoctor/index'),
+        component: () => import('@/views/tutormainboard/FirstapplyDoctor/index'),
         meta: { title: '首次申请博士生导师' },
       },
       {
@@ -112,62 +112,62 @@ export const constantRoutes = [
 
   //******************************研究生管理员---系统设置界面*********************************
   {
-    path: '/graducateManager/basicManagement',
+    path: '/graduateManager/basicManagement',
     component: Layout,
-    redirect: '/graducateManager/basicManagement/user',
+    redirect: '/graduateManager/basicManagement/user',
     name: 'BasicManagement',
     meta: { title: '基础管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'user',
         name: 'User',
-        component: () => import('@/views/graducateManager/userManage/index'),
+        component: () => import('@/views/graduateManager/userManage/index'),
         meta: { title: '用户管理', icon: 'user' }
       },
       {
         path: 'systemTime',
         name: 'SystemTime',
-        component: () => import('@/views/graducateManager/systemTime/index'),
+        component: () => import('@/views/graduateManager/systemTime/index'),
         meta: { title: '设置系统时间', icon: 'tree' }
       }
     ]
   },
    //******************************研究生管理员---申报流程*********************************
    {
-    path: '/graducateManager/auditManager',
+    path: '/graduateManager/auditManager',
     component: Layout,
-    redirect: '/graducateManager/auditManager/check',
+    redirect: '/graduateManager/auditManager/check',
     name: 'AuditManagement',
     meta: { title: '申报流程', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'check',
         name: 'Check',
-        component: () => import('@/views/graducateManager/auditManager/check/index'),
+        component: () => import('@/views/graduateManager/auditManager/check/index'),
         meta: { title: '初审', icon: 'tree' }
       },
       {
         path: 'reCheck',
         name: 'ReCheck',
-        component: () => import('@/views/graducateManager/auditManager/reCheck/index'),
+        component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
         meta: { title: '复审', icon: 'tree' }
       },
       {
         path: 'inputComments',
         name: 'InputComments',
-        component: () => import('@/views/graducateManager/auditManager/inputComments/index'),
+        component: () => import('@/views/graduateManager/auditManager/inputComments/index'),
         meta: { title: '录入校会意见', icon: 'tree' }
       },
       {
         path: 'finalList',
         name: 'FinalList',
-        component: () => import('@/views/graducateManager/auditManager/finalList/index'),
+        component: () => import('@/views/graduateManager/auditManager/finalList/index'),
         meta: { title: '最终通过名单', icon: 'tree' }
       },
       {
         path: 'reject',
         name: 'Reject',
-        component: () => import('@/views/graducateManager/auditManager/reject/index'),
+        component: () => import('@/views/graduateManager/auditManager/reject/index'),
         meta: { title: '院系驳回', icon: 'tree' }
       },
     ]
@@ -187,7 +187,7 @@ export const constantRoutes = [
         name: 'SystemTimeDepartment',
         component: () => import('@/views/departmentSecretary/systemTime/index'),
         meta: { title: '设置院系时间', icon: 'dashboard'}
-      },           
+      },
     ]
   },
 
