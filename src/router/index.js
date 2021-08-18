@@ -172,13 +172,13 @@ export const constantRoutes = [
   //     },
   //   ]
   // },
-
+ 
     //******************************院系秘书管理员---基础管理*********************************
   {
     path: '/departmentSecretary/basicManagement',
     component: Layout,
     redirect: '/departmentSecretary/basicManagement/systemTimeDepartment',
-    name: 'BasicManagement',
+    name: 'BasicManagementDS',
     alwaysShow: true,
     meta: { title: '院系秘书基础管理', icon: 'el-icon-s-help' },
     children: [
@@ -187,7 +187,7 @@ export const constantRoutes = [
         name: 'SystemTimeDepartment',
         component: () => import('@/views/departmentSecretary/systemTime/index'),
         meta: { title: '设置院系时间', icon: 'dashboard'}
-      },
+      },           
     ]
   },
 
@@ -197,6 +197,7 @@ export const constantRoutes = [
     path: '/departmentSecretary/auditManager',
     component: Layout,
     redirect: '/dashboard',
+    name: 'AuditManagementDS',
     meta: { title: '院系秘书申报流程', icon: 'el-icon-s-help' },
     children: [
       {
