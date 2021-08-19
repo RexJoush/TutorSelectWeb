@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-18 22:06:35
+ * @LastEditTime: 2021-08-19 20:16:38
 -->
 <template>
   <div class="main">
@@ -880,7 +880,7 @@ export default {
         gender: "男", // 性别
         image : "https://www.rexjoush.com/img/1.jpg",
         organizationId: "24", // 所在单位
-        birthday: "1997/10/1", // 出生年月
+        birthday: "1997-10-01", // 出生年月
         identity: "411422199712195117", // 证件号码
         phone: "13598892696", // 联系电话
         email: "7772854362@qq.com", // 电子邮箱
