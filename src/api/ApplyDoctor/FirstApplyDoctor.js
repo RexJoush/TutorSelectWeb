@@ -7,20 +7,21 @@ import {baseUrl} from '@/api/url';
  * @param {*申请类别} aId 
  * @returns 
  */
+
 export function IfApply(tId,aId){
     return request({
-        url: baseUrl+`/tutor/firstapplydoctor/ifapply`,
+        url: baseUrl+`/tutor/firstApplyDoctor/ifApply`,
         method: 'get',
         params:{ tutorId: tId, applyId : aId}
     })
 }
 
 //第一页基本信息提交
-export function saveFirstform(data){
+export function saveFirstform(data,applyId,applyCondition){
     return request({
-        url: baseUrl+ "/tutor/firstapplydoctor/savebaseinfo",
+        url: `${baseUrl}/tutor/firstApplyDoctor/saveBaseInfo/${applyId}/${applyCondition}`,
         method : "post",
-        data
+        data : data
     })
 }
 

@@ -1024,17 +1024,11 @@ export default {
       // 第 1 页表单
       awardDepartment: "西北大学", // 授予单位
       awardTime: "2016/8/9", // 授予时间
-      FirstAllformlist:[], //formFirst + apply表字段
-      //apply表提交的数据
-      applyForm:{
-          tutorId: "202032978", //导师工号
-          applyId: 1,           //申请的类别 首次博士
-          status: 0             //当前申请的状态 未提交
-      },
-      formFirst: {        
+
+      formFirst: {
         name: "李一航", // 姓名
         gender: "男", // 性别
-        image : "https://www.rexjoush.com/img/1.jpg",
+        image: "https://www.rexjoush.com/img/1.jpg",
         organizationId: "24", // 所在单位
         birthday: "1997/10/1", // 出生年月
         identity: "411422199712195117", // 证件号码
@@ -1135,27 +1129,32 @@ export default {
         // 提交保存第一页
         .then(() => {
           //授予单位及时间
-          this.awardingUnitTime=this.awardDepartment+"-"+this.awardTime;
-          //apply表存入list 基本信息存入list
-          this.FirstAllformlist.push(this.applyForm);
-          this.FirstAllformlist.push(this.formFirst);          
-          //提交到后台
-         saveFirstform( this.FirstAllformlist).then((res)=>{
-            console.log(res)
-            if(res.code == 20000){ 
-              this.$message.success("保存成功！")
-              this.formVisible.first = false; // 关闭第一项
-              this.formVisible.second = true; // 打开第二项
-              this.active = 1;
-            }
-            else
-            {
-                 this.$message.error;("保存失败！")
-            }           
-            
-         })
-         .catch(() => {});
-         
+          this.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
+          let applyCondition= this.$route.params.applyCondition; 
+          // if (applyCondition === 101 || appplyCondition === 102) {
+            //首次申请博士提交到后台
+            saveFirstform(this.formFirst, 1,applyCondition)
+              .then((res) => {
+                if (res.code == 20000) {
+                  this.$message.success("保存成功！");
+                  this.formVisible.first = false; // 关闭第一项
+                  this.formVisible.second = true; // 打开第二项
+                  this.active = 1;
+                } else {
+                  this.$message.error;
+                  ("保存失败！");
+                }
+              })
+              .catch(() => {
+                 console.log("cancel");
+              });
+          // }
+          // else
+          // {
+          //   //修改地址栏，让其重新申请
+          //   this.$message.info("违法修改URL，请重新申请")
+          //    this.$router.push("/"); // 回到首页
+          // }
         })
         .catch(() => {
           console.log("cancel");

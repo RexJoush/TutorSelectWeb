@@ -93,7 +93,7 @@ export const constantRoutes = [
         meta: { title: '教师申请'},
       },
       {
-        path: 'firstApplyDoctor/:applyId',
+        path: 'firstApplyDoctor/:applyId/:applyCondition',
         name: 'firstApplyDoctor',
         hidden: true,
         component: () => import('@/views/tutormainboard/FirstApplyDoctor/index'),

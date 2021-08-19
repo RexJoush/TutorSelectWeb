@@ -121,8 +121,14 @@ export default {
     firstApplyDoctor() {
       firstApply(1).then((res) => {
         if (res.data === '101') {
-          this.$router.push("firstApplyMaster/4");
-        } else {
+          //查询出来的状态为0 ，老师可以进去修改
+          this.$router.push("firstApplyDoctor/1/101");
+        } 
+        else if( res.data === "102"){
+          //没有申请过此岗位
+          this.$router.push("firstApplyDoctor/1/102")
+        }
+        else {
           this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then(
             (res) => {
               this.$router.push("/"); // 去我的申请页面
