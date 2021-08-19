@@ -8,11 +8,12 @@ export function getApplyType() {
     method: "get"
   });
 }
-//初始化待初审的数据
-export function firstInit(current) {
+//查询数据
+export function checkDate(data) {
   return request({
-    url: "/department-secretary/findAll/7"+"/"+current,
-    method: "get"
+    url: "/tutor-inspect/getAll",
+    method: "get",
+    params:data
   });
 }
 //更新操作
@@ -24,12 +25,4 @@ export function updateStatus(data) {
   });
 }
 
-//带参查询
-export function searchQuery(data) {
-  return request({
-    url: "/department-secretary/searchQuery",
-    method: "post",
-    data: data
-  });
-}
 
