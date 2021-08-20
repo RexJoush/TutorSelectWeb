@@ -8,10 +8,10 @@ import { baseUrl } from '@/api/url';
 import request from '@/utils/request'
 
 // 提交第一页
-export function submitFirstPage(data, applyId) {
+export function submitFirstPage(data, applyId, applyCondition) {
     return request({
       // url: baseUrl + '/user/login',
-      url: `${baseUrl}/tutor/firstApplyMaster/first/${applyId}`,
+      url: `${baseUrl}/tutor/firstApplyMaster/first/${applyId}/${applyCondition}`,
       method: 'post',
       data: data,
     })

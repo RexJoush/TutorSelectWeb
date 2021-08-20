@@ -1038,7 +1038,7 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第 1 页
         .then(() => {
-          submitFirstPage(this.formFirst, 4);
+          submitFirstPage(this.formFirst, 4, this.$route.params.applyCondition);
           
 
           this.formVisible.first = false; // 关闭第 1 页

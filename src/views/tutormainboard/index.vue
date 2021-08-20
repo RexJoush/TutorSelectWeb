@@ -2,7 +2,7 @@
  * @Author: Rex Joush
  * @Date: 2021-08-13 15:16:36
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-19 20:46:17
+ * @LastEditTime: 2021-08-18 21:40:48
 -->
 <template>
   <div>
@@ -31,10 +31,8 @@
         >
         <el-col :span="7"
           ><div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="addApplyDoctor"
+            <el-button class="grid-content" type="primary"
+            @click="addApplyDoctor"
               >博士导师增列学科岗位</el-button
             >
           </div></el-col
@@ -66,10 +64,7 @@
         >
         <el-col :span="7"
           ><div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="addApplyMaster"
+            <el-button class="grid-content" type="primary"
               >学硕导师增列学科岗位</el-button
             >
           </div></el-col
@@ -112,25 +107,28 @@
 </template>
 
 <script>
-import { firstApply, addApply } from "@/api/tutor/mainboard";
+
+import { firstApply } from "@/api/tutor/mainboard";
 
 export default {
-  data() {
-    return {
-      tutorId: "202032969",
-    };
+  data(){
+    return{
+      tutorId:"202032969"
+    }
   },
   methods: {
     //首次申请博士导师岗位
     firstApplyDoctor() {
       firstApply(1).then((res) => {
-        if (res.data === "101") {
+        if (res.data === '101') {
           //查询出来的状态为0 ，老师可以进去修改
           this.$router.push("firstApplyDoctor/1/101");
-        } else if (res.data === "102") {
+        } 
+        else if( res.data === "102"){
           //没有申请过此岗位
-          this.$router.push("firstApplyDoctor/1/102");
-        } else {
+          this.$router.push("firstApplyDoctor/1/102")
+        }
+        else {
           this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then(
             (res) => {
               this.$router.push("/"); // 去我的申请页面
@@ -138,13 +136,13 @@ export default {
           );
         }
       });
+     
     },
 
     // 博士增列
     addApplyDoctor: function () {
       this.$router.push("firstApplyMaster/2");
     },
-
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function () {
       firstApply(4).then((res) => {
@@ -163,10 +161,7 @@ export default {
         }
       });
     },
-    // 学硕导师增列学科岗位
-    addApplyMaster: function () {
-      addApply(5).then(res=>{console.log(res)}).catch(error=>{throw error;});
-    },
+
     // 首次申请专硕导师岗位
     firstApplyProfessionalMaster: function () {
       this.$confirm("您已提交过该申请，请前往我的申请中查看", "提示").then(
