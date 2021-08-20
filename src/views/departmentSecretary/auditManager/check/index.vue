@@ -347,12 +347,14 @@ export default {
       this.updataList = []
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
-        let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
+        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
+        let obj = {id_1:0, status_1: 0, commit_1: "" };
         obj.id_1 = this.multipleSelection[index].tutorId;
-        obj.number_1 = this.multipleSelection[index].number;
-        obj.applyId_1 = this.multipleSelection[index].applyId;
+        // obj.number_1 = this.multipleSelection[index].number;
+        // obj.applyId_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;
         obj.commit_1="";
+        console.log(obj)
         this.updataList.push(obj);
       }
     },

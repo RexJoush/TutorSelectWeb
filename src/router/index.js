@@ -170,9 +170,42 @@ export const constantRoutes = [
         component: () => import('@/views/graduateManager/auditManager/reject/index'),
         meta: { title: '院系驳回', icon: 'tree' }
       },
+      
     ]
   },
 
+  //****************************** 社科处管理员 ******************************************
+
+  {
+    path: '/social',
+    component: Layout,
+    meta: {title:'社科处管理员',icon: 'el-icon-s-help'},
+    children: [
+      {
+        path: 'socialScienceCheck',
+        name: 'SocialScienceCheck',
+        component: () => import('@/views/socialScienceCheck/index'),
+        meta: { title: '社科处审核', icon: 'tree' }        
+      },
+    ]
+    
+  },
+  //*************************************科研处管理员*********************************
+  {
+    path: '/research',
+    component: Layout,
+    meta: {title:'科研处管理员',icon: 'el-icon-s-help'},
+    children: [
+      {
+        path: 'researchCheck',
+        name: 'ResearchCheck',
+        component: () => import('@/views/researchCheck/index'),
+        meta: { title: '科研处审核', icon: 'tree' }
+      },
+    ]
+    
+  },
+  
     //******************************院系秘书管理员---基础管理*********************************
   {
     path: '/departmentSecretary/basicManagement',
