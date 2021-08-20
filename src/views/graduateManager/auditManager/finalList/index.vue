@@ -1,3 +1,11 @@
+<!--
+ * @Description: your project
+ * @version: 1.0
+ * @Author: Anna
+ * @Date: 2021-08-19 10:47:29
+ * @LastEditors: Anna
+ * @LastEditTime: 2021-08-19 19:08:00
+-->
 <template>
   <div class="app-container">
     <el-row>
@@ -39,7 +47,7 @@ export default {
       time: ''
     }
   },
-  methods: {
+  methods: { 
     async save() {
       const { data: res } = await this.$http.get(
         '/system-time/save/' + this.time
