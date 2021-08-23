@@ -75,42 +75,46 @@ export const constantRoutes = [
       }
     ]
   },
-  //导师选择界面
+  // 导师选择界面
   {
-    path: '/tutorapply',
+    path: '/tutorApply',
     component: Layout,
-    // name: 'tutormainboard',
-    redirect: '/tutorapply/tutormainboard',
-    // alwaysShow: true,
+    redirect: '/tutorApply/tutorMainBoard',
     meta: { title: '教师申请', icon: 'dashboard' },
     children: [
       {
-        path: 'tutormainboard',
-        name: 'tutormainboard',
+        path: 'tutorMainBoard',
+        name: 'tutorMainBoard',
         // hidden:true,
         // redirect: 'noRedirect',
-        component: () => import('@/views/tutormainboard/index'),
-        meta: { title: '教师申请'},
+        component: () => import('@/views/tutorMainBoard/index'),
+        meta: { title: '教师申请' }
       },
       {
         path: 'firstApplyDoctor/:applyId/:applyCondition',
         name: 'firstApplyDoctor',
         hidden: true,
-        component: () => import('@/views/tutormainboard/FirstApplyDoctor/index'),
-        meta: { title: '首次申请博士生导师' },
+        component: () => import('@/views/tutorMainBoard/FirstApplyDoctor/index'),
+        meta: { title: '首次申请博士生导师' }
       },
       {
         path: 'firstApplyMaster/:applyId/:applyCondition',
         name: 'firstApplyMaster',
         hidden: true,
-        component: () => import('@/views/tutormainboard/FirstApplyMaster/index'),
-        meta: { title: '首次申请硕士生导师（学术学位）' },
+        component: () => import('@/views/tutorMainBoard/FirstApplyMaster/index'),
+        meta: { title: '首次申请硕士生导师（学术学位）' }
       },
+      {
+        path: 'addApplyMaster/:applyId/:applyCondition',
+        name: 'addApplyMaster',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/AddApplyMaster/index'),
+        meta: { title: '学硕导师增列学科' }
+      }
     ]
   },
 
-
-  //******************************研究生管理员---系统设置界面*********************************
+  // ******************************研究生管理员---系统设置界面*********************************
   {
     path: '/graduateManager/basicManagement',
     component: Layout,
@@ -132,8 +136,8 @@ export const constantRoutes = [
       }
     ]
   },
-   //******************************研究生管理员---申报流程*********************************
-   {
+  // ******************************研究生管理员---申报流程*********************************
+  {
     path: '/graduateManager/auditManager',
     component: Layout,
     redirect: '/graduateManager/auditManager/check',
@@ -174,12 +178,12 @@ export const constantRoutes = [
     ]
   },
 
-  //****************************** 社科处管理员 ******************************************
+  // ****************************** 社科处管理员 ******************************************
 
   {
     path: '/social',
     component: Layout,
-    meta: {title:'社科处管理员',icon: 'el-icon-s-help'},
+    meta: { title: '社科处管理员', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'socialScienceCheck',
@@ -190,23 +194,24 @@ export const constantRoutes = [
     ]
 
   },
-  //*************************************科研处管理员*********************************
+  // ************************************科研处管理员*********************************
   {
     path: '/research',
     component: Layout,
-    meta: {title:'科研处管理员',icon: 'el-icon-s-help'},
+    meta: { title: '科研处管理员', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'researchCheck',
         name: 'ResearchCheck',
         component: () => import('@/views/researchCheck/index'),
         meta: { title: '科研处审核', icon: 'tree' }
-      },
+      }
     ]
 
   },
 
-    //******************************院系秘书管理员---基础管理*********************************
+
+  // *****************************院系秘书管理员---基础管理*********************************
   {
     path: '/departmentSecretary/basicManagement',
     component: Layout,
@@ -219,12 +224,12 @@ export const constantRoutes = [
         path: 'systemTimeDepartment',
         name: 'SystemTimeDepartment',
         component: () => import('@/views/departmentSecretary/systemTime/index'),
-        meta: { title: '设置院系时间', icon: 'dashboard'}
-      },
+        meta: { title: '设置院系时间', icon: 'dashboard' }
+      }
     ]
   },
 
-    //******************************院系秘书管理员---申报流程*********************************
+  // *****************************院系秘书管理员---申报流程*********************************
 
   {
     path: '/departmentSecretary/auditManager',
@@ -262,7 +267,7 @@ export const constantRoutes = [
         component: () => import('@/views/departmentSecretary/auditManager/finalList/index'),
         name: 'FinalListDS',
         meta: { title: '最终通过名单', icon: 'dashboard', affix: true }
-      },
+      }
     ]
   }
 ]
@@ -281,14 +286,13 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/icons/index'),
         name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true, roles: ["dev"] }
+        meta: { title: 'Icons', icon: 'icon', noCache: true, roles: ['dev'] }
       }
     ]
   },
 
   /** when your routing map is too long, you can split it into small modules **/
   // chartsRouter,
-
 
   {
     path: '/error',
