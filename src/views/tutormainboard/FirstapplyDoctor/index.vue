@@ -1029,7 +1029,7 @@ export default {
         name: "李一航", // 姓名
         gender: "男", // 性别
         image: "https://www.rexjoush.com/img/1.jpg",
-        organizationId: "24", // 所在单位
+        organizationId: 24, // 所在单位
         birthday: "1997/10/1", // 出生年月
         identity: "411422199712195117", // 证件号码
         phone: "13598892696", // 联系电话
@@ -1037,7 +1037,7 @@ export default {
         title: "教授", // 职称
         evaluateTime: "2021-07", // 评定时间
         finalDegree: "博士", // 最后学位
-        awardingUnitTime: "", //授予单位及时间
+        awardingUnitTime: "sss", //授予单位及时间
       },
 
       // 第 2 页表单
@@ -1130,12 +1130,13 @@ export default {
         .then(() => {
           //授予单位及时间
           this.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
+          
           let applyCondition= this.$route.params.applyCondition; 
           // if (applyCondition === 101 || appplyCondition === 102) {
             //首次申请博士提交到后台
             saveFirstform(this.formFirst, 1,applyCondition)
               .then((res) => {
-                if (res.code == 20000) {
+                if (res.code == 20000) {                  
                   this.$message.success("保存成功！");
                   this.formVisible.first = false; // 关闭第一项
                   this.formVisible.second = true; // 打开第二项
@@ -1148,13 +1149,7 @@ export default {
               .catch(() => {
                  console.log("cancel");
               });
-          // }
-          // else
-          // {
-          //   //修改地址栏，让其重新申请
-          //   this.$message.info("违法修改URL，请重新申请")
-          //    this.$router.push("/"); // 回到首页
-          // }
+          
         })
         .catch(() => {
           console.log("cancel");
