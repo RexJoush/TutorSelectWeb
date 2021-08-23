@@ -116,7 +116,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/graduateManager/basicManagement/user',
     name: 'BasicManagement',
-    meta: { title: '基础管理', icon: 'el-icon-s-help' },
+    meta: { title: '研究生管理员基础管理', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'user',
@@ -138,7 +138,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/graduateManager/auditManager/check',
     name: 'AuditManagement',
-    meta: { title: '申报流程', icon: 'el-icon-s-help' },
+    meta: { title: '研究生管理员申报流程', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'check',
@@ -170,7 +170,7 @@ export const constantRoutes = [
         component: () => import('@/views/graduateManager/auditManager/reject/index'),
         meta: { title: '院系驳回', icon: 'tree' }
       },
-      
+
     ]
   },
 
@@ -185,10 +185,10 @@ export const constantRoutes = [
         path: 'socialScienceCheck',
         name: 'SocialScienceCheck',
         component: () => import('@/views/socialScienceCheck/index'),
-        meta: { title: '社科处审核', icon: 'tree' }        
+        meta: { title: '社科处审核', icon: 'tree' }
       },
     ]
-    
+
   },
   //*************************************科研处管理员*********************************
   {
@@ -203,9 +203,9 @@ export const constantRoutes = [
         meta: { title: '科研处审核', icon: 'tree' }
       },
     ]
-    
+
   },
-  
+
     //******************************院系秘书管理员---基础管理*********************************
   {
     path: '/departmentSecretary/basicManagement',
