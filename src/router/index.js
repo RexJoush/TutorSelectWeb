@@ -234,7 +234,7 @@ export const constantRoutes = [
   {
     path: '/departmentSecretary/auditManager',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: 'departmentSecretary/auditManager/checkDS',
     name: 'AuditManagementDS',
     meta: { title: '院系秘书申报流程', icon: 'el-icon-s-help' },
     children: [
@@ -269,7 +269,29 @@ export const constantRoutes = [
         meta: { title: '最终通过名单', icon: 'dashboard', affix: true }
       }
     ]
-  }
+  },
+   // *****************************院系主管管理员---申报流程*********************************
+   {
+    path: '/departmentLeader/auditManager',
+    component: Layout,
+    redirect: '/dashboard',
+    name: 'AuditManagementDL',
+    meta: { title: '院系主管申报流程', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'reCheckDL',
+        component: () => import('@/views/departmentLeader/reCheck/index'),
+        name: 'CheckDL',
+        meta: { title: '院系主管复审', icon: 'dashboard', affix: true }
+      },
+      {
+        path: 'finishDL',
+        component: () => import('@/views/departmentLeader/checkFinish/index'),
+        name: 'FinishDL',
+        meta: { title: '院系主管已审核', icon: 'dashboard', affix: true }
+      }     
+    ]
+  },
 ]
 
 /**

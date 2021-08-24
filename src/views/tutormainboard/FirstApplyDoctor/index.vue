@@ -54,7 +54,6 @@
                         type="date"
                         style="width: 100%"
                         placeholder="选择日期"
-                        format="yyyy-MM-dd"
                       >
                       </el-date-picker>
                     </el-form-item>
@@ -160,7 +159,6 @@
       <Col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
           <el-card class="box-card" v-if="formVisible.second">
-            <!-- <el-card class="box-card" v-if=true> -->
             <div slot="header" class="clearfix">
               <h2>研究信息</h2>
             </div>
@@ -956,19 +954,19 @@
       :visible.sync="ScienceEngineeringPaperAdd"
     >
       <el-form :model="form" label-position="left">
-        <el-form-item label="论文名称" >
+        <el-form-item label="论文名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="第一作者" >
+        <el-form-item label="第一作者" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="通信作者" >
+        <el-form-item label="通信作者" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="发表时间" >
+        <el-form-item label="发表时间" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="期刊类别" >
+        <el-form-item label="期刊类别" :label-width="formLabelWidth">
           <el-select v-model="form.region" placeholder="请选择">
             <el-option label="SCIE" value="1"></el-option>
             <el-option label="EI" value="2"></el-option>
@@ -977,13 +975,13 @@
             <el-option label="CSCD" value="5"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="期刊分区" >
+        <el-form-item label="期刊分区" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="期刊名称" >
+        <el-form-item label="期刊名称" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="影响因子" >
+        <el-form-item label="影响因子" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
       </el-form>
@@ -1001,7 +999,7 @@
 <script>
 import index from "@/components/Breadcrumb/index.vue";
 import { doctorPrimaryDiscipline } from "@/utils/data";
-import { saveFirstform ,showTeacherInfo } from "@/api/ApplyDoctor/FirstApplyDoctor";
+import { saveFirstform } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 
 export default {
   components: { index },
@@ -1018,16 +1016,16 @@ export default {
         third: false,
         fourth: false,
       },
-      
       /**第一页 */
       // 第 1 页表单
       awardDepartment: "", // 授予单位
       awardTime: "", // 授予时间
 
       formFirst: {
-        name: "", // 姓名
-        gender: "", // 性别
+        name: "李一航", // 姓名
+        gender: "男", // 性别
         image: "https://www.rexjoush.com/img/1.jpg",
+<<<<<<< HEAD
         organizationId: 0, // 所在单位
         birthday: "", // 出生年月
         identity: "", // 证件号码
@@ -1037,6 +1035,17 @@ export default {
         evaluateTime: "", // 评定时间
         finalDegree: "", // 最后学位
         awardingUnitTime: "", //授予单位及时间
+=======
+        organizationId: 24, // 所在单位
+        birthday: "1997/10/1", // 出生年月
+        identity: "411422199712195117", // 证件号码
+        phone: "13598892696", // 联系电话
+        email: "7772854362@qq.com", // 电子邮箱
+        title: "教授", // 职称
+        evaluateTime: "2021-07", // 评定时间
+        finalDegree: "博士", // 最后学位
+        awardingUnitTime: "sss", //授予单位及时间
+>>>>>>> cb920acbe4a932e0ef4d30b94402b3b51f85ebab
       },
 
       // 第 2 页表单
@@ -1119,13 +1128,11 @@ export default {
       ScienceEngineeringPaperAdd: false,
     };
   },
-  created() {
-    this.GetTutorInfoByClient()
-  },
   methods: {
     /*============================================= 第一页 =====================================*/
 
     //提交第一页表单 完成第一页基本信息的填写
+<<<<<<< HEAD
     GetTutorInfoByClient: function (){
       showTeacherInfo().then((res)=>{
          let obj= JSON.parse(res.data);
@@ -1146,6 +1153,8 @@ export default {
         
       })
     },
+=======
+>>>>>>> cb920acbe4a932e0ef4d30b94402b3b51f85ebab
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
@@ -1153,7 +1162,7 @@ export default {
           //授予单位及时间
           this.formFirst.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
 
-          let applyCondition= this.$route.params.applyCondition; 
+          let applyCondition= this.$route.params.applyCondition;
           // if (applyCondition === 101 || appplyCondition === 102) {
             //首次申请博士提交到后台
             saveFirstform(this.formFirst, 1,applyCondition)
