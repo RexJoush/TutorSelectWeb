@@ -704,8 +704,8 @@ export default {
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: false,
-        second: true,
+        first: true,
+        second: false,
         third: false,
         fourth: false
       },
@@ -906,6 +906,7 @@ export default {
         .then(() => {
           submitFirstPage(this.formFirst, 4, this.$route.params.applyCondition)
             .then(res => {
+              this.id = res.data
               console.log(res)
             })
 
@@ -924,10 +925,11 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 2 页
         .then(() => {
-          submitSecondPage(this.formSecond, 4, id)
-          // this.formVisible.second = false // 关闭第 2 页
-          // this.formVisible.third = true // 打开第 3 页
-          // this.active = 2
+          console.log(this.formSecond)
+          submitSecondPage(this.formSecond, 4, this.id)
+          this.formVisible.second = false // 关闭第 2 页
+          this.formVisible.third = true // 打开第 3 页
+          this.active = 2
         })
         .catch(() => {
           console.log('cancel')
