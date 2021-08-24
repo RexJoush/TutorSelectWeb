@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-23 17:06:53
+ * @LastEditTime: 2021-08-24 08:56:05
 -->
 <template>
   <div class="app-container">
@@ -36,7 +36,7 @@
                 @keyup.enter.native="handleQuery"
               />
             </el-form-item>
-            <el-form-item label="负责院系">
+            <el-form-item label="负责院系" prop="organization">
               <el-select
                 v-model="queryParams.organization" 
                 placeholder="请选择"
@@ -153,7 +153,7 @@
 
 <script>
 //负责院系
-import getOrganization from "@/api/SocialDepartment/socialFirst"
+// import getOrganization from "@/api/SocialDepartment/socialFirst"
 import {
   // getApplyType,//导师申请的所有类别
   checkDate,//查询数据
@@ -222,11 +222,16 @@ export default {
   methods: {
     //初始化负责院系(下拉框)
     async getOrganizationList() {
-      getOrganization().then(res => {
-        // console.log("----------------")
-        // console.log(res.data)
-        this.organizationList = res.data;
-      })
+      // getOrganization().then(res => {
+      //   this.organizationList = res.data;
+      // })
+
+      const {data: res} = await this.$http.get(
+        '/organization/getAll'
+      )
+      if(res.code != 20000) return this.$message('获取院系失败')
+      this.organizationList = res.data
+      console.info(this.organizationList)
     },
 
     //查询科研处待初审的数据
