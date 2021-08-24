@@ -24,22 +24,6 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="学科属性" prop="subjectType">
-            <el-select
-              v-model="queryParams.subjectType"
-              placeholder="请选择学科属性"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in subjectTypeOptions"
-                :key="dict.code"
-                :label="dict.label"
-                :value="dict.code"
-              />
-            </el-select>
-          </el-form-item>
           <el-form-item label="申请类别" prop="applyType">
             <el-select
               v-model="queryParams.applyType"
@@ -56,104 +40,12 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="负责院系" prop="organization">
-            <el-select
-              v-model="queryParams.organization"
-              placeholder="请选择院系"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in organizationOptions"
-                :key="dict.organizationId"
-                :label="dict.organizationName"
-                :value="dict.organizationId"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="学科名称" prop="subjectName">
-            <el-select
-              v-model="queryParams.subjectName"
-              placeholder="请选择学科"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in subjectNameOptions"
-                :key="dict.dictValue"
-                :label="dict.dictLabel"
-                :value="dict.dictValue"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="审核状态" prop="applyStatus">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择审核状态"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in applyStatusOptions"
-                :key="dict.codeId"
-                :label="dict.inspectDescribe"
-                :value="dict.codeId"
-              />
-            </el-select>
-          </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
         <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              plain
-              icon="el-icon-bottom-right"
-              size="mini"
-              @click="getList"
-            >符合条件</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="info"
-              plain
-              icon="el-icon-bottom-left"
-              size="mini"
-              @click="getList"
-            >不符合条件</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-refresh-left"
-              size="mini"
-              @click="upDateStatus(0)"
-            >需修改</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-right"
-              size="mini"
-              @click="upDateStatus(30)"
-            >送审社科处</el-button>
-          </el-col> <el-col :span="1.5">
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-right"
-            size="mini"
-            @click="upDateStatus(31)"
-          >送审科研处</el-button>
-        </el-col>
           <el-col :span="1.5">
             <el-button
               type="warning"
@@ -164,21 +56,67 @@
             >导出</el-button>
           </el-col>
         </el-row>
-        <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="工号" align="center" prop="number" />
-          <el-table-column label="姓名" align="center" prop="name" />
-          <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
-          <el-table-column label="申请学科或类别代码" align="center" prop="professionalApplicationSubjectCode" />
-          <el-table-column label="申请学科或类别名称" align="center" prop="professionalApplicationSubjectName" />
-          <el-table-column label="申请类别" align="center" prop="applyName" />
-          <el-table-column label="职称" align="center" prop="professionalTitle" />
-          <el-table-column label="审核状态" align="center" prop="inspectDescribe" />
-          <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column label="备注" align="center" prop="mr" />
 
-        </el-table>
-        <div class="block">
+        <el-table
+          v-loading="loading"
+          :data="tutorList"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="50" align="center" />
+          <el-table-column
+            label="工号"
+            align="center"
+            prop="number"
+            width="100"
+            width:180
+            fixed
+          />
+          <el-table-column label="姓名" align="center" prop="name" fixed />
+          <el-table-column
+            label="所在单位（院系）"
+            align="center"
+            prop="organizationName"
+            width="250"
+            fixed
+          />
+          <el-table-column
+            label="申请学科或类别代码"
+            align="center"
+            prop="professionalApplicationSubjectCode"
+            width="180"
+          />
+          <el-table-column
+            label="申请学科或类别名称"
+            align="center"
+            prop="professionalApplicationSubjectName"
+            width="180"
+          />
+          <el-table-column
+            label="申请类别"
+            align="center"
+            prop="applyName"
+            width="180"
+          />
+          <el-table-column
+            label="职称"
+            align="center"
+            prop="title"
+            width="180"
+          />
+          <el-table-column
+            label="审核状态"
+            align="center"
+            prop="inspectDescribe"
+            width="150"
+          />
+          <el-table-column label="详情" align="center" prop="mr" />
+          <el-table-column
+            label="备注"
+            align="center"
+            prop="commit"
+            width="150"
+          />
+        </el-table>        <div class="block">
           <el-pagination
             v-show="total>0"
             :current-page="queryParams.pageNum"
@@ -186,13 +124,6 @@
             layout="total, prev, pager, next"
             :total="total"
           />
-          <el-button
-            type="primary"
-            plain
-            icon=""
-            size="mini"
-            @click="getList"
-          >提交</el-button>
         </div>
       </el-col>
     </el-row>

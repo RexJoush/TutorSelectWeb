@@ -112,46 +112,31 @@
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
-              type="success"
+              type="danger"
               plain
-              icon="el-icon-bottom-right"
-              size="mini"
-              @click="getList"
-            >符合条件</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="info"
-              plain
-              icon="el-icon-bottom-left"
-              size="mini"
-              @click="getList"
-            >不符合条件</el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-refresh-left"
-              size="mini"
-              @click="upDateStatus(0)"
+              icon="el-icon-error"
+              size="small"
+              @click="unPassFun"
+              :disabled="multiple"
             >需修改</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button
-              type="danger"
+              type="success"
               plain
-              icon="el-icon-right"
-              size="mini"
-              @click="upDateStatus(30)"
+              icon="el-icon-success"
+              size="small"
+              :disabled="single"
+              @click="passFun(1)"
             >送审社科处</el-button>
           </el-col> <el-col :span="1.5">
           <el-button
-            type="primary"
+            type="success"
             plain
-            icon="el-icon-right"
-            size="mini"
-            @click="upDateStatus(31)"
+            icon="el-icon-success"
+            size="small"
+            :disabled="single"
+            @click="passFun(2)"
           >送审科研处</el-button>
         </el-col>
           <el-col :span="1.5">
@@ -159,24 +144,83 @@
               type="warning"
               plain
               icon="el-icon-download"
-              size="mini"
+              size="small"
               @click="getList"
             >导出</el-button>
           </el-col>
         </el-row>
-        <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
+<!--        <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">-->
+<!--          <el-table-column type="selection" width="50" align="center" />-->
+<!--          <el-table-column label="工号" align="center" prop="number" />-->
+<!--          <el-table-column label="姓名" align="center" prop="name" />-->
+<!--          <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />-->
+<!--          <el-table-column label="申请学科或类别代码" align="center" prop="professionalApplicationSubjectCode" />-->
+<!--          <el-table-column label="申请学科或类别名称" align="center" prop="professionalApplicationSubjectName" />-->
+<!--          <el-table-column label="申请类别" align="center" prop="applyName" />-->
+<!--          <el-table-column label="职称" align="center" prop="professionalTitle" />-->
+<!--          <el-table-column label="审核状态" align="center" prop="inspectDescribe" />-->
+<!--          <el-table-column label="详情" align="center" prop="mr" />-->
+<!--          <el-table-column label="备注" align="center" prop="mr" />-->
+<!--        </el-table>-->
+        <el-table
+          v-loading="loading"
+          :data="tutorList"
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="工号" align="center" prop="number" />
-          <el-table-column label="姓名" align="center" prop="name" />
-          <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
-          <el-table-column label="申请学科或类别代码" align="center" prop="professionalApplicationSubjectCode" />
-          <el-table-column label="申请学科或类别名称" align="center" prop="professionalApplicationSubjectName" />
-          <el-table-column label="申请类别" align="center" prop="applyName" />
-          <el-table-column label="职称" align="center" prop="professionalTitle" />
-          <el-table-column label="审核状态" align="center" prop="inspectDescribe" />
+          <el-table-column
+            label="工号"
+            align="center"
+            prop="number"
+            width="100"
+            width:180
+            fixed
+          />
+          <el-table-column label="姓名" align="center" prop="name" fixed />
+          <el-table-column
+            label="所在单位（院系）"
+            align="center"
+            prop="organizationName"
+            width="250"
+            fixed
+          />
+          <el-table-column
+            label="申请学科或类别代码"
+            align="center"
+            prop="professionalApplicationSubjectCode"
+            width="180"
+          />
+          <el-table-column
+            label="申请学科或类别名称"
+            align="center"
+            prop="professionalApplicationSubjectName"
+            width="180"
+          />
+          <el-table-column
+            label="申请类别"
+            align="center"
+            prop="applyName"
+            width="180"
+          />
+          <el-table-column
+            label="职称"
+            align="center"
+            prop="title"
+            width="180"
+          />
+          <el-table-column
+            label="审核状态"
+            align="center"
+            prop="inspectDescribe"
+            width="150"
+          />
           <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column label="备注" align="center" prop="mr" />
-
+          <el-table-column
+            label="备注"
+            align="center"
+            prop="commit"
+            width="150"
+          />
         </el-table>
         <div class="block">
           <el-pagination
@@ -186,30 +230,42 @@
             layout="total, prev, pager, next"
             :total="total"
           />
-          <el-button
-            type="primary"
-            plain
-            icon=""
-            size="mini"
-            @click="getList"
-          >提交</el-button>
         </div>
       </el-col>
     </el-row>
+    <!-- 审批通过的确认弹框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+      <span>确认提交吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button type="primary" @click="rePassFun()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+      <span>请输入驳回理由(可以为空)</span>
+      <el-input v-model="commit" autocomplete="off"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel()">取 消</el-button>
+        <el-button type="primary" @click="returnFun()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+
+import { updateStatus } from '@/api/departmentSecretary/secretaryFirst'
 
 export default {
   data() {
     return {
       // 遮罩层
       loading: true,
-      // 是否为单选
-      single: false,
-      // 是否为多选
-      multiple: false,
+      //备注弹框显示
+      dialogVisible: false,
+      //通过确认框
+      dialogVisiblePass: false,
       // 显示搜索条件
       showSearch: true,
       // 分页总条数
@@ -220,6 +276,10 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
       // 日期范围
       dateRange: [],
       // 申请类别选项
@@ -260,10 +320,14 @@ export default {
         subjectName: undefined, // 学科名称id
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined // 学科属性，文科，理科，交叉
-      }
+      },
+      choose:0,
+      commit:undefined,
     }
   },
   created() {
+    //院系秘书复审通过的状态即研究生院管理员初审状态
+    this.queryParams.applyStatus = 14
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -273,8 +337,6 @@ export default {
     /** 查询用户列表 */
     async getList() {
       this.loading = true
-      //院系秘书复审通过的状态即研究生院管理员初审状态
-      this.queryParams.applyStatus = 14
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
@@ -290,7 +352,7 @@ export default {
         var json={
           "id_1" :this.ids[i],
           "status_1":code,
-          "commit_1":'研究生院返回返回修改',
+          "commit_1": this.commit||"研究生院返回修改",
         };
         updateStatus[i] = json ;
       }
@@ -301,6 +363,7 @@ export default {
       this.getList();
       if(res.code != 20000) return this.$message("操作失败！！！")
        else return this.$message("操作成功！！！")
+      this.commit = undefined
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -316,19 +379,11 @@ export default {
           "inspectDescribe" :"待初审"
         },
         {
-          "codeId" : 34,
-          "inspectDescribe" :"符合条件"
-        },
-        {
-          "codeId" : 35,
-          "inspectDescribe" :"不符合条件"
-        },
-        {
-          "codeId" : 32,
+          "codeId" : 0,
           "inspectDescribe" :"需修改"
         },
         {
-          "codeId" : 300,
+          "codeId" : 30,
           "inspectDescribe" :"送至社科处"
         },
         {
@@ -352,12 +407,6 @@ export default {
       // if(res.code != 1000) return this.$message("获取类别失败")
       // this.applyTypeOptions = res.data
     },
-
-    // 取消按钮
-    cancel() {
-      this.open = false
-      this.reset()
-    },
     // 表单重置
     reset() {
       this.form = {
@@ -380,10 +429,59 @@ export default {
       this.dateRange = []
       this.handleQuery()
     },
+    //初审通过
+    passFun(num) {
+      this.dialogVisiblePass = true;
+      this.choose = num ;
+    },
+    //审核通过确认弹框确认按钮
+    rePassFun() {
+      if(this.choose==1) {
+        //送审社科处
+        this.upDateStatus(30)
+      }
+      if(this.choose==2) {
+        //送审社科处
+        this.upDateStatus(31)
+
+      }
+      this.check(11);
+      this.dialogVisiblePass = false;
+    },
+    //初审不通过
+    unPassFun() {
+      //驳回之前判断是否只选择了一条
+      if (this.ids.length>1) {
+        this.$message.warning("注意:只能选择一条数据审核！");
+      } else {
+        this.dialogVisible = true;
+      }
+
+    },
+    //弹框确定按钮驳回操作
+    returnFun() {
+      //带上备注
+      this.upDateStatus(36)
+      this.dialogVisible = false;
+    },
+    //弹框取消按钮
+    cancel() {
+      this.dialogVisible = false;
+      this.commit = undefined;
+    },
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tutorId)
+      if (selection.length > 0) {
+        this.single = false;
+        this.multiple = false;
+      } else {
+        this.single = true;
+        this.multiple = true;
+      }
     }
+
   }
 }
 </script>
