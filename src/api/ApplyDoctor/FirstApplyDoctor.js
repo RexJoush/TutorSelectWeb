@@ -15,6 +15,16 @@ export function IfApply(tId,aId){
         params:{ tutorId: tId, applyId : aId}
     })
 }
+/**
+ * 获取导师基本信息
+ * @returns 
+ */
+ export function showTeacherInfo() {
+    return request({   
+      url: `${baseUrl}/tutor/firstApplyDoctor/getTutorBaseInfo`,
+      method: 'get',
+    })
+  }
 
 //第一页基本信息提交
 export function saveFirstform(data,applyId,applyCondition){

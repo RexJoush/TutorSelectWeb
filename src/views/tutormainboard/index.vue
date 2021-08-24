@@ -108,12 +108,14 @@
 
 <script>
 
-import { firstApply } from "@/api/tutor/mainboard";
+import { firstApply ,showTeacherInfo} from "@/api/tutor/mainboard";
 
 export default {
   data(){
     return{
-      tutorId:"202032969"
+      tutorId:"202032969",
+      //老师基本信息
+      TeacherInfo:{},
     }
   },
   methods: {
@@ -140,9 +142,15 @@ export default {
     },
 
     // 博士增列
-    addApplyDoctor: function () {
-      this.$router.push("firstApplyMaster/2");
-    },
+    // addApplyDoctor: function () {
+    //     showTeacherInfo().then((res)=>{
+    //       console.log(this.TeacherInfo=res);
+    //       let obj= JSON.parse(this.TeacherInfo.data);
+    //       console.log(obj.data.Rows[0].MC);
+          
+    //     })
+    //   // this.$router.push("firstApplyMaster/2");
+    // },
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function () {
       firstApply(4).then((res) => {
