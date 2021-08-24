@@ -321,11 +321,7 @@
                           <el-input v-model="scope.row.title"></el-input>
                         </template>
                       </el-table-column>
-                      <!-- <el-table-column label="所任职务">
-                    <template slot-scope="scope">
-                      <el-input v-model="scope.row.job"></el-input>
-                    </template>
-                  </el-table-column> -->
+                      
                       <el-table-column width="100">
                         <template slot-scope="scope">
                           <el-button
@@ -342,7 +338,7 @@
               <Row>
                 <Col :offset="8">
                   <el-form-item style="margin-top: 20px">
-                    <el-button @click="backFirstPage">返回上一页</el-button>
+                    <!-- <el-button @click="backFirstPage">返回上一页</el-button> -->
                     <el-button type="primary" @click="onSubmitSecondPage"
                       >保存此部分，填写下一项</el-button
                     >
@@ -768,9 +764,9 @@
                   <el-row>
                     <el-col :offset="8"
                       ><el-form-item style="margin-top: 20px">
-                        <el-button @click="backToSecondPage"
+                        <!-- <el-button @click="backToSecondPage"
                           >返回上一页</el-button
-                        >
+                        > -->
                         <el-button type="primary" @click="onSubmitThirdPage"
                           >保存此部分，填写下一项</el-button
                         >
@@ -884,12 +880,12 @@
             <br />
 
             <el-row>
-              <el-col offset="10" :span="3"
+              <!-- <el-col  :span="3"
                 ><el-button type="primary" @click="backThirdPage"
                   >返回上一页</el-button
                 ></el-col
-              >
-              <el-col :span="3"
+              > -->
+              <el-col offset="10" :span="3"
                 ><el-button type="primary" @click="onSubmitFourthPage"
                   >提交</el-button
                 ></el-col
@@ -1025,8 +1021,8 @@ export default {
       
       /**第一页 */
       // 第 1 页表单
-      awardDepartment: "西北大学", // 授予单位
-      awardTime: "2016/8/9", // 授予时间
+      awardDepartment: "", // 授予单位
+      awardTime: "", // 授予时间
 
       formFirst: {
         name: "", // 姓名
@@ -1040,7 +1036,7 @@ export default {
         title: "", // 职称
         evaluateTime: "", // 评定时间
         finalDegree: "", // 最后学位
-        awardingUnitTime: "ss", //授予单位及时间
+        awardingUnitTime: "", //授予单位及时间
       },
 
       // 第 2 页表单
@@ -1138,10 +1134,7 @@ export default {
           this.formFirst.gender =obj.data.Rows[0].XB
           this.formFirst.image =obj.data.Rows[0].SHZ
           // this.organizationId=obj.data.Rows[0].XM
-          this.formFirst.birthday = obj.data.Rows[0].CSRQ
-          // let bir = new Date((obj.data.Rows[0].CSRQ).getTime()).format("yyyy-MM-dd");
-          // this.formFirst.birthday = this.m((obj.data.Rows[0].CSRQ).getTime().format("yyyy-MM-dd"));
-          // console.log(this.formFirst.birthday)
+          this.formFirst.birthday = obj.data.Rows[0].CSRQ         
           this.formFirst.identity =obj.data.Rows[0].SFZJH
           this.formFirst.phone = obj.data.Rows[0].SJH
           // this.email = obj.data.Rows[0].XM
@@ -1158,7 +1151,7 @@ export default {
         // 提交保存第一页
         .then(() => {
           //授予单位及时间
-          this.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
+          this.formFirst.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
 
           let applyCondition= this.$route.params.applyCondition; 
           // if (applyCondition === 101 || appplyCondition === 102) {
@@ -1211,10 +1204,10 @@ export default {
         });
     },
     //返回第一页
-    backFirstPage: function () {
-      this.formVisible.second = false;
-      this.formVisible.first = true;
-    },
+    // backFirstPage: function () {
+    //   this.formVisible.second = false;
+    //   this.formVisible.first = true;
+    // },
     //第二页对话框
     //社科类上传文件按钮
     handleRemove(file, fileList) {
@@ -1250,10 +1243,10 @@ export default {
         });
     },
     //返回第二页
-    backToSecondPage: function () {
-      this.formVisible.third = false;
-      this.formVisible.second = true;
-    },
+    // backToSecondPage: function () {
+    //   this.formVisible.third = false;
+    //   this.formVisible.second = true;
+    // },
 
     /* 第 4 页 */
     // 完成第 4 页学术信息的填写
@@ -1270,10 +1263,10 @@ export default {
         });
     },
     //返回第三页
-    backThirdPage: function () {
-      this.formVisible.fourth = false;
-      this.formVisible.third = true;
-    },
+    // backThirdPage: function () {
+    //   this.formVisible.fourth = false;
+    //   this.formVisible.third = true;
+    // },
   },
 };
 </script>
