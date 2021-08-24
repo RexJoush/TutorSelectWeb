@@ -1003,7 +1003,7 @@
 <script>
 import index from "@/components/Breadcrumb/index.vue";
 import { doctorPrimaryDiscipline } from "@/utils/data";
-import { saveFirstform } from "@/api/ApplyDoctor/FirstApplyDoctor";
+import { saveFirstform } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 
 export default {
   components: { index },

@@ -146,8 +146,13 @@ export default {
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function() {
       firstApply(4).then((res) => {
+        /*
+          101：已经申请过此岗位，但信息未填写完成
+          100：已经申请过此岗位，且信息已提交完成
+          102：未申请过此岗位
+         */
         if (res.data === '101') {
-          // 查询出来的状态为0 ，老师可以进去修改
+          // 查询出来的状态为 0 ，老师可以进去修改
           this.$router.push('firstApplyMaster/4/101')
         } else if (res.data === '102') {
           // 没有申请过此岗位
