@@ -49,7 +49,6 @@
             <el-select
               v-model="queryParams.applyStatus"
               placeholder="请选择"
-              clearable
               size="small"
               style="width: 240px"
             >
@@ -145,7 +144,7 @@
             prop="inspectDescribe"
           />
           <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column label="备注" align="center" prop="mr" />
+          <el-table-column label="备注" align="center" prop="commit" />
         </el-table>
 
         <el-pagination
@@ -159,19 +158,27 @@
         </el-pagination>
       </el-col>
     </el-row>
-    <!-- 驳回时的备注弹框 -->
+    <!-- 审批通过的确认弹框 -->
     <el-dialog
-      title="备注"
-      :visible.sync="dialogVisible"
+      title="提示"
+      :visible.sync="dialogVisiblePass"
       width="30%"
     >
+      <span>确认提交吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button type="primary" @click="rePassFun()"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
+    <!-- 驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
-        <el-button type="primary" @click="returnFun()"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="returnFun()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -187,9 +194,11 @@ export default {
   data() {
     return {
       //备注内容
-      returnCommit:'',
+      returnCommit: "",
       //备注弹框显示
-      dialogVisible:false,
+      dialogVisible: false,
+      //通过确认框
+      dialogVisiblePass:false,
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -267,11 +276,12 @@ export default {
       this.loading = true;
       this.queryParams.applyStatus = 10;
       checkDate(this.queryParams).then((res) => {
-         if(res.code == 20000){
-           this.tutorList = res.data;
-           this.totalData = res.data.length;
-           this.loading = false;
-         }
+        console.log(res);
+        if (res.code == 20000) {
+          this.tutorList = res.data;
+          this.totalData = res.data.length;
+          this.loading = false;
+        }
       });
     },
     //搜索按钮
@@ -288,11 +298,16 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = null; // 审核状态码id
+      this.queryParams.applyStatus = 10; // 审核状态码id
     },
     //初审通过
     passFun() {
+      this.dialogVisiblePass = true     
+    },
+    //审核通过确认弹框确认按钮
+    rePassFun(){
       this.check(11);
+      this.dialogVisiblePass = false
     },
     //初审不通过
     unPassFun() {
@@ -300,22 +315,22 @@ export default {
       if (this.multipleSelection.length > 1) {
         this.$message.warning("注意:只能选择一条数据审核！");
       } else {
-        this.dialogVisible = true
+        this.dialogVisible = true;
       }
       // this.check(12);
     },
     //弹框确定按钮驳回操作
-    returnFun(){
+    returnFun() {
       //带上备注
       this.updataList[0].commit_1 = this.returnCommit;
       this.check(12);
-      this.dialogVisible = false
-      this.returnCommit = null
+      this.dialogVisible = false;
+      this.returnCommit = null;
     },
     //弹框取消按钮
-    cancel(){
-      this.dialogVisible = false
-      this.returnCommit = null
+    cancel() {
+      this.dialogVisible = false;
+      this.returnCommit = null;
     },
     //更新操作
     check(status) {
@@ -344,17 +359,17 @@ export default {
       }
       this.multipleSelection = val;
       //每次选择都要将之前的清空
-      this.updataList = []
+      this.updataList = [];
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
-        let obj = {id_1:0, status_1: 0, commit_1: "" };
+        let obj = { id_1: 0, status_1: 0, commit_1: "" };
         obj.id_1 = this.multipleSelection[index].tutorId;
         // obj.number_1 = this.multipleSelection[index].number;
         // obj.applyId_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1="";
-        console.log(obj)
+        obj.commit_1 = "";
+        console.log(obj);
         this.updataList.push(obj);
       }
     },
