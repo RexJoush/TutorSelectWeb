@@ -54,7 +54,6 @@
                         type="date"
                         style="width: 100%"
                         placeholder="选择日期"
-                        format="yyyy-MM-dd"
                       >
                       </el-date-picker>
                     </el-form-item>
@@ -160,7 +159,6 @@
       <Col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
           <el-card class="box-card" v-if="formVisible.second">
-            <!-- <el-card class="box-card" v-if=true> -->
             <div slot="header" class="clearfix">
               <h2>研究信息</h2>
             </div>
@@ -321,11 +319,7 @@
                           <el-input v-model="scope.row.title"></el-input>
                         </template>
                       </el-table-column>
-                      <!-- <el-table-column label="所任职务">
-                    <template slot-scope="scope">
-                      <el-input v-model="scope.row.job"></el-input>
-                    </template>
-                  </el-table-column> -->
+                      
                       <el-table-column width="100">
                         <template slot-scope="scope">
                           <el-button
@@ -342,7 +336,7 @@
               <Row>
                 <Col :offset="8">
                   <el-form-item style="margin-top: 20px">
-                    <el-button @click="backFirstPage">返回上一页</el-button>
+                    <!-- <el-button @click="backFirstPage">返回上一页</el-button> -->
                     <el-button type="primary" @click="onSubmitSecondPage"
                       >保存此部分，填写下一项</el-button
                     >
@@ -768,9 +762,9 @@
                   <el-row>
                     <el-col :offset="8"
                       ><el-form-item style="margin-top: 20px">
-                        <el-button @click="backToSecondPage"
+                        <!-- <el-button @click="backToSecondPage"
                           >返回上一页</el-button
-                        >
+                        > -->
                         <el-button type="primary" @click="onSubmitThirdPage"
                           >保存此部分，填写下一项</el-button
                         >
@@ -884,12 +878,12 @@
             <br />
 
             <el-row>
-              <el-col offset="10" :span="3"
+              <!-- <el-col  :span="3"
                 ><el-button type="primary" @click="backThirdPage"
                   >返回上一页</el-button
                 ></el-col
-              >
-              <el-col :span="3"
+              > -->
+              <el-col offset="10" :span="3"
                 ><el-button type="primary" @click="onSubmitFourthPage"
                   >提交</el-button
                 ></el-col
@@ -960,19 +954,19 @@
       :visible.sync="ScienceEngineeringPaperAdd"
     >
       <el-form :model="form" label-position="left">
-        <el-form-item label="论文名称" >
+        <el-form-item label="论文名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="第一作者" >
+        <el-form-item label="第一作者" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="通信作者" >
+        <el-form-item label="通信作者" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="发表时间" >
+        <el-form-item label="发表时间" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="期刊类别" >
+        <el-form-item label="期刊类别" :label-width="formLabelWidth">
           <el-select v-model="form.region" placeholder="请选择">
             <el-option label="SCIE" value="1"></el-option>
             <el-option label="EI" value="2"></el-option>
@@ -981,13 +975,13 @@
             <el-option label="CSCD" value="5"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="期刊分区" >
+        <el-form-item label="期刊分区" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="期刊名称" >
+        <el-form-item label="期刊名称" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="影响因子" >
+        <el-form-item label="影响因子" :label-width="formLabelWidth">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
       </el-form>
@@ -1005,7 +999,7 @@
 <script>
 import index from "@/components/Breadcrumb/index.vue";
 import { doctorPrimaryDiscipline } from "@/utils/data";
-import { saveFirstform ,showTeacherInfo } from "@/api/ApplyDoctor/FirstApplyDoctor";
+import { saveFirstform } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 
 export default {
   components: { index },
@@ -1022,16 +1016,16 @@ export default {
         third: false,
         fourth: false,
       },
-      
       /**第一页 */
       // 第 1 页表单
-      awardDepartment: "西北大学", // 授予单位
-      awardTime: "2016/8/9", // 授予时间
+      awardDepartment: "", // 授予单位
+      awardTime: "", // 授予时间
 
       formFirst: {
-        name: "", // 姓名
-        gender: "", // 性别
+        name: "李一航", // 姓名
+        gender: "男", // 性别
         image: "https://www.rexjoush.com/img/1.jpg",
+
         organizationId: 0, // 所在单位
         birthday: "", // 出生年月
         identity: "", // 证件号码
@@ -1040,7 +1034,8 @@ export default {
         title: "", // 职称
         evaluateTime: "", // 评定时间
         finalDegree: "", // 最后学位
-        awardingUnitTime: "ss", //授予单位及时间
+        awardingUnitTime: "", //授予单位及时间
+
       },
 
       // 第 2 页表单
@@ -1123,9 +1118,6 @@ export default {
       ScienceEngineeringPaperAdd: false,
     };
   },
-  created() {
-    this.GetTutorInfoByClient()
-  },
   methods: {
     /*============================================= 第一页 =====================================*/
 
@@ -1138,10 +1130,7 @@ export default {
           this.formFirst.gender =obj.data.Rows[0].XB
           this.formFirst.image =obj.data.Rows[0].SHZ
           // this.organizationId=obj.data.Rows[0].XM
-          this.formFirst.birthday = obj.data.Rows[0].CSRQ
-          // let bir = new Date((obj.data.Rows[0].CSRQ).getTime()).format("yyyy-MM-dd");
-          // this.formFirst.birthday = this.m((obj.data.Rows[0].CSRQ).getTime().format("yyyy-MM-dd"));
-          // console.log(this.formFirst.birthday)
+          this.formFirst.birthday = obj.data.Rows[0].CSRQ         
           this.formFirst.identity =obj.data.Rows[0].SFZJH
           this.formFirst.phone = obj.data.Rows[0].SJH
           // this.email = obj.data.Rows[0].XM
@@ -1158,9 +1147,9 @@ export default {
         // 提交保存第一页
         .then(() => {
           //授予单位及时间
-          this.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
+          this.formFirst.awardingUnitTime = this.awardDepartment + "-" + this.awardTime;
 
-          let applyCondition= this.$route.params.applyCondition; 
+          let applyCondition= this.$route.params.applyCondition;
           // if (applyCondition === 101 || appplyCondition === 102) {
             //首次申请博士提交到后台
             saveFirstform(this.formFirst, 1,applyCondition)
@@ -1211,10 +1200,10 @@ export default {
         });
     },
     //返回第一页
-    backFirstPage: function () {
-      this.formVisible.second = false;
-      this.formVisible.first = true;
-    },
+    // backFirstPage: function () {
+    //   this.formVisible.second = false;
+    //   this.formVisible.first = true;
+    // },
     //第二页对话框
     //社科类上传文件按钮
     handleRemove(file, fileList) {
@@ -1250,10 +1239,10 @@ export default {
         });
     },
     //返回第二页
-    backToSecondPage: function () {
-      this.formVisible.third = false;
-      this.formVisible.second = true;
-    },
+    // backToSecondPage: function () {
+    //   this.formVisible.third = false;
+    //   this.formVisible.second = true;
+    // },
 
     /* 第 4 页 */
     // 完成第 4 页学术信息的填写
@@ -1270,10 +1259,10 @@ export default {
         });
     },
     //返回第三页
-    backThirdPage: function () {
-      this.formVisible.fourth = false;
-      this.formVisible.third = true;
-    },
+    // backThirdPage: function () {
+    //   this.formVisible.fourth = false;
+    //   this.formVisible.third = true;
+    // },
   },
 };
 </script>
