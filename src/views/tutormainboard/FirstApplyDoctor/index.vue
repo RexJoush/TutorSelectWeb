@@ -1025,7 +1025,7 @@ export default {
         name: "李一航", // 姓名
         gender: "男", // 性别
         image: "https://www.rexjoush.com/img/1.jpg",
-<<<<<<< HEAD
+
         organizationId: 0, // 所在单位
         birthday: "", // 出生年月
         identity: "", // 证件号码
@@ -1035,17 +1035,7 @@ export default {
         evaluateTime: "", // 评定时间
         finalDegree: "", // 最后学位
         awardingUnitTime: "", //授予单位及时间
-=======
-        organizationId: 24, // 所在单位
-        birthday: "1997/10/1", // 出生年月
-        identity: "411422199712195117", // 证件号码
-        phone: "13598892696", // 联系电话
-        email: "7772854362@qq.com", // 电子邮箱
-        title: "教授", // 职称
-        evaluateTime: "2021-07", // 评定时间
-        finalDegree: "博士", // 最后学位
-        awardingUnitTime: "sss", //授予单位及时间
->>>>>>> cb920acbe4a932e0ef4d30b94402b3b51f85ebab
+
       },
 
       // 第 2 页表单
@@ -1132,7 +1122,6 @@ export default {
     /*============================================= 第一页 =====================================*/
 
     //提交第一页表单 完成第一页基本信息的填写
-<<<<<<< HEAD
     GetTutorInfoByClient: function (){
       showTeacherInfo().then((res)=>{
          let obj= JSON.parse(res.data);
@@ -1153,8 +1142,6 @@ export default {
         
       })
     },
-=======
->>>>>>> cb920acbe4a932e0ef4d30b94402b3b51f85ebab
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
