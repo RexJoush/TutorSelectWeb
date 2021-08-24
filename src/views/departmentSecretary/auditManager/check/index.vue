@@ -76,6 +76,8 @@
             >
           </el-form-item>
         </el-form>
+        <br>
+        <br>
 
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
@@ -98,17 +100,6 @@
               :disabled="multiple"
               @click="unPassFun()"
               >不通过</el-button
-            >
-          </el-col>
-
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="small"
-              :loading="exportLoading"
-              >导出excel</el-button
             >
           </el-col>
         </el-row>
@@ -183,6 +174,20 @@
           :total="totalData"
         >
         </el-pagination>
+        <br />
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="small"
+              :loading="exportLoading"
+              >导出excel</el-button
+            >
+          </el-col>
+        </el-row>
+        <span>注意：导出上表所有的数据</span>
       </el-col>
     </el-row>
     <!-- 审批通过的确认弹框 -->
@@ -296,6 +301,7 @@ export default {
     getSecretaryInit() {
       this.loading = true;
       this.queryParams.applyStatus = 10;
+      // this.queryParams.organization = 50030;  //传入秘书院系id
       checkDate(this.queryParams).then((res) => {
         console.log(res);
         if (res.code == 20000) {

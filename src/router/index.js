@@ -248,7 +248,7 @@ export const constantRoutes = [
         path: 'submitFh',
         component: () => import('@/views/departmentSecretary/auditManager/submitFh/index'),
         name: 'SubmitFh',
-        meta: { title: '提交分会', icon: 'dashboard', affix: true }
+        meta: { title: '院系主管已审核', icon: 'dashboard', affix: true }
       },
       {
         path: 'reCheckDS',

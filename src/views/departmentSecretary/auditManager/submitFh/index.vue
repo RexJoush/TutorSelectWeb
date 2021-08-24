@@ -76,19 +76,9 @@
             >
           </el-form-item>
         </el-form>
+        <br />
+        <br />
 
-        <el-row :gutter="10" class="mb8">     
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="small"
-              :loading="exportLoading"
-              >导出excel</el-button
-            >
-          </el-col>
-        </el-row>
         <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
         <el-table
           v-loading="loading"
@@ -160,9 +150,25 @@
           :total="totalData"
         >
         </el-pagination>
+        <br />
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="small"
+              :loading="exportLoading"
+              >导出excel</el-button
+            >
+          </el-col>
+        </el-row>
+        <span
+          >注意：导出上表中<span style="color: red">同意上分会</span
+          >的数据</span
+        >
       </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -213,29 +219,29 @@ export default {
       },
       //当前页
       currentPage: 1,
-    //   //和秘书初审有关的审核状态
-    //   statuOptions: [
-    //     {
-    //       value: 10,
-    //       label: "待初审",
-    //     },
-    //     {
-    //       value: 11,
-    //       label: "通过",
-    //     },
-    //     {
-    //       value: 12,
-    //       label: "不通过",
-    //     },
-    //     {
-    //       value: 63,
-    //       label: "社科处审核通过",
-    //     },
-    //     {
-    //       value: 64,
-    //       label: "科研处审核通过",
-    //     },
-    //   ],
+      //   //和秘书初审有关的审核状态
+      //   statuOptions: [
+      //     {
+      //       value: 10,
+      //       label: "待初审",
+      //     },
+      //     {
+      //       value: 11,
+      //       label: "通过",
+      //     },
+      //     {
+      //       value: 12,
+      //       label: "不通过",
+      //     },
+      //     {
+      //       value: 63,
+      //       label: "社科处审核通过",
+      //     },
+      //     {
+      //       value: 64,
+      //       label: "科研处审核通过",
+      //     },
+      //   ],
       //审核后需要下发的List数据
       updataList: [],
       tutorList: [],
