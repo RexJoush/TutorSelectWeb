@@ -86,7 +86,7 @@
               size="small"
               :disabled="single"
               @click="passFun()"
-              >通过</el-button
+              >同意上分会</el-button
             >
           </el-col>
           <el-col :span="1.5">
@@ -97,18 +97,7 @@
               size="small"
               :disabled="multiple"
               @click="unPassFun()"
-              >不通过</el-button
-            >
-          </el-col>
-
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="small"
-              :loading="exportLoading"
-              >导出excel</el-button
+              >不同意上分会</el-button
             >
           </el-col>
         </el-row>
@@ -119,21 +108,14 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column
-            label="工号"
-            align="center"
-            prop="number"
-            width="100"
-            width:180
-            fixed
-          />
-          <el-table-column label="姓名" align="center" prop="name" fixed />
+          <el-table-column label="工号" align="center" prop="number" width="100" fixed/>
+          <el-table-column label="姓名" align="center" prop="name" fixed/>
           <el-table-column
             label="所在单位（院系）"
             align="center"
             prop="organizationName"
-            width="250"
-            fixed
+             width="250"
+             fixed
           />
           <el-table-column
             label="申请学科或类别代码"
@@ -147,18 +129,8 @@
             prop="professionalApplicationSubjectName"
             width="180"
           />
-          <el-table-column
-            label="申请类别"
-            align="center"
-            prop="applyName"
-            width="180"
-          />
-          <el-table-column
-            label="职称"
-            align="center"
-            prop="title"
-            width="180"
-          />
+          <el-table-column label="申请类别" align="center" prop="applyName" width="180"  />
+          <el-table-column label="职称" align="center" prop="title"  width="180"/>
           <el-table-column
             label="审核状态"
             align="center"
@@ -166,12 +138,7 @@
             width="150"
           />
           <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column
-            label="备注"
-            align="center"
-            prop="commit"
-            width="150"
-          />
+          <el-table-column label="备注" align="center" prop="commit" width="150"/>
         </el-table>
 
         <el-pagination
@@ -195,7 +162,7 @@
     </el-dialog>
     <!-- 驳回时的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>请输入驳回理由(可以为空)</span>
+      <span>请输入备注(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
@@ -255,25 +222,17 @@ export default {
       //和秘书初审有关的审核状态
       statuOptions: [
         {
-          value: 10,
-          label: "待初审",
-        },
-        {
           value: 11,
-          label: "通过",
+          label: "初审通过",
         },
         {
-          value: 12,
-          label: "不通过",
+          value: 13,
+          label: "同意上分会",
         },
         {
-          value: 63,
-          label: "社科处审核通过",
-        },
-        {
-          value: 64,
-          label: "科研处审核通过",
-        },
+          value: 22,
+          label: "不同意上分会",
+        }
       ],
       //审核后需要下发的List数据
       updataList: [],
@@ -295,7 +254,7 @@ export default {
     // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 10;
+      this.queryParams.applyStatus = 11;
       checkDate(this.queryParams).then((res) => {
         console.log(res);
         if (res.code == 20000) {
@@ -321,16 +280,16 @@ export default {
       this.queryParams.applyType = null; // 申请类别id
       this.queryParams.applyStatus = 10; // 审核状态码id
     },
-    //初审通过
+    //同意上分会
     passFun() {
       this.dialogVisiblePass = true;
     },
     //审核通过确认弹框确认按钮
     rePassFun() {
-      this.check(11);
+      this.check(13);
       this.dialogVisiblePass = false;
     },
-    //初审不通过
+    //不同意上分会
     unPassFun() {
       //驳回之前判断是否只选择了一条
       if (this.multipleSelection.length > 1) {
@@ -338,13 +297,12 @@ export default {
       } else {
         this.dialogVisible = true;
       }
-      // this.check(12);
     },
     //弹框确定按钮驳回操作
     returnFun() {
       //带上备注
       this.updataList[0].commit_1 = this.returnCommit;
-      this.check(12);
+      this.check(22);
       this.dialogVisible = false;
       this.returnCommit = null;
     },
