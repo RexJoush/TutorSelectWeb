@@ -1,8 +1,8 @@
 <!--
- * @Author: zjz
- * @Date: 2021-08-13 16:36:21
+ * @Author: Rex Joush
+ * @Date: 2021-08-20 15:56:18
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-19 20:16:38
+ * @LastEditTime: 2021-08-20 15:56:18
 -->
 <template>
   <div class="main">
@@ -35,30 +35,28 @@
                 <Row>
                   <Col :span="12">
                     <el-form-item label="姓名">
-                      <el-input v-model="formFirst.name" disabled />
+                      <el-input v-model="formFirst.name" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="性别">
-                      <span style="color: #606266;">{{ formFirst.gender }}</span>
-                      <!--                      <el-radio v-if="formFirst.gender === '男'" v-model="formFirst.gender" label="男">男</el-radio>-->
-                      <!--                      <el-radio v-else v-model="formFirst.gender" disabled label="女">女</el-radio>-->
+                      <el-radio v-model="formFirst.gender" disabled label="男">男</el-radio>
+                      <el-radio v-model="formFirst.gender" disabled label="女">女</el-radio>
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="所在单位">
-                      <el-input v-model="formFirst.organizationId" disabled />
+                      <el-input v-model="formFirst.organizationId" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="出生年月">
-                      <el-input v-model="formFirst.birthday" disabled />
-                      <!--                      <el-date-picker-->
-                      <!--                        v-model="formFirst.birthday"-->
-                      <!--                        type="date"-->
-                      <!--                        style="width: 100%"-->
-                      <!--                        placeholder="选择日期"-->
-                      <!--                      />-->
+                      <el-date-picker
+                        v-model="formFirst.birthday"
+                        type="date"
+                        style="width: 100%"
+                        placeholder="选择日期"
+                      />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -68,7 +66,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="证件号码">
-                      <el-input v-model="formFirst.identity" disabled />
+                      <el-input v-model="formFirst.identity" :disabled="true" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -83,18 +81,17 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="职称">
-                      <el-input v-model="formFirst.title" disabled />
+                      <el-input v-model="formFirst.title" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="评定时间">
-                      <el-input v-model="formFirst.evaluateTime" disabled />
-                      <!--                      <el-date-picker-->
-                      <!--                        v-model="formFirst.evaluateTime"-->
-                      <!--                        type="month"-->
-                      <!--                        style="width: 100%"-->
-                      <!--                        placeholder="选择日期"-->
-                      <!--                      />-->
+                      <el-date-picker
+                        v-model="formFirst.evaluateTime"
+                        type="month"
+                        style="width: 100%"
+                        placeholder="选择日期"
+                      />
                     </el-form-item>
                   </Col>
                 </Row>
@@ -121,16 +118,15 @@
               </Col>
               <Col :span="8">
                 <el-form-item label="最后学位">
-                  <el-input v-model="formFirst.finalDegree" disabled />
-                  <!--                  <el-select-->
-                  <!--                    v-model="formFirst.finalDegree"-->
-                  <!--                    style="width: 100%"-->
-                  <!--                    placeholder="请选择"-->
-                  <!--                  >-->
-                  <!--                    <el-option key="学士" lable="学士" value="学士" />-->
-                  <!--                    <el-option key="硕士" lable="硕士" value="硕士" />-->
-                  <!--                    <el-option key="博士" lable="博士" value="博士" />-->
-                  <!--                  </el-select>-->
+                  <el-select
+                    v-model="formFirst.finalDegree"
+                    style="width: 100%"
+                    placeholder="请选择"
+                  >
+                    <el-option key="学士" lable="学士" value="学士" />
+                    <el-option key="硕士" lable="硕士" value="硕士" />
+                    <el-option key="博士" lable="博士" value="博士" />
+                  </el-select>
                 </el-form-item>
               </Col>
               <Col :span="8">
@@ -140,7 +136,6 @@
               </Col>
               <Col :span="8">
                 <el-form-item label="授予时间">
-<!--                  <el-input v-model="formFirst.col1" disabled />-->
                   <el-date-picker
                     v-model="formFirst.col1"
                     type="month"
@@ -151,7 +146,7 @@
               </Col>
             </Row>
             <Row>
-              <Col :offset="7">
+              <Col :offset="8">
                 <el-form-item style="margin-top: 20px">
                   <el-button type="primary" @click="onSubmitFirstPage">保存此部分，填写下一项</el-button>
                 </el-form-item>
@@ -178,10 +173,10 @@
             >
               <Row>
                 <Col :span="24">
-                  <Row>
+                  <Row :gutter="20">
                     <Col :span="8">
                       <el-form-item label="申请学科">
-                        <el-select v-model="formSecond.applySubject" placeholder="请选择">
+                        <el-select v-model="formSecond.applySubject" style="width: 100%;" placeholder="请选择">
                           <el-option key="文史" lable="文史" value="文史" />
                           <el-option key="理工" lable="理工" value="理工" />
                           <el-option key="交叉学科" lable="交叉学科" value="交叉学科" />
@@ -192,6 +187,7 @@
                       <el-form-item label="申请学科负责单位：">
                         <el-select
                           v-model="currentDepartment"
+                          style="width: 100%;"
                           placeholder="请选择"
                           @change="setChildNode"
                         >
@@ -207,7 +203,7 @@
                     </Col>
                     <Col :span="8">
                       <el-form-item label="一级学科代码及名称">
-                        <el-select v-model="formSecond.doctoralMasterSubjectCodeName" placeholder="请选择">
+                        <el-select v-model="formSecond.doctoralMasterSubjectCodeName" style="width: 100%;" placeholder="请选择">
                           <el-option
                             v-for="item in childNodes"
                             :key="item.code"
@@ -217,7 +213,41 @@
                         </el-select>
                       </el-form-item>
                     </Col>
+                    <Col :span="8">
+                      <el-form-item label="硕导在岗学科">
+                        <el-input v-model="formSecond.masterDegreeIncreaseTutorOnDuty" />
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
+                      <el-form-item label="上岗时间">
+                        <el-date-picker
+                          v-model="formSecond.masterDegreeIncreaseTutorStartTime"
+                          type="month"
+                          style="width: 100%"
+                          placeholder="选择时间"
+                        />
+                      </el-form-item>
+                    </Col>
                   </Row>
+                  <el-divider content-position="left"><b><span style="color: red;">*</span> 仅外单位调入填写</b></el-divider>
+                  <Row :gutter="20">
+                    <Col :span="8">
+                      <el-form-item label="原单位名称">
+                        <el-input v-model="formSecond.sourceUnitName" />
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
+                      <el-form-item label="调入时间">
+                        <el-date-picker
+                          v-model="formSecond.transferInTime"
+                          type="month"
+                          style="width: 100%"
+                          placeholder="选择时间"
+                        />
+                      </el-form-item>
+                    </Col>
+                  </Row>
+                  <el-divider />
                 </Col>
                 <Col :span="24">
                   <el-form-item label="主要研究方向的内容及其意义">
@@ -709,6 +739,11 @@ export default {
         applySubject: '', // 申请学科
         doctoralMasterApplicationSubjectUnit: '', // 申请学科负责单位
         doctoralMasterSubjectCodeName: '', // 一级学科代码 + " " + 名称
+        masterDegreeIncreaseTutorOnDuty: '', // 硕导在岗学科
+        masterDegreeIncreaseTutorStartTime: '', // 上岗时间
+        // 外单位调入填写
+        sourceUnitName: '', // 原单位名称
+        transferInTime: '', // 调入时间
         major: '', // 主要研究方向的内容及其意义
         groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         expertTitles: [] // 获何专家称号及时间列表
@@ -848,6 +883,7 @@ export default {
   },
   methods: {
     /* 第 1 页 */
+
     // 拉取基本信息
     getTeacherInfo: function() {
       getTeacherInfo().then((res) => {
@@ -856,14 +892,12 @@ export default {
         this.formFirst.gender = res.data.xb
         this.formFirst.image = res.data.shz
         this.formFirst.birthday = res.data.csrq.split(' ')[0]
-        this.formFirst.organizationId = res.data.mc
         this.formFirst.identity = res.data.sfzjh
         this.formFirst.phone = res.data.sjh
         this.formFirst.title = res.data.zcmc
         this.formFirst.finalDegree = res.data.zgxw
       })
     },
-
     // 完成第 1 页基本信息的填写
     onSubmitFirstPage: function() {
       this.$confirm('提交填写?')

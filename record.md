@@ -1,10 +1,6 @@
-<!--
- * @Author: Rex Joush
- * @Date: 2021-08-13 22:14:18
- * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 20:05:59
--->
 ## 修改记录
+* 2021.08.08 **Rex Joush**
+  * 格式化代码快捷键 `Shift + Alt + F`
 
 * 2021.08.08 **Rex Joush**
     * 新建项目，配置基础环境

@@ -785,7 +785,7 @@
       </el-row>
       <!-- <el-row>
         <el-col :span="18" :offset="3">
-         
+
         </el-col>
       </el-row> -->
     </div>
@@ -1165,7 +1165,7 @@ export default {
             //首次申请博士提交到后台
             saveFirstform(this.formFirst, 1,applyCondition)
               .then((res) => {
-                if (res.code == 20000) {                  
+                if (res.code == 20000) {
                   this.$message.success("保存成功！");
                   this.formVisible.first = false; // 关闭第一项
                   this.formVisible.second = true; // 打开第二项
@@ -1178,7 +1178,7 @@ export default {
               .catch(() => {
                  console.log("cancel");
               });
-          
+
         })
         .catch(() => {
           console.log("cancel");
@@ -1262,7 +1262,7 @@ export default {
         // 提交保存第 4 页
         .then(() => {
           this.formVisible.third = false; // 关闭第 4 页
-          this.$router.push("/tutorapply"); // 回到首页
+          this.$router.push("/tutorApply"); // 回到首页
           this.active = 0;
         })
         .catch(() => {
