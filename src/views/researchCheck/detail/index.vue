@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-24 11:04:56
+ * @LastEditTime: 2021-08-25 11:06:40
 -->
 <template>
   <div id="app-container">
@@ -50,7 +50,18 @@
 
 <script>
 export default {
+  data() {
+    return {
+      // 遮罩层
+      loading: true
+    }
+  },
+  created() {
 
+  },
+  methods: {
+
+  },
 }
 </script>
 

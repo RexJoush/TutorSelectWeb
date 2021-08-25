@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-24 11:34:46
+ * @LastEditTime: 2021-08-25 11:10:45
 -->
 <template>
   <div class="app-container">
@@ -373,7 +373,3 @@ export default {
 
 };
 </script>
-
-<style>
-
-</style>
