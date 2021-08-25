@@ -219,30 +219,6 @@ export default {
       },
       //当前页
       currentPage: 1,
-      //   //和秘书初审有关的审核状态
-      //   statuOptions: [
-      //     {
-      //       value: 10,
-      //       label: "待初审",
-      //     },
-      //     {
-      //       value: 11,
-      //       label: "通过",
-      //     },
-      //     {
-      //       value: 12,
-      //       label: "不通过",
-      //     },
-      //     {
-      //       value: 63,
-      //       label: "社科处审核通过",
-      //     },
-      //     {
-      //       value: 64,
-      //       label: "科研处审核通过",
-      //     },
-      //   ],
-      //审核后需要下发的List数据
       updataList: [],
       tutorList: [],
     };
@@ -258,11 +234,10 @@ export default {
         this.applyTypeList = res.data;
       });
     },
-    // 查询院系秘书待初审的数据
-    // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
+    // 数据初始化，包括同意上分会和不同意上分会
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 10;
+      this.queryParams.applyStatus = 13+"-"+22;
       checkDate(this.queryParams).then((res) => {
         console.log(res);
         if (res.code == 20000) {
@@ -288,53 +263,6 @@ export default {
       this.queryParams.applyType = null; // 申请类别id
       this.queryParams.applyStatus = 10; // 审核状态码id
     },
-    //初审通过
-    passFun() {
-      this.dialogVisiblePass = true;
-    },
-    //审核通过确认弹框确认按钮
-    rePassFun() {
-      this.check(11);
-      this.dialogVisiblePass = false;
-    },
-    //初审不通过
-    unPassFun() {
-      //驳回之前判断是否只选择了一条
-      if (this.multipleSelection.length > 1) {
-        this.$message.warning("注意:只能选择一条数据审核！");
-      } else {
-        this.dialogVisible = true;
-      }
-      // this.check(12);
-    },
-    //弹框确定按钮驳回操作
-    returnFun() {
-      //带上备注
-      this.updataList[0].commit_1 = this.returnCommit;
-      this.check(12);
-      this.dialogVisible = false;
-      this.returnCommit = null;
-    },
-    //弹框取消按钮
-    cancel() {
-      this.dialogVisible = false;
-      this.returnCommit = null;
-    },
-    //更新操作
-    check(status) {
-      for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
-      }
-      updateStatus(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功");
-        }
-        this.updataList.length = 0;
-        // 对搜索到的部分数据进行审批后，页面应该还停留在搜索界面还是直接初始化
-        this.resetQuery();
-        this.getSecretaryInit();
-      });
-    },
 
     //当前选中
     handleSelectionChange(val) {
@@ -348,18 +276,6 @@ export default {
       this.multipleSelection = val;
       //每次选择都要将之前的清空
       this.updataList = [];
-      // 将需要审核后下发的数据对应起来
-      for (let index = 0; index < this.multipleSelection.length; index++) {
-        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
-        let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].tutorId;
-        // obj.number_1 = this.multipleSelection[index].number;
-        // obj.applyId_1 = this.multipleSelection[index].applyId;
-        obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1 = "";
-        console.log(obj);
-        this.updataList.push(obj);
-      }
     },
     //每页显示条数
     handleSizeChange(val) {},

@@ -1,5 +1,5 @@
 <template>
     <div>
-        提交分会
+        最终通过名单
     </div>
 </template>

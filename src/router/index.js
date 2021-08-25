@@ -205,6 +205,12 @@ export const constantRoutes = [
         name: 'ResearchCheck',
         component: () => import('@/views/researchCheck/index'),
         meta: { title: '科研处审核', icon: 'tree' }
+      },
+      {
+        path: 'researchDetail',
+        name: 'ResearchDetail',
+        component: () => import('@/views/researchCheck/detail/index'),
+        meta: { title: '科研处详情信息', icon: 'tree' }
       }
     ]
 
