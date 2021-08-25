@@ -4,12 +4,12 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-24 08:56:05
+ * @LastEditTime: 2021-08-24 11:34:46
 -->
 <template>
   <div class="app-container">
       <el-row :gutter="20">
-        <el-col :span="20" :xs="24">
+        <!-- 导师信息 -->
           <el-form
             ref="queryForm"
             :inline="true"
@@ -68,6 +68,7 @@
                 />
               </el-select>
             </el-form-item>
+
             <el-from-item>
               <el-button 
                 type="primary" 
@@ -80,11 +81,25 @@
                 icon="el-icon-refresh"
                 size="small"
                 @click="resetQuery(queryParams)"
-                >重置</el-button>
+                >重置</el-button
+              >
             </el-from-item>
+            
           </el-form>
 
           <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+            <el-button
+              type="success"
+              plain
+              icon="el-icon-success"
+              size="small"
+              :disabled="single"
+              @click="passFun()"
+              >通过</el-button
+            >
+            </el-col>
+
             <el-col :span="1.5">
               <el-button
                 type="danger"
@@ -93,7 +108,8 @@
                 size="small"
                 :disabled="multiple"
                 @click="unPassFun()"
-              >驳回</el-button>
+              >驳回</el-button
+            >
             </el-col>           
           </el-row>
 
@@ -113,13 +129,20 @@
             <el-table-column label="申请类别" align="center" prop="applyName" />
             <el-table-column label="职称" align="center" prop="title" />
             <!-- 数据库中查询最后学位字段 -->
-            <el-table-column label="最后学位" align="center" prop="    " />
+            <el-table-column label="最后学位" align="center" prop="finalDegree" />
             <el-table-column 
               label="审核状态" 
               align="center"
               prop="inspectDescribe"
             />
-            <el-table-column label="详情" align="center" prop="mr" />                     
+            <el-table-column 
+              label="详情" 
+              align="center" 
+              prop="mr">
+              <template slot-scope="scope">
+                <el-button @click="handleDetail(scope.row)" type="text" size="small">查看详情</el-button>
+              </template>       
+            </el-table-column>                     
           </el-table>
 
           <el-pagination
@@ -131,7 +154,6 @@
             :total="totalDate"
           >
           </el-pagination>
-        </el-col>
       </el-row>
       <!-- 驳回时的备注弹框 -->
       <el-dialog
@@ -220,6 +242,12 @@ export default {
     this.getOrganizationList(); //初始化所有的负责院系                            //初始化负责院系
   },
   methods: {
+    //查看详情
+    handleDetail(row) {
+      console.log(row);
+      this.$router.push({path:"/research"})
+    },
+
     //初始化负责院系(下拉框)
     async getOrganizationList() {
       // getOrganization().then(res => {
@@ -264,6 +292,10 @@ export default {
       this.queryParams.userName = null;
       this.queryParams.organization = null;
       this.queryParams.applyStatus = null;
+    },
+    //初审通过
+    PassFun() {
+      this.check(64)
     },
 
     //初审不通过
