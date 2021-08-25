@@ -683,15 +683,16 @@
         </el-row>
         <el-form-item label="证明材料">
           <el-upload
+            ref="upload"
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="3"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
+            name="material"
+            action="http://www.rexjoush.com:8081/TutorSelectSpringBoot/tutor/upload/1"
+            :on-success="uploadSuccessFunc"
+            :on-error="uploadErrorFunc"
+            :before-upload="checkFileType"
+            :auto-upload="false"
+            accept=".zip, .rar"
+          >
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传 zip/rar文件，且不超过 50MB</div>
           </el-upload>
@@ -699,7 +700,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogThird1 = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="addAcademicPaper">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 添加理工类论文 -->
@@ -747,7 +748,22 @@
         <el-form-item label="影响因子">
           <el-input v-model="academicPaper.impactFactors" />
         </el-form-item>
-
+        <el-form-item label="证明材料">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            name="material"
+            action="http://localhost:8081/tutor/upload/1"
+            :on-success="uploadSuccessFunc"
+            :on-error="uploadErrorFunc"
+            :before-upload="checkFileType"
+            :auto-upload="false"
+            accept=".zip, .rar"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传 zip/rar文件，且不超过 50MB</div>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -858,14 +874,12 @@ export default {
       },
       academicPaper: { // 学术论文
         paperName: '', // 论文名称
-        paperNumber: '', // 论文编号
         paperPublicationTime: '', // 发表时间
         journalName: '', // 期刊名称
         journalLevel: '', // 期刊等级
-        journalCategory: '', // 收录类别
+        journalCategory: '', // 期刊类别
         sciPart: '', // sci 分区
         impactFactors: '', // 影响因子
-        authorName: '', // 作者姓名
         firstAuthorName: '', // 第一作者
         communicationAuthorName: '', // 通讯作者
         paperSubject: '', // 论文分科，文，理，交叉学科按文科算
@@ -1081,6 +1095,41 @@ export default {
         .catch(() => {
           console.log('cancel')
         })
+    },
+    // 检查上传的文件类型
+    checkFileType: function(file) {
+      console.log('check')
+      if (file.name.endsWith('.zip') || file.name.endsWith('.rar')) {
+        return true
+      } else {
+        this.$message.error('请上传 zip/rar 文件')
+        return false
+      }
+    },
+    // 提交论文上传
+    addAcademicPaper: function() {
+      this.$refs.upload.submit()
+    },
+    // 上传文件
+    // 上传镜像成功
+    uploadSuccessFunc: function(response, file, fileList) {
+      console.log('success')
+      console.log('response', response)
+      console.log('file', file)
+      console.log('fileList', fileList)
+      if (response.data === 1200) {
+        this.$message.success(response.message)
+      } else {
+        this.$message.error(response.message)
+      }
+    },
+
+    // 上传镜像失败
+    uploadErrorFunc: function(err, file, fileList) {
+      console.log('error')
+      console.log('err', err)
+      console.log('file', file)
+      console.log('fileList', fileList)
     },
     // 返回第 2 页
     // backToSecondPage: function() {
