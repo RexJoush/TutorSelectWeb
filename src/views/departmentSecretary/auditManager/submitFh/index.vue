@@ -85,7 +85,7 @@
           :data="tutorList"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="50" align="center" />
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column
             label="工号"
             align="center"
@@ -159,6 +159,7 @@
               icon="el-icon-download"
               size="small"
               :loading="exportLoading"
+              @click="exportFun()"
               >导出excel</el-button
             >
           </el-col>
@@ -178,6 +179,7 @@ import {
   checkDate,
   updateStatus,
 } from "@/api/departmentSecretary/secretaryFirst";
+import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
@@ -237,7 +239,7 @@ export default {
     // 数据初始化，包括同意上分会和不同意上分会
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 13+"-"+22;
+      this.queryParams.applyStatus = 13 + "-" + 22;
       checkDate(this.queryParams).then((res) => {
         console.log(res);
         if (res.code == 20000) {
@@ -246,6 +248,16 @@ export default {
           this.loading = false;
         }
       });
+    },
+    //导出按钮，只导出同意上分会的数据
+    exportFun() {
+      this.loading = true;
+      this.queryParams.applyStatus = 13; //同意上分会
+    //   this.queryParams.organization = 30130;//院系
+      exportSFH(this.queryParams).then((res) =>{
+          console.log("123")
+          console.log(res)
+      })
     },
     //搜索按钮
     searchQuery() {
