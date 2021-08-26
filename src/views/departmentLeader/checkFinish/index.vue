@@ -129,8 +129,8 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="10"
+          :current-page="queryParams.pageNum"
+          :page-size="queryParams.pageSize"
           layout="total, prev, pager, next"
           :total="totalData"
         >
@@ -186,8 +186,6 @@ export default {
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined, // 学科属性，文科，理科，交叉
       },
-      //当前页
-      currentPage: 1,
       updataList: [],
       tutorList: [],
     };
@@ -208,9 +206,10 @@ export default {
       this.loading = true;
       this.queryParams.applyStatus = 13+"-"+22;
       checkDate(this.queryParams).then((res) => {
+        console.log(res)
         if (res.code == 20000) {
           this.tutorList = res.data;
-          this.totalData = res.data.length;
+          this.totalData = res.total;
           this.loading = false;
         }
         if(res.code == 20001){
@@ -224,7 +223,7 @@ export default {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
+        this.totalData = res.total;
         this.loading = false;
       });
     },
@@ -233,7 +232,7 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 10; // 审核状态码id
+      this.queryParams.applyStatus = null; // 审核状态码id
     },
 
     //当前选中
@@ -253,7 +252,7 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.queryParams.pageNum = val;
       this.getSecretaryInit();
     },
   },

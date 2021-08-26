@@ -144,8 +144,8 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="10"
+          :current-page="queryParams.pageNum"
+          :page-size="queryParams.pageSize"
           layout="total, prev, pager, next"
           :total="totalData"
         >
@@ -243,7 +243,7 @@ export default {
       checkDate(this.queryParams).then((res) => {
         if (res.code == 20000) {
           this.tutorList = res.data;
-          this.totalData = res.data.length;
+          this.totalData = res.total;
           this.loading = false;
         }
         if(res.code == 20001){
@@ -296,7 +296,7 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.queryParams.pageNum = val;
       this.getSecretaryInit();
     },
   },

@@ -144,8 +144,8 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="10"
+          :current-page="queryParams.pageNum"
+          :page-size="queryParams.pageSize"
           layout="total, prev, pager, next"
           :total="totalData"
         >
@@ -217,8 +217,6 @@ export default {
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined, // 学科属性，文科，理科，交叉
       },
-      //当前页
-      currentPage: 1,
       //和秘书初审有关的审核状态
       statuOptions: [
         {
@@ -258,7 +256,7 @@ export default {
       checkDate(this.queryParams).then((res) => {
         if (res.code == 20000) {
           this.tutorList = res.data;
-          this.totalData = res.data.length;
+          this.totalData = res.total;
           this.loading = false;
         }
         if(res.code == 20001){
@@ -359,7 +357,7 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
+       this.queryParams.pageNum = val;
       this.getSecretaryInit();
     },
   },
