@@ -76,8 +76,8 @@
             >
           </el-form-item>
         </el-form>
-        <br>
-        <br>
+        <br />
+        <br />
 
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
@@ -110,14 +110,20 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="工号" align="center" prop="number" width="100" fixed/>
-          <el-table-column label="姓名" align="center" prop="name" fixed/>
+          <el-table-column
+            label="工号"
+            align="center"
+            prop="number"
+            width="100"
+            fixed
+          />
+          <el-table-column label="姓名" align="center" prop="name" fixed />
           <el-table-column
             label="所在单位（院系）"
             align="center"
             prop="organizationName"
-             width="250"
-             fixed
+            width="250"
+            fixed
           />
           <el-table-column
             label="申请学科或类别代码"
@@ -131,8 +137,18 @@
             prop="professionalApplicationSubjectName"
             width="180"
           />
-          <el-table-column label="申请类别" align="center" prop="applyName" width="180"  />
-          <el-table-column label="职称" align="center" prop="title"  width="180"/>
+          <el-table-column
+            label="申请类别"
+            align="center"
+            prop="applyName"
+            width="180"
+          />
+          <el-table-column
+            label="职称"
+            align="center"
+            prop="title"
+            width="180"
+          />
           <el-table-column
             label="审核状态"
             align="center"
@@ -140,7 +156,12 @@
             width="150"
           />
           <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column label="备注" align="center" prop="commit" width="150"/>
+          <el-table-column
+            label="备注"
+            align="center"
+            prop="commit"
+            width="150"
+          />
         </el-table>
 
         <el-pagination
@@ -232,7 +253,7 @@ export default {
         {
           value: 22,
           label: "不同意上分会",
-        }
+        },
       ],
       //审核后需要下发的List数据
       updataList: [],
@@ -261,10 +282,10 @@ export default {
           this.totalData = res.total;
           this.loading = false;
         }
-        if(res.code == 20001){
+        if (res.code == 20001) {
           this.$message("暂无待审核的教师！");
-          this.loading = false
-        } 
+          this.loading = false;
+        }
       });
     },
     //搜索按钮
@@ -272,7 +293,7 @@ export default {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
+        this.totalData = res.total;
         this.loading = false;
       });
     },

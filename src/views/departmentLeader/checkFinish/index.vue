@@ -204,18 +204,18 @@ export default {
     // 数据初始化，包括同意上分会和不同意上分会
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 13+"-"+22;
+      this.queryParams.applyStatus = 13 + "-" + 22;
       checkDate(this.queryParams).then((res) => {
-        console.log(res)
+        console.log(res);
         if (res.code == 20000) {
           this.tutorList = res.data;
           this.totalData = res.total;
           this.loading = false;
         }
-        if(res.code == 20001){
+        if (res.code == 20001) {
           this.$message("暂无数据！");
-          this.loading = false
-        } 
+          this.loading = false;
+        }
       });
     },
     //搜索按钮

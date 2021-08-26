@@ -317,7 +317,7 @@ export default {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
+        this.totalData = res.total;
         this.loading = false;
       });
     },

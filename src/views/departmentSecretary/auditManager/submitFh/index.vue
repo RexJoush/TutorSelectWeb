@@ -246,28 +246,28 @@ export default {
           this.totalData = res.total;
           this.loading = false;
         }
-        if(res.code == 20001){
+        if (res.code == 20001) {
           this.$message("暂无数据！");
-          this.loading = false
-        } 
+          this.loading = false;
+        }
       });
     },
     //导出按钮，只导出同意上分会的数据
     exportFun() {
       this.loading = true;
       this.queryParams.applyStatus = 13; //同意上分会
-    //   this.queryParams.organization = 30130;//院系
-      exportSFH(this.queryParams).then((res) =>{
-          console.log("123")
-          console.log(res)
-      })
+      //   this.queryParams.organization = 30130;//院系
+      exportSFH(this.queryParams).then((res) => {
+        console.log("123");
+        console.log(res);
+      });
     },
     //搜索按钮
     searchQuery() {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
+        this.totalData = res.total;
         this.loading = false;
       });
     },
@@ -276,7 +276,7 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 10; // 审核状态码id
+      this.queryParams.applyStatus = 13 + "-" + 22; // 审核状态码id
     },
 
     //当前选中
