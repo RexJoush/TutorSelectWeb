@@ -17,11 +17,22 @@ export function IfApply(tId, aId) {
 }
 
 // 第一页基本信息提交
-export function saveFirstform(data, applyId, applyCondition) {
+export function submitFirstPage(data, applyId, applyCondition) {
   return request({
-    url: `${baseUrl}/tutor/firstApplyDoctor/saveBaseInfo/${applyId}/${applyCondition}`,
+    url: baseUrl +`/tutor/firstApplyDoctor/saveBaseInfo/${applyId}/${applyCondition}`,
     method: 'post',
     data: data
   })
 }
+//第二页信息提交
+
+export function submitSecondPage(data,applyId,id){
+  return request({
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateSecondPage/${applyId}/${id}`,
+    method: 'post',
+    data: data
+  })
+}
+
+
 

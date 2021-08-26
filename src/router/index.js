@@ -191,6 +191,12 @@ export const constantRoutes = [
         component: () => import('@/views/socialScienceCheck/index'),
         meta: { title: '社科处审核', icon: 'tree' }
       },
+      {
+        path: 'socialDetail',
+        name: 'SocialDetail',
+        component: () => import('@/views/socialScienceCheck/detail/index'),
+        meta: { title: '科研处详情页面', icon: 'tree' }
+      },
     ]
 
   },
@@ -205,6 +211,12 @@ export const constantRoutes = [
         name: 'ResearchCheck',
         component: () => import('@/views/researchCheck/index'),
         meta: { title: '科研处审核', icon: 'tree' }
+      },
+      {
+        path: 'researchDetail',
+        name: 'ResearchDetail',
+        component: () => import('@/views/researchCheck/detail/index'),
+        meta: { title: '科研处详情信息', icon: 'tree' }
       }
     ]
 
