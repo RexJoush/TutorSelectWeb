@@ -258,9 +258,15 @@ export default {
       this.queryParams.applyStatus = 13; //同意上分会
       //   this.queryParams.organization = 30130;//院系
       exportSFH(this.queryParams).then((res) => {
-        console.log("123");
-        console.log(res);
+    
+        let blob = new Blob([res], { type: "application/vnd.ms-excel" });
+        let url = window.URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.download = "西北大学"+"2021"+"年"+"网络和数据中心"+ "学位评定分委员会推荐汇总表.xlsx";
+        link.href = url;
+        link.click();
       });
+      this.loading = false;
     },
     //搜索按钮
     searchQuery() {
