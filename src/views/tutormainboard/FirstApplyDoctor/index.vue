@@ -46,13 +46,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="出生年月">
-                      <el-input v-model="formFirst.birthday" disabled/>
-                      <!--                      <el-date-picker-->
-                      <!--                        v-model="formFirst.birthday"-->
-                      <!--                        type="date"-->
-                      <!--                        style="width: 100%"-->
-                      <!--                        placeholder="选择日期"-->
-                      <!--                      />-->
+                      <el-input v-model="formFirst.birthday" disabled/>                      
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -186,8 +180,7 @@
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
-                          />
-                           
+                          />                           
                         </el-select>
                       </el-form-item>
                     </Col>
@@ -995,7 +988,7 @@ export default {
   components: { index },
   data() {
     return {
-      // 硕士学科代码
+      // 博士学科代码
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       // 步骤条
       active: 0,
@@ -1026,10 +1019,8 @@ export default {
         awardTime: '2021-02' // 授予时间
 
         // awardingUnitTime: "", //授予单位及时间
-
       },
-
-      // 第 2 页表单
+      // ===========================================================第 2 页表单===================================
       childNodes: [], // 院系的子专业信息
       currentDepartment: "", // 院系信息
       dialogSecond1: false, // 学术团体或职务的显示框
@@ -1141,6 +1132,7 @@ export default {
         
       })
     },
+    //******************************************************第一页 *****************************************
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
@@ -1150,13 +1142,26 @@ export default {
             //首次申请博士提交到后台
             submitFirstPage(this.formFirst, 1,this.$route.params.applyCondition)
               .then((res) => {
-                if (res.code == 20000) {
-                  this.id=res.data;
-                  console.log(this.id+"*********");
+                if (res.code == 20000) {                  
+                  
+                  this.id=res.data.id;            
                   this.$message.success("保存成功！");
+                  //信息填写到第二页
+                  this.formSecond.applySubject=res.data.applySubject * 1;
+                  this.formSecond.doctoralMasterApplicationSubjectUnit=res.data.doctoralMasterApplicationSubjectUnit;
+                  this.currentDepartment=res.data.doctoralMasterApplicationSubjectUnit //申请学科负责单位
+                  //一级学科代码及名称
+                  this.formSecond.doctoralMasterSubjectCodeName=res.data.doctoralMasterSubjectCodeName
+                  //主要研究方向的内容及意义
+                  this.formSecond.major=res.data.major;
+                  //何时参加何种学术团体、任何种职务，有何社会兼职
+                  this.formSecond.groupsOrPartTimeJobs=res.data.groupsOrPartTimeJobs;
+                  //获得专家称号及时间
+                  this.formSecond.expertTitles = res.data.expertTitles
                   this.formVisible.first = false; // 关闭第一项
                   this.formVisible.second = true; // 打开第二项
                   this.active = 1;
+                  console.log(this.formSecond.doctoralMasterApplicationSubjectUnit);
                 } else {
                   this.$message.error;
                   ("保存失败！");
@@ -1173,8 +1178,8 @@ export default {
     /*====================================第二页======================== */
     // 第 2 页添加学术团体项 弹框
     addGroupsOrPartTimeJob: function() {
-      console.log(this.groupsOrPartTimeJob)
       this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
+      
       this.groupsOrPartTimeJob = {
         time: '',
         groups: '',
@@ -1210,11 +1215,12 @@ export default {
       // 设置子项目为当前院系的专业
       this.childNodes = value.professional;
     },
-    // 完成第二页基本信息的填写
+    //************************************************ 完成第二页基本信息的填写********************************************
     onSubmitSecondPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {
+          console.log(this.formSecond)
           submitSecondPage(this.formSecond,1,this.id).then((res)=>{
               if (res.code == 20000){
                 //更新成功
