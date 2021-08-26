@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-25 11:10:14
+ * @LastEditTime: 2021-08-25 12:04:28
 -->
 <template>
   <div class="app-container">
@@ -197,8 +197,8 @@ export default {
       showSearch: true,
       // 分页总条数
       totalData: 0,
-      //待科研处初审列表
-      researchInitList: [],
+      //待社科处初审列表
+      socialInitList: [],
       //所有负责院系列表
       organizationList: [],
       //选定的列表
@@ -220,16 +220,16 @@ export default {
       //科研处审核状态
       statuOptions: [
         {
-          value: 31,
-          label: "科研处待审核"
+          value: 30,
+          label: "社科处待审核"
         },
         {
-          value: 64, //理科科研处审核通过
-          label: "科研处审核通过"
+          value: 63, //理科科研处审核通过
+          label: "社科处审核通过"
         },
         {
-          value: 52, //理科科研处审核不通过
-          label: "科研处审核不通过"
+          value: 42, //理科科研处审核不通过
+          label: "社科处审核不通过"
         }
       ],
       //审核后需要下发的List数据
@@ -238,14 +238,14 @@ export default {
     };
   },
   created() {
-    this.getResearchCheckInit(); //初始化待初审的数据
+    this.getSocialCheckInit(); //初始化待初审的数据
     this.getOrganizationList(); //初始化所有的负责院系                            //初始化负责院系
   },
   methods: {
     //查看详情
     handleDetail(row) {
       console.log(row);
-      this.$router.push({path:"/research"})
+      this.$router.push({path:"/social/socialDetail"})
     },
 
     //初始化负责院系(下拉框)
@@ -262,11 +262,11 @@ export default {
       console.info(this.organizationList)
     },
 
-    //查询科研处待初审的数据
+    //查询社科处待初审的数据
     //通过状态码查询
-    getResearchCheckInit() {
+    getSocialCheckInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 31;
+      this.queryParams.applyStatus = 30;
       checkDate(this.queryParams).then(res => {
         if(res.code == 20000){
           this.tutorList = res.data;
@@ -295,7 +295,7 @@ export default {
     },
     //初审通过
     PassFun() {
-      this.check(64)
+      this.check(63)
     },
 
     //初审不通过
@@ -363,7 +363,7 @@ export default {
     //当前页数
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getResearchCheckInit();
+      this.getSocialCheckInit();
     },
     
 

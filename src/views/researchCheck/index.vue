@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-25 11:10:45
+ * @LastEditTime: 2021-08-25 11:59:15
 -->
 <template>
   <div class="app-container">
@@ -228,7 +228,7 @@ export default {
           label: "科研处审核通过"
         },
         {
-          value: 52, //理科科研处审核不通过
+          value: 53, //理科科研处审核不通过
           label: "科研处审核不通过"
         }
       ],
@@ -245,7 +245,7 @@ export default {
     //查看详情
     handleDetail(row) {
       console.log(row);
-      this.$router.push({path:"/research"})
+      this.$router.push({path:"/research/researchDetail"})
     },
 
     //初始化负责院系(下拉框)
