@@ -76,8 +76,8 @@
             >
           </el-form-item>
         </el-form>
-        <br>
-        <br>
+        <br />
+        <br />
 
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
@@ -303,12 +303,16 @@ export default {
       this.queryParams.applyStatus = 10;
       // this.queryParams.organization = 50030;  //传入秘书院系id
       checkDate(this.queryParams).then((res) => {
-        console.log(res);
+        console.log("123",res);
         if (res.code == 20000) {
           this.tutorList = res.data;
           this.totalData = res.data.length;
           this.loading = false;
         }
+        if(res.code == 20001){
+          this.$message("暂无待初审的教师！");
+          this.loading = false
+        }       
       });
     },
     //搜索按钮
@@ -366,7 +370,7 @@ export default {
       }
       updateStatus(this.updataList).then((res) => {
         if (res.code == 20000) {
-          this.$message.success("审核成功");
+          this.$message.success("审核成功!");
         }
         this.updataList.length = 0;
         // 对搜索到的部分数据进行审批后，页面应该还停留在搜索界面还是直接初始化
