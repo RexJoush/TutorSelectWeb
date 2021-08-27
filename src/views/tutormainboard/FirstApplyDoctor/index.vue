@@ -296,96 +296,28 @@
               <!-- 学术论文(近五年) -->
               <el-card class="box-card" shadow="always">
                 <div slot="header" class="clearfix">
-                  <span style="font-size: 18px">学术论文(近五年)</span>
+                  <span style="font-size: 18px">科研项目（近五年）</span>
                 </div>
-                <el-row>
-                  <el-col :span="4"
-                    ><el-button
-                      type="primary"
-                      @click="SocialSciencesPaperAdd = true"
-                      >社科成果增加</el-button
-                    ></el-col
-                  >
-                  <el-col :span="4"
-                    ><el-button
-                      type="primary"
-                      @click="ScienceEngineeringPaperAdd = true"
-                      >理工成果增加</el-button
-                    ></el-col
-                  >
+                <el-row :gutter="100">
+                  <el-col :span="4">
+                    <el-button class="addButton" type="primary" @click="dialogThird1 = true">添加社科类论文</el-button>
+                  </el-col>
+                  <el-col :span="4">
+                    <el-button class="addButton" type="primary" @click="dialogThird2 = true">添加理工类论文</el-button>
+                  </el-col>
                 </el-row>
-                <br />
-                <el-table
-                  :data="tableData"
-                  height="250"
-                  border
-                  style="width: 100%"
-                >
-                  <!-- <el-table-column fixed type="selection" width="55">
-                </el-table-column> -->
-                  <el-table-column
-                    prop="name"
-                    label="序号"
-                    width="50"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="名称"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="第一作者"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="通信作者"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="发表时间"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="期刊名称"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="期刊类别"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="期刊分区"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="影响因子"
-                    width="180"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
+                <el-table :data="formThird.academicPapers" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50" />
+                  <el-table-column prop="paperName" label="论文名称" />
+                  <el-table-column prop="paperNumber" label="论文编号" />
+                  <el-table-column prop="authorName" label="作者姓名" />
+                  <el-table-column prop="firstAuthorName" label="第一作者" />
+                  <el-table-column prop="communicationAuthorName" label="通讯作者" />
+                  <el-table-column prop="paperPublicationTime" label="发表时间" />
+                  <el-table-column prop="journalName" label="期刊名称" />
+                  <el-table-column prop="journalCategory" label="期刊类别" />
+                  <el-table-column prop="journalLevel" label="期刊分区" />
+                  <el-table-column prop="impactFactors" label="影响因子" />
                 </el-table>
               </el-card>
               <br />
@@ -474,57 +406,22 @@
                   <span style="font-size: 18px">教材或学术著作（近五年）</span>
                 </div>
                 <el-row>
-                  <el-col :span="4"
-                    ><el-button type="primary">社科成果增加</el-button></el-col
-                  >
-                  <el-col :span="4"
-                    ><el-button type="primary">理工成果增加</el-button></el-col
-                  >
+                  <el-col :span="4">
+                    <el-button
+                      class="addButton"
+                      type="primary"
+                    >添加教材或学术著作
+                    </el-button>
+                  </el-col>
                 </el-row>
-                <br />
-                <el-table
-                  :data="tableData"
-                  height="250"
-                  border
-                  style="width: 100%"
-                >
-                  <el-table-column
-                    prop="name"
-                    label="序号"
-                    width="50"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="名称"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="排名"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="出版时间"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="出版单位"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="完成字数（万字）"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
+                <el-table :data="formThird.academicWorks" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50px" />
+                  <el-table-column prop="worksName" label="著作名称" />
+                  <el-table-column prop="worksNumber" label="标准书号" />
+                  <el-table-column prop="worksPublicationTime" label="出版日期" />
+                  <el-table-column prop="worksPublicationUnit" label="出版单位" />
+                  <el-table-column prop="totalWords" label="完成字数（万字）" />
+                  <el-table-column prop="authorName" label="作者姓名" />
                 </el-table>
               </el-card>
               <br />
@@ -883,16 +780,20 @@
     <!-- 第三页操作内容 -->
     <!-- 学术论文 社科成果增加-->
     <el-dialog title="添加社科类论文" width="40%" :visible.sync="dialogThird1">
-      <el-form :model="academicPaper">
+      <el-form :model="academicPaper" >
+        
         <el-form-item label="论文名称">
           <el-input v-model="academicPaper.paperName" autocomplete="off" />
         </el-form-item>
-        <el-form-item label="第一作者">
-          <el-input v-model="academicPaper.firstAuthorName" />
-        </el-form-item>
-        <el-form-item label="期刊名称">
-          <el-input v-model="academicPaper.journalName" />
-        </el-form-item>
+    
+            <el-form-item label="第一作者">
+              <el-input v-model="academicPaper.firstAuthorName" />
+            </el-form-item>
+ 
+            <el-form-item label="期刊名称">
+              <el-input v-model="academicPaper.journalName" />
+            </el-form-item>
+    
         <el-row>
           <el-col :span="12">
             <el-form-item label="发表时间">
@@ -920,11 +821,12 @@
             ref="upload"
             class="upload-demo"
             name="material"
-            action="http://www.rexjoush.com:8081/TutorSelectSpringBoot/tutor/upload/1"
+            action="http://localhost:8081/tutor/firstApplyDoctor/upload"
             :on-success="uploadSuccessFunc"
             :on-error="uploadErrorFunc"
             :before-upload="checkFileType"
-            :auto-upload="false"
+            :auto-upload="true"
+            limit="1"
             accept=".zip, .rar"
           >
             <el-button size="small" type="primary">点击上传</el-button>
@@ -1163,8 +1065,7 @@ export default {
         desc: "",
       },
 
-      // 第二页
-      tableData: [],
+   
       //第二页操作内容
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
@@ -1318,8 +1219,39 @@ export default {
      
     /* 第三页 */
     /*====================================第三页============================ */
+    // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
+    checkFileType: function(file) {
+      console.log('check')
+      if (file.name.endsWith('.zip') || file.name.endsWith('.rar')) {
+        return true
+      } else {
+        this.$message.error('请上传 zip/rar 文件')
+        return false
+      }
+    },
+    //文件上传成功按钮
     uploadSuccessFunc: function(response, file, fileList){
+      console.log('success')
+      console.log('response', response)
+      console.log('file', file)
+      console.log('fileList', fileList)
       
+      if (response.data === 1200) {
+        this.$message.success(response.message)
+      } else {
+        this.$message.error(response.message)
+      }
+    },
+    // 上传镜像失败
+    uploadErrorFunc: function(err, file, fileList) {
+      console.log('error')
+      console.log('err', err)
+      console.log('file', file)
+      console.log('fileList', fileList)
+    },
+    // 提交论文上传按钮
+    addAcademicPaper: function() {
+      this.$refs.upload.submit()
     },
     //************************************************ 完成第三页基本信息的填写 表单提交按钮********************************************
     // 完成第 3 页学术信息的填写
