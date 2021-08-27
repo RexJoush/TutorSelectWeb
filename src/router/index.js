@@ -275,6 +275,12 @@ export const constantRoutes = [
         meta: { title: '查看研究生院意见', icon: 'dashboard', affix: true }
       },
       {
+        path: 'return',
+        component: () => import('@/views/departmentSecretary/auditManager/return/index'),
+        name: 'ReturnDS',
+        meta: { title: '驳回操作', icon: 'dashboard', affix: true }
+      },
+      {
         path: 'finalListDS',
         component: () => import('@/views/departmentSecretary/auditManager/finalList/index'),
         name: 'FinalListDS',

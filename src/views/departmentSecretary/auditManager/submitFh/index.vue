@@ -85,7 +85,7 @@
           :data="tutorList"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="50" align="center" />
+          <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column
             label="工号"
             align="center"
@@ -144,8 +144,8 @@
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="10"
+          :current-page="queryParams.pageNum"
+          :page-size="queryParams.pageSize"
           layout="total, prev, pager, next"
           :total="totalData"
         >
@@ -159,6 +159,7 @@
               icon="el-icon-download"
               size="small"
               :loading="exportLoading"
+              @click="exportFun()"
               >导出excel</el-button
             >
           </el-col>
@@ -178,6 +179,7 @@ import {
   checkDate,
   updateStatus,
 } from "@/api/departmentSecretary/secretaryFirst";
+import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
@@ -237,22 +239,41 @@ export default {
     // 数据初始化，包括同意上分会和不同意上分会
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 13+"-"+22;
+      this.queryParams.applyStatus = 13 + "-" + 22;
       checkDate(this.queryParams).then((res) => {
-        console.log(res);
         if (res.code == 20000) {
           this.tutorList = res.data;
-          this.totalData = res.data.length;
+          this.totalData = res.total;
+          this.loading = false;
+        }
+        if (res.code == 20001) {
+          this.$message("暂无数据！");
           this.loading = false;
         }
       });
+    },
+    //导出按钮，只导出同意上分会的数据
+    exportFun() {
+      this.loading = true;
+      this.queryParams.applyStatus = 13; //同意上分会
+      //   this.queryParams.organization = 30130;//院系
+      exportSFH(this.queryParams).then((res) => {
+    
+        let blob = new Blob([res], { type: "application/vnd.ms-excel" });
+        let url = window.URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.download = "西北大学"+"2021"+"年"+"网络和数据中心"+ "学位评定分委员会推荐汇总表.xlsx";
+        link.href = url;
+        link.click();
+      });
+      this.loading = false;
     },
     //搜索按钮
     searchQuery() {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
+        this.totalData = res.total;
         this.loading = false;
       });
     },
@@ -261,7 +282,7 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 10; // 审核状态码id
+      this.queryParams.applyStatus = 13 + "-" + 22; // 审核状态码id
     },
 
     //当前选中
@@ -281,7 +302,7 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.queryParams.pageNum = val;
       this.getSecretaryInit();
     },
   },

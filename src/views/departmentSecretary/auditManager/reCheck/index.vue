@@ -76,7 +76,8 @@
             >
           </el-form-item>
         </el-form>
-
+        <br />
+        <br />
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
@@ -108,14 +109,20 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="工号" align="center" prop="number" width="100" fixed/>
-          <el-table-column label="姓名" align="center" prop="name" fixed/>
+          <el-table-column
+            label="工号"
+            align="center"
+            prop="number"
+            width="100"
+            fixed
+          />
+          <el-table-column label="姓名" align="center" prop="name" fixed />
           <el-table-column
             label="所在单位（院系）"
             align="center"
             prop="organizationName"
-             width="250"
-             fixed
+            width="250"
+            fixed
           />
           <el-table-column
             label="申请学科或类别代码"
@@ -129,8 +136,18 @@
             prop="professionalApplicationSubjectName"
             width="180"
           />
-          <el-table-column label="申请类别" align="center" prop="applyName" width="180"  />
-          <el-table-column label="职称" align="center" prop="title"  width="180"/>
+          <el-table-column
+            label="申请类别"
+            align="center"
+            prop="applyName"
+            width="180"
+          />
+          <el-table-column
+            label="职称"
+            align="center"
+            prop="title"
+            width="180"
+          />
           <el-table-column
             label="审核状态"
             align="center"
@@ -138,18 +155,40 @@
             width="150"
           />
           <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column label="备注" align="center" prop="commit" width="150"/>
+          <el-table-column
+            label="备注"
+            align="center"
+            prop="commit"
+            width="150"
+          />
         </el-table>
 
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="10"
+          :current-page="queryParams.pageNum"
+          :page-size="queryParams.pageSize"
           layout="total, prev, pager, next"
           :total="totalData"
         >
         </el-pagination>
+        <br />
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="small"
+              :loading="exportLoading"
+              >导出excel</el-button
+            >
+          </el-col>
+        </el-row>
+        <span
+          >注意：导出上表<span style="color: red">学院分会通过</span
+          >的数据</span
+        >
       </el-col>
     </el-row>
     <!-- 审批通过的确认弹框 -->
@@ -217,22 +256,20 @@ export default {
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined, // 学科属性，文科，理科，交叉
       },
-      //当前页
-      currentPage: 1,
       //和秘书初审有关的审核状态
       statuOptions: [
         {
-          value: 11,
-          label: "初审通过",
-        },
-        {
           value: 13,
-          label: "同意上分会",
+          label: "待复审",
         },
         {
-          value: 22,
-          label: "不同意上分会",
-        }
+          value: 14,
+          label: "学院分会通过",
+        },
+        {
+          value: 15,
+          label: "学院分会不通过",
+        },
       ],
       //审核后需要下发的List数据
       updataList: [],
@@ -254,12 +291,15 @@ export default {
     // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 11;
+      this.queryParams.applyStatus = 13;
       checkDate(this.queryParams).then((res) => {
-        console.log(res);
         if (res.code == 20000) {
           this.tutorList = res.data;
-          this.totalData = res.data.length;
+          this.totalData = res.total;
+          this.loading = false;
+        }
+        if (res.code == 20001) {
+          this.$message("暂无待审核的教师！");
           this.loading = false;
         }
       });
@@ -269,7 +309,7 @@ export default {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
+        this.totalData = res.total;
         this.loading = false;
       });
     },
@@ -278,7 +318,7 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 10; // 审核状态码id
+      this.queryParams.applyStatus = 13; // 审核状态码id
     },
     //同意上分会
     passFun() {
@@ -286,7 +326,7 @@ export default {
     },
     //审核通过确认弹框确认按钮
     rePassFun() {
-      this.check(13);
+      this.check(14);
       this.dialogVisiblePass = false;
     },
     //不同意上分会
@@ -302,7 +342,7 @@ export default {
     returnFun() {
       //带上备注
       this.updataList[0].commit_1 = this.returnCommit;
-      this.check(22);
+      this.check(15);
       this.dialogVisible = false;
       this.returnCommit = null;
     },
@@ -356,7 +396,7 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.queryParams.pageNum = val;
       this.getSecretaryInit();
     },
   },

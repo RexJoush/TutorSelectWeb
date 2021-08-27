@@ -46,13 +46,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="出生年月">
-                      <el-input v-model="formFirst.birthday" disabled/>
-                      <!--                      <el-date-picker-->
-                      <!--                        v-model="formFirst.birthday"-->
-                      <!--                        type="date"-->
-                      <!--                        style="width: 100%"-->
-                      <!--                        placeholder="选择日期"-->
-                      <!--                      />-->
+                      <el-input v-model="formFirst.birthday" disabled/>                      
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -186,8 +180,7 @@
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
-                          />
-                           
+                          />                           
                         </el-select>
                       </el-form-item>
                     </Col>
@@ -889,52 +882,59 @@
 
     <!-- 第三页操作内容 -->
     <!-- 学术论文 社科成果增加-->
-    <el-dialog
-      title="学术论文管理>社科成果增加"
-      :visible.sync="SocialSciencesPaperAdd"
-    >
-      <el-form :model="form" :label-position="left">
+    <el-dialog title="添加社科类论文" width="40%" :visible.sync="dialogThird1">
+      <el-form :model="academicPaper">
         <el-form-item label="论文名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="academicPaper.paperName" autocomplete="off" />
         </el-form-item>
         <el-form-item label="第一作者">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="academicPaper.firstAuthorName" />
         </el-form-item>
         <el-form-item label="期刊名称">
-          <el-input v-model="form.name"></el-input>
+          <el-input v-model="academicPaper.journalName" />
         </el-form-item>
-        <el-form-item label="发表时间">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="期刊等级">
-          <el-select v-model="form.region" placeholder="请选择">
-            <el-option label="顶级期刊（A类）" value="1"></el-option>
-            <el-option label="权威期刊（B类）" value="2"></el-option>
-            <el-option label="核心期刊（C类）" value="3"></el-option>
-          </el-select>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="发表时间">
+              <el-date-picker
+                v-model="academicPaper.paperPublicationTime"
+                type="month"
+                format="yyyy-MM"
+                value-format="yyyy-MM"
+                placeholder="选择日期"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="期刊等级">
+              <el-select v-model="academicPaper.journalLevel" placeholder="请选择">
+                <el-option label="顶级期刊（A类）" value="1" />
+                <el-option label="权威期刊（B类）" value="2" />
+                <el-option label="核心期刊（C类）" value="3" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="证明材料">
+          <el-upload
+            ref="upload"
+            class="upload-demo"
+            name="material"
+            action="http://www.rexjoush.com:8081/TutorSelectSpringBoot/tutor/upload/1"
+            :on-success="uploadSuccessFunc"
+            :on-error="uploadErrorFunc"
+            :before-upload="checkFileType"
+            :auto-upload="false"
+            accept=".zip, .rar"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传 zip/rar文件，且不超过 50MB</div>
+          </el-upload>
         </el-form-item>
       </el-form>
-      <el-upload
-        class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        multiple
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
-      >
-        <el-button size="small" type="primary">上传证明材料</el-button>
-        <div slot="tip" class="el-upload__tip">
-          证明材料包括论文封面、目录和正文若上传多个文件，请压缩为.rar/.zip文件上传
-        </div>
-      </el-upload>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="dialogThird1 = false">取 消</el-button>
+        <el-button type="primary" @click="addAcademicPaper">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 学术论文 理工科成果增加-->
@@ -995,7 +995,7 @@ export default {
   components: { index },
   data() {
     return {
-      // 硕士学科代码
+      // 博士学科代码
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       // 步骤条
       active: 0,
@@ -1026,10 +1026,8 @@ export default {
         awardTime: '2021-02' // 授予时间
 
         // awardingUnitTime: "", //授予单位及时间
-
       },
-
-      // 第 2 页表单
+      // ===========================================================第 2 页表单===================================
       childNodes: [], // 院系的子专业信息
       currentDepartment: "", // 院系信息
       dialogSecond1: false, // 学术团体或职务的显示框
@@ -1059,15 +1057,18 @@ export default {
         title: ''
       },
       /**第三页表单 */
-      dialogAcademicPaper: false, // 学术论文添加按钮
+      dialogThird1: false, // 社科学术论文添加按钮
+      dialogThird2: false, // 理工学术论文添加按钮
+      dialogThird3: false, // 理工学术论文添加按钮
+      dialogThird4: false, // 理工学术论文添加按钮
+      dialogThird5: false, // 理工学术论文添加按钮
       formThird: {
         academicPapers: [], // 学术论文列表
         researchProjects: [], // 科研项目列表
         academicWorks: [], // 教材或学术著作列表
         teachingAwards: [], // 科研教学奖励列表
         inventionPatents: [], // 发明专利列表
-        summary: {
-          // 科研汇总信息
+        summary: { // 科研汇总信息
           firstAuthorPaper: 0, // 以第一作者或通讯在 核心及以上期刊发表与本学科发表的论文篇数
           authorityAmount: 0, // 权威篇数
           eiAmount: 0, // EI 篇数
@@ -1084,9 +1085,73 @@ export default {
           awardsNationalLevel: 0, // 国家级奖项
           awardsProvinceLevel: 0, // 省部级奖项
           inventionPatentAmount: 0, // 发明专利
-          newUtilityPatent: 0, // 新型实用专利
-        },
+          newUtilityPatent: 0 // 新型实用专利
+        }
       },
+      academicPaper: { // 学术论文
+        paperName: '', // 论文名称
+        paperPublicationTime: '', // 发表时间
+        journalName: '', // 期刊名称
+        journalLevel: '', // 期刊等级
+        journalCategory: '', // 期刊类别
+        sciPart: '', // sci 分区
+        impactFactors: '', // 影响因子
+        firstAuthorName: '', // 第一作者
+        communicationAuthorName: '', // 通讯作者
+        paperSubject: '', // 论文分科，文，理，交叉学科按文科算
+        paperProveMaterials: '' // 论文证明材料
+      },
+      // 科研项目
+      researchProject: {
+        // 科研项目
+        projectName: '', // 项目名称
+        projectNumber: '', // 项目编号
+        projectChargeName: '', // 负责人姓名
+        approvalNumber: '', // 批准号
+        projectStartTime: '', // 开始日期
+        projectEndTime: '', // 结束日期
+        projectSourceUnit: '', // 项目来源单位
+        projectTotalPrice: '', // 总经费
+        projectLevel: '', // 项目级别
+        projectProveMaterials: '' // 证明材料，图片，pdf等
+      },
+
+      // 教材或学术著作
+      academicWork: {
+        // 教材或学术著作
+        worksName: '', // 著作名称
+        worksNumber: '', // 标准书号
+        worksPublicationTime: '', // 出版日期
+        worksPublicationUnit: '', // 出版单位
+        totalWords: '', // 完成字数
+        authorName: '', // 作者姓名
+        worksProveMaterials: '' // 证明材料，图片，pdf等
+      },
+
+      // 科研教学奖励
+      teachingAward: {
+        // 科研教学奖励
+        awardsName: '', // 奖励名称
+        awardsUnit: '', // 颁奖单位
+        awardsLevel: '', // 获奖级别
+        awardsTime: '', // 获奖日期
+        awardsAuthorName: '', // 获奖人姓名
+        awardsProveMaterials: '' // 证明材料，图片，pdf等
+      },
+
+      // 发明专利
+      inventionPatent: {
+        // 发明专利
+        patentName: '', // 专利名称
+        patentNumber: '', // 专利编号
+        patentGrantTime: '', // 专利授权日期
+        patentGrantNumber: '', // 专利授权号
+        patentType: '', // 专利类型
+        patentAuthorName: '', // 作者姓名
+        patentProveMaterials: '' // 证明材料，图片，pdf等
+      },
+
+
       form: {
         name: "",
         region: "",
@@ -1141,6 +1206,7 @@ export default {
         
       })
     },
+    //******************************************************第一页 *****************************************
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
@@ -1150,13 +1216,26 @@ export default {
             //首次申请博士提交到后台
             submitFirstPage(this.formFirst, 1,this.$route.params.applyCondition)
               .then((res) => {
-                if (res.code == 20000) {
-                  this.id=res.data;
-                  console.log(this.id+"*********");
+                if (res.code == 20000) {                  
+                  
+                  this.id=res.data.id;            
                   this.$message.success("保存成功！");
+                  //信息填写到第二页
+                  this.formSecond.applySubject=res.data.applySubject * 1;
+                  this.formSecond.doctoralMasterApplicationSubjectUnit=res.data.doctoralMasterApplicationSubjectUnit;
+                  this.currentDepartment=res.data.doctoralMasterApplicationSubjectUnit //申请学科负责单位
+                  //一级学科代码及名称
+                  this.formSecond.doctoralMasterSubjectCodeName=res.data.doctoralMasterSubjectCodeName
+                  //主要研究方向的内容及意义
+                  this.formSecond.major=res.data.major;
+                  //何时参加何种学术团体、任何种职务，有何社会兼职
+                  this.formSecond.groupsOrPartTimeJobs=res.data.groupsOrPartTimeJobs;
+                  //获得专家称号及时间
+                  this.formSecond.expertTitles = res.data.expertTitles
                   this.formVisible.first = false; // 关闭第一项
                   this.formVisible.second = true; // 打开第二项
                   this.active = 1;
+                  console.log(this.formSecond.doctoralMasterApplicationSubjectUnit);
                 } else {
                   this.$message.error;
                   ("保存失败！");
@@ -1170,11 +1249,11 @@ export default {
           console.log("cancel");
         });
     },
-    /*====================================第二页======================== */
+    /*====================================第二页============================ */
     // 第 2 页添加学术团体项 弹框
     addGroupsOrPartTimeJob: function() {
-      console.log(this.groupsOrPartTimeJob)
       this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
+      
       this.groupsOrPartTimeJob = {
         time: '',
         groups: '',
@@ -1210,11 +1289,12 @@ export default {
       // 设置子项目为当前院系的专业
       this.childNodes = value.professional;
     },
-    // 完成第二页基本信息的填写
+    //************************************************ 完成第二页基本信息的填写 表单提交按钮********************************************
     onSubmitSecondPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {
+          console.log(this.formSecond)
           submitSecondPage(this.formSecond,1,this.id).then((res)=>{
               if (res.code == 20000){
                 //更新成功
@@ -1235,35 +1315,13 @@ export default {
           console.log("cancel");
         });
     },
-    //返回第一页
-    // backFirstPage: function () {
-    //   this.formVisible.second = false;
-    //   this.formVisible.first = true;
-    // },
-    //第二页对话框
-    //社科类上传文件按钮
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
-          files.length + fileList.length
-        } 个文件`
-      );
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`);
-    },
-
-    
-
-
+     
     /* 第三页 */
-
+    /*====================================第三页============================ */
+    uploadSuccessFunc: function(response, file, fileList){
+      
+    },
+    //************************************************ 完成第三页基本信息的填写 表单提交按钮********************************************
     // 完成第 3 页学术信息的填写
     onSubmitThirdPage: function () {
       this.$confirm("提交填写?")
@@ -1284,6 +1342,7 @@ export default {
     // },
 
     /* 第 4 页 */
+    //************************************************ 完成第4页基本信息的填写 表单提交按钮********************************************
     // 完成第 4 页学术信息的填写
     onSubmitFourthPage: function () {
       this.$confirm("提交填写?")
