@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-25 12:04:28
+ * @LastEditTime: 2021-08-27 10:40:54
 -->
 <template>
   <div class="app-container">
@@ -140,7 +140,11 @@
               align="center" 
               prop="mr">
               <template slot-scope="scope">
-                <el-button @click="handleDetail(scope.row)" type="text" size="small">查看详情</el-button>
+                <el-button 
+                  size="small"
+                  type="text"
+                  @click="handleDetail(scope.row)" 
+                  >查看详情</el-button>
               </template>       
             </el-table-column>                     
           </el-table>
@@ -174,10 +178,7 @@
 </template>
 
 <script>
-//负责院系
-// import getOrganization from "@/api/SocialDepartment/socialFirst"
 import {
-  // getApplyType,//导师申请的所有类别
   checkDate,//查询数据
   updateStatus//更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
@@ -244,8 +245,8 @@ export default {
   methods: {
     //查看详情
     handleDetail(row) {
-      console.log(row);
-      this.$router.push({path:"/social/socialDetail"})
+      const tutorId = row.number
+      this.$router.push({path:"/social/socialDetail", query:{tutorId: tutorId}})
     },
 
     //初始化负责院系(下拉框)

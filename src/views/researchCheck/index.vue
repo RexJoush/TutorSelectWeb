@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-25 11:59:15
+ * @LastEditTime: 2021-08-26 11:19:59
 -->
 <template>
   <div class="app-container">
@@ -140,7 +140,11 @@
               align="center" 
               prop="mr">
               <template slot-scope="scope">
-                <el-button @click="handleDetail(scope.row)" type="text" size="small">查看详情</el-button>
+                <el-button
+                  size="mini"
+                  type="text" 
+                  @click="handleDetail(scope.row)" 
+                >查看详情</el-button>
               </template>       
             </el-table-column>                     
           </el-table>
@@ -244,8 +248,9 @@ export default {
   methods: {
     //查看详情
     handleDetail(row) {
-      console.log(row);
-      this.$router.push({path:"/research/researchDetail"})
+      const tutorId = row.number
+      // console.log(row);
+      this.$router.push({path:"/research/researchDetail", query: {tutorId: tutorId}})
     },
 
     //初始化负责院系(下拉框)

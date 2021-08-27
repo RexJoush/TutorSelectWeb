@@ -108,7 +108,7 @@ export const constantRoutes = [
         path: 'addApplyMaster/:applyId/:applyCondition',
         name: 'addApplyMaster',
         hidden: true,
-        component: () => import('@/views/tutorMainBoard/addApplyMaster/index'),
+        component: () => import('@/views/tutorMainBoard/AddApplyMaster/index'),
         meta: { title: '学硕导师增列学科' }
       }
     ]
@@ -201,8 +201,8 @@ export const constantRoutes = [
         path: 'socialDetail',
         name: 'SocialDetail',
         component: () => import('@/views/socialScienceCheck/detail/index'),
-        meta: { title: '科研处详情页面', icon: 'tree' }
-      }
+        // meta: { title: '社科处详情页面', icon: 'tree' }
+      },
     ]
 
   },
@@ -222,7 +222,7 @@ export const constantRoutes = [
         path: 'researchDetail',
         name: 'ResearchDetail',
         component: () => import('@/views/researchCheck/detail/index'),
-        meta: { title: '科研处详情信息', icon: 'tree' }
+        // meta: { title: '科研处详情信息', icon: 'tree' }
       }
     ]
 
