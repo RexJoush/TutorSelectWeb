@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-25 12:04:28
+ * @LastEditTime: 2021-08-27 09:42:19
 -->
 <template>
   <div class="app-container">
@@ -174,10 +174,7 @@
 </template>
 
 <script>
-//负责院系
-// import getOrganization from "@/api/SocialDepartment/socialFirst"
 import {
-  // getApplyType,//导师申请的所有类别
   checkDate,//查询数据
   updateStatus//更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
