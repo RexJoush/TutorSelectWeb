@@ -1,3 +1,4 @@
+<!--研究生院管理员的复审界面，研究生院管理员可在该页面查看研究生院主管的审核状态，若研究生院主管审核后，会在该页面显示-->
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -47,6 +48,7 @@
         </el-form>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
+
             <el-button
               type="warning"
               plain
@@ -54,6 +56,7 @@
               size="mini"
               @click="getList"
             >导出</el-button>
+            (注意：导出的记录为表中所有同意上校分会的记录)
           </el-col>
         </el-row>
 
@@ -62,13 +65,11 @@
           :data="tutorList"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="50" align="center" />
           <el-table-column
             label="工号"
             align="center"
             prop="number"
             width="100"
-            width:180
             fixed
           />
           <el-table-column label="姓名" align="center" prop="name" fixed />
@@ -119,10 +120,11 @@
         </el-table>        <div class="block">
           <el-pagination
             v-show="total>0"
-            :current-page="queryParams.pageNum"
-            :page-size="queryParams.pageSize"
+            :current-page.sync="currentPage"
+            :page-size="10"
             layout="total, prev, pager, next"
             :total="total"
+            @current-change="handleCurrentChange"
           />
         </div>
       </el-col>
@@ -137,6 +139,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      currentPage: 1,
       // 是否为单选
       single: false,
       // 是否为多选
@@ -195,6 +198,8 @@ export default {
     }
   },
   created() {
+    // 研究生院管理员的复审界面，研究生院管理员可在该页面查看研究生院主管的审核状态，若研究生院主管审核后，会在该页面显示
+    this.queryParams.applyStatus = 61 + '-62'
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -204,12 +209,15 @@ export default {
     /** 查询用户列表 */
     async getList() {
       this.loading = true
-      //研究生院管理员待复审
-      this.queryParams.applyStatus = 33
+      this.queryParams.pageNum = this.currentPage || 1
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000) return this.$message("暂无待初审教师！！！")
+      if (res.code != 20000) {
+        this.tutorList = []
+        this.loading = false
+        return this.$message('暂无复审名单！！！')
+      }
       this.tutorList = res.data
       console.info(res.data)
       this.total = res.total
@@ -217,21 +225,21 @@ export default {
     },
     async upDateStatus(code) {
       const updateStatus = []
-      for (var i =0 ;i<this.ids.length;i++){
-        var json={
-          "id_1" :this.ids[i],
-          "status_1":code,
-          "commit_1":'研究生院返回返回修改',
-        };
-        updateStatus[i] = json ;
+      for (var i = 0; i < this.ids.length; i++) {
+        var json = {
+          'id_1': this.ids[i],
+          'status_1': code,
+          'commit_1': '研究生院返回返回修改'
+        }
+        updateStatus[i] = json
       }
       console.info(updateStatus)
       const { data: res } = await this.$http.post(
-        '/update-status/update',updateStatus
+        '/update-status/update', updateStatus
       )
-      this.getList();
-      if(res.code != 20000) return this.$message("操作失败！！！")
-      else return this.$message("操作成功！！！")
+      this.getList()
+      if (res.code != 20000) return this.$message('操作失败！！！')
+      else return this.$message('操作成功！！！')
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -241,30 +249,30 @@ export default {
       this.applyTypeOptions = res.data
     },
     async getApplyStatus() {
-      this.applyStatusOptions =[
+      this.applyStatusOptions = [
         {
-          "codeId" : 14,
-          "inspectDescribe" :"待初审"
+          'codeId': 14,
+          'inspectDescribe': '待初审'
         },
         {
-          "codeId" : 34,
-          "inspectDescribe" :"符合条件"
+          'codeId': 34,
+          'inspectDescribe': '符合条件'
         },
         {
-          "codeId" : 35,
-          "inspectDescribe" :"不符合条件"
+          'codeId': 35,
+          'inspectDescribe': '不符合条件'
         },
         {
-          "codeId" : 32,
-          "inspectDescribe" :"需修改"
+          'codeId': 32,
+          'inspectDescribe': '需修改'
         },
         {
-          "codeId" : 300,
-          "inspectDescribe" :"送至社科处"
+          'codeId': 300,
+          'inspectDescribe': '送至社科处'
         },
         {
-          "codeId" : 31,
-          "inspectDescribe" :"送至科研处"
+          'codeId': 31,
+          'inspectDescribe': '送至科研处'
         }
       ]
     },
@@ -314,6 +322,11 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tutorId)
+    },
+    // 当前页数
+    handleCurrentChange(val) {
+      this.currentPage = val
+      this.getList()
     }
   }
 }

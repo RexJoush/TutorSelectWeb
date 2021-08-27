@@ -1,3 +1,4 @@
+<!--本页为研究生院管理员的最终名单页面，研究生院管理员可在该页面查看校会审核通过，即状态为学位委员会通过的导师的信息-->
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -50,7 +51,6 @@
           :data="tutorList"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="50" align="center" />
           <el-table-column
             label="工号"
             align="center"
@@ -107,9 +107,10 @@
         </el-table>
         <div class="block">
           <el-pagination
+            @current-change="handleCurrentChange"
             v-show="total>0"
-            :current-page="queryParams.pageNum"
-            :page-size="queryParams.pageSize"
+            :current-page.sync="currentPage"
+            :page-size="10"
             layout="total, prev, pager, next"
             :total="total"
           />
@@ -132,6 +133,7 @@ export default {
       multiple: false,
       // 显示搜索条件
       showSearch: true,
+      currentPage: 1,
       // 分页总条数
       total: 0,
       // 用户表格数据
@@ -165,10 +167,6 @@ export default {
           label: '交叉学科'
         }
       ],
-      // 表单参数
-      form: {
-        status: 1
-      },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -184,6 +182,7 @@ export default {
     }
   },
   created() {
+    this.queryParams.applyStatus = 81
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -193,12 +192,16 @@ export default {
     /** 查询用户列表 */
     async getList() {
       this.loading = true
-      //研究生院管理员待复审
-      this.queryParams.applyStatus = 33
+      this.queryParams.pageNum = this.currentPage || 1
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000) return this.$message("暂无待初审教师！！！")
+      if (res.code != 20000)
+      {
+        this.tutorList = []
+        this.loading = false
+        return this.$message("暂无最终名单！！！")
+      }
       this.tutorList = res.data
       console.info(res.data)
       this.total = res.total
@@ -297,13 +300,30 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
+      this.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        userId: undefined, // 工号
+        userName: undefined, // 姓名
+        organization: undefined, // 院系id
+        applyType: undefined, // 申请类别id
+        subjectName: undefined, // 学科名称id
+        applyStatus: 81, // 审核状态码id
+        subjectType: undefined // 学科属性，文科，理科，交叉
+      }
+
       this.handleQuery()
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tutorId)
-    }
+    },
+
+    //当前页数
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getList();
+    },
   }
 }
 </script>
