@@ -147,13 +147,13 @@ export default {
     //       console.log(this.TeacherInfo=res);
     //       let obj= JSON.parse(this.TeacherInfo.data);
     //       console.log(obj.data.Rows[0].MC);
-          
+
     //     })
-    //   // this.$router.push("firstApplyMaster/2");
+    //   // this.$router.push("applyMaster/2");
     // },
 
     addApplyDoctor: function() {
-      this.$router.push('firstApplyMaster/2')
+      this.$router.push('applyMaster/2')
     },
 
 
@@ -167,10 +167,10 @@ export default {
          */
         if (res.data === '101') {
           // 查询出来的状态为 0 ，老师可以进去修改
-          this.$router.push('firstApplyMaster/4/101')
+          this.$router.push('applyMaster/4/101')
         } else if (res.data === '102') {
           // 没有申请过此岗位
-          this.$router.push('firstApplyMaster/4/102')
+          this.$router.push('applyMaster/4/102')
         } else {
           this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
             (res) => {

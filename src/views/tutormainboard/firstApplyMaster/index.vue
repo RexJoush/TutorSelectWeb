@@ -1115,7 +1115,7 @@
 
 <script>
 import { academicMasterPrimaryDiscipline } from '@/utils/data'
-import { submitFirstPage, submitSecondPage, submitThirdPage } from '@/api/tutor/firstApplyMaster'
+import { submitFirstPage, submitSecondPage, submitThirdPage } from '@/api/tutor/applyMaster'
 import { getTeacherInfo } from '@/api/tutor/mainboard'
 
 export default {
