@@ -29,54 +29,54 @@
                 <Row>
                   <Col :span="12">
                     <el-form-item label="姓名">
-                      <el-input v-model="formFirst.name" disabled/>
+                      <el-input v-model="formFirst.name" disabled />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="性别">
-                      <span style="color: #606266;">{{ formFirst.gender }}</span>
+                      <span style="color: #606266">{{ formFirst.gender }}</span>
                       <!--                      <el-radio v-if="formFirst.gender === '男'" v-model="formFirst.gender" label="男">男</el-radio>-->
                       <!--                      <el-radio v-else v-model="formFirst.gender" disabled label="女">女</el-radio>-->
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="所在单位">
-                      <el-input v-model="formFirst.organizationName" disabled/>
+                      <el-input v-model="formFirst.organizationName" disabled />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="出生年月">
-                      <el-input v-model="formFirst.birthday" disabled/>                      
+                      <el-input v-model="formFirst.birthday" disabled />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="工号">
-                      <el-input v-model="formFirst.number" :disabled="true"/>
+                      <el-input v-model="formFirst.number" :disabled="true" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="证件号码">
-                      <el-input v-model="formFirst.identity" disabled/>
+                      <el-input v-model="formFirst.identity" disabled />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="联系电话">
-                      <el-input v-model="formFirst.phone"/>
+                      <el-input v-model="formFirst.phone" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="电子邮箱">
-                      <el-input v-model="formFirst.email"/>
+                      <el-input v-model="formFirst.email" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="职称">
-                      <el-input v-model="formFirst.title" disabled/>
+                      <el-input v-model="formFirst.title" disabled />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
                     <el-form-item label="评定时间">
-                      <el-input v-model="formFirst.evaluateTime" disabled/>
+                      <el-input v-model="formFirst.evaluateTime" disabled />
                       <!--                      <el-date-picker-->
                       <!--                        v-model="formFirst.evaluateTime"-->
                       <!--                        type="month"-->
@@ -94,7 +94,9 @@
                     src="https://www.rexjoush.com/img/1.jpg"
                     fit="fit"
                   >
-                    <div slot="placeholder" class="image-slot"><i class="el-icon-picture-outline"/></div>
+                    <div slot="placeholder" class="image-slot">
+                      <i class="el-icon-picture-outline" />
+                    </div>
                   </el-image>
                   <!--                  <el-upload-->
                   <!--                    class="upload-demo"-->
@@ -109,7 +111,7 @@
               </Col>
               <Col :span="8">
                 <el-form-item label="最后学位">
-                  <el-input v-model="formFirst.finalDegree" disabled/>
+                  <el-input v-model="formFirst.finalDegree" disabled />
                   <!--                  <el-select-->
                   <!--                    v-model="formFirst.finalDegree"-->
                   <!--                    style="width: 100%"-->
@@ -123,7 +125,7 @@
               </Col>
               <Col :span="8">
                 <el-form-item label="授予单位">
-                  <el-input v-model="formFirst.awardDepartment"/>
+                  <el-input v-model="formFirst.awardDepartment" />
                 </el-form-item>
               </Col>
               <Col :span="8">
@@ -175,12 +177,12 @@
                           v-model="formSecond.applySubject"
                           placeholder="请选择"
                         >
-                         <el-option
+                          <el-option
                             v-for="item in applySubjects"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value"
-                          />                           
+                          />
                         </el-select>
                       </el-form-item>
                     </Col>
@@ -234,16 +236,39 @@
                   </el-form-item>
                 </Col>
                 <Col :span="24">
-                   <el-form-item label="何时参加何种学术团体、任何种职务，有何社会兼职">
-                    <el-button type="primary" class="addButton" @click="dialogSecond1 = true">添加</el-button>
-                    <el-table :data="formSecond.groupsOrPartTimeJobs" border style="width: 100%">
-                      <el-table-column type="index" width="50" label="序号"/>
-                      <el-table-column prop="time" label="参加时间" width="180"/>
-                      <el-table-column prop="groups" label="学术团体或兼职" width="200"/>
-                      <el-table-column prop="job" label="所任职务"/>
+                  <el-form-item
+                    label="何时参加何种学术团体、任何种职务，有何社会兼职"
+                  >
+                    <el-button
+                      type="primary"
+                      class="addButton"
+                      @click="dialogSecond1 = true"
+                      >添加</el-button
+                    >
+                    <el-table
+                      :data="formSecond.groupsOrPartTimeJobs"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column type="index" width="50" label="序号" />
+                      <el-table-column
+                        prop="time"
+                        label="参加时间"
+                        width="180"
+                      />
+                      <el-table-column
+                        prop="groups"
+                        label="学术团体或兼职"
+                        width="200"
+                      />
+                      <el-table-column prop="job" label="所任职务" />
                       <el-table-column label="操作">
                         <template slot-scope="scope">
-                          <el-button type="danger" @click="delGroupsOrPartTimeJob(scope.$index)">删除</el-button>
+                          <el-button
+                            type="danger"
+                            @click="delGroupsOrPartTimeJob(scope.$index)"
+                            >删除</el-button
+                          >
                         </template>
                       </el-table-column>
                     </el-table>
@@ -251,15 +276,35 @@
                 </Col>
 
                 <Col :span="24">
-                 <el-form-item v-model="formSecond.expertTitles" label="获何专家称号及时间">
-                    <el-button type="primary" class="addButton" @click="dialogSecond2 = true">添加</el-button>
-                    <el-table :data="formSecond.expertTitles" border style="width: 100%">
-                      <el-table-column type="index" width="50" label="序号"/>
-                      <el-table-column label="获得时间" prop="time" width="180"/>
-                      <el-table-column label="称号名称" prop="title"/>
+                  <el-form-item
+                    v-model="formSecond.expertTitles"
+                    label="获何专家称号及时间"
+                  >
+                    <el-button
+                      type="primary"
+                      class="addButton"
+                      @click="dialogSecond2 = true"
+                      >添加</el-button
+                    >
+                    <el-table
+                      :data="formSecond.expertTitles"
+                      border
+                      style="width: 100%"
+                    >
+                      <el-table-column type="index" width="50" label="序号" />
+                      <el-table-column
+                        label="获得时间"
+                        prop="time"
+                        width="180"
+                      />
+                      <el-table-column label="称号名称" prop="title" />
                       <el-table-column width="100">
                         <template slot-scope="scope">
-                          <el-button type="danger" @click="delExpertTitle(scope.$index)">删除</el-button>
+                          <el-button
+                            type="danger"
+                            @click="delExpertTitle(scope.$index)"
+                            >删除</el-button
+                          >
                         </template>
                       </el-table-column>
                     </el-table>
@@ -296,7 +341,7 @@
               <!-- 学术论文(近五年) -->
               <el-card class="box-card" shadow="always">
                 <div slot="header" class="clearfix">
-                  <span style="font-size: 18px">科研项目（近五年）</span>
+                  <span style="font-size: 18px">学术论文(近五年) </span>
                 </div>
                 <el-row :gutter="100">
                   <el-col :span="4">
@@ -306,18 +351,27 @@
                     <el-button class="addButton" type="primary" @click="dialogThird2 = true">添加理工类论文</el-button>
                   </el-col>
                 </el-row>
-                <el-table :data="formThird.academicPapers" border style="width: 100%">
-                  <el-table-column type="index" label="序号" width="50" />
-                  <el-table-column prop="paperName" label="论文名称" />
-                  <el-table-column prop="paperNumber" label="论文编号" />
-                  <el-table-column prop="authorName" label="作者姓名" />
+                <el-table :data="formThird.academicPapers" border >
+                  <el-table-column type="index" label="序号" width="70px" />
+                  <el-table-column prop="paperName" label="论文名称" width="180px"/>
+                  <el-table-column prop="paperPublicationTime" label="发表时间" />
                   <el-table-column prop="firstAuthorName" label="第一作者" />
                   <el-table-column prop="communicationAuthorName" label="通讯作者" />
-                  <el-table-column prop="paperPublicationTime" label="发表时间" />
                   <el-table-column prop="journalName" label="期刊名称" />
                   <el-table-column prop="journalCategory" label="期刊类别" />
-                  <el-table-column prop="journalLevel" label="期刊分区" />
-                  <el-table-column prop="impactFactors" label="影响因子" />
+                  <el-table-column prop="sciPart" label="分区" />
+                  <el-table-column prop="journalLevel" label="期刊等级" />
+                  <el-table-column prop="impactFactors" label="影响因子" />                
+                  <el-table-column label="证明资料" width="90" align="center">
+                    <template slot-scope="scope">
+                      <a target="_blank" :href="scope.row.paperProveMaterials"><el-button size="mini" type="primary" plain>查 看</el-button></a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="操作" align="center" width="90">
+                    <template slot-scope="scope">
+                      <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index)">删 除</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-card>
               <br />
@@ -327,75 +381,29 @@
                   <span style="font-size: 18px">科研项目（近五年）</span>
                 </div>
                 <el-row>
-                  <el-col :span="4"
-                    ><el-button type="primary">社科成果增加</el-button></el-col
-                  >
-                  <el-col :span="4"
-                    ><el-button type="primary">理工成果增加</el-button></el-col
-                  >
+                  <el-col :span="4">
+                    <el-button class="addButton" type="primary" @click="dialogThird3 = true">添加科研项目</el-button>
+                  </el-col>
                 </el-row>
-                <br />
-                <el-table
-                  :data="tableData"
-                  height="250"
-                  border
-                  style="width: 100%"
-                >
-                  <el-table-column
-                    prop="name"
-                    label="序号"
-                    width="50"
-                    show-overflow-tooltip="true"
-                  >
+                <el-table :data="formThird.researchProjects" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50" />
+                  <el-table-column prop="projectName" label="项目名称" />
+                  <el-table-column prop="approvalNumber" label="批准号" />
+                  <el-table-column prop="projectChargeName" label="负责人姓名" />
+                  <el-table-column prop="projectStartTime" label="开始日期" />
+                  <el-table-column prop="projectEndTime" label="结束日期" />
+                  <el-table-column prop="projectCategory" label="项目分类" />
+                  <el-table-column prop="projectTotalPrice" label="总经费" width="120" />
+                  <el-table-column prop="projectLevel" label="项目级别" />
+                  <el-table-column label="证明资料" width="90" align="center">
+                    <template slot-scope="scope">
+                      <a target="_blank" :href="scope.row.projectProveMaterials"><el-button size="mini" type="primary" plain>查 看</el-button></a>
+                    </template>
                   </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="名称"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="批准号"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="负责人"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="开始时间"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="结束时间"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="项目级别"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
-                  </el-table-column>
-                  <el-table-column
-                    prop="name"
-                    label="总经费（万元）"
-                    width="200"
-                    show-overflow-tooltip="true"
-                  >
+                  <el-table-column>
+                    <template slot-scope="scope">
+                      <el-button type="danger" plain @click="deleteFunc(scope.$index, 2)">删 除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-card>
@@ -407,21 +415,27 @@
                 </div>
                 <el-row>
                   <el-col :span="4">
-                    <el-button
-                      class="addButton"
-                      type="primary"
-                    >添加教材或学术著作
-                    </el-button>
+                    <el-button class="addButton" type="primary" @click="dialogThird4 = true">添加教材或学术著作</el-button>
                   </el-col>
                 </el-row>
                 <el-table :data="formThird.academicWorks" border style="width: 100%">
                   <el-table-column type="index" label="序号" width="50px" />
                   <el-table-column prop="worksName" label="著作名称" />
-                  <el-table-column prop="worksNumber" label="标准书号" />
+                  <el-table-column prop="worksNumber" label="著作编号" />
                   <el-table-column prop="worksPublicationTime" label="出版日期" />
                   <el-table-column prop="worksPublicationUnit" label="出版单位" />
                   <el-table-column prop="totalWords" label="完成字数（万字）" />
                   <el-table-column prop="authorName" label="作者姓名" />
+                  <el-table-column label="证明资料" width="90" align="center">
+                    <template slot-scope="scope">
+                      <a target="_blank" :href="scope.row.worksProveMaterials"><el-button size="mini" type="primary" plain>查 看</el-button></a>
+                    </template>
+                  </el-table-column>
+                  <el-table-column>
+                    <template slot-scope="scope">
+                      <el-button type="danger" plain @click="deleteFunc(scope.$index, 3)">删 除</el-button>
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-card>
               <br />
@@ -431,29 +445,27 @@
                   <span style="font-size: 18px">科研教学奖励（近五年）</span>
                 </div>
                 <el-row>
-                  <el-col :span="4"
-                    ><el-button type="primary">社科成果增加</el-button></el-col
-                  >
-                  <el-col :span="4"
-                    ><el-button type="primary">理工成果增加</el-button></el-col
-                  >
+                  <el-col :span="4">
+                    <el-button class="addButton" type="primary" @click="dialogThird5 = true">添加科研教学奖励</el-button>
+                  </el-col>
                 </el-row>
-                <br />
-                <el-table
-                  :data="tableData"
-                  height="250"
-                  border
-                  style="width: 100%"
-                >
-                  <el-table-column prop="name" label="序号" width="50">
+                <el-table :data="formThird.teachingAwards" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50px" />
+                  <el-table-column prop="awardsName" label="奖励名称" />
+                  <el-table-column prop="awardsRank" label="排名" />
+                  <el-table-column prop="awardsUnit" label="颁奖单位" />
+                  <el-table-column prop="awardsLevel" label="获奖级别" />
+                  <el-table-column prop="awardsTime" label="获奖日期" />
+                  <el-table-column prop="awardsAuthorName" label="获奖人姓名" />
+                  <el-table-column label="证明资料" width="90" align="center">
+                    <template slot-scope="scope">
+                      <a target="_blank" :href="scope.row.awardsProveMaterials"><el-button size="mini" type="primary" plain>查 看</el-button></a>
+                    </template>
                   </el-table-column>
-                  <el-table-column prop="name" label="名称"> </el-table-column>
-                  <el-table-column prop="name" label="排名"> </el-table-column>
-                  <el-table-column prop="name" label="颁奖单位">
-                  </el-table-column>
-                  <el-table-column prop="name" label="级别"> </el-table-column>
-                  <el-table-column prop="name" label="等级"> </el-table-column>
-                  <el-table-column prop="name" label="获奖时间">
+                  <el-table-column>
+                    <template slot-scope="scope">
+                      <el-button type="danger" plain @click="deleteFunc(scope.$index, 4)">删 除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-card>
@@ -464,28 +476,26 @@
                   <span style="font-size: 18px">发明专利（近五年）</span>
                 </div>
                 <el-row>
-                  <el-col :span="4"
-                    ><el-button type="primary">社科成果增加</el-button></el-col
-                  >
-                  <el-col :span="4"
-                    ><el-button type="primary">理工成果增加</el-button></el-col
-                  >
+                  <el-col :span="4">
+                    <el-button class="addButton" type="primary" @click="dialogThird6 = true">添加发明专利</el-button>
+                  </el-col>
                 </el-row>
-                <br />
-                <el-table
-                  :data="tableData"
-                  height="250"
-                  border
-                  style="width: 100%"
-                >
-                  <el-table-column prop="name" label="序号" width="50">
+                <el-table :data="formThird.inventionPatents" border style="width: 100%">
+                  <el-table-column type="index" label="序号" width="50px" />
+                  <el-table-column prop="patentName" label="专利名称" />
+                  <el-table-column prop="patentAuthorName" label="第一作者" />
+                  <el-table-column prop="patentGrantTime" label="专利授权日期" />
+                  <el-table-column prop="patentGrantNumber" label="专利授权号" />
+                  <el-table-column prop="patentType" label="专利类型" />
+                  <el-table-column label="证明资料" width="90" align="center">
+                    <template slot-scope="scope">
+                      <a target="_blank" :href="scope.row.patentProveMaterials"><el-tag>查 看</el-tag></a>
+                    </template>
                   </el-table-column>
-                  <el-table-column prop="name" label="名称"> </el-table-column>
-                  <el-table-column prop="name" label="第一作者">
-                  </el-table-column>
-                  <el-table-column prop="name" label="授权（颁奖）时间">
-                  </el-table-column>
-                  <el-table-column prop="name" label="专利授权号">
+                  <el-table-column>
+                    <template slot-scope="scope">
+                      <el-button @click="deleteFunc(scope.$index, 5)">删 除</el-button>
+                    </template>
                   </el-table-column>
                 </el-table>
               </el-card>
@@ -729,7 +739,7 @@
     <!-- 第四页内容 结束-->
 
     <!-- 第二页弹框内容 -->
-     <!-- 学术团体框 -->
+    <!-- 学术团体框 -->
     <el-dialog title="添加学术团体或职务" :visible.sync="dialogSecond1">
       <el-form ref="groupsOrPartTimeJobForm" :model="groupsOrPartTimeJob">
         <el-form-item label="参加学术团体、或职务或社会兼职的时间">
@@ -743,15 +753,17 @@
           />
         </el-form-item>
         <el-form-item label="学术团体、或职务，或兼职名称">
-          <el-input v-model="groupsOrPartTimeJob.groups"/>
+          <el-input v-model="groupsOrPartTimeJob.groups" />
         </el-form-item>
         <el-form-item label="所任职务">
-          <el-input v-model="groupsOrPartTimeJob.job"/>
+          <el-input v-model="groupsOrPartTimeJob.job" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogSecond1 = false">取 消</el-button>
-        <el-button type="primary" @click="addGroupsOrPartTimeJob">确 定</el-button>
+        <el-button type="primary" @click="addGroupsOrPartTimeJob"
+          >确 定</el-button
+        >
       </div>
     </el-dialog>
     <!-- 专家称号框 -->
@@ -768,7 +780,7 @@
           />
         </el-form-item>
         <el-form-item label="称号名称">
-          <el-input v-model="expertTitle.title"/>
+          <el-input v-model="expertTitle.title" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -780,21 +792,23 @@
     <!-- 第三页操作内容 -->
     <!-- 学术论文 社科成果增加-->
     <el-dialog title="添加社科类论文" width="40%" :visible.sync="dialogThird1">
-      <el-form :model="academicPaper" >
-        
+      <el-form :model="academicPaper">
+        <el-row :gutter="20">
+          <el-col :span="24">
         <el-form-item label="论文名称">
-          <el-input v-model="academicPaper.paperName" autocomplete="off" />
+          <el-input v-model="academicPaper.paperName" />
         </el-form-item>
-    
-            <el-form-item label="第一作者">
-              <el-input v-model="academicPaper.firstAuthorName" />
-            </el-form-item>
- 
-            <el-form-item label="期刊名称">
-              <el-input v-model="academicPaper.journalName" />
-            </el-form-item>
-    
-        <el-row>
+          </el-col>
+        <el-col :span="12">
+        <el-form-item label="第一作者">
+          <el-input v-model="academicPaper.firstAuthorName" />
+        </el-form-item>
+        </el-col>
+        <el-col :span="12">
+        <el-form-item label="期刊名称">
+          <el-input v-model="academicPaper.journalName" />
+        </el-form-item>
+        </el-col>
           <el-col :span="12">
             <el-form-item label="发表时间">
               <el-date-picker
@@ -808,31 +822,39 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="期刊等级">
-              <el-select v-model="academicPaper.journalLevel" placeholder="请选择">
+              <el-select
+                v-model="academicPaper.journalLevel"
+                placeholder="请选择"
+              >
                 <el-option label="顶级期刊（A类）" value="1" />
                 <el-option label="权威期刊（B类）" value="2" />
                 <el-option label="核心期刊（C类）" value="3" />
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
+        <el-col :span="24">
         <el-form-item label="证明材料">
           <el-upload
             ref="upload"
             class="upload-demo"
             name="material"
-            action="http://localhost:8081/tutor/firstApplyDoctor/upload"
+            :multiple="false"
+            action="http://localhost:8081/tutor/firstApplyDoctor/upload/1"
             :on-success="uploadSuccessFunc"
             :on-error="uploadErrorFunc"
             :before-upload="checkFileType"
-            :auto-upload="true"
-            limit="1"
+            :auto-upload="false"
+            :limit="1"
             accept=".zip, .rar"
           >
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传 zip/rar文件，且不超过 50MB</div>
+            <div slot="tip" class="el-upload__tip">
+              证明材料包括论文封面、目录和正文。若上传多个文件，请上传 zip/rar文件，且不超过 50MB
+            </div>
           </el-upload>
         </el-form-item>
+        </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogThird1 = false">取 消</el-button>
@@ -840,47 +862,95 @@
       </div>
     </el-dialog>
     <!-- 学术论文 理工科成果增加-->
-    <el-dialog
-      title="学术论文管理>理工科成果增加"
-      :visible.sync="ScienceEngineeringPaperAdd"
-    >
-      <el-form :model="form" label-position="left">
-        <el-form-item label="论文名称" >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="第一作者" >
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="通信作者" >
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="发表时间" >
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="期刊类别" >
-          <el-select v-model="form.region" placeholder="请选择">
-            <el-option label="SCIE" value="1"></el-option>
-            <el-option label="EI" value="2"></el-option>
-            <el-option label="SSCI" value="3"></el-option>
-            <el-option label="CPCI-S" value="4"></el-option>
-            <el-option label="CSCD" value="5"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="期刊分区">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="期刊名称" >
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="影响因子" >
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
+    <el-dialog title="添加理工类论文" width="40%" :visible.sync="dialogThird2">
+      <el-form :model="academicPaper">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <el-form-item label="论文名称">
+              <el-input v-model="academicPaper.paperName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="发表时间">
+              <el-date-picker
+                v-model="academicPaper.paperPublicationTime"
+                type="month"
+                format="yyyy-MM"
+                value-format="yyyy-MM"
+                style="width: 100%"
+                placeholder="选择日期"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="第一作者">
+              <el-input v-model="academicPaper.firstAuthorName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="通讯作者">
+              <el-input v-model="academicPaper.communicationAuthorName" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="期刊类别">
+              <el-select v-model="academicPaper.journalCategory" style="width: 100%" placeholder="请选择">
+                <el-option label="SCIE" value="SCIE" />
+                <el-option label="EI" value="EI" />
+                <el-option label="SSCI" value="SSCI" />
+                <el-option label="CPCI-S" value="CPCI-S" />
+                <el-option label="CSCD" value="CSCD" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="academicPaper.journalCategory === 'SCIE' || academicPaper.journalCategory === 'SSCI'" label="分区">
+              <el-select v-model="academicPaper.sciPart" style="width: 100%;" placeholder="请选择">
+                <el-option label="一区" value="1" />
+                <el-option label="二区" value="2" />
+                <el-option label="三区" value="3" />
+                <el-option label="四区" value="4" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="期刊名称">
+              <el-input v-model="academicPaper.journalName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="影响因子">
+              <el-input v-model="academicPaper.impactFactors" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="证明材料">
+              <el-upload
+                ref="upload"
+                class="upload-demo"
+                name="material"
+                action="http://localhost:8081/tutor/firstApplyDoctor/upload/2"
+                :on-success="uploadSuccessFunc"
+                :on-error="uploadErrorFunc"
+                :before-upload="checkFileType"
+                :auto-upload="false"
+                :limit="1"
+                accept=".zip, .rar"
+              >
+                <el-button size="small" type="primary">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">证明材料包括论文封面、目录和正文。若上传多个文件，请上传 zip/rar文件，且不超过 50MB</div>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="dialogThird2 = false">取 消</el-button>
+        <el-button type="primary" @click="addAcademicPaper">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 学术论文 编辑 -->
@@ -890,8 +960,11 @@
 <script>
 import index from "@/components/Breadcrumb/index.vue";
 import { doctorPrimaryDiscipline } from "@/utils/data";
-import { submitFirstPage,submitSecondPage } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
-import { getTeacherInfo } from "@/api/tutor/mainboard"
+import {
+  submitFirstPage,
+  submitSecondPage,
+} from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
+import { getTeacherInfo } from "@/api/tutor/mainboard";
 
 export default {
   components: { index },
@@ -910,22 +983,22 @@ export default {
       },
       /**第一页 */
       // 第 1 页表单
-      id:'',  //回传apply中id主键值
+      id: "", //回传apply中id主键值
       formFirst: {
-        number: '202032978', // 教师工号
-        name: '李一航', // 姓名
-        gender: '男', // 性别
-        image: 'https://www.rexjoush.com/img/1.jpg',
-        organizationName: '24', // 所在单位
-        birthday: '1997-10-01', // 出生年月
-        identity: '411422199712195117', // 证件号码
-        phone: '13598892696', // 联系电话
-        email: '7772854362@qq.com', // 电子邮箱
-        title: '教授', // 职称
-        evaluateTime: '2021-07', // 评定时间
-        finalDegree: '博士', // 最后学位
-        awardDepartment: '西北大学', // 授予单位
-        awardTime: '2021-02' // 授予时间
+        number: "202032978", // 教师工号
+        name: "李一航", // 姓名
+        gender: "男", // 性别
+        image: "https://www.rexjoush.com/img/1.jpg",
+        organizationName: "24", // 所在单位
+        birthday: "1997-10-01", // 出生年月
+        identity: "411422199712195117", // 证件号码
+        phone: "13598892696", // 联系电话
+        email: "7772854362@qq.com", // 电子邮箱
+        title: "教授", // 职称
+        evaluateTime: "2021-07", // 评定时间
+        finalDegree: "博士", // 最后学位
+        awardDepartment: "西北大学", // 授予单位
+        awardTime: "2021-02", // 授予时间
 
         // awardingUnitTime: "", //授予单位及时间
       },
@@ -936,41 +1009,43 @@ export default {
       dialogSecond2: false, // 专家称号的显示框
       //申请类型
       applySubjects: [
-        { label: '文史', value: 1 },
-        { label: '理工', value: 2 },
-        { label: '交叉学科', value: 3 }
-      ],  
+        { label: "文史", value: 1 },
+        { label: "理工", value: 2 },
+        { label: "交叉学科", value: 3 },
+      ],
 
       formSecond: {
-        applySubject: '', // 申请学科
-        doctoralMasterApplicationSubjectUnit: '', // 申请学科负责单位
-        doctoralMasterSubjectCodeName: '', // 一级学科代码 + " " + 名称
-        major: '', // 主要研究方向的内容及其意义
+        applySubject: "", // 申请学科
+        doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
+        doctoralMasterSubjectCodeName: "", // 一级学科代码 + " " + 名称
+        major: "", // 主要研究方向的内容及其意义
         groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
-        expertTitles: [] // 获何专家称号及时间列表
+        expertTitles: [], // 获何专家称号及时间列表
       },
       groupsOrPartTimeJob: {
-        time: '',
-        groups: '',
-        job: ''
+        time: "",
+        groups: "",
+        job: "",
       },
       expertTitle: {
-        time: '',
-        title: ''
+        time: "",
+        title: "",
       },
       /**第三页表单 */
       dialogThird1: false, // 社科学术论文添加按钮
       dialogThird2: false, // 理工学术论文添加按钮
-      dialogThird3: false, // 理工学术论文添加按钮
-      dialogThird4: false, // 理工学术论文添加按钮
-      dialogThird5: false, // 理工学术论文添加按钮
+      dialogThird3: false, // 科研项目添加按钮
+      dialogThird4: false, // 教材或学术著作添加按钮
+      dialogThird5: false, // 科研教学奖励添加按钮
+      dialogThird6: false, // 添加发明专利
       formThird: {
         academicPapers: [], // 学术论文列表
         researchProjects: [], // 科研项目列表
         academicWorks: [], // 教材或学术著作列表
         teachingAwards: [], // 科研教学奖励列表
         inventionPatents: [], // 发明专利列表
-        summary: { // 科研汇总信息
+        summary: {
+          // 科研汇总信息
           firstAuthorPaper: 0, // 以第一作者或通讯在 核心及以上期刊发表与本学科发表的论文篇数
           authorityAmount: 0, // 权威篇数
           eiAmount: 0, // EI 篇数
@@ -987,10 +1062,11 @@ export default {
           awardsNationalLevel: 0, // 国家级奖项
           awardsProvinceLevel: 0, // 省部级奖项
           inventionPatentAmount: 0, // 发明专利
-          newUtilityPatent: 0 // 新型实用专利
-        }
+          newUtilityPatent: 0, // 新型实用专利
+        },
       },
-      academicPaper: { // 学术论文
+      academicPaper: {
+        // 学术论文
         paperName: '', // 论文名称
         paperPublicationTime: '', // 发表时间
         journalName: '', // 期刊名称
@@ -1001,28 +1077,28 @@ export default {
         firstAuthorName: '', // 第一作者
         communicationAuthorName: '', // 通讯作者
         paperSubject: '', // 论文分科，文，理，交叉学科按文科算
-        paperProveMaterials: '' // 论文证明材料
+        paperProveMaterials: '', // 论文证明材料 路径
       },
       // 科研项目
-      researchProject: {
-        // 科研项目
+       researchProject: {
+        projectId: '', // 项目 id
         projectName: '', // 项目名称
         projectNumber: '', // 项目编号
-        projectChargeName: '', // 负责人姓名
         approvalNumber: '', // 批准号
+        projectChargeName: '', // 负责人姓名
         projectStartTime: '', // 开始日期
         projectEndTime: '', // 结束日期
-        projectSourceUnit: '', // 项目来源单位
+        projectCategory: '', // 项目分类
         projectTotalPrice: '', // 总经费
-        projectLevel: '', // 项目级别
+        projectLevel: '', // 项目级别，国家级，省部级，厅局级
         projectProveMaterials: '' // 证明材料，图片，pdf等
       },
 
       // 教材或学术著作
-      academicWork: {
-        // 教材或学术著作
+     academicWork: {
+        worksId: '', // 著作 id
         worksName: '', // 著作名称
-        worksNumber: '', // 标准书号
+        worksNumber: '', // 著作编号
         worksPublicationTime: '', // 出版日期
         worksPublicationUnit: '', // 出版单位
         totalWords: '', // 完成字数
@@ -1032,8 +1108,9 @@ export default {
 
       // 科研教学奖励
       teachingAward: {
-        // 科研教学奖励
+        awardsId: '', // 奖励 id
         awardsName: '', // 奖励名称
+        awardsRank: '', // 排名
         awardsUnit: '', // 颁奖单位
         awardsLevel: '', // 获奖级别
         awardsTime: '', // 获奖日期
@@ -1043,16 +1120,14 @@ export default {
 
       // 发明专利
       inventionPatent: {
-        // 发明专利
+        patentId: '', // 专利 id
         patentName: '', // 专利名称
-        patentNumber: '', // 专利编号
+        patentAuthorName: '', // 第一作者
         patentGrantTime: '', // 专利授权日期
         patentGrantNumber: '', // 专利授权号
         patentType: '', // 专利类型
-        patentAuthorName: '', // 作者姓名
         patentProveMaterials: '' // 证明材料，图片，pdf等
       },
-
 
       form: {
         name: "",
@@ -1065,7 +1140,6 @@ export default {
         desc: "",
       },
 
-   
       //第二页操作内容
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
@@ -1091,60 +1165,63 @@ export default {
     /*============================================= 第一页 =====================================*/
 
     //提交第一页表单 完成第一页基本信息的填写
-    GetTutorInfoByClient: function (){
+    GetTutorInfoByClient: function () {
       //获取导师基本信息
-      getTeacherInfo().then((res)=>{
-        this.formFirst.number = res.data.zgh
-        this.formFirst.name = res.data.xm
-        this.formFirst.gender = res.data.xb
-        this.formFirst.image = res.data.shz
-        this.formFirst.birthday = res.data.csrq.split(' ')[0]
-        this.formFirst.organizationName = res.data.mc
-        this.formFirst.identity = res.data.sfzjh
-        this.formFirst.phone = res.data.sjh
-        this.formFirst.title = res.data.zcmc
-        this.formFirst.finalDegree = res.data.zgxw        
-        
-      })
+      getTeacherInfo().then((res) => {
+        this.formFirst.number = res.data.zgh;
+        this.formFirst.name = res.data.xm;
+        this.formFirst.gender = res.data.xb;
+        this.formFirst.image = res.data.shz;
+        this.formFirst.birthday = res.data.csrq.split(" ")[0];
+        this.formFirst.organizationName = res.data.mc;
+        this.formFirst.identity = res.data.sfzjh;
+        this.formFirst.phone = res.data.sjh;
+        this.formFirst.title = res.data.zcmc;
+        this.formFirst.finalDegree = res.data.zgxw;
+      });
     },
     //******************************************************第一页 *****************************************
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
         // 提交保存第一页
-        .then(() => {       
-          
+        .then(() => {
           // if (applyCondition === 101 || appplyCondition === 102) {
-            //首次申请博士提交到后台
-            submitFirstPage(this.formFirst, 1,this.$route.params.applyCondition)
-              .then((res) => {
-                if (res.code == 20000) {                  
-                  
-                  this.id=res.data.id;            
-                  this.$message.success("保存成功！");
-                  //信息填写到第二页
-                  this.formSecond.applySubject=res.data.applySubject * 1;
-                  this.formSecond.doctoralMasterApplicationSubjectUnit=res.data.doctoralMasterApplicationSubjectUnit;
-                  this.currentDepartment=res.data.doctoralMasterApplicationSubjectUnit //申请学科负责单位
-                  //一级学科代码及名称
-                  this.formSecond.doctoralMasterSubjectCodeName=res.data.doctoralMasterSubjectCodeName
-                  //主要研究方向的内容及意义
-                  this.formSecond.major=res.data.major;
-                  //何时参加何种学术团体、任何种职务，有何社会兼职
-                  this.formSecond.groupsOrPartTimeJobs=res.data.groupsOrPartTimeJobs;
-                  //获得专家称号及时间
-                  this.formSecond.expertTitles = res.data.expertTitles
-                  this.formVisible.first = false; // 关闭第一项
-                  this.formVisible.second = true; // 打开第二项
-                  this.active = 1;
-                  console.log(this.formSecond.doctoralMasterApplicationSubjectUnit);
-                } else {
-                  this.$message.error;
-                  ("保存失败！");
-                }
-              })
-              .catch(() => {
-                 console.log("cancel");
-              });
+          //首次申请博士提交到后台
+          submitFirstPage(this.formFirst, 1, this.$route.params.applyCondition)
+            .then((res) => {
+              if (res.code == 20000) {
+                this.id = res.data.id;
+                this.$message.success("保存成功！");
+                //信息填写到第二页
+                this.formSecond.applySubject = res.data.applySubject * 1;
+                this.formSecond.doctoralMasterApplicationSubjectUnit =
+                  res.data.doctoralMasterApplicationSubjectUnit;
+                this.currentDepartment =
+                  res.data.doctoralMasterApplicationSubjectUnit; //申请学科负责单位
+                //一级学科代码及名称
+                this.formSecond.doctoralMasterSubjectCodeName =
+                  res.data.doctoralMasterSubjectCodeName;
+                //主要研究方向的内容及意义
+                this.formSecond.major = res.data.major;
+                //何时参加何种学术团体、任何种职务，有何社会兼职
+                this.formSecond.groupsOrPartTimeJobs =
+                  res.data.groupsOrPartTimeJobs;
+                //获得专家称号及时间
+                this.formSecond.expertTitles = res.data.expertTitles;
+                this.formVisible.first = false; // 关闭第一项
+                this.formVisible.second = true; // 打开第二项
+                this.active = 1;
+                console.log(
+                  this.formSecond.doctoralMasterApplicationSubjectUnit
+                );
+              } else {
+                this.$message.error;
+                ("保存失败！");
+              }
+            })
+            .catch(() => {
+              console.log("cancel");
+            });
         })
         .catch(() => {
           console.log("cancel");
@@ -1152,32 +1229,33 @@ export default {
     },
     /*====================================第二页============================ */
     // 第 2 页添加学术团体项 弹框
-    addGroupsOrPartTimeJob: function() {
-      this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
-      
+    addGroupsOrPartTimeJob: function () {
+      console.log(this.groupsOrPartTimeJob+"*********")
+      this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob);
+
       this.groupsOrPartTimeJob = {
-        time: '',
-        groups: '',
-        job: ''
-      }
-      this.dialogSecond1 = false
+        time: "",
+        groups: "",
+        job: "",
+      };
+      this.dialogSecond1 = false;
     },
     // 删除某项学术团体项
-    delGroupsOrPartTimeJob: function(index) {
-      this.formSecond.groupsOrPartTimeJobs.splice(index, 1)
+    delGroupsOrPartTimeJob: function (index) {
+      this.formSecond.groupsOrPartTimeJobs.splice(index, 1);
     },
     // 添加某项专家称号 弹框
-    addExpertTitle: function() {
-      this.formSecond.expertTitles.push(this.expertTitle)
+    addExpertTitle: function () {
+      this.formSecond.expertTitles.push(this.expertTitle);
       this.expertTitle = {
-        time: '',
-        title: ''
-      }
-      this.dialogSecond2 = false   
+        time: "",
+        title: "",
+      };
+      this.dialogSecond2 = false;
     },
     // 删除某项专家称号
-    delExpertTitle: function(index) {
-      this.formSecond.expertTitles.splice(index, 1)
+    delExpertTitle: function (index) {
+      this.formSecond.expertTitles.splice(index, 1);
     },
     // 设置选择院系的子专业
     setChildNode: function (value) {
@@ -1195,63 +1273,104 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {
-          console.log(this.formSecond)
-          submitSecondPage(this.formSecond,1,this.id).then((res)=>{
-              if (res.code == 20000){
-                //更新成功
-                this.$message.success("保存成功!")
-                this.formVisible.second = false; // 关闭第二项
-                this.formVisible.third = true; // 打开第三项
-                this.active = 2;
-              }
-              else
-              {
-                this.$message.error("保存失败!")
-                return
-              }
-          })
-          
+          console.log(this.formSecond);
+          submitSecondPage(this.formSecond, 1, this.id).then((res) => {
+            if (res.code == 20000) {
+              //更新成功
+              this.$message.success("保存成功!");
+              this.formVisible.second = false; // 关闭第二项
+              this.formVisible.third = true; // 打开第三项
+              this.active = 2;
+            } else {
+              this.$message.error("保存失败!");
+              return;
+            }
+          });
         })
         .catch(() => {
           console.log("cancel");
         });
     },
-     
+
     /* 第三页 */
     /*====================================第三页============================ */
     // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
-    checkFileType: function(file) {
-      console.log('check')
-      if (file.name.endsWith('.zip') || file.name.endsWith('.rar')) {
-        return true
+    checkFileType: function (file) {
+      console.log("check");
+      if (file.name.endsWith(".zip") || file.name.endsWith(".rar")) {
+        return true;
       } else {
-        this.$message.error('请上传 zip/rar 文件')
-        return false
+        this.$message.error("请上传 zip/rar 文件");
+        return false;
       }
     },
+
     //文件上传成功按钮
-    uploadSuccessFunc: function(response, file, fileList){
-      console.log('success')
-      console.log('response', response)
-      console.log('file', file)
-      console.log('fileList', fileList)
+    uploadSuccessFunc: function (response, file, fileList) {
       
-      if (response.data === 1200) {
-        this.$message.success(response.message)
-      } else {
-        this.$message.error(response.message)
-      }
+      console.log("success");
+        console.log(response.data)
+      //返回的路径地址
+      this.academicPaper.paperProveMaterials=response.data.path;
+    
+      switch  (response.data.fileType){
+        //论文
+        case 1 :
+        case 2 :
+           //赋值
+      this.formThird.academicPapers.push(this.academicPaper)
+       // 置空论文
+          this.academicPaper = {
+            paperName: '',
+            paperPublicationTime: '',
+            journalName: '',
+            journalLevel: '',
+            journalCategory: '',
+            sciPart: '',
+            impactFactors: '',
+            firstAuthorName: '',
+            communicationAuthorName: '',
+            paperSubject: '',
+            paperProveMaterials: ''
+          }
+          if (response.data.fileType == 1){
+            this.dialogThird1 =false
+          }
+          else
+          {
+            console.log("this.dialogThird2 = false")
+            this.dialogThird2 = false
+          }
+          break
+          //科研项目
+
+      } //switch
+     
+
+      
+      this.dialogThird1=false
+     
+
+      this.$refs.upload.clearFiles(); 
+   
     },
     // 上传镜像失败
-    uploadErrorFunc: function(err, file, fileList) {
-      console.log('error')
-      console.log('err', err)
-      console.log('file', file)
-      console.log('fileList', fileList)
-    },
+    uploadErrorFunc: function (err, file, fileList) {
+      console.log("error");
+      console.log("err", err);
+      console.log("file", file);
+      console.log("fileList", fileList);
+      this.$message.error("上传失败！");
+
+    },    
+
     // 提交论文上传按钮
-    addAcademicPaper: function() {
-      this.$refs.upload.submit()
+    addAcademicPaper: function () {
+      this.$refs.upload.submit() //会自动调用 httpRequest方法.在里面取得file      
+    },
+    //删除按钮
+    deleteFunc(index){
+      this.formThird.academicPapers.splice(index,1);
     },
     //************************************************ 完成第三页基本信息的填写 表单提交按钮********************************************
     // 完成第 3 页学术信息的填写
@@ -1267,12 +1386,7 @@ export default {
           console.log("cancel");
         });
     },
-    //返回第二页
-    // backToSecondPage: function () {
-    //   this.formVisible.third = false;
-    //   this.formVisible.second = true;
-    // },
-
+   
     /* 第 4 页 */
     //************************************************ 完成第4页基本信息的填写 表单提交按钮********************************************
     // 完成第 4 页学术信息的填写
@@ -1288,11 +1402,6 @@ export default {
           console.log("cancel");
         });
     },
-    //返回第三页
-    // backThirdPage: function () {
-    //   this.formVisible.fourth = false;
-    //   this.formVisible.third = true;
-    // },
   },
 };
 </script>
