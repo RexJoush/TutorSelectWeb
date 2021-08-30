@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-27 09:51:43
+ * @LastEditTime: 2021-08-27 10:21:31
 -->
 <template>
   <div id="app-container"> 
@@ -44,7 +44,11 @@
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
         <!-- <el-table-column label="审批结果" align="center" prop="mr" /> -->
-        <el-table-column label="备注" align="center" prop="col2" />
+        <el-table-column label="备注" align="center" prop="col2">
+          <el-button @click="note(scope.row)" type="text" size="small">
+              备注
+          </el-button>
+        </el-table-column>
         <el-table-column
           label="操作"
           align="center"
@@ -117,7 +121,34 @@
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
         <!-- <el-table-column label="审批结果" align="center" prop="mr" /> -->
-        <el-table-column label="备注" align="center" prop="col2" />
+        <el-table-column label="备注" align="center" prop="col2">
+          <el-button @click="note(scope.row)" type="text" size="small">
+              备注
+          </el-button>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+          width="160"
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+            <el-button
+              type="success"             
+              icon="el-icon-success"
+              size="mini"
+              @click="passFun()"
+            >通过</el-button>
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-error"
+              size="small"
+              @click="unPassFun()"
+              >驳回</el-button>
+          </template>
+
+        </el-table-column>
       </el-table> 
 
       <!-- 教材或学术著作表 -->
@@ -157,7 +188,33 @@
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
         <!-- <el-table-column label="审批结果" align="center" prop="mr" /> -->
-        <el-table-column label="备注" align="center" prop="col2" />
+        <el-table-column label="备注" align="center" prop="col2">
+          <el-button @click="note(scope.row)" type="text" size="small">
+              备注
+          </el-button>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+          width="160"
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+            <el-button
+              type="success"             
+              icon="el-icon-success"
+              size="mini"
+              @click="passFun()"
+            >通过</el-button>
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-error"
+              size="small"
+              @click="unPassFun()"
+              >驳回</el-button>
+          </template>
+        </el-table-column>
       </el-table>
 
       <!-- 科研教学奖励表 -->
@@ -207,6 +264,28 @@
               备注
           </el-button>
         </el-table-column>
+        <el-table-column
+          label="操作"
+          align="center"
+          width="160"
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+            <el-button
+              type="success"             
+              icon="el-icon-success"
+              size="mini"
+              @click="passFun()"
+            >通过</el-button>
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-error"
+              size="small"
+              @click="unPassFun()"
+              >驳回</el-button>
+          </template>
+        </el-table-column>
       </el-table>
 
   </div>
@@ -214,6 +293,9 @@
 
 <script>
 import { searchPaper } from "@/api/scienceDepartment/academicPaper/paper"
+import {searchWorks} from "@/api/scienceDepartment/academicWorks/works"
+import {searchProject} from "@/api/scienceDepartment/researchProject/project"
+import {searchAwards} from "@/api/scienceDepartment/teachingAwards/awards"
 export default {
   data() {
     return {
@@ -278,6 +360,9 @@ export default {
   },
   created() {
     this.getPaperList()
+    this.getProjectList()
+    this.getWorkList()
+    this.getAwardList()
   },
   methods: {
     // 查询学术论文
@@ -291,15 +376,21 @@ export default {
     },
     // 查询科研项目
     getProjectList() {
-
+      searchProject(this.id).then(res => {
+        this.projectList = res.data
+      })
     },
     // 查询教材或学术著作
     getWorkList() {
-
+      searchWorks(this.id).then(res => {
+        this.workList = res.data
+      })
     },
     // 查询科研教学奖励
     getAwardList() {
-
+      searchAwards(this.id).then(res => {
+        this.awardList = res.data
+      })
     },
 
       

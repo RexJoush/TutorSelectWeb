@@ -94,21 +94,21 @@ export const constantRoutes = [
         path: 'firstApplyDoctor/:applyId/:applyCondition',
         name: 'firstApplyDoctor',
         hidden: true,
-        component: () => import('@/views/tutorMainBoard/FirstApplyDoctor/index'),
+        component: () => import('@/views/tutorMainBoard/firstApplyDoctor/index'),
         meta: { title: '首次申请博士生导师' }
       },
       {
-        path: 'firstApplyMaster/:applyId/:applyCondition',
+        path: 'applyMaster/:applyId/:applyCondition',
         name: 'firstApplyMaster',
         hidden: true,
-        component: () => import('@/views/tutorMainBoard/FirstApplyMaster/index'),
+        component: () => import('@/views/tutorMainBoard/firstApplyMaster/index'),
         meta: { title: '首次申请硕士生导师（学术学位）' }
       },
       {
         path: 'addApplyMaster/:applyId/:applyCondition',
         name: 'addApplyMaster',
         hidden: true,
-        component: () => import('@/views/tutorMainBoard/AddApplyMaster/index'),
+        component: () => import('@/views/tutorMainBoard/addApplyMaster/index'),
         meta: { title: '学硕导师增列学科' }
       }
     ]
@@ -151,6 +151,12 @@ export const constantRoutes = [
         meta: { title: '初审', icon: 'tree' }
       },
       {
+        path: 'rePass',
+        name: 'RePass',
+        component: () => import('@/views/graduateManager/auditManager/rePass/index'),
+        meta: { title: '材料审核通过', icon: 'tree' }
+      },
+      {
         path: 'reCheck',
         name: 'ReCheck',
         component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
@@ -173,7 +179,7 @@ export const constantRoutes = [
         name: 'Reject',
         component: () => import('@/views/graduateManager/auditManager/reject/index'),
         meta: { title: '院系驳回', icon: 'tree' }
-      },
+      }
 
     ]
   },
@@ -194,9 +200,9 @@ export const constantRoutes = [
       {
         path: 'socialDetail',
         name: 'SocialDetail',
-        component: () => import('@/views/socialScienceCheck/detail/index'),
-        meta: { title: '科研处详情页面', icon: 'tree' }
-      },
+        component: () => import('@/views/socialScienceCheck/detail/index')
+        // meta: { title: '社科处详情页面', icon: 'tree' }
+      }
     ]
 
   },
@@ -215,13 +221,12 @@ export const constantRoutes = [
       {
         path: 'researchDetail',
         name: 'ResearchDetail',
-        component: () => import('@/views/researchCheck/detail/index'),
-        meta: { title: '科研处详情信息', icon: 'tree' }
+        component: () => import('@/views/researchCheck/detail/index')
+        // meta: { title: '科研处详情信息', icon: 'tree' }
       }
     ]
 
   },
-
 
   // *****************************院系秘书管理员---基础管理*********************************
   {
@@ -288,8 +293,8 @@ export const constantRoutes = [
       }
     ]
   },
-   // *****************************院系主管管理员---申报流程*********************************
-   {
+  // *****************************院系主管管理员---申报流程*********************************
+  {
     path: '/departmentLeader/auditManager',
     component: Layout,
     redirect: '/dashboard',
@@ -307,9 +312,9 @@ export const constantRoutes = [
         component: () => import('@/views/departmentLeader/checkFinish/index'),
         name: 'FinishDL',
         meta: { title: '院系主管已审核', icon: 'dashboard', affix: true }
-      }     
+      }
     ]
-  },
+  }
 ]
 
 /**

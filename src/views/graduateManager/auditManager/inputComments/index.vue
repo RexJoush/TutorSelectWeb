@@ -1,3 +1,4 @@
+<!--本页为研究生院管理员的录入校会意见界面，研究生院管理员可在该页面将线下校会开会后的意见进行操作-->
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -96,21 +97,23 @@
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
-              type="warning"
+              type="success"
               plain
-              icon="el-icon-refresh-left"
-              size="mini"
-              @click="upDateStatus(0)"
-            >校会不通过</el-button>
+              icon="el-icon-success"
+              size="small"
+              @click="passFun"
+              :disabled="single"
+            >校会通过</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button
               type="danger"
               plain
-              icon="el-icon-right"
-              size="mini"
-              @click="upDateStatus(30)"
-            >校会通过</el-button>
+              icon="el-icon-error"
+              size="small"
+              @click="unPassFun"
+              :disabled="single"
+            >校会不通过</el-button>
           </el-col> <el-col :span="1.5">
         </el-col>
         </el-row>
@@ -125,7 +128,6 @@
             align="center"
             prop="number"
             width="100"
-            width:180
             fixed
           />
           <el-table-column label="姓名" align="center" prop="name" fixed />
@@ -176,15 +178,34 @@
         </el-table>
         <div class="block">
           <el-pagination
+            @current-change="handleCurrentChange"
             v-show="total>0"
-            :current-page="queryParams.pageNum"
-            :page-size="queryParams.pageSize"
+            :current-page.sync="currentPage"
+            :page-size="10"
             layout="total, prev, pager, next"
             :total="total"
           />
         </div>
       </el-col>
     </el-row>
+    <!-- 校会通过的确认弹框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+      <span>您确定所选记录均为校会通过吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button type="primary" @click="rePassFun()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 校会不通过的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+      <span v-if="multiple">批量不通过只能批量添加备注</span>
+      <span v-if="multiple==false">逐条通过可逐条添加备注</span>
+      <el-input v-model="commit" autocomplete="off"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel()">取 消</el-button>
+        <el-button type="primary" @click="returnFun()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -195,20 +216,25 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      // 是否为单选
-      single: false,
-      // 是否为多选
-      multiple: false,
+      //备注弹框显示
+      dialogVisible: false,
+      //通过确认框
+      dialogVisiblePass: false,
       // 显示搜索条件
       showSearch: true,
       // 分页总条数
       total: 0,
       // 用户表格数据
       tutorList: [],
+      currentPage: 1,
       // 弹出层标题
       title: '',
       // 是否显示弹出层
       open: false,
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
       // 日期范围
       dateRange: [],
       // 申请类别选项
@@ -249,12 +275,13 @@ export default {
         subjectName: undefined, // 学科名称id
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined // 学科属性，文科，理科，交叉
-      }
+      },
+      commit:undefined,
     }
   },
   created() {
-    //院系秘书复审通过的状态即研究生院管理员初审状态
-    this.queryParams.applyStatus = 14
+    //研究生院领导通过的状态即同意上分会，即研究生院管理员需要录入校分会意见的名单
+    this.queryParams.applyStatus = 61
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -264,10 +291,17 @@ export default {
     /** 查询用户列表 */
     async getList() {
       this.loading = true
+      this.queryParams.pageNum = this.currentPage || 1
+
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000) return this.$message("暂无待初审教师！！！")
+      if (res.code != 20000)
+      {
+        this.tutorList = []
+        this.loading = false
+        return this.$message("暂无数据！！！")
+      }
       this.tutorList = res.data
       console.info(res.data)
       this.total = res.total
@@ -279,7 +313,7 @@ export default {
         var json={
           "id_1" :this.ids[i],
           "status_1":code,
-          "commit_1":'研究生院返回返回修改',
+          "commit_1": this.commit||"研究生院管理未录入校会意见",
         };
         updateStatus[i] = json ;
       }
@@ -289,7 +323,8 @@ export default {
       )
       this.getList();
       if(res.code != 20000) return this.$message("操作失败！！！")
-      else return this.$message("操作成功！！！")
+       else return this.$message("操作成功！！！")
+      this.commit = undefined
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -301,11 +336,15 @@ export default {
     async getApplyStatus() {
       this.applyStatusOptions =[
         {
-          "codeId" : 14,
+          "codeId" : 61,
+          "inspectDescribe" :"同意上校分会"
+        },
+        {
+          "codeId" : 81,
           "inspectDescribe" :"学位委员会通过"
         },
         {
-          "codeId" : 0,
+          "codeId" : 82,
           "inspectDescribe" :"学位委员会不通过"
         }
       ]
@@ -324,12 +363,6 @@ export default {
       // )
       // if(res.code != 1000) return this.$message("获取类别失败")
       // this.applyTypeOptions = res.data
-    },
-
-    // 取消按钮
-    cancel() {
-      this.open = false
-      this.reset()
     },
     // 表单重置
     reset() {
@@ -353,9 +386,53 @@ export default {
       this.dateRange = []
       this.handleQuery()
     },
+    //校会通过
+    passFun(num) {
+      this.dialogVisiblePass = true;
+      this.commit = "校会通过，学位委员会通过"
+    },
+    //审核通过确认弹框确认按钮
+    rePassFun() {
+      this.upDateStatus(81)
+      this.dialogVisiblePass = false;
+    },
+    //初审不通过
+    unPassFun() {
+      //驳回之前判断是否只选择了一条
+      this.dialogVisible = true;
+      this.commit = "校会不通过，学位委员会不通过"
+    },
+    //弹框确定按钮驳回操作
+    returnFun() {
+      //带上备注
+      this.upDateStatus(82)
+      this.dialogVisible = false;
+    },
+    //弹框取消按钮
+    cancel() {
+      this.dialogVisible = false;
+      this.commit = undefined;
+    },
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tutorId)
+      if (selection.length > 0) {
+        this.single = false;
+        this.multiple = false;
+      } else {
+        this.single = true;
+        this.multiple = true;
+      }
+      if(selection.length == 1) {
+        this.multiple = false;
+      } else {
+        this.multiple = true;
+      }
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val
+      this.getList()
     }
   }
 }

@@ -1,3 +1,4 @@
+<!--本页为科研处社科处材料审核通过的记录页面，研究生院管理员可在该页面将审核通过的材料提交给研究生院主管-->
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -24,6 +25,22 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
+          <el-form-item label="学科属性" prop="subjectType">
+            <el-select
+              v-model="queryParams.subjectType"
+              placeholder="请选择学科属性"
+              clearable
+              size="small"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in subjectTypeOptions"
+                :key="dict.code"
+                :label="dict.label"
+                :value="dict.code"
+              />
+            </el-select>
+          </el-form-item>
           <el-form-item label="申请类别" prop="applyType">
             <el-select
               v-model="queryParams.applyType"
@@ -37,38 +54,6 @@
                 :key="dict.applyId"
                 :label="dict.applyName"
                 :value="dict.applyId"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="负责院系" prop="organization">
-            <el-select
-              v-model="queryParams.organization"
-              placeholder="请选择院系"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in organizationOptions"
-                :key="dict.organizationId"
-                :label="dict.organizationName"
-                :value="dict.organizationId"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="学科名称" prop="subjectName">
-            <el-select
-              v-model="queryParams.subjectName"
-              placeholder="请选择学科"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in subjectNameOptions"
-                :key="dict.dictValue"
-                :label="dict.dictLabel"
-                :value="dict.dictValue"
               />
             </el-select>
           </el-form-item>
@@ -94,88 +79,106 @@
           </el-form-item>
         </el-form>
         <el-row :gutter="10" class="mb8">
+          <!--          <el-col :span="1.5">-->
+          <!--            <el-button-->
+          <!--              type="danger"-->
+          <!--              plain-->
+          <!--              icon="el-icon-error"-->
+          <!--              size="small"-->
+          <!--              :disabled="multiple"-->
+          <!--              @click="unPassFun"-->
+          <!--            >需修改</el-button>-->
+          <!--          </el-col>-->
           <el-col :span="1.5">
             <el-button
-              type="danger"
+              type="success"
               plain
-              icon="el-icon-error"
+              icon="el-icon-success"
               size="small"
-              @click="upDateStatus(37)"
-            >驳回至研究生秘书
-            </el-button>
-          </el-col>
-          <el-table
-            v-loading="loading"
-            :data="tutorList"
-            :row-class-name="tableRowClassName"
-            @selection-change="handleSelectionChange"
-          >
-            <el-table-column type="selection" width="50" align="center" />
-            <el-table-column
-              label="工号"
-              align="center"
-              prop="number"
-              width="100"
-              fixed
-            />
-            <el-table-column label="姓名" align="center" prop="name" fixed />
-            <el-table-column
-              label="所在单位（院系）"
-              align="center"
-              prop="organizationName"
-              width="250"
-              fixed
-            />
-            <el-table-column
-              label="申请学科或类别代码"
-              align="center"
-              prop="professionalApplicationSubjectCode"
-              width="180"
-            />
-            <el-table-column
-              label="申请学科或类别名称"
-              align="center"
-              prop="professionalApplicationSubjectName"
-              width="180"
-            />
-            <el-table-column
-              label="申请类别"
-              align="center"
-              prop="applyName"
-              width="180"
-            />
-            <el-table-column
-              label="职称"
-              align="center"
-              prop="title"
-              width="180"
-            />
-            <el-table-column
-              label="审核状态"
-              align="center"
-              prop="inspectDescribe"
-              width="150"
-            />
-            <el-table-column label="详情" align="center" prop="mr" />
-            <el-table-column
-              label="备注"
-              align="center"
-              prop="commit"
-              width="150"
-            />
-          </el-table>
-          <div class="block">
-            <el-pagination
-              @current-change="handleCurrentChange"
-              v-show="total>0"
-              :current-page.sync="currentPage"
-              :page-size="10"
-              layout="total, prev, pager, next"
-              :total="total"
-            />
-          </div>
-        </el-row></el-col>
+              :disabled="single"
+              @click="passFun(34)"
+            >提交至研究生院主管</el-button>
+          </el-col> <el-col :span="1.5" />
+        </el-row>
+        <el-table
+          v-loading="loading"
+          :data="tutorList"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="50" align="center" />
+          <el-table-column
+            label="工号"
+            align="center"
+            prop="number"
+            width="100"
+            fixed
+          />
+          <el-table-column label="姓名" align="center" prop="name" fixed />
+          <el-table-column
+            label="所在单位（院系）"
+            align="center"
+            prop="organizationName"
+            width="250"
+            fixed
+          />
+          <el-table-column
+            label="申请学科或类别代码"
+            align="center"
+            prop="professionalApplicationSubjectCode"
+            width="180"
+          />
+          <el-table-column
+            label="申请学科或类别名称"
+            align="center"
+            prop="professionalApplicationSubjectName"
+            width="180"
+          />
+          <el-table-column
+            label="申请类别"
+            align="center"
+            prop="applyName"
+            width="180"
+          />
+          <el-table-column
+            label="职称"
+            align="center"
+            prop="title"
+            width="180"
+          />
+          <el-table-column
+            label="审核状态"
+            align="center"
+            prop="inspectDescribe"
+            width="150"
+          />
+          <el-table-column label="详情" align="center" prop="mr" />
+          <el-table-column
+            label="备注"
+            align="center"
+            prop="commit"
+            width="150"
+          />
+        </el-table>
+        <div class="block">
+          <el-pagination
+            v-show="total>0"
+            :current-page.sync="currentPage"
+            :page-size="10"
+            layout="total, prev, pager, next"
+            :total="total"
+            @current-change="handleCurrentChange"
+          />
+        </div>
+      </el-col>
     </el-row>
+    <!-- 审批通过的确认弹框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+      <span>确认提交给研究生院主管吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button type="primary" @click="rePassFun()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -186,13 +189,13 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      // 是否为单选
-      single: false,
-      currentPage: 1,
-      // 是否为多选
-      multiple: false,
+      // 备注弹框显示
+      dialogVisible: false,
+      // 通过确认框
+      dialogVisiblePass: false,
       // 显示搜索条件
       showSearch: true,
+      currentPage: 1,
       // 分页总条数
       total: 0,
       // 用户表格数据
@@ -201,6 +204,10 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
       // 日期范围
       dateRange: [],
       // 申请类别选项
@@ -226,10 +233,6 @@ export default {
           label: '交叉学科'
         }
       ],
-      // 表单参数
-      form: {
-        status: 1
-      },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -241,12 +244,14 @@ export default {
         subjectName: undefined, // 学科名称id
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined // 学科属性，文科，理科，交叉
-      }
+      },
+      choose: 0,
+      commit: undefined
     }
   },
   created() {
-    // 研究生院管理员标记为待修改，需要驳回给秘书的数据
-    this.queryParams.applyStatus = 36 + '-' + '42-' + '53'
+    // 院系秘书复审通过的状态即研究生院管理员初审状态
+    this.queryParams.applyStatus = '63-64'
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -260,11 +265,10 @@ export default {
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000)
-      {
+      if (res.code != 20000) {
         this.tutorList = []
         this.loading = false
-        return this.$message("暂无待待驳回至院系秘书名单！！！")
+        return this.$message('暂无待初审教师！！！')
       }
       this.tutorList = res.data
       console.info(res.data)
@@ -276,7 +280,8 @@ export default {
       for (var i = 0; i < this.ids.length; i++) {
         var json = {
           'id_1': this.ids[i],
-          'status_1': code
+          'status_1': code,
+          'commit_1': this.commit || '研究生院返回修改'
         }
         updateStatus[i] = json
       }
@@ -285,11 +290,9 @@ export default {
         '/update-status/update', updateStatus
       )
       this.getList()
-      if (res.code != 20000) {
-        return this.$message('操作失败！！！')
-      } else {
-        return this.$message('操作成功！！！')
-      }
+      if (res.code != 20000) return this.$message('操作失败！！！')
+      else return this.$message('操作成功！！！')
+      this.commit = undefined
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -301,20 +304,16 @@ export default {
     async getApplyStatus() {
       this.applyStatusOptions = [
         {
-          'codeId': '36-42-53',
-          'inspectDescribe': '全部待驳回'
+          'codeId': '63-64',
+          'inspectDescribe': '全部审核通过'
         },
         {
-          'codeId': 36,
-          'inspectDescribe': '需修改'
+          'codeId': 63,
+          'inspectDescribe': '社科处审核通过'
         },
         {
-          'codeId': 42,
-          'inspectDescribe': '社科处不通过'
-        },
-        {
-          'codeId': 53,
-          'inspectDescribe': '科研处不通过'
+          'codeId': 64,
+          'inspectDescribe': '科研处审核通过'
         }
       ]
     },
@@ -333,24 +332,6 @@ export default {
       // if(res.code != 1000) return this.$message("获取类别失败")
       // this.applyTypeOptions = res.data
     },
-
-    // 取消按钮
-    cancel() {
-      this.open = false
-      this.reset()
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
-        status: '0',
-        remark: undefined,
-        postIds: [],
-        roleIds: []
-      }
-    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1
@@ -361,34 +342,47 @@ export default {
       this.dateRange = []
       this.handleQuery()
     },
+    // 通过
+    passFun(num) {
+      this.dialogVisiblePass = true
+      this.choose = num
+    },
+    // 审核通过确认弹框确认按钮
+    rePassFun() {
+      if (this.choose == 1) {
+        // 送审社科处
+        this.upDateStatus(30)
+      }
+      if (this.choose == 2) {
+        // 送审社科处
+        this.upDateStatus(31)
+      }
+      this.check(11)
+      this.dialogVisiblePass = false
+    },
+    // 弹框取消按钮
+    cancel() {
+      this.dialogVisible = false
+      this.commit = undefined
+    },
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tutorId)
-    },
-    // 表格行的颜根据状态不同变化
-    tableRowClassName({ row, rowIndex }) {
-      if (row.inspectDescribe == '社科处审核不通过') {
-        return 'warning-row'
-      } else if (row.inspectDescribe == '科研处审核不通过') {
-        return 'success-row'
+      if (selection.length > 0) {
+        this.single = false
+        this.multiple = false
+      } else {
+        this.single = true
+        this.multiple = true
       }
-      return ''
     },
     // 当前页数
     handleCurrentChange(val) {
       this.currentPage = val
-      this.getList()
+      this.getSecretaryInit()
     }
-  }
 
+  }
 }
 </script>
-<style>
-.el-table .warning-row {
-  background: oldlace;
-}
-
-.el-table .success-row {
-  background: #f0f9eb;
-}
-</style>

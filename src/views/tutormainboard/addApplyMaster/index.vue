@@ -1,8 +1,8 @@
 <!--
  * @Author: Rex Joush
  * @Date: 2021-08-20 15:56:18
- * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-20 15:56:18
+ * @LastEditors: Anna
+ * @LastEditTime: 2021-08-30 10:21:39
 -->
 <template>
   <div class="main">
@@ -696,7 +696,7 @@
 
 <script>
 import { academicMasterPrimaryDiscipline } from '@/utils/data'
-import { submitFirstPage } from '@/api/tutor/firstApplyMaster'
+import { submitFirstPage } from '@/api/tutor/applyMaster/index'
 import { getTeacherInfo } from '@/api/tutor/mainboard'
 
 export default {
