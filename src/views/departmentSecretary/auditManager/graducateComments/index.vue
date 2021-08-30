@@ -203,16 +203,9 @@ export default {
       this.queryParams.applyStatus = 14 + "-" + 30 + "-" + 31;
       // this.queryParams.organization = 50030;  //传入秘书院系id
       checkDate(this.queryParams).then((res) => {
-        console.log(res);
-        if (res.code == 20000) {
-          this.tutorList = res.data;
-          this.totalData = res.total;
-          this.loading = false;
-        }
-        if (res.code == 20001) {
-          this.$message("暂无数据！");
-          this.loading = false;
-        }
+        this.tutorList = res.data;
+        this.totalData = res.total;
+        this.loading = false;
       });
     },
     //搜索按钮

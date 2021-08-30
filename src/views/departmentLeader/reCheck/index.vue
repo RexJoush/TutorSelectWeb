@@ -277,15 +277,9 @@ export default {
       this.loading = true;
       this.queryParams.applyStatus = 11;
       checkDate(this.queryParams).then((res) => {
-        if (res.code == 20000) {
-          this.tutorList = res.data;
-          this.totalData = res.total;
-          this.loading = false;
-        }
-        if (res.code == 20001) {
-          this.$message("暂无待审核的教师！");
-          this.loading = false;
-        }
+        this.tutorList = res.data;
+        this.totalData = res.total;
+        this.loading = false;
       });
     },
     //搜索按钮

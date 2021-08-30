@@ -108,7 +108,7 @@ export const constantRoutes = [
         path: 'addApplyMaster/:applyId/:applyCondition',
         name: 'addApplyMaster',
         hidden: true,
-        component: () => import('@/views/tutorMainBoard/AddApplyMaster/index'),
+        component: () => import('@/views/tutorMainBoard/addApplyMaster/index'),
         meta: { title: '学硕导师增列学科' }
       }
     ]
