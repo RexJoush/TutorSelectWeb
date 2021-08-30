@@ -24,3 +24,12 @@ export function submitSecondPage(data, applyId, id) {
     data: data
   })
 }
+
+// 提交第三页
+export function submitThirdPage(data, id) {
+  return request({
+    url: `${baseUrl}/tutor/firstApplyMaster/third/${id}`,
+    method: 'post',
+    data: data
+  })
+}

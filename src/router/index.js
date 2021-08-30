@@ -98,7 +98,7 @@ export const constantRoutes = [
         meta: { title: '首次申请博士生导师' }
       },
       {
-        path: 'firstApplyMaster/:applyId/:applyCondition',
+        path: 'applyMaster/:applyId/:applyCondition',
         name: 'firstApplyMaster',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyMaster/index'),
@@ -200,9 +200,9 @@ export const constantRoutes = [
       {
         path: 'socialDetail',
         name: 'SocialDetail',
-        component: () => import('@/views/socialScienceCheck/detail/index'),
+        component: () => import('@/views/socialScienceCheck/detail/index')
         // meta: { title: '社科处详情页面', icon: 'tree' }
-      },
+      }
     ]
 
   },
@@ -221,7 +221,7 @@ export const constantRoutes = [
       {
         path: 'researchDetail',
         name: 'ResearchDetail',
-        component: () => import('@/views/researchCheck/detail/index'),
+        component: () => import('@/views/researchCheck/detail/index')
         // meta: { title: '科研处详情信息', icon: 'tree' }
       }
     ]
