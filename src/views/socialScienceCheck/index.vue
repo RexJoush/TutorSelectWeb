@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-27 10:40:54
+ * @LastEditTime: 2021-08-30 20:12:24
 -->
 <template>
   <div class="app-container">
@@ -114,7 +114,6 @@
           </el-row>
 
           <el-table
-            v-loading="loading"
             :data="tutorList"
             @selection-change="handleSelectionChange"
           >
@@ -190,8 +189,6 @@ export default {
       returnCommit: '',
       //驳回弹框默认不显示
       dialogVisible: false,
-      // 遮罩层
-      loading: true,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -266,24 +263,20 @@ export default {
     //查询社科处待初审的数据
     //通过状态码查询
     getSocialCheckInit() {
-      this.loading = true;
       this.queryParams.applyStatus = 30;
       checkDate(this.queryParams).then(res => {
         if(res.code == 20000){
           this.tutorList = res.data;
           this.totalData = res.data.length;
-          this.loading = false;
         }
       })
     },
 
     //搜索按钮
     searchQuery() {
-      this.loading = true;
       checkDate(this.queryParams).then(res => {
         this.tutorList = res.data;
         this.totalData = res.data.length;
-        this.loading = false;
       })
     },
 

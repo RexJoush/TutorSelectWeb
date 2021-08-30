@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-27 10:02:58
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-27 10:06:23
+ * @LastEditTime: 2021-08-30 21:55:37
  */
 
 import request from '@/utils/request'
@@ -17,3 +17,12 @@ export function searchWorks(tutorId) {
         method: 'get'
     })
 }
+
+//更新审核状态和备注
+export function updateWorks(data) {
+    return request({
+      url: baseUrl + '/academic_works/update',
+      method: 'post',
+      data: data
+    })
+  }
