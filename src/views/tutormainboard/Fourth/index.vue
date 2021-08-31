@@ -7,7 +7,7 @@
 export default {
   name: 'Index',
   props: {
-    id: Number,
+    applyId: Number,
     applyCondition: Number,
     formVisible: Object,
     tutorName: String,

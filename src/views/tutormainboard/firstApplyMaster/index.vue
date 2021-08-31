@@ -575,7 +575,7 @@ export default {
         third: false,
         fourth: true
       },
-      id: '66', // 此次申请的id，在第一页提交时传回
+      applyId: '66', // 此次申请的id，在第一页提交时传回
 
       /* =========================  第 1 页  ================================= */
       formFirst: {
@@ -684,7 +684,7 @@ export default {
         courseTime: '', // 课程时间
         courseDuration: '', // 授课总课时
         courseObject: '' // 授课对象
-      },
+      }
 
     }
   },
@@ -730,7 +730,7 @@ export default {
                 console.log(res.data.errorMessage)
                 return
               }
-              this.id = res.data.id
+              this.applyId = res.data.applyId
               this.formSecond.applySubject = res.data.applySubject * 1
               this.formSecond.doctoralMasterApplicationSubjectUnit = res.data.doctoralMasterApplicationSubjectUnit
               this.currentDepartment = res.data.doctoralMasterApplicationSubjectUnit

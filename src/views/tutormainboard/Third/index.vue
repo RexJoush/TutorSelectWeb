@@ -684,7 +684,7 @@ import { submitThirdPage } from '@/api/tutor/applyMaster'
 export default {
   name: 'Index',
   props: {
-    id: Number,
+    applyId: Number,
     applyCondition: String,
     formThird: Object
   },
@@ -986,7 +986,7 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 3 页
         .then(() => {
-          submitThirdPage(this.formThird, this.id, this.applyCondition).then(res => {
+          submitThirdPage(this.formThird, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
               console.log(res.data.errorMessage)
