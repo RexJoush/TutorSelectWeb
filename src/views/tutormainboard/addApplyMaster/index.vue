@@ -696,7 +696,7 @@
 
 <script>
 import { academicMasterPrimaryDiscipline } from '@/utils/data'
-import { submitFirstPage } from '@/api/tutor/applyMaster/index'
+import { submitFirstPage } from '@/api/tutor/applyMaster'
 import { getTeacherInfo } from '@/api/tutor/mainboard'
 
 export default {
