@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-30 22:02:24
+ * @LastEditTime: 2021-08-31 11:38:55
 -->
 <template>
   <div id="app-container"> 
@@ -336,12 +336,11 @@ import {
   searchAwards,
   updateAwards
   } from "@/api/scienceDepartment/teachingAwards/awards"
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   data() {
     return {
       id: "",
-      // infoId: "",
       id1: "0",
       id2: "0",
       id3: "0",
@@ -358,10 +357,6 @@ export default {
       projectList: [],//科研项目
       workList: [],//教材或学术著作
       awardList: [],//科研教学奖励
-
-
-      //审核后需要下发的List数据
-      // updataList: [],
       
       //学术论文表单查询参数
       paperQueryParams:{
@@ -646,10 +641,6 @@ export default {
       this.returnCommit4 = null;
     },
 
-  
-
-
-      
 
   },
 }
