@@ -757,7 +757,7 @@ export default {
         // 提交保存第 2 页
         .then(() => {
           console.log(this.formSecond)
-          submitSecondPage(this.formSecond, 4, this.id, this.applyCondition).then(res => {
+          submitSecondPage(this.formSecond, 4, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
               console.log(res.data.errorMessage)
@@ -835,7 +835,7 @@ export default {
         .then(() => {
           // 将本科生和硕士生放到同一个数组中
           this.formFourth.guidingStudents = this.undergraduateStudents.concat(this.masterStudents)
-          submitFourthPage(this.formFourth, this.id).then(res => {
+          submitFourthPage(this.formFourth, this.applyId).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
               console.log(res.data.errorMessage)

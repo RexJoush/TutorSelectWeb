@@ -17,27 +17,27 @@ export function submitFirstPage(data, applyTypeId, applyCondition) {
 }
 
 // 提交第二页
-export function submitSecondPage(data, applyTypeId, id, applyCondition) {
+export function submitSecondPage(data, applyTypeId, applyId, applyCondition) {
   return request({
-    url: `${baseUrl}/tutor/firstApplyMaster/second/${applyTypeId}/${id}/${applyCondition}`,
+    url: `${baseUrl}/tutor/firstApplyMaster/second/${applyTypeId}/${applyId}/${applyCondition}`,
     method: 'post',
     data: data
   })
 }
 
 // 提交第三页
-export function submitThirdPage(data, id, applyCondition) {
+export function submitThirdPage(data, applyId, applyCondition) {
   return request({
-    url: `${baseUrl}/tutor/firstApplyMaster/third/${id}/${applyCondition}`,
+    url: `${baseUrl}/tutor/firstApplyMaster/third/${applyId}/${applyCondition}`,
     method: 'post',
     data: data
   })
 }
 
 // 提交第四页
-export function submitFourthPage(data, id) {
+export function submitFourthPage(data, applyId) {
   return request({
-    url: `${baseUrl}/tutor/firstApplyMaster/fourth/${id}`,
+    url: `${baseUrl}/tutor/firstApplyMaster/fourth/${applyId}`,
     method: 'post',
     data: data
   })
