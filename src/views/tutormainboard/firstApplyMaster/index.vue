@@ -579,7 +579,7 @@ export default {
 
       /* =========================  第 1 页  ================================= */
       formFirst: {
-        number: '202032978', // 教师工号
+        tutorId: '202032978', // 教师工号
         name: '李一航', // 姓名
         gender: '男', // 性别
         image: 'https://www.rexjoush.com/img/1.jpg',
@@ -623,36 +623,7 @@ export default {
         title: ''
       },
       /* =========================  第 3 页  ================================= */
-      formThird: {
-        // academicPapers: [],
-        // academicWorks: [],
-        // researchProjects: [],
-        // teachingAwards: [],
-        // inventionPatents: [],
-        // summary: {
-        //   summaryId: 0,
-        //   tutorId: null,
-        //   applyId: 0,
-        //   firstAuthorPaper: 0,
-        //   authorityAmount: 0,
-        //   eiAmount: 0,
-        //   cssciAmount: 0,
-        //   ssciAmount: 0,
-        //   directProject: 0,
-        //   projectNationalLevel: 0,
-        //   projectProvinceLevel: 0,
-        //   accumulatedFunds: 0,
-        //   horizontalProject: 0,
-        //   publishWorks: 0,
-        //   publishWorksWords: 0,
-        //   scientificAwards: 0,
-        //   awardsNationalLevel: 0,
-        //   awardsProvinceLevel: 0,
-        //   inventionPatentAmount: 0,
-        //   newUtilityPatent: 0
-        // }
-
-      },
+      formThird: {},
 
       /* =========================  第 4 页  ================================= */
       // 第四页提交信息
@@ -705,7 +676,7 @@ export default {
           return
         }
         console.log(res)
-        this.formFirst.number = res.data.zgh
+        this.formFirst.tutorId = res.data.zgh
         this.formFirst.name = res.data.xm
         this.formFirst.gender = res.data.xb
         this.formFirst.image = res.data.shz
