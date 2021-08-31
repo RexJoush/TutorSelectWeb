@@ -8,18 +8,18 @@ import { baseUrl } from '@/api/url'
 import request from '@/utils/request'
 
 // 提交第一页
-export function submitFirstPage(data, applyId, applyCondition) {
+export function submitFirstPage(data, applyTypeId, applyCondition) {
   return request({
-    url: `${baseUrl}/tutor/firstApplyMaster/first/${applyId}/${applyCondition}`,
+    url: `${baseUrl}/tutor/firstApplyMaster/first/${applyTypeId}/${applyCondition}`,
     method: 'post',
     data: data
   })
 }
 
 // 提交第二页
-export function submitSecondPage(data, applyId, id, applyCondition) {
+export function submitSecondPage(data, applyTypeId, id, applyCondition) {
   return request({
-    url: `${baseUrl}/tutor/firstApplyMaster/second/${applyId}/${id}/${applyCondition}`,
+    url: `${baseUrl}/tutor/firstApplyMaster/second/${applyTypeId}/${id}/${applyCondition}`,
     method: 'post',
     data: data
   })
