@@ -39,9 +39,9 @@
             >
               <el-option
                 v-for="item in applyTypeList"
-                :key="item.applyId"
+                :key="item.applyTypeId"
                 :label="item.applyName"
-                :value="item.applyId"
+                :value="item.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -301,6 +301,7 @@ export default {
       this.queryParams.applyStatus = 10;
       // this.queryParams.organization = 50030;  //传入秘书院系id
       checkDate(this.queryParams).then((res) => {
+        console.log(res)
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
