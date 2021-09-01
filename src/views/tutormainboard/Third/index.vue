@@ -684,15 +684,19 @@ import { submitThirdPage } from '@/api/tutor/applyMaster'
 export default {
   name: 'Index',
   props: {
-    id: Number,
+    applyId: Number,
     applyCondition: String,
     formThird: Object
   },
   data() {
     return {
 
-      // formFourth: {}, // 第四页的信息，传回给父组件
-
+      deleteList: [], // 删除的内容列表
+      deleteItem: {
+        deleteId: '', // 删除的项 id
+        deletePath: '', // 删除的路径
+        deleteType: '' // 删除的项类型，论文，项目等
+      },
       isSummary: false, // 是否已经点击汇总按钮
 
       dialogThird1: false, // 社科学术论文添加按钮
@@ -982,7 +986,7 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 3 页
         .then(() => {
-          submitThirdPage(this.formThird, this.id, this.applyCondition).then(res => {
+          submitThirdPage(this.formThird, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
               console.log(res.data.errorMessage)

@@ -34,13 +34,13 @@ export function submitSecondPage(data,applyId,id){
   })
 }
 
-//山传文件
-
-// export function uploadFile(){
-//   return request({
-//     url:`${baseUrl}/tutor/firstApplyDoctor/upload`,
-//     method:post
-//   })
-// }
+//删除文件
+export function deleteFile(httpPath){
+  return request({
+    url:`${baseUrl}/tutor/firstApplyDoctor/delFile`,
+    method: 'post',
+    data: httpPath
+  })
+}
 
 
