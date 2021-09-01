@@ -35,9 +35,9 @@
             >
               <el-option
                 v-for="dict in applyTypeOptions"
-                :key="dict.applyId"
+                :key="dict.applyTypeId"
                 :label="dict.applyName"
-                :value="dict.applyId"
+                :value="dict.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -101,8 +101,8 @@
               plain
               icon="el-icon-success"
               size="small"
-              @click="passFun"
               :disabled="single"
+              @click="passFun"
             >校会通过</el-button>
           </el-col>
           <el-col :span="1.5">
@@ -111,11 +111,10 @@
               plain
               icon="el-icon-error"
               size="small"
-              @click="unPassFun"
               :disabled="single"
+              @click="unPassFun"
             >校会不通过</el-button>
-          </el-col> <el-col :span="1.5">
-        </el-col>
+          </el-col> <el-col :span="1.5" />
         </el-row>
         <el-table
           v-loading="loading"
@@ -178,12 +177,12 @@
         </el-table>
         <div class="block">
           <el-pagination
-            @current-change="handleCurrentChange"
             v-show="total>0"
             :current-page.sync="currentPage"
             :page-size="10"
             layout="total, prev, pager, next"
             :total="total"
+            @current-change="handleCurrentChange"
           />
         </div>
       </el-col>
@@ -200,7 +199,7 @@
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span v-if="multiple">批量不通过只能批量添加备注</span>
       <span v-if="multiple==false">逐条通过可逐条添加备注</span>
-      <el-input v-model="commit" autocomplete="off"></el-input>
+      <el-input v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="returnFun()">确 定</el-button>
@@ -216,9 +215,9 @@ export default {
     return {
       // 遮罩层
       loading: true,
-      //备注弹框显示
+      // 备注弹框显示
       dialogVisible: false,
-      //通过确认框
+      // 通过确认框
       dialogVisiblePass: false,
       // 显示搜索条件
       showSearch: true,
@@ -276,11 +275,11 @@ export default {
         applyStatus: undefined, // 审核状态码id
         subjectType: undefined // 学科属性，文科，理科，交叉
       },
-      commit:undefined,
+      commit: undefined
     }
   },
   created() {
-    //研究生院领导通过的状态即同意上分会，即研究生院管理员需要录入校分会意见的名单
+    // 研究生院领导通过的状态即同意上分会，即研究生院管理员需要录入校分会意见的名单
     this.queryParams.applyStatus = 61
     this.getList()
     this.getApplyType()
@@ -296,11 +295,10 @@ export default {
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000)
-      {
+      if (res.code != 20000) {
         this.tutorList = []
         this.loading = false
-        return this.$message("暂无数据！！！")
+        return this.$message('暂无数据！！！')
       }
       this.tutorList = res.data
       console.info(res.data)
@@ -309,21 +307,21 @@ export default {
     },
     async upDateStatus(code) {
       const updateStatus = []
-      for (var i =0 ;i<this.ids.length;i++){
-        var json={
-          "id_1" :this.ids[i],
-          "status_1":code,
-          "commit_1": this.commit||"研究生院管理未录入校会意见",
-        };
-        updateStatus[i] = json ;
+      for (var i = 0; i < this.ids.length; i++) {
+        var json = {
+          'id_1': this.ids[i],
+          'status_1': code,
+          'commit_1': this.commit || '研究生院管理未录入校会意见'
+        }
+        updateStatus[i] = json
       }
       console.info(updateStatus)
       const { data: res } = await this.$http.post(
-        '/update-status/update',updateStatus
+        '/update-status/update', updateStatus
       )
-      this.getList();
-      if(res.code != 20000) return this.$message("操作失败！！！")
-       else return this.$message("操作成功！！！")
+      this.getList()
+      if (res.code != 20000) return this.$message('操作失败！！！')
+      else return this.$message('操作成功！！！')
       this.commit = undefined
     },
     async getApplyType() {
@@ -334,18 +332,18 @@ export default {
       this.applyTypeOptions = res.data
     },
     async getApplyStatus() {
-      this.applyStatusOptions =[
+      this.applyStatusOptions = [
         {
-          "codeId" : 61,
-          "inspectDescribe" :"同意上校分会"
+          'codeId': 61,
+          'inspectDescribe': '同意上校分会'
         },
         {
-          "codeId" : 81,
-          "inspectDescribe" :"学位委员会通过"
+          'codeId': 81,
+          'inspectDescribe': '学位委员会通过'
         },
         {
-          "codeId" : 82,
-          "inspectDescribe" :"学位委员会不通过"
+          'codeId': 82,
+          'inspectDescribe': '学位委员会不通过'
         }
       ]
     },
@@ -386,48 +384,48 @@ export default {
       this.dateRange = []
       this.handleQuery()
     },
-    //校会通过
+    // 校会通过
     passFun(num) {
-      this.dialogVisiblePass = true;
-      this.commit = "校会通过，学位委员会通过"
+      this.dialogVisiblePass = true
+      this.commit = '校会通过，学位委员会通过'
     },
-    //审核通过确认弹框确认按钮
+    // 审核通过确认弹框确认按钮
     rePassFun() {
       this.upDateStatus(81)
-      this.dialogVisiblePass = false;
+      this.dialogVisiblePass = false
     },
-    //初审不通过
+    // 初审不通过
     unPassFun() {
-      //驳回之前判断是否只选择了一条
-      this.dialogVisible = true;
-      this.commit = "校会不通过，学位委员会不通过"
+      // 驳回之前判断是否只选择了一条
+      this.dialogVisible = true
+      this.commit = '校会不通过，学位委员会不通过'
     },
-    //弹框确定按钮驳回操作
+    // 弹框确定按钮驳回操作
     returnFun() {
-      //带上备注
+      // 带上备注
       this.upDateStatus(82)
-      this.dialogVisible = false;
+      this.dialogVisible = false
     },
-    //弹框取消按钮
+    // 弹框取消按钮
     cancel() {
-      this.dialogVisible = false;
-      this.commit = undefined;
+      this.dialogVisible = false
+      this.commit = undefined
     },
 
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.tutorId)
       if (selection.length > 0) {
-        this.single = false;
-        this.multiple = false;
+        this.single = false
+        this.multiple = false
       } else {
-        this.single = true;
-        this.multiple = true;
+        this.single = true
+        this.multiple = true
       }
-      if(selection.length == 1) {
-        this.multiple = false;
+      if (selection.length == 1) {
+        this.multiple = false
       } else {
-        this.multiple = true;
+        this.multiple = true
       }
     },
     handleCurrentChange(val) {

@@ -17,27 +17,44 @@ export function IfApply(tId, aId) {
 }
 
 // 第一页基本信息提交
-export function submitFirstPage(data, applyId, applyCondition) {
+export function submitFirstPage(data, applyTypeId, applyCondition) {
   return request({
-    url: baseUrl +`/tutor/firstApplyDoctor/saveBaseInfo/${applyId}/${applyCondition}`,
+    url: baseUrl +`/tutor/firstApplyDoctor/saveBaseInfo/${applyTypeId}/${applyCondition}`,
     method: 'post',
     data: data
   })
 }
-//第二页信息提交
+//第二页信息提交 参数：表单/申请类别id/主键id
 
-export function submitSecondPage(data,applyId,id){
+export function submitSecondPage(data,applyTypeId,applyId){
   return request({
-    url:`${baseUrl}/tutor/firstApplyDoctor/updateSecondPage/${applyId}/${id}`,
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateSecondPage/${applyTypeId}/${applyId}`,
     method: 'post',
     data: data
   })
 }
 
-//删除文件
+//第三页信息提交 参数：表单/申请类别id/主键id
+export function submitThirdPage(data,applyTypeId,applyId){
+  return request({
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateThirdPage/${applyTypeId}/${applyId}`,
+    method : 'post',
+    data : data
+  })
+}
+
+//第四页信息提交 
+export function submitFourthPage(data,applyTypeId,applyId){
+  return request({
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateThirdPage/${applyTypeId}/${applyId}`,
+    method : 'post',
+    data : data
+  })
+}
+//删除文件 公共方法
 export function deleteFile(httpPath){
   return request({
-    url:`${baseUrl}/tutor/firstApplyDoctor/delFile`,
+    url:`${baseUrl}/tutor/delFile`,
     method: 'post',
     data: httpPath
   })

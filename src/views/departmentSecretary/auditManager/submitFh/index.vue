@@ -254,15 +254,22 @@ export default {
     },
     //导出按钮，只导出同意上分会的数据
     exportFun() {
+      let date = new Date();
+      let year = date.getFullYear(); // 获取当前年份
+      console.log(year);
       this.loading = true;
       this.queryParams.applyStatus = 13; //同意上分会
       //   this.queryParams.organization = 30130;//院系
       exportSFH(this.queryParams).then((res) => {
-    
         let blob = new Blob([res], { type: "application/vnd.ms-excel" });
         let url = window.URL.createObjectURL(blob);
         let link = document.createElement("a");
-        link.download = "西北大学"+"2021"+"年"+"网络和数据中心"+ "学位评定分委员会推荐汇总表.xlsx";
+        link.download =
+          "西北大学" +
+          year +
+          "年" +
+          "网络和数据中心" +
+          "学位评定分委员会推荐汇总表.xlsx"; //excel名称
         link.href = url;
         link.click();
       });

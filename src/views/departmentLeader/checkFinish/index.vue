@@ -232,7 +232,7 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = null; // 审核状态码id
+      this.queryParams.applyStatus = 13 + "-" + 22; // 审核状态码id
     },
 
     //当前选中

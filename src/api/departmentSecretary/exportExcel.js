@@ -6,6 +6,6 @@ export function exportSFH(data) {
     url: '/export/sfh',
     method: 'get',
     params:data,
-    responseType: "blob", //也可以使用blob
+    responseType: "blob", 
   })
 }
