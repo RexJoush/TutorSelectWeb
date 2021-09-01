@@ -51,7 +51,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="工号">
-                      <el-input v-model="formFirst.number" :disabled="true" />
+                      <el-input v-model="formFirst.tutorId" :disabled="true" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -939,7 +939,7 @@
                 class="upload-demo"
                 name="material"
                 :multiple="false"
-                action="http://localhost:8081/tutor/firstApplyDoctor/upload/1"
+                action="http://localhost:8081/tutor/upload/11"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1048,7 +1048,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/firstApplyDoctor/upload/2"
+                action="http://localhost:8081/tutor/upload/12"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1146,7 +1146,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/firstApplyDoctor/upload/3"
+                action="http://localhost:8081/tutor/upload/13"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1221,7 +1221,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/firstApplyDoctor/upload/4"
+                action="http://localhost:8081/tutor/upload/14"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1300,7 +1300,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/firstApplyDoctor/upload/5"
+                action="http://localhost:8081/tutor/upload/15"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1377,7 +1377,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/firstApplyDoctor/upload/6"
+                action="http://localhost:8081/tutor/upload/16"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1409,6 +1409,8 @@ import { doctorPrimaryDiscipline } from "@/utils/data";
 import {
   submitFirstPage,
   submitSecondPage,
+  submitThirdPage,
+  submitFourthPage,
   deleteFile,
 } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 import { getTeacherInfo } from "@/api/tutor/mainboard";
@@ -1430,9 +1432,9 @@ export default {
       },
       /**第一页 */
       // 第 1 页表单
-      id: "", //回传apply中id主键值
+      id: 0, //回传apply中id主键值
       formFirst: {
-        number: "202032978", // 教师工号
+        tutorId: "202032978", // 教师工号
         name: "李一航", // 姓名
         gender: "男", // 性别
         image: "https://www.rexjoush.com/img/1.jpg",
@@ -1580,16 +1582,7 @@ export default {
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
       //学术论文 上传文件按钮
-      fileList: [
-        {
-          name: "food.jpeg",
-          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-        },
-        {
-          name: "food2.jpeg",
-          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-        },
-      ],
+
       //学术论文 理工科成果增加
       ScienceEngineeringPaperAdd: false,
     };
@@ -1604,7 +1597,7 @@ export default {
     GetTutorInfoByClient: function () {
       //获取导师基本信息
       getTeacherInfo().then((res) => {
-        this.formFirst.number = res.data.zgh;
+        this.formFirst.tutorId = res.data.zgh;
         this.formFirst.name = res.data.xm;
         this.formFirst.gender = res.data.xb;
         this.formFirst.image = res.data.shz;
@@ -1626,7 +1619,9 @@ export default {
           submitFirstPage(this.formFirst, 1, this.$route.params.applyCondition)
             .then((res) => {
               if (res.code == 20000) {
-                this.id = res.data.id;
+                console.log(res.data)
+                this.id = res.data.applyId;
+                console.log(this.id)
                 this.$message.success("保存成功！");
                 //信息填写到第二页
                 this.formSecond.applySubject = res.data.applySubject * 1;
@@ -1712,9 +1707,11 @@ export default {
           console.log(this.formSecond);
           submitSecondPage(this.formSecond, 1, this.id).then((res) => {
             if (res.code == 20000) {
+              console.log(res.data)
               //更新成功
               this.$message.success("保存成功!");
               this.formVisible.second = false; // 关闭第二项
+              //将第三页信息传入到
               this.formVisible.third = true; // 打开第三项
               this.active = 2;
             } else {
@@ -1744,8 +1741,6 @@ export default {
     uploadSuccessFunc: function (response, file, fileList) {
       console.log("success");
       console.log(response.data);    
-      console.log(file)
-      console.log(fileList) 
       switch (response.data.fileType) {
         //论文
         case 1:

@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-31 12:45:52
+ * @LastEditTime: 2021-09-01 09:45:50
 -->
 <template>
   <div class="app-container">
@@ -293,7 +293,7 @@ export default {
       this.queryParams.userId = null;
       this.queryParams.userName = null;
       this.queryParams.organization = null;
-      this.queryParams.applyStatus = null;
+      this.queryParams.applyStatus = 31;
     },
     //初审通过
     passFun() {

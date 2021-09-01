@@ -35,9 +35,9 @@
             >
               <el-option
                 v-for="dict in applyTypeOptions"
-                :key="dict.applyId"
+                :key="dict.applyTypeId"
                 :label="dict.applyName"
-                :value="dict.applyId"
+                :value="dict.applyTypeId"
               />
             </el-select>
           </el-form-item>

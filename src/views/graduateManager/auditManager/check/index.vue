@@ -51,9 +51,9 @@
             >
               <el-option
                 v-for="dict in applyTypeOptions"
-                :key="dict.applyId"
+                :key="dict.applyTypeId"
                 :label="dict.applyName"
-                :value="dict.applyId"
+                :value="dict.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -343,11 +343,10 @@ export default {
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000)
-      {
+      if (res.code != 20000) {
         this.tutorList = []
         this.loading = false
-        return this.$message("暂无待初审教师！！！")
+        return this.$message('暂无待初审教师！！！')
       }
       this.tutorList = res.data
       console.info(res.data)

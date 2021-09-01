@@ -35,9 +35,9 @@
             >
               <el-option
                 v-for="dict in applyTypeOptions"
-                :key="dict.applyId"
+                :key="dict.applyTypeId"
                 :label="dict.applyName"
-                :value="dict.applyId"
+                :value="dict.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -107,12 +107,12 @@
         </el-table>
         <div class="block">
           <el-pagination
-            @current-change="handleCurrentChange"
             v-show="total>0"
             :current-page.sync="currentPage"
             :page-size="10"
             layout="total, prev, pager, next"
             :total="total"
+            @current-change="handleCurrentChange"
           />
         </div>
       </el-col>
@@ -196,11 +196,10 @@ export default {
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000)
-      {
+      if (res.code != 20000) {
         this.tutorList = []
         this.loading = false
-        return this.$message("暂无最终名单！！！")
+        return this.$message('暂无最终名单！！！')
       }
       this.tutorList = res.data
       console.info(res.data)
@@ -209,21 +208,21 @@ export default {
     },
     async upDateStatus(code) {
       const updateStatus = []
-      for (var i =0 ;i<this.ids.length;i++){
-        var json={
-          "id_1" :this.ids[i],
-          "status_1":code,
-          "commit_1":'研究生院返回返回修改',
-        };
-        updateStatus[i] = json ;
+      for (var i = 0; i < this.ids.length; i++) {
+        var json = {
+          'id_1': this.ids[i],
+          'status_1': code,
+          'commit_1': '研究生院返回返回修改'
+        }
+        updateStatus[i] = json
       }
       console.info(updateStatus)
       const { data: res } = await this.$http.post(
-        '/update-status/update',updateStatus
+        '/update-status/update', updateStatus
       )
-      this.getList();
-      if(res.code != 20000) return this.$message("操作失败！！！")
-      else return this.$message("操作成功！！！")
+      this.getList()
+      if (res.code != 20000) return this.$message('操作失败！！！')
+      else return this.$message('操作成功！！！')
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -233,30 +232,30 @@ export default {
       this.applyTypeOptions = res.data
     },
     async getApplyStatus() {
-      this.applyStatusOptions =[
+      this.applyStatusOptions = [
         {
-          "codeId" : 14,
-          "inspectDescribe" :"待初审"
+          'codeId': 14,
+          'inspectDescribe': '待初审'
         },
         {
-          "codeId" : 34,
-          "inspectDescribe" :"符合条件"
+          'codeId': 34,
+          'inspectDescribe': '符合条件'
         },
         {
-          "codeId" : 35,
-          "inspectDescribe" :"不符合条件"
+          'codeId': 35,
+          'inspectDescribe': '不符合条件'
         },
         {
-          "codeId" : 32,
-          "inspectDescribe" :"需修改"
+          'codeId': 32,
+          'inspectDescribe': '需修改'
         },
         {
-          "codeId" : 300,
-          "inspectDescribe" :"送至社科处"
+          'codeId': 300,
+          'inspectDescribe': '送至社科处'
         },
         {
-          "codeId" : 31,
-          "inspectDescribe" :"送至科研处"
+          'codeId': 31,
+          'inspectDescribe': '送至科研处'
         }
       ]
     },
@@ -319,11 +318,11 @@ export default {
       this.ids = selection.map(item => item.tutorId)
     },
 
-    //当前页数
+    // 当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
-      this.getList();
-    },
+      this.currentPage = val
+      this.getList()
+    }
   }
 }
 </script>

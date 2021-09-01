@@ -34,9 +34,9 @@
             >
               <el-option
                 v-for="dict in applyTypeOptions"
-                :key="dict.applyId"
+                :key="dict.applyTypeId"
                 :label="dict.applyName"
-                :value="dict.applyId"
+                :value="dict.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -166,12 +166,12 @@
           </el-table>
           <div class="block">
             <el-pagination
-              @current-change="handleCurrentChange"
               v-show="total>0"
               :current-page.sync="currentPage"
               :page-size="10"
               layout="total, prev, pager, next"
               :total="total"
+              @current-change="handleCurrentChange"
             />
           </div>
         </el-row></el-col>
@@ -260,11 +260,10 @@ export default {
       const { data: res } = await this.$http.get(
         '/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000)
-      {
+      if (res.code != 20000) {
         this.tutorList = []
         this.loading = false
-        return this.$message("暂无待待驳回至院系秘书名单！！！")
+        return this.$message('暂无待待驳回至院系秘书名单！！！')
       }
       this.tutorList = res.data
       console.info(res.data)
