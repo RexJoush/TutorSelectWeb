@@ -34,5 +34,13 @@ export function submitSecondPage(data,applyId,id){
   })
 }
 
+//删除文件
+export function deleteFile(httpPath){
+  return request({
+    url:`${baseUrl}/tutor/firstApplyDoctor/delFile`,
+    method: 'post',
+    data: httpPath
+  })
+}
 
 

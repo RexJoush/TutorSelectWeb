@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-26 11:19:59
+ * @LastEditTime: 2021-08-31 12:45:52
 -->
 <template>
   <div class="app-container">
@@ -69,7 +69,7 @@
               </el-select>
             </el-form-item>
 
-            <el-from-item>
+            <el-form-item>
               <el-button 
                 type="primary" 
                 icon="el-icon-search" 
@@ -83,7 +83,7 @@
                 @click="resetQuery(queryParams)"
                 >重置</el-button
               >
-            </el-from-item>
+            </el-form-item>
             
           </el-form>
 
@@ -94,7 +94,6 @@
               plain
               icon="el-icon-success"
               size="small"
-              :disabled="single"
               @click="passFun()"
               >通过</el-button
             >
@@ -114,7 +113,6 @@
           </el-row>
 
           <el-table
-            v-loading="loading"
             :data="tutorList"
             @selection-change="handleSelectionChange"
           >
@@ -155,23 +153,26 @@
             :current-page.sync="currentPage"
             :page-size="10"
             layout="total, prev, pager, next"
-            :total="totalDate"
+            :total="totalData"
           >
           </el-pagination>
       </el-row>
+
+      <!-- 审批通过的确认弹框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+      <span>确认提交吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button type="primary" @click="rePassFun()">确 定</el-button>
+      </span>
+    </el-dialog>
       <!-- 驳回时的备注弹框 -->
-      <el-dialog
-        title="备注"
-        :visible.sync="dialogVisible"
-        width="30%"
-      >
+      <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
-        <el-button type="primary" @click="returnFun()"
-          >确定</el-button
-        >
+        <el-button type="primary" @click="returnFun()">确定</el-button>
       </span>
       </el-dialog>
   </div>
@@ -193,8 +194,8 @@ export default {
       returnCommit: '',
       //驳回弹框默认不显示
       dialogVisible: false,
-      // 遮罩层
-      loading: true,
+      //通过确认框
+      dialogVisiblePass: false,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -270,24 +271,20 @@ export default {
     //查询科研处待初审的数据
     //通过状态码查询
     getResearchCheckInit() {
-      this.loading = true;
       this.queryParams.applyStatus = 31;
       checkDate(this.queryParams).then(res => {
         if(res.code == 20000){
           this.tutorList = res.data;
-          this.totalData = res.data.length;
-          this.loading = false;
+          this.totalData = res.total;
         }
       })
     },
 
     //搜索按钮
     searchQuery() {
-      this.loading = true;
       checkDate(this.queryParams).then(res => {
         this.tutorList = res.data;
-        this.totalData = res.data.length;
-        this.loading = false;
+        this.totalData = res.total;
       })
     },
 
@@ -299,27 +296,34 @@ export default {
       this.queryParams.applyStatus = null;
     },
     //初审通过
-    PassFun() {
-      this.check(64)
+    passFun() {
+      // this.check(64)
+      this.dialogVisiblePass = true;
     },
-
+    //审核通过确认弹框确认按钮
+    rePassFun() {
+      this.check(64);
+      this.dialogVisiblePass = false;
+      window.location.reload();//重新加载页面
+    },
     //初审不通过
     unPassFun() {
-       //驳回之前判断是否只选择了一条
-       if (this.multipleSelection.length > 1) {
+      //驳回之前判断是否只选择了一条
+      if (this.multipleSelection.length > 1) {
         this.$message.warning("注意:只能选择一条数据审核！");
       } else {
         this.dialogVisible = true
       }
 
     },
-
     //弹框确定按钮驳回操作
     returnFun() {
+      //备注
       this.updataList[0].commit_1 = this.returnCommit;
-      this.check(52);
+      this.check(53);
       this.dialogVisible = false
       this.returnCommit = null
+      window.location.reload();//重新加载页面
     },
 
     //弹框取消按钮
@@ -339,6 +343,7 @@ export default {
         }
         this.updataList.length = 0
         this.resetQuery();
+        this.getSecretaryInit();
       });
     },
 
@@ -367,7 +372,7 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage = val;
+      this.currentPage.pageNum = val;
       this.getResearchCheckInit();
     },
     
