@@ -361,6 +361,7 @@ export default {
         this.updataList[index].status_1 = status;
       }
       updateStatus(this.updataList).then((res) => {
+        console.log(status)
         if (res.code == 20000) {
           this.$message.success("审核成功!");
         }
@@ -387,7 +388,7 @@ export default {
       for (let index = 0; index < this.multipleSelection.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].tutorId;
+        obj.id_1 = this.multipleSelection[index].applyId;
         // obj.number_1 = this.multipleSelection[index].number;
         // obj.applyId_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;
