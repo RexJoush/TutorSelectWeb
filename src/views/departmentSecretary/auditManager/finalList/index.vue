@@ -39,9 +39,9 @@
             >
               <el-option
                 v-for="item in applyTypeList"
-                :key="item.applyId"
+                :key="item.applyTypeId"
                 :label="item.applyName"
-                :value="item.applyId"
+                :value="item.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -70,7 +70,7 @@
           <el-table-column
             label="工号"
             align="center"
-            prop="number"
+            prop="tutorId"
             width="100"
             width:180
             fixed

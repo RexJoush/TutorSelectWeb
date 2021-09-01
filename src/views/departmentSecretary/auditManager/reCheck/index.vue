@@ -39,9 +39,9 @@
             >
               <el-option
                 v-for="item in applyTypeList"
-                :key="item.applyId"
+                :key="item.applyTypeId"
                 :label="item.applyName"
-                :value="item.applyId"
+                :value="item.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -112,7 +112,7 @@
           <el-table-column
             label="工号"
             align="center"
-            prop="number"
+            prop="tutorId"
             width="100"
             fixed
           />
@@ -181,6 +181,7 @@
               icon="el-icon-download"
               size="small"
               :loading="exportLoading"
+              @click="exportFun()"
               >导出excel</el-button
             >
           </el-col>
@@ -217,6 +218,7 @@ import {
   checkDate,
   updateStatus,
 } from "@/api/departmentSecretary/secretaryFirst";
+import { exportSXYFH } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
@@ -298,6 +300,30 @@ export default {
         this.loading = false;
       });
     },
+    //导出按钮，导出状态为“学院分会”的数据
+    exportFun(){
+      let date = new Date();
+      let year = date.getFullYear(); // 获取当前年份
+      console.log(year);
+      this.loading = true;
+      this.queryParams.applyStatus = 14; //学院分会通过
+      //   this.queryParams.organization = 30130;//院系
+      exportSXYFH(this.queryParams).then((res) => {
+        let blob = new Blob([res], { type: "application/vnd.ms-excel" });
+        let url = window.URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.download =
+          "西北大学" +
+          year +
+          "年" +
+          "网络和数据中心" +
+          "学位评定分委员会审议汇总表.xlsx"; //excel名称
+        link.href = url;
+        link.click();
+      });
+      this.loading = false;
+
+    },
     //搜索按钮
     searchQuery() {
       this.loading = true;
@@ -377,7 +403,7 @@ export default {
       for (let index = 0; index < this.multipleSelection.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].tutorId;
+        obj.id_1 = this.multipleSelection[index].applyId;
         // obj.number_1 = this.multipleSelection[index].number;
         // obj.applyId_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;

@@ -113,7 +113,7 @@
           <el-table-column
             label="工号"
             align="center"
-            prop="number"
+            prop="tutorId"
             width="100"
             width:180
             fixed

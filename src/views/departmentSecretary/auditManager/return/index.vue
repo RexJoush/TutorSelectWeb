@@ -39,9 +39,9 @@
             >
               <el-option
                 v-for="item in applyTypeList"
-                :key="item.applyId"
+                :key="item.applytypeId"
                 :label="item.applyName"
-                :value="item.applyId"
+                :value="item.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -102,7 +102,7 @@
           <el-table-column
             label="工号"
             align="center"
-            prop="number"
+            prop="tutorId"
             width="100"
             width:180
             fixed
@@ -324,7 +324,7 @@ export default {
       for (let index = 0; index < this.multipleSelection.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].tutorId;
+        obj.id_1 = this.multipleSelection[index].applyId;
         // obj.number_1 = this.multipleSelection[index].number;
         // obj.applyId_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;

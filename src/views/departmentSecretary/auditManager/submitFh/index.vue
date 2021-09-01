@@ -39,9 +39,9 @@
             >
               <el-option
                 v-for="item in applyTypeList"
-                :key="item.applyId"
+                :key="item.applyTypeId"
                 :label="item.applyName"
-                :value="item.applyId"
+                :value="item.applyTypeId"
               />
             </el-select>
           </el-form-item>
@@ -89,7 +89,7 @@
           <el-table-column
             label="工号"
             align="center"
-            prop="number"
+            prop="tutorId"
             width="100"
             width:180
             fixed
@@ -241,15 +241,9 @@ export default {
       this.loading = true;
       this.queryParams.applyStatus = 13 + "-" + 22;
       checkDate(this.queryParams).then((res) => {
-        if (res.code == 20000) {
-          this.tutorList = res.data;
-          this.totalData = res.total;
-          this.loading = false;
-        }
-        if (res.code == 20001) {
-          this.$message("暂无数据！");
-          this.loading = false;
-        }
+        this.tutorList = res.data;
+        this.totalData = res.total;
+        this.loading = false;
       });
     },
     //导出按钮，只导出同意上分会的数据
