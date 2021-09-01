@@ -64,7 +64,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="工号">
-                      <el-input v-model="formFirst.number" :disabled="true" />
+                      <el-input v-model="formFirst.tutorId" :disabled="true" />
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -275,7 +275,7 @@
     <el-row v-if="formVisible.third">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <Third :id="id" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" />
+          <Third :apply-id="applyId" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" />
         </transition>
       </el-col>
     </el-row>
@@ -313,7 +313,7 @@
                   <el-table-column prop="isGainDegree" label="是否获得学位" width="120" />
                   <el-table-column label="操作" align="center" width="90">
                     <template slot-scope="scope">
-                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 1)">删 除</el-button>
+                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -336,7 +336,7 @@
                   <el-table-column prop="graduateTime" label="毕业时间" width="120" />
                   <el-table-column label="操作" align="center" width="90">
                     <template slot-scope="scope">
-                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 2)">删 除</el-button>
+                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -361,7 +361,7 @@
                   <el-table-column prop="courseObject" label="授课对象" width="180" />
                   <el-table-column label="操作" align="center" width="90">
                     <template slot-scope="scope">
-                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 3)">删 除</el-button>
+                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 1)">删 除</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -570,10 +570,10 @@ export default {
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: false,
+        first: true,
         second: false,
         third: false,
-        fourth: true
+        fourth: false
       },
       applyId: '66', // 此次申请的id，在第一页提交时传回
 
@@ -627,10 +627,7 @@ export default {
 
       /* =========================  第 4 页  ================================= */
       // 第四页提交信息
-      formFourth: {
-        // guidingStudents: [], // 指导学生
-        // courseTeachings: [] // 研究生课程
-      },
+      formFourth: {},
       undergraduateStudents: [], // 本科
       masterStudents: [], // 硕士
       dialogFourth1: false, // 社科学术论文添加按钮
@@ -879,19 +876,39 @@ export default {
 
     /**
      * 各项内容的删除函数
-     * @param index 删 除的索引
-     * @param type 删 除的类型
-     *        1, 协助指导硕士生
-     *        2, 指导本科生
-     *        3, 研究生课程情况
+     * @param index 删除的索引
+     * @param scope
+     * @param type 删除的类型
+     *        1, 研究生课程情况
+     *        2, 协助指导硕士生
+     *        3, 指导本科生
+     *
      * */
-    deleteFunc: function(index, type) {
-      console.log(index, type)
-      switch (type) {
-        case 1: this.masterStudents.splice(index, 1); break
-        case 2: this.undergraduateStudents.splice(index, 1); break
-        case 3: this.formFourth.courseTeachings.splice(index, 1); break
+    deleteFunc: function(index, scope, type) {
+      console.log(index, scope, type)
+      const deleteItem = {
+        deleteId: '', // 删除的项 id
+        deletePath: '', // 删除的路径
+        deleteType: '' // 删除的项类型，论文，项目等
       }
+      switch (type) {
+        case 1:
+          this.masterStudents.splice(index, 1)
+          deleteItem.deleteId = scope.studentId
+          deleteItem.deleteType = 1
+          break
+        case 2:
+          this.undergraduateStudents.splice(index, 1)
+          deleteItem.deleteId = scope.studentId
+          deleteItem.deleteType = 2
+          break
+        case 3: this.formFourth.courseTeachings.splice(index, 1)
+          deleteItem.deleteId = scope.courseId
+          deleteItem.deleteType = 3
+          break
+      }
+      this.formFourth.deleteItems.push(deleteItem)
+      console.log(this.formFourth.deleteItems)
     }
   }
 }

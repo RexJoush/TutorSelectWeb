@@ -18,10 +18,10 @@
           </div>
           <el-row :gutter="100">
             <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="dialogThird1 = true">添加社科类论文</el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(1)">添加社科类论文</el-button>
             </el-col>
             <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="dialogThird2 = true">添加理工类论文</el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(2)">添加理工类论文</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.academicPapers" border style="width: 100%">
@@ -42,7 +42,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="90">
               <template slot-scope="scope">
-                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, 1)">删 除</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 1)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -55,7 +55,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="dialogThird3 = true">添加科研项目</el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(3)">添加科研项目</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.researchProjects" border style="width: 100%">
@@ -75,7 +75,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="90">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 2)">删 除</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -88,7 +88,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="dialogThird4 = true">添加教材或学术著作</el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(4)">添加教材或学术著作</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.academicWorks" border style="width: 100%">
@@ -106,7 +106,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="90">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 3)">删 除</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -119,7 +119,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="dialogThird5 = true">添加科研教学奖励</el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(5)">添加科研教学奖励</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.teachingAwards" border style="width: 100%">
@@ -137,7 +137,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="90">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 4)">删 除</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 4)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -150,7 +150,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="dialogThird6 = true">添加发明专利</el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(6)">添加发明专利</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.inventionPatents" border style="width: 100%">
@@ -167,7 +167,7 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="90">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, 5)">删 除</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 5)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -295,13 +295,13 @@
     <!-- 添加理工类论文 -->
     <el-dialog title="添加理工类论文" width="40%" :visible.sync="dialogThird2">
       <el-form :model="academicPaper">
-        <el-row gutter="20">
-          <el-col span="24">
+        <el-row :gutter="20">
+          <el-col :span="24">
             <el-form-item label="论文名称">
               <el-input v-model="academicPaper.paperName" />
             </el-form-item>
           </el-col>
-          <el-col span="8">
+          <el-col :span="8">
             <el-form-item label="发表时间">
               <el-date-picker
                 v-model="academicPaper.paperPublicationTime"
@@ -313,19 +313,19 @@
               />
             </el-form-item>
           </el-col>
-          <el-col span="8">
+          <el-col :span="8">
             <el-form-item label="第一作者">
               <el-input v-model="academicPaper.firstAuthorName" />
             </el-form-item>
           </el-col>
-          <el-col span="8">
+          <el-col :span="8">
             <el-form-item label="通讯作者">
               <el-input v-model="academicPaper.communicationAuthorName" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row gutter="20">
-          <el-col span="12">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <el-form-item label="期刊类别">
               <el-select v-model="academicPaper.journalCategory" style="width: 100%" placeholder="请选择">
                 <el-option label="SCIE" value="SCIE" />
@@ -337,7 +337,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item v-if="academicPaper.journalCategory === 'SCIE' || academicPaper.journalCategory === 'SSCI'" label="分区">
               <el-select v-model="academicPaper.sciPart" style="width: 100%;" placeholder="请选择">
                 <el-option label="一区" value="一区" />
@@ -348,18 +348,18 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row gutter="20">
-          <el-col span="12">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <el-form-item label="期刊名称">
               <el-input v-model="academicPaper.journalName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="影响因子">
               <el-input v-model="academicPaper.impactFactors" />
             </el-form-item>
           </el-col>
-          <el-col span="24">
+          <el-col :span="24">
             <el-form-item label="证明材料">
               <el-upload
                 ref="upload"
@@ -388,23 +388,23 @@
     <!-- 添加科研项目 -->
     <el-dialog title="添加科研项目" width="40%" :visible.sync="dialogThird3">
       <el-form :model="researchProject">
-        <el-row gutter="20">
-          <el-col span="12">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <el-form-item label="项目名称">
               <el-input v-model="researchProject.projectName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="批准号">
               <el-input v-model="researchProject.approvalNumber" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="负责人姓名">
               <el-input v-model="researchProject.projectChargeName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="开始日期">
               <el-date-picker
                 v-model="researchProject.projectStartTime"
@@ -416,7 +416,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="结束日期">
               <el-date-picker
                 v-model="researchProject.projectEndTime"
@@ -428,17 +428,17 @@
               />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="项目分类">
               <el-input v-model="researchProject.projectCategory" placeholder="国家自然科学基金等" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="总经费">
               <el-input v-model="researchProject.projectTotalPrice" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="项目级别">
               <el-select v-model="researchProject.projectLevel" style="width: 100%;" placeholder="请选择">
                 <el-option label="国家级" value="国家级" />
@@ -447,7 +447,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col span="24">
+          <el-col :span="24">
             <el-form-item label="证明材料">
               <el-upload
                 ref="upload"
@@ -476,18 +476,18 @@
     <!-- 添加教材或学术著作 -->
     <el-dialog title="添加教材或学术著作" width="40%" :visible.sync="dialogThird4">
       <el-form :model="academicWork">
-        <el-row gutter="20">
-          <el-col span="12">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <el-form-item label="著作名称">
               <el-input v-model="academicWork.worksName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="著作编号">
               <el-input v-model="academicWork.worksNumber" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="出版日期">
               <el-date-picker
                 v-model="academicWork.worksPublicationTime"
@@ -499,22 +499,22 @@
               />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="出版单位">
               <el-input v-model="academicWork.worksPublicationUnit" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="完成字数（万字）">
               <el-input v-model="academicWork.totalWords" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="作者姓名">
               <el-input v-model="academicWork.authorName" />
             </el-form-item>
           </el-col>
-          <el-col span="24">
+          <el-col :span="24">
             <el-form-item label="证明材料">
               <el-upload
                 ref="upload"
@@ -543,23 +543,23 @@
     <!-- 添加科研教学奖励 -->
     <el-dialog title="科研教学奖励" width="40%" :visible.sync="dialogThird5">
       <el-form :model="teachingAward">
-        <el-row gutter="20">
-          <el-col span="12">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <el-form-item label="奖励名称">
               <el-input v-model="teachingAward.awardsName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="排名">
               <el-input v-model="teachingAward.awardsRank" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="颁奖单位">
               <el-input v-model="teachingAward.awardsUnit" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="获奖日期">
               <el-date-picker
                 v-model="teachingAward.awardsTime"
@@ -571,12 +571,12 @@
               />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="获奖人姓名">
               <el-input v-model="teachingAward.awardsAuthorName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="获奖级别">
               <el-select v-model="teachingAward.awardsLevel" style="width: 100%;" placeholder="请选择">
                 <el-option label="国家级" value="国家级" />
@@ -585,7 +585,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col span="24">
+          <el-col :span="24">
             <el-form-item label="证明材料">
               <el-upload
                 ref="upload"
@@ -614,18 +614,18 @@
     <!-- 添加发明专利 -->
     <el-dialog title="添加教材或学术著作" width="40%" :visible.sync="dialogThird6">
       <el-form :model="inventionPatent">
-        <el-row gutter="20">
-          <el-col span="12">
+        <el-row :gutter="20">
+          <el-col :span="12">
             <el-form-item label="专利名称">
               <el-input v-model="inventionPatent.patentName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="第一作者">
               <el-input v-model="inventionPatent.patentAuthorName" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="专利授权日期">
               <el-date-picker
                 v-model="inventionPatent.patentGrantTime"
@@ -637,12 +637,12 @@
               />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="专利授权号">
               <el-input v-model="inventionPatent.patentGrantNumber" />
             </el-form-item>
           </el-col>
-          <el-col span="12">
+          <el-col :span="12">
             <el-form-item label="专利类型">
               <el-select v-model="inventionPatent.patentType" style="width: 100%;" placeholder="请选择">
                 <el-option label="实用新型专利" value="实用新型专利" />
@@ -650,7 +650,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col span="24">
+          <el-col :span="24">
             <el-form-item label="证明材料">
               <el-upload
                 ref="upload"
@@ -690,13 +690,6 @@ export default {
   },
   data() {
     return {
-
-      deleteList: [], // 删除的内容列表
-      deleteItem: {
-        deleteId: '', // 删除的项 id
-        deletePath: '', // 删除的路径
-        deleteType: '' // 删除的项类型，论文，项目等
-      },
       isSummary: false, // 是否已经点击汇总按钮
 
       dialogThird1: false, // 社科学术论文添加按钮
@@ -999,6 +992,125 @@ export default {
           console.log('cancel')
         })
     },
+
+    /**
+     * 各项内容的添加函数
+     * @param type 添加的类型
+     *        1, 社科论文
+     *        2, 理工论文
+     *        3, 科研项目
+     *        4, 教材或学术著作
+     *        5, 科研或教学奖励
+     *        6, 发明专利
+     * */
+    addFunc: function(type) {
+      // 添加或修改就将汇总信息变为 false
+      this.isSummary = false
+      switch (type) {
+        case 1: this.dialogThird1 = true; break
+        case 2: this.dialogThird2 = true; break
+        case 3: this.dialogThird3 = true; break
+        case 4: this.dialogThird4 = true; break
+        case 5: this.dialogThird5 = true; break
+        case 6: this.dialogThird6 = true; break
+      }
+    },
+
+    /**
+     * 各项内容的删除函数
+     * @param index 删除的索引
+     * @param scope
+     * @param type 删除的类型
+     *        1, 论文
+     *        2, 科研项目
+     *        3, 教材或学术著作
+     *        4, 科研或教学奖励
+     *        5, 发明专利
+     * */
+    deleteFunc: function(index, scope, type) {
+      // 删除信息就将汇总信息变为 false，需再次生成
+      this.isSummary = false
+      console.log(index, scope, type)
+      const deleteItem = {
+        deleteId: '', // 删除的项 id
+        deletePath: '', // 删除的路径
+        deleteType: '' // 删除的项类型，论文，项目等
+      }
+
+      switch (type) {
+        case 1:
+          this.formThird.academicPapers.splice(index, 1)
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.paperId
+          deleteItem.deletePath = scope.paperProveMaterials
+          deleteItem.deleteType = 1
+          break
+        case 2:
+          this.formThird.researchProjects.splice(index, 1)
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.projectId
+          deleteItem.deletePath = scope.projectProveMaterials
+          deleteItem.deleteType = 2
+          break
+        case 3:
+          this.formThird.academicWorks.splice(index, 1)
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.worksId
+          deleteItem.deletePath = scope.worksProveMaterials
+          deleteItem.deleteType = 3
+          break
+        case 4:
+          this.formThird.teachingAwards.splice(index, 1)
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.awardsId
+          deleteItem.deletePath = scope.awardsProveMaterials
+          deleteItem.deleteType = 4
+          break
+        case 5:
+          this.formThird.inventionPatents.splice(index, 1)
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.patentId
+          deleteItem.deletePath = scope.patentProveMaterials
+          deleteItem.deleteType = 5
+          break
+      }
+      this.formThird.deleteItems.push(deleteItem)
+      console.log(this.formThird.deleteItems)
+    },
+
+    // 汇总生成
+    getSummary: function() {
+      console.log(this.formThird)
+      this.isSummary = true
+      // 论文部分
+      this.formThird.summary.firstAuthorPaper = this.formThird.academicPapers.length
+      this.formThird.summary.authorityAmount = this.formThird.academicPapers.filter(item => item.journalLevel === '顶级期刊（A类）' || item.journalLevel === '权威期刊（B类）' || item.journalLevel === '核心期刊（C类）').length
+      this.formThird.summary.eiAmount = this.formThird.academicPapers.filter(item => item.journalCategory === 'EI').length
+      this.formThird.summary.cssciAmount = this.formThird.academicPapers.filter(item => item.journalCategory === 'SSCI').length
+
+      // 科研项目部分
+      this.formThird.summary.directProject = this.formThird.researchProjects.length
+      this.formThird.summary.projectNationalLevel = this.formThird.researchProjects.filter(item => item.projectLevel === '国家级').length
+      this.formThird.summary.projectProvinceLevel = this.formThird.researchProjects.filter(item => item.projectLevel === '省部级').length
+      this.formThird.summary.accumulatedFunds = this.formThird.researchProjects.reduce((total, item) => total + item.projectTotalPrice * 1, 0)
+      this.formThird.summary.horizontalProject = this.formThird.researchProjects.filter(item => item.projectCategory === '横向').reduce((total, item) => total + item.projectTotalPrice * 1, 0)
+
+      // 著作
+      this.formThird.summary.publishWorks = this.formThird.academicWorks.length
+      this.formThird.summary.publishWorksWords = this.formThird.academicWorks.reduce((total, item) => total + item.totalWords * 1, 0)
+
+      // 获奖
+      this.formThird.summary.scientificAwards = this.formThird.teachingAwards.length
+      this.formThird.summary.awardsNationalLevel = this.formThird.teachingAwards.filter(item => item.awardsLevel === '国家级').length
+      this.formThird.summary.awardsProvinceLevel = this.formThird.teachingAwards.filter(item => item.awardsLevel === '省部级').length
+
+      // 专利
+      this.formThird.summary.inventionPatentAmount = this.formThird.inventionPatents.length
+      this.formThird.summary.newUtilityPatent = this.formThird.inventionPatents.filter(item => item.patentType === '实用新型专利').length
+    },
+
+    /* ======= 上传文件 ======= */
+
+    // 各项内容的提交文件上传
+    addFile: function() {
+      this.$refs.upload.submit()
+    },
+
     // 检查上传的文件类型
     checkFileType: function(file) {
       console.log('check')
@@ -1009,33 +1121,7 @@ export default {
         return false
       }
     },
-    // 各项内容的提交文件上传
-    addFile: function() {
-      this.$refs.upload.submit()
-    },
 
-    /**
-     * 各项内容的删除函数
-     * @param index 删 除的索引
-     * @param type 删 除的类型
-     *        1, 论文
-     *        2, 科研项目
-     *        3, 教材或学术著作
-     *        4, 科研或教学奖励
-     *        5, 发明专利
-     * */
-    deleteFunc: function(index, type) {
-      console.log(index, type)
-      switch (type) {
-        case 1: this.formThird.academicPapers.splice(index, 1); break
-        case 2: this.formThird.researchProjects.splice(index, 1); break
-        case 3: this.formThird.academicWorks.splice(index, 1); break
-        case 4: this.formThird.teachingAwards.splice(index, 1); break
-        case 5: this.formThird.inventionPatents.splice(index, 1); break
-      }
-    },
-
-    // 上传文件
     // 上传成功
     uploadSuccessFunc: function(response, file, fileList) {
       console.log('success')
@@ -1145,38 +1231,8 @@ export default {
       console.log('err', err)
       console.log('file', file)
       console.log('fileList', fileList)
-    },
-
-    // 汇总生成
-    getSummary: function() {
-      console.log(this.formThird)
-      this.isSummary = true
-      // 论文部分
-      this.formThird.summary.firstAuthorPaper = this.formThird.academicPapers.length
-      this.formThird.summary.authorityAmount = this.formThird.academicPapers.filter(item => item.journalLevel === '顶级期刊（A类）' || item.journalLevel === '权威期刊（B类）' || item.journalLevel === '核心期刊（C类）').length
-      this.formThird.summary.eiAmount = this.formThird.academicPapers.filter(item => item.journalCategory === 'EI').length
-      this.formThird.summary.cssciAmount = this.formThird.academicPapers.filter(item => item.journalCategory === 'SSCI').length
-
-      // 科研项目部分
-      this.formThird.summary.directProject = this.formThird.researchProjects.length
-      this.formThird.summary.projectNationalLevel = this.formThird.researchProjects.filter(item => item.projectLevel === '国家级').length
-      this.formThird.summary.projectProvinceLevel = this.formThird.researchProjects.filter(item => item.projectLevel === '省部级').length
-      this.formThird.summary.accumulatedFunds = this.formThird.researchProjects.reduce((total, item) => total + item.projectTotalPrice * 1, 0)
-      this.formThird.summary.horizontalProject = this.formThird.researchProjects.filter(item => item.projectCategory === '横向').reduce((total, item) => total + item.projectTotalPrice * 1, 0)
-
-      // 著作
-      this.formThird.summary.publishWorks = this.formThird.academicWorks.length
-      this.formThird.summary.publishWorksWords = this.formThird.academicWorks.reduce((total, item) => total + item.totalWords * 1, 0)
-
-      // 获奖
-      this.formThird.summary.scientificAwards = this.formThird.teachingAwards.length
-      this.formThird.summary.awardsNationalLevel = this.formThird.teachingAwards.filter(item => item.awardsLevel === '国家级').length
-      this.formThird.summary.awardsProvinceLevel = this.formThird.teachingAwards.filter(item => item.awardsLevel === '省部级').length
-
-      // 专利
-      this.formThird.summary.inventionPatentAmount = this.formThird.inventionPatents.length
-      this.formThird.summary.newUtilityPatent = this.formThird.inventionPatents.filter(item => item.patentType === '实用新型专利').length
     }
+
   }
 }
 </script>
