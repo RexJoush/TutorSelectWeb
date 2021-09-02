@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 10:04:33
+ * @LastEditTime: 2021-09-02 10:13:05
 -->
 <template>
   <div class="app-container">
@@ -298,7 +298,7 @@ export default {
     },
     //审核通过确认弹框按钮
     rePassFun() {
-      this.check(63);
+      this.check(61);
       this.dialogVisiblePass = false;
       window.location.reload();//重新加载页面
     },
@@ -318,7 +318,7 @@ export default {
     returnFun() {
       //添加备注
       this.updataList[0].commit_1 = this.returnCommit;
-      this.check(42);
+      this.check(62);
       this.dialogVisible = false
       this.returnCommit = null
       window.location.reload();//重新加载页面
