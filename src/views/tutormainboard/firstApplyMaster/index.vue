@@ -5,7 +5,7 @@
  * @LastEditTime: 2021-08-19 20:16:38
 -->
 <template>
-  <div class="main">
+  <div class="main" v-loading="loading" element-loading-text="提交中...">
     <!-- 步骤条 -->
     <el-row>
       <el-col :span="8" :offset="8">
@@ -275,7 +275,7 @@
     <el-row v-if="formVisible.third">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <Third :apply-id="applyId" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" />
+          <Third :apply-id="applyId" :loading="loading" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" @load="loading = true"/>
         </transition>
       </el-col>
     </el-row>
@@ -284,98 +284,7 @@
     <el-row v-if="formVisible.fourth">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <h2>教学信息</h2>
-            </div>
-            <el-form
-              v-if="formVisible.fourth"
-              ref="formFourth"
-              :model="formFourth"
-              label-width="150px"
-              label-position="top"
-            >
-              <!-- 协助指导硕士生情况 -->
-              <el-card class="box-card" shadow="always">
-                <div slot="header" class="clearfix">
-                  <span style="font-size: 18px">协助指导硕士生情况</span>
-                </div>
-                <el-row>
-                  <el-col :span="4">
-                    <el-button class="addButton" type="primary" @click="dialogFourth1 = true">添加学生</el-button>
-                  </el-col>
-                </el-row>
-                <el-table :data="masterStudents" border style="width: 100%">
-                  <el-table-column type="index" label="序号" width="50px" />
-                  <el-table-column prop="studentName" label="学生姓名" width="120" />
-                  <el-table-column prop="degreePaperTitle" label="硕士学位论文题目" />
-                  <el-table-column prop="studentEntryTime" label="学生入学时间" width="120" />
-                  <el-table-column prop="isGainDegree" label="是否获得学位" width="120" />
-                  <el-table-column label="操作" align="center" width="90">
-                    <template slot-scope="scope">
-                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-card>
-              <br>
-              <!-- 指导本科生毕业情况 -->
-              <el-card class="box-card" shadow="always">
-                <div slot="header" class="clearfix">
-                  <span style="font-size: 18px">指导本科生毕业情况</span>
-                </div>
-                <el-row>
-                  <el-col :span="4">
-                    <el-button type="primary" class="addButton" @click="dialogFourth2 = true">添加学生</el-button>
-                  </el-col>
-                </el-row>
-                <el-table :data="undergraduateStudents" border style="width: 100%">
-                  <el-table-column type="index" label="序号" width="50px" />
-                  <el-table-column prop="studentName" label="学生姓名" width="120" />
-                  <el-table-column prop="degreePaperTitle" label="学位论文题目" />
-                  <el-table-column prop="graduateTime" label="毕业时间" width="120" />
-                  <el-table-column label="操作" align="center" width="90">
-                    <template slot-scope="scope">
-                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-card>
-              <br>
-              <!-- 研究生课程教学情况 -->
-              <el-card class="box-card" shadow="always">
-                <div slot="header" class="clearfix">
-                  <span style="font-size: 18px">研究生课程教学情况</span>
-                </div>
-                <el-row>
-                  <el-col :span="4">
-                    <el-button class="addButton" type="primary" @click="dialogFourth3 = true">添加研究生课程教学信息
-                    </el-button>
-                  </el-col>
-                </el-row>
-                <el-table :data="formFourth.courseTeachings" border style="width: 100%">
-                  <el-table-column type="index" label="序号" width="50px" />
-                  <el-table-column prop="courseName" label="课程名称" />
-                  <el-table-column prop="courseTime" label="课程时间" width="120" />
-                  <el-table-column prop="courseDuration" label="授课总课时" width="120" />
-                  <el-table-column prop="courseObject" label="授课对象" width="180" />
-                  <el-table-column label="操作" align="center" width="90">
-                    <template slot-scope="scope">
-                      <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 1)">删 除</el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-card>
-              <br>
-              <el-row>
-                <el-col :offset="9">
-                  <el-form-item style="margin-top: 20px">
-                    <el-button type="primary" @click="onSubmitFourthPage">提交本次申请</el-button>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-form>
-          </el-card>
+          <Fourth :apply-id="applyId" :form-fourth="formFourth" :tutor-name="formFirst.name" />
         </transition>
       </el-col>
     </el-row>
@@ -429,141 +338,27 @@
         <el-button type="primary" @click="addExpertTitle">确 定</el-button>
       </div>
     </el-dialog>
-
-    <!-- 第四页 弹框部分 -->
-
-    <!-- 添加协助指导硕士生 -->
-    <el-dialog title="添加协助指导硕士生" width="40%" :visible.sync="dialogFourth1">
-      <el-form :model="guidingStudent">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="硕士学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="学生入学时间">
-              <el-date-picker
-                v-model="guidingStudent.studentEntryTime"
-                style="width: 100%"
-                type="month"
-                format="yyyy-MM"
-                value-format="yyyy-MM"
-                placeholder="选择日期"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="学生是否获得学位">
-              <el-select v-model="guidingStudent.isGainDegree" style="width: 100%" placeholder="请选择">
-                <el-option label="是" value="是" />
-                <el-option label="否" value="否" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFourth1 = false">取 消</el-button>
-        <el-button type="primary" @click="addMasterStudent">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <!-- 添加本科生 -->
-    <el-dialog title="添加指导本科生" width="40%" :visible.sync="dialogFourth2">
-      <el-form :model="guidingStudent">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="学生毕业时间">
-              <el-date-picker
-                v-model="guidingStudent.graduateTime"
-                style="width: 100%"
-                type="month"
-                format="yyyy-MM"
-                value-format="yyyy-MM"
-                placeholder="选择日期"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFourth2 = false">取 消</el-button>
-        <el-button type="primary" @click="addUndergraduateStudent">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <!-- 添加研究生课程教学情况 -->
-    <el-dialog title="添加研究生课程教学情况" width="40%" :visible.sync="dialogFourth3">
-      <el-form :model="courseTeaching">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="课程名称">
-              <el-input v-model="courseTeaching.courseName" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="授课对象">
-              <el-input v-model="courseTeaching.courseObject" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="课程时间">
-              <el-date-picker
-                v-model="courseTeaching.courseTime"
-                style="width: 100%"
-                type="month"
-                format="yyyy-MM"
-                value-format="yyyy-MM"
-                placeholder="选择日期"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="授课总课时">
-              <el-input v-model="courseTeaching.courseDuration" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFourth3 = false">取 消</el-button>
-        <el-button type="primary" @click="addCourseTeaching">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import { academicMasterPrimaryDiscipline } from '@/utils/data'
-import { submitFirstPage, submitSecondPage, submitFourthPage } from '@/api/tutor/applyMaster'
+import { submitFirstPage, submitSecondPage } from '@/api/tutor/applyMaster'
 import { getTeacherInfo } from '@/api/tutor/mainboard'
 import Third from '../Third'
+import Fourth from '../Fourth'
 
 export default {
   components: {
-    Third
+    Third,
+    Fourth
   },
   data() {
     return {
       // 硕士学科代码
       academicMasterPrimaryDiscipline: academicMasterPrimaryDiscipline,
-
+      // 提交的加载状态
+      loading: false,
       // 当前的申请状态
       applyCondition: '',
       // 步骤条
@@ -628,8 +423,6 @@ export default {
       /* =========================  第 4 页  ================================= */
       // 第四页提交信息
       formFourth: {},
-      undergraduateStudents: [], // 本科
-      masterStudents: [], // 硕士
       dialogFourth1: false, // 社科学术论文添加按钮
       dialogFourth2: false, // 理工学术论文添加按钮
       dialogFourth3: false, // 科研项目添加按钮
@@ -691,6 +484,7 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 1 页
         .then(() => {
+          this.loading = true
           submitFirstPage(this.formFirst, 4, this.applyCondition)
             .then(res => {
               if (res.data.code === 1201) {
@@ -706,8 +500,9 @@ export default {
               this.formSecond.major = res.data.major
               this.formSecond.groupsOrPartTimeJobs = res.data.groupsOrPartTimeJobs
               this.formSecond.expertTitles = res.data.expertTitles
-              // console.log(res)
+              console.log(res)
               this.formVisible.first = false // 关闭第 1 页
+              this.loading = false
               this.formVisible.second = true // 打开第 2 页
               this.active = 1
             })
@@ -724,6 +519,7 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 2 页
         .then(() => {
+          this.loading = true
           console.log(this.formSecond)
           submitSecondPage(this.formSecond, 4, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
@@ -734,6 +530,7 @@ export default {
             console.log(res.data)
             this.formThird = res.data
             this.formVisible.second = false // 关闭第 2 页
+            this.loading = false
             this.formVisible.third = true // 打开第 3 页
             this.active = 2
           })
@@ -788,127 +585,12 @@ export default {
     /* =========================  第 4 页  ================================= */
     // 获取第三页传来的初始化信息
     getFormFourth: function(data) {
-      this.formFourth.courseTeachings = data.courseTeachings
-      this.masterStudents = data.guidingStudents.filter(item => item.studentType === '硕士')
-      this.undergraduateStudents = data.guidingStudents.filter(item => item.studentType === '本科')
+      console.log('data', data)
+      this.formFourth = data
       this.formVisible.third = false // 关闭第 3 页
+      this.loading = false
       this.formVisible.fourth = true // 打开第 4 页
       this.active = 3
-    },
-
-    // 完成第 4 页学术信息的填写
-    onSubmitFourthPage: function() {
-      this.$confirm('提交填写?')
-        // 提交保存第 4 页
-        .then(() => {
-          // 将本科生和硕士生放到同一个数组中
-          this.formFourth.guidingStudents = this.undergraduateStudents.concat(this.masterStudents)
-          submitFourthPage(this.formFourth, this.applyId).then(res => {
-            if (res.data.code === 1201) {
-              this.$message.error(res.data.message)
-              console.log(res.data.errorMessage)
-              return
-            }
-            this.formVisible.third = false // 关闭第 4 页
-            this.$message.success('提交成功')
-            this.$router.push('/tutorApply/tutorMainBoard')
-            this.active = 0
-          })
-        })
-        .catch(() => {
-          console.log('cancel')
-        })
-    },
-
-    // 添加协助指导硕士学生
-    addMasterStudent: function() {
-      console.log(this.guidingStudent)
-      this.guidingStudent.studentType = '硕士'
-      this.guidingStudent.directType = '协助指导'
-      this.guidingStudent.tutorName = this.tutorName
-      this.masterStudents.push(this.guidingStudent)
-      this.dialogFourth1 = false
-      this.guidingStudent = {
-        studentName: '',
-        studentType: '',
-        studentEntryTime: '',
-        degreePaperTitle: '',
-        isGainDegree: '',
-        directType: '',
-        tutorName: '',
-        graduateTime: ''
-      }
-    },
-
-    // 添加指导本科生
-    addUndergraduateStudent: function() {
-      console.log(this.guidingStudent)
-      this.guidingStudent.studentType = '本科'
-      this.guidingStudent.isGainDegree = '是'
-      this.guidingStudent.tutorName = this.tutorName
-      this.guidingStudent.directType = '指导'
-      this.undergraduateStudents.push(this.guidingStudent)
-      this.dialogFourth2 = false
-      this.guidingStudent = {
-        studentName: '',
-        studentType: '',
-        studentEntryTime: '',
-        degreePaperTitle: '',
-        isGainDegree: '',
-        directType: '',
-        tutorName: '',
-        graduateTime: ''
-      }
-    },
-
-    // 添加研究生教学情况
-    addCourseTeaching: function() {
-      console.log(this.courseTeaching)
-      this.formFourth.courseTeachings.push(this.courseTeaching)
-      this.dialogFourth3 = false
-      this.courseTeaching = {
-        courseName: '', // 课程名称
-        courseTime: '', // 课程时间
-        courseDuration: '', // 授课总课时
-        courseObject: '' // 授课对象
-      }
-    },
-
-    /**
-     * 各项内容的删除函数
-     * @param index 删除的索引
-     * @param scope
-     * @param type 删除的类型
-     *        1, 研究生课程情况
-     *        2, 协助指导硕士生
-     *        3, 指导本科生
-     *
-     * */
-    deleteFunc: function(index, scope, type) {
-      console.log(index, scope, type)
-      const deleteItem = {
-        deleteId: '', // 删除的项 id
-        deletePath: '', // 删除的路径
-        deleteType: '' // 删除的项类型，论文，项目等
-      }
-      switch (type) {
-        case 1:
-          this.masterStudents.splice(index, 1)
-          deleteItem.deleteId = scope.studentId
-          deleteItem.deleteType = 1
-          break
-        case 2:
-          this.undergraduateStudents.splice(index, 1)
-          deleteItem.deleteId = scope.studentId
-          deleteItem.deleteType = 2
-          break
-        case 3: this.formFourth.courseTeachings.splice(index, 1)
-          deleteItem.deleteId = scope.courseId
-          deleteItem.deleteType = 3
-          break
-      }
-      this.formFourth.deleteItems.push(deleteItem)
-      console.log(this.formFourth.deleteItems)
     }
   }
 }

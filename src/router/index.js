@@ -98,7 +98,7 @@ export const constantRoutes = [
         meta: { title: '首次申请博士生导师' }
       },
       {
-        path: 'applyMaster/:applyId/:applyCondition',
+        path: 'applyMaster/:applyType/:applyCondition',
         name: 'firstApplyMaster',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyMaster/index'),

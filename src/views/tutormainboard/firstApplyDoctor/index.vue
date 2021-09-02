@@ -1493,34 +1493,7 @@ export default {
       dialogThird4: false, // 教材或学术著作添加按钮
       dialogThird5: false, // 科研教学奖励添加按钮
       dialogThird6: false, // 添加发明专利
-      formThird: {
-        academicPapers: [], // 学术论文列表
-        researchProjects: [], // 科研项目列表
-        academicWorks: [], // 教材或学术著作列表
-        teachingAwards: [], // 科研教学奖励列表
-        inventionPatents: [], // 发明专利列表
-        deleteItems: [], //删除各项
-        summary: {
-          // 科研汇总信息
-          firstAuthorPaper: 0, // 以第一作者或通讯在 核心及以上期刊发表与本学科发表的论文篇数
-          authorityAmount: 0, // 权威篇数
-          eiAmount: 0, // EI 篇数
-          cssciAmount: 0, // CSSCI 篇数
-          ssciAmount: 0, // SSCI 篇数
-          directProject: 0, // 主持科研项目
-          projectNationalLevel: 0, // 国家级项目
-          projectProvinceLevel: 0, // 省部级项目
-          accumulatedFunds: 0, // 累计科研经费，万元
-          horizontalProject: 0, // 横向项目到款经费，万元
-          publishWorks: 0, // 出版专业领域专著数
-          publishWorksWords: 0, // 本人完成字数
-          scientificAwards: 0, // 科研教学获奖项数
-          awardsNationalLevel: 0, // 国家级奖项
-          awardsProvinceLevel: 0, // 省部级奖项
-          inventionPatentAmount: 0, // 发明专利
-          newUtilityPatent: 0, // 新型实用专利
-        },
-      },
+      formThird: {},
       academicPaper: {
         // 学术论文
         paperId: "",
@@ -1717,7 +1690,7 @@ export default {
             if (res.code == 20000) {
               console.log("=================");
               this.formThird = res.data;
-              console.log(this.formThird)             
+              console.log(this.formThird)
               //更新成功
               this.$message.success("保存成功!");
               this.formVisible.second = false; // 关闭第二项
