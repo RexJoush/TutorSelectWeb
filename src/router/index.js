@@ -314,7 +314,27 @@ export const constantRoutes = [
         meta: { title: '院系主管已审核', icon: 'dashboard', affix: true }
       }
     ]
+  },
+
+  // ************************************研究生院领导*********************************
+  {
+    path: '/graduate',
+    component: Layout,
+    meta: { title: '研究生院领导', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'graduateLeader',
+        name: 'GraduateLeader',
+        component: () => import('@/views/graduateLeader/index'),
+        meta: { title: '研究生院领导', icon: 'tree' }
+      }
+    ]
+
   }
+
+
+
+
 ]
 
 /**
