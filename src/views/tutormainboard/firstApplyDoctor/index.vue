@@ -76,7 +76,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="评定时间">
-                      <el-input v-model="formFirst.evaluateTime" disabled />                      
+                      <el-input v-model="formFirst.evaluateTime" disabled />
                     </el-form-item>
                   </Col>
                 </Row>
@@ -92,12 +92,11 @@
                       <i class="el-icon-picture-outline" />
                     </div>
                   </el-image>
-               
                 </el-form-item>
               </Col>
               <Col :span="8">
                 <el-form-item label="最后学位">
-                  <el-input v-model="formFirst.finalDegree" disabled />                  
+                  <el-input v-model="formFirst.finalDegree" disabled />
                 </el-form-item>
               </Col>
               <Col :span="8">
@@ -275,7 +274,7 @@
                         width="180"
                       />
                       <el-table-column label="称号名称" prop="title" />
-                      <el-table-column width="100">
+                      <el-table-column width="100" label="操作">
                         <template slot-scope="scope">
                           <el-button
                             type="danger"
@@ -374,7 +373,7 @@
                         size="mini"
                         plain
                         type="danger"
-                        @click="deleteFunc(scope.$index,1)"
+                        @click="deleteFunc(scope.$index, scope.row, 1)"
                         >删 除</el-button
                       >
                     </template>
@@ -433,11 +432,11 @@
                         size="mini"
                         plain
                         type="danger"
-                        @click="deleteFunc(scope.$index,2)"
+                        @click="deleteFunc(scope.$index, scope.row, 2)"
                         >删 除</el-button
                       >
                     </template>
-                  </el-table-column>                 
+                  </el-table-column>
                 </el-table>
               </el-card>
               <br />
@@ -489,11 +488,11 @@
                         size="mini"
                         plain
                         type="danger"
-                        @click="deleteFunc(scope.$index,3)"
+                        @click="deleteFunc(scope.$index, scope.row, 3)"
                         >删 除</el-button
                       >
                     </template>
-                  </el-table-column>        
+                  </el-table-column>
                 </el-table>
               </el-card>
               <br />
@@ -539,11 +538,11 @@
                         size="mini"
                         plain
                         type="danger"
-                        @click="deleteFunc(scope.$index,4)"
+                        @click="deleteFunc(scope.$index, scope.row, 4)"
                         >删 除</el-button
                       >
                     </template>
-                  </el-table-column>        
+                  </el-table-column>
                 </el-table>
               </el-card>
               <br />
@@ -592,11 +591,11 @@
                         size="mini"
                         plain
                         type="danger"
-                        @click="deleteFunc(scope.$index,5)"
+                        @click="deleteFunc(scope.$index, scope.row, 5)"
                         >删 除</el-button
                       >
                     </template>
-                  </el-table-column>        
+                  </el-table-column>
                 </el-table>
               </el-card>
               <br />
@@ -604,7 +603,10 @@
               <el-card class="box-card" shadow="always">
                 <div slot="header" class="clearfix">
                   <span style="font-size: 18px">科研成果汇总</span>
-                  <el-button style="float: right" type="primary" @click="getSummary"
+                  <el-button
+                    style="float: right"
+                    type="primary"
+                    @click="getSummary"
                     >汇总生成</el-button
                   >
                 </div>
@@ -939,7 +941,7 @@
                 class="upload-demo"
                 name="material"
                 :multiple="false"
-                action="http://localhost:8081/tutor/upload/11"
+                action="http://localhost:8081/tutor/upload/1"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1048,7 +1050,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/upload/12"
+                action="http://localhost:8081/tutor/upload/2"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1146,7 +1148,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/upload/13"
+                action="http://localhost:8081/tutor/upload/3"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1221,7 +1223,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/upload/14"
+                action="http://localhost:8081/tutor/upload/4"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1300,7 +1302,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/upload/15"
+                action="http://localhost:8081/tutor/upload/5"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1377,7 +1379,7 @@
                 ref="upload"
                 class="upload-demo"
                 name="material"
-                action="http://localhost:8081/tutor/upload/16"
+                action="http://localhost:8081/tutor/upload/6"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
@@ -1430,6 +1432,7 @@ export default {
         third: false,
         fourth: false,
       },
+      applyCondition: "", //申请的状态  修改还是未申请
       /**第一页 */
       // 第 1 页表单
       id: 0, //回传apply中id主键值
@@ -1481,6 +1484,9 @@ export default {
         title: "",
       },
       /**第三页表单 */
+
+      isSummary: false, //是否点击汇总生成按钮
+
       dialogThird1: false, // 社科学术论文添加按钮
       dialogThird2: false, // 理工学术论文添加按钮
       dialogThird3: false, // 科研项目添加按钮
@@ -1493,6 +1499,7 @@ export default {
         academicWorks: [], // 教材或学术著作列表
         teachingAwards: [], // 科研教学奖励列表
         inventionPatents: [], // 发明专利列表
+        deleteItems: [], //删除各项
         summary: {
           // 科研汇总信息
           firstAuthorPaper: 0, // 以第一作者或通讯在 核心及以上期刊发表与本学科发表的论文篇数
@@ -1516,6 +1523,7 @@ export default {
       },
       academicPaper: {
         // 学术论文
+        paperId: "",
         paperName: "", // 论文名称
         paperPublicationTime: "", // 发表时间
         journalName: "", // 期刊名称
@@ -1577,7 +1585,7 @@ export default {
         patentType: "", // 专利类型
         patentProveMaterials: "", // 证明材料，图片，pdf等
       },
-      
+
       //第二页操作内容
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
@@ -1614,14 +1622,14 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第一页
         .then(() => {
-          // if (applyCondition === 101 || appplyCondition === 102) {
+          this.applyCondition = this.$route.params.applyCondition;
           //首次申请博士提交到后台
-          submitFirstPage(this.formFirst, 1, this.$route.params.applyCondition)
+          submitFirstPage(this.formFirst, 1, this.applyCondition)
             .then((res) => {
               if (res.code == 20000) {
-                console.log(res.data)
+                console.log(res.data);
                 this.id = res.data.applyId;
-                console.log(this.id)
+                console.log(this.id);
                 this.$message.success("保存成功！");
                 //信息填写到第二页
                 this.formSecond.applySubject = res.data.applySubject * 1;
@@ -1705,9 +1713,11 @@ export default {
         // 提交保存第二页
         .then(() => {
           console.log(this.formSecond);
-          submitSecondPage(this.formSecond, 1, this.id).then((res) => {
+          submitSecondPage(this.formSecond, this.applyCondition, this.id).then((res) => {
             if (res.code == 20000) {
-              console.log(res.data)
+              console.log("=================");
+              this.formThird = res.data;
+              console.log(this.formThird)             
               //更新成功
               this.$message.success("保存成功!");
               this.formVisible.second = false; // 关闭第二项
@@ -1740,7 +1750,7 @@ export default {
     //文件上传成功按钮
     uploadSuccessFunc: function (response, file, fileList) {
       console.log("success");
-      console.log(response.data);    
+      console.log(response.data);
       switch (response.data.fileType) {
         //论文
         case 1:
@@ -1748,7 +1758,7 @@ export default {
           //返回的路径地址
           this.academicPaper.paperProveMaterials = response.data.path;
           //赋值
-          this.formThird.academicPapers.push(this.academicPaper);          
+          this.formThird.academicPapers.push(this.academicPaper);
           // 置空论文
           this.academicPaper = {
             paperName: "",
@@ -1765,16 +1775,16 @@ export default {
           };
           if (response.data.fileType == 1) {
             this.dialogThird1 = false;
-          } else  {
+          } else {
             console.log("this.dialogThird2 = false");
             this.dialogThird2 = false;
           }
           this.$refs.upload.clearFiles();
-        break;
+          break;
         //科研项目
         case 3:
           this.researchProject.projectProveMaterial = response.data.path;
-          this.formThird.researchProjects.push(this.researchProject);         
+          this.formThird.researchProjects.push(this.researchProject);
           //清空科研项目
           this.researchProject = {
             projectId: "", // 项目 id
@@ -1791,7 +1801,7 @@ export default {
           };
           this.$refs.upload.clearFiles();
           this.dialogThird3 = false;
-        break;
+          break;
         case 4:
           this.academicWork.worksProveMaterials = response.data.path;
           this.formThird.academicWorks.push(this.academicWork);
@@ -1808,7 +1818,7 @@ export default {
           };
           this.$refs.upload.clearFiles();
           this.dialogThird4 = false;
-        break;
+          break;
         case 5:
           this.teachingAward.awardsProveMaterials = response.data.path;
           this.formThird.teachingAwards.push(this.teachingAward);
@@ -1825,9 +1835,9 @@ export default {
           };
           this.$refs.upload.clearFiles();
           this.dialogThird5 = false;
-        break;
+          break;
         case 6:
-          this.inventionPatent.patentProveMaterials=response.data.path;
+          this.inventionPatent.patentProveMaterials = response.data.path;
           this.formThird.inventionPatents.push(this.inventionPatent);
           //清空
           this.inventionPatent = {
@@ -1841,9 +1851,9 @@ export default {
           };
           this.$refs.upload.clearFiles();
           this.dialogThird6 = false;
-        break;
-      } //switch      
-      this.$message.success("添加成功！")
+          break;
+      } //switch
+      this.$message.success("添加成功！");
     },
     // 上传镜像失败
     uploadErrorFunc: function (err, file, fileList) {
@@ -1857,100 +1867,168 @@ export default {
     },
 
     //删除按钮，参数 删除的序号及定位到哪个类型删除
-    deleteFunc: function(index,type){
-      //根据index获取路径
-      let filePath="";
-      switch (type){
-        case 1:   
-        //获取删除的文件路径
-        filePath=this.formThird.academicPapers[index].paperProveMaterials;
-        //删除文件
-        this.delFile(filePath)
-        //删除记录
-        this.formThird.academicPapers.splice(index, 1); break
-        case 2: 
-        //获取删除的文件路径
-        filePath=this.formThird.researchProjects[index].projectProveMaterial;
-        //删除文件
-        this.delFile(filePath)
-        this.formThird.researchProjects.splice(index, 1); break
-        case 3: 
-        //获取删除的文件路径
-        filePath=this.formThird.academicWorks[index].worksProveMaterials;
-        //删除文件
-        this.delFile(filePath)
-        this.formThird.academicWorks.splice(index, 1); break
-        case 4: 
-        //获取删除的文件路径
-        filePath=this.formThird.teachingAwards[index].awardsProveMaterials;
-        //删除文件
-        this.delFile(filePath)
-        this.formThird.teachingAwards.splice(index, 1); break
-        case 5: 
-        //获取删除的文件路径
-        filePath=this.formThird.inventionPatents[index].patentProveMaterials;
-        //删除文件
-        this.delFile(filePath)
-        this.formThird.inventionPatents.splice(index, 1); break
+    deleteFunc: function (index, scope, type) {
+      //删除第三页各个信息按钮之后
+      this.isSummary = false;
+      const deleteItem = {
+        deleteId: "", // 删除的项 id
+        deletePath: "", // 删除的路径
+        deleteType: "", // 删除的项类型，论文，项目等
+      };
+      //101可以修改 102没有申请过 -1代表没有申请过/申请过的数据库中有paperId
+      switch (type) {
+        case 1:
+          deleteItem.deleteId =
+            this.applyCondition === "102" ? -1 : scope.paperId;
+          deleteItem.deleteType = 1;
+          //删除文件
+          this.delFile(scope.paperProveMaterials);
+          //删除记录
+          this.formThird.academicPapers.splice(index, 1);
+          break;
+        case 2:
+          deleteItem.deleteId =
+            this.applyCondition === "102" ? -1 : scope.paperId;
+          deleteItem.deleteType = 2;
+          this.delFile(scope.projectProveMaterial);
+          this.formThird.researchProjects.splice(index, 1);
+          break;
+        case 3:
+          deleteItem.deleteId =
+            this.applyCondition === "102" ? -1 : scope.paperId;
+          deleteItem.deleteType = 3;
+          this.delFile(scope.worksProveMaterials);
+          this.formThird.academicWorks.splice(index, 1);
+          break;
+        case 4:
+          deleteItem.deleteId =
+            this.applyCondition === "102" ? -1 : scope.paperId;
+          deleteItem.deleteType = 4;
+          this.delFile(scope.awardsProveMaterials);
+          this.formThird.teachingAwards.splice(index, 1);
+          break;
+        case 5:
+          deleteItem.deleteId =
+            this.applyCondition === "102" ? -1 : scope.paperId;
+          deleteItem.deleteType = 5;
+          this.delFile(scope.patentProveMaterials);
+          this.formThird.inventionPatents.splice(index, 1);
+          break;
       }
+      this.formThird.deleteItems.push(deleteItem);
     },
 
     //删除文件 参数 文件的路径
-     delFile: function(filePath){
-       let path=encodeURI(filePath)
-        deleteFile(path).then((res)=>{
-          if(res.code===20000){
-            this.$message.success("删除成功！")
+    delFile: function (filePath) {
+      let path = encodeURI(filePath);
+      deleteFile(path)
+        .then((res) => {
+          if (res.code === 20000) {
+            this.$message.success("删除成功！");
+          } else {
+            this.$message.error("删除失败！");
+            return;
           }
-          else
-          {
-            this.$message.error("删除失败！")
-            return
-          }
-        }).catch(()=>{
-          console.log("cancle")
         })
-     },
+        .catch(() => {
+          console.log("cancle");
+        });
+    },
 
-     // 汇总生成
-    getSummary: function() {
-      console.log(this.formThird)
+    // 汇总生成
+    getSummary: function () {
+      console.log(this.formThird);
+      this.isSummary = true;
       // 论文部分
-      this.formThird.summary.firstAuthorPaper = this.formThird.academicPapers.length
-      this.formThird.summary.authorityAmount = this.formThird.academicPapers.filter(item => item.journalLevel === '顶级期刊（A类）' || item.journalLevel === '权威期刊（B类）' || item.journalLevel === '核心期刊（C类）').length
-      this.formThird.summary.eiAmount = this.formThird.academicPapers.filter(item => item.journalCategory === 'EI').length
-      this.formThird.summary.cssciAmount = this.formThird.academicPapers.filter(item => item.journalCategory === 'SSCI').length
+      this.formThird.summary.firstAuthorPaper =
+        this.formThird.academicPapers.length;
+      this.formThird.summary.authorityAmount =
+        this.formThird.academicPapers.filter(
+          (item) =>
+            item.journalLevel === "顶级期刊（A类）" ||
+            item.journalLevel === "权威期刊（B类）" ||
+            item.journalLevel === "核心期刊（C类）"
+        ).length;
+      this.formThird.summary.eiAmount = this.formThird.academicPapers.filter(
+        (item) => item.journalCategory === "EI"
+      ).length;
+      this.formThird.summary.cssciAmount = this.formThird.academicPapers.filter(
+        (item) => item.journalCategory === "SSCI"
+      ).length;
 
       // 科研项目部分
-      this.formThird.summary.directProject = this.formThird.researchProjects.length
-      this.formThird.summary.projectNationalLevel = this.formThird.researchProjects.filter(item => item.projectLevel === '国家级').length
-      this.formThird.summary.projectProvinceLevel = this.formThird.researchProjects.filter(item => item.projectLevel === '省部级').length
-      this.formThird.summary.accumulatedFunds = this.formThird.researchProjects.reduce((total, item) => total + item.projectTotalPrice * 1, 0)
-      this.formThird.summary.horizontalProject = this.formThird.researchProjects.filter(item => item.projectCategory === '横向').reduce((total, item) => total + item.projectTotalPrice * 1, 0)
+      this.formThird.summary.directProject =
+        this.formThird.researchProjects.length;
+      this.formThird.summary.projectNationalLevel =
+        this.formThird.researchProjects.filter(
+          (item) => item.projectLevel === "国家级"
+        ).length;
+      this.formThird.summary.projectProvinceLevel =
+        this.formThird.researchProjects.filter(
+          (item) => item.projectLevel === "省部级"
+        ).length;
+      this.formThird.summary.accumulatedFunds =
+        this.formThird.researchProjects.reduce(
+          (total, item) => total + item.projectTotalPrice * 1,
+          0
+        );
+      this.formThird.summary.horizontalProject = this.formThird.researchProjects
+        .filter((item) => item.projectCategory === "横向")
+        .reduce((total, item) => total + item.projectTotalPrice * 1, 0);
 
       // 著作
-      this.formThird.summary.publishWorks = this.formThird.academicWorks.length
-      this.formThird.summary.publishWorksWords = this.formThird.academicWorks.reduce((total, item) => total + item.totalWords * 1, 0)
+      this.formThird.summary.publishWorks = this.formThird.academicWorks.length;
+      this.formThird.summary.publishWorksWords =
+        this.formThird.academicWorks.reduce(
+          (total, item) => total + item.totalWords * 1,
+          0
+        );
 
       // 获奖
-      this.formThird.summary.scientificAwards = this.formThird.teachingAwards.length
-      this.formThird.summary.awardsNationalLevel = this.formThird.teachingAwards.filter(item => item.awardsLevel === '国家级').length
-      this.formThird.summary.awardsProvinceLevel = this.formThird.teachingAwards.filter(item => item.awardsLevel === '省部级').length
+      this.formThird.summary.scientificAwards =
+        this.formThird.teachingAwards.length;
+      this.formThird.summary.awardsNationalLevel =
+        this.formThird.teachingAwards.filter(
+          (item) => item.awardsLevel === "国家级"
+        ).length;
+      this.formThird.summary.awardsProvinceLevel =
+        this.formThird.teachingAwards.filter(
+          (item) => item.awardsLevel === "省部级"
+        ).length;
 
       // 专利
-      this.formThird.summary.inventionPatentAmount = this.formThird.inventionPatents.length
-      this.formThird.summary.newUtilityPatent = this.formThird.inventionPatents.filter(item => item.patentType === '实用新型专利').length
+      this.formThird.summary.inventionPatentAmount =
+        this.formThird.inventionPatents.length;
+      this.formThird.summary.newUtilityPatent =
+        this.formThird.inventionPatents.filter(
+          (item) => item.patentType === "实用新型专利"
+        ).length;
     },
 
     //************************************************ 完成第三页基本信息的填写 表单提交按钮********************************************
     // 完成第 3 页学术信息的填写
     onSubmitThirdPage: function () {
+      if (!this.isSummary) {
+        this.$message.info("请生成汇总信息后再提交");
+        return;
+      }
       this.$confirm("提交填写?")
         // 提交保存第 3 页
         .then(() => {
-          this.formVisible.third = false; // 关闭第 3 页
-          this.formVisible.fourth = true; // 打开第 4 页
-          this.active = 3;
+          submitThirdPage(this.formThird, this.id, this.applyCondition).then(
+            (response) => {
+              if (response.data.code == 1201) {
+                this.$message.error(res.data.message);
+                console.log(res.data.erorMessage);
+                return;
+              }
+              console.log("***************")
+              this.$message.success("保存成功!");
+              this.formVisible.third = false; // 关闭第 3 页
+              this.formVisible.fourth = true; // 打开第 4 页
+              this.active = 3;
+            }
+          );
         })
         .catch(() => {
           console.log("cancel");
