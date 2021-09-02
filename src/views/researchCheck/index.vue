@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-01 09:45:50
+ * @LastEditTime: 2021-09-02 10:07:01
 -->
 <template>
   <div class="app-container">
@@ -56,7 +56,6 @@
               <el-select
                 v-model="queryParams.applyStatus"
                 placeholder="请选择"
-                clearable
                 size="small"
                 style="width: 240px"
               >

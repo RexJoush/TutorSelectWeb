@@ -326,7 +326,7 @@ export const constantRoutes = [
         path: 'graduateLeader',
         name: 'GraduateLeader',
         component: () => import('@/views/graduateLeader/index'),
-        meta: { title: '研究生院领导', icon: 'tree' }
+        meta: { title: '研究生院领导审核', icon: 'tree' }
       }
     ]
 

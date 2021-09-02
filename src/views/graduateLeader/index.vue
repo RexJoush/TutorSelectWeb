@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-01 16:36:51
+ * @LastEditTime: 2021-09-02 10:04:33
 -->
 <template>
   <div class="app-container">
@@ -56,7 +56,6 @@
               <el-select
                 v-model="queryParams.applyStatus"
                 placeholder="请选择"
-                clearable
                 size="small"
                 style="width: 240px"
               >
@@ -95,7 +94,7 @@
               icon="el-icon-success"
               size="small"
               @click="passFun()"
-              >通过</el-button
+              >同意上校会</el-button
             >
             </el-col>
 
@@ -107,7 +106,7 @@
                 size="small"
                 :disabled="multiple"
                 @click="unPassFun()"
-              >驳回</el-button
+              >不同意上校会</el-button
             >
             </el-col>           
           </el-row>
@@ -221,16 +220,16 @@ export default {
       //科研处审核状态
       statuOptions: [
         {
-          value: 30,
-          label: "社科处待审核"
+          value: 34,
+          label: "待审核"
         },
         {
-          value: 63, //文科社科处审核通过
-          label: "社科处审核通过"
+          value: 61, //研究生院领导审核通过,同意上校会
+          label: "同意上校会"
         },
         {
-          value: 42, //文科社科处审核不通过
-          label: "社科处审核不通过"
+          value: 62, //研究生院领导审核不通过，不同意上校会
+          label: "不同意上校会"
         }
       ],
       //审核后需要下发的List数据
@@ -266,7 +265,7 @@ export default {
     //查询社科处待初审的数据
     //通过状态码查询
     getSocialCheckInit() {
-      this.queryParams.applyStatus = 30;
+      this.queryParams.applyStatus = 34;
       checkDate(this.queryParams).then(res => {
         if (res.code == 20000){
           this.tutorList = res.data;
@@ -291,7 +290,7 @@ export default {
       this.queryParams.userId = null;
       this.queryParams.userName = null;
       this.queryParams.organization = null;
-      this.queryParams.applyStatus = 30;
+      this.queryParams.applyStatus = 34;
     },
     //初审通过
     passFun() {

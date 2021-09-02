@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-01 09:44:12
+ * @LastEditTime: 2021-09-02 10:06:21
 -->
 <template>
   <div class="app-container">
@@ -55,8 +55,7 @@
             <el-form-item label="审核状态">
               <el-select
                 v-model="queryParams.applyStatus"
-                placeholder="请选择"
-                clearable
+                placeholder="请选择"   
                 size="small"
                 style="width: 240px"
               >
