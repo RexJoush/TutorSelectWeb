@@ -492,14 +492,24 @@ export default {
                 console.log(res.data.errorMessage)
                 return
               }
+              console.log(res.data)
               this.applyId = res.data.applyId
-              this.formSecond.applySubject = res.data.applySubject * 1
+              if (res.data.applySubject !== null) {
+                this.formSecond.applySubject = res.data.applySubject * 1
+              } else {
+                this.formSecond.applySubject = ''
+              }
               this.formSecond.doctoralMasterApplicationSubjectUnit = res.data.doctoralMasterApplicationSubjectUnit
               this.currentDepartment = res.data.doctoralMasterApplicationSubjectUnit
-              this.formSecond.doctoralMasterSubjectCodeName = res.data.doctoralMasterSubjectCodeName
+              if (res.data.doctoralMasterSubjectCode !== null) {
+                this.formSecond.doctoralMasterSubjectCodeName = res.data.doctoralMasterSubjectCode + ' ' + res.data.doctoralMasterSubjectName
+              } else {
+                this.formSecond.doctoralMasterSubjectCodeName = ''
+              }
               this.formSecond.major = res.data.major
               this.formSecond.groupsOrPartTimeJobs = res.data.groupsOrPartTimeJobs
               this.formSecond.expertTitles = res.data.expertTitles
+
               console.log(res)
               this.formVisible.first = false // 关闭第 1 页
               this.loading = false
