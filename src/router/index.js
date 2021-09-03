@@ -356,6 +356,24 @@ export const asyncRoutes = [
     ]
   },
 
+  // 导师查看我的申请页面
+  {
+    path: '/tutorApply',
+    component: Layout,
+    redirect: '/tutorApply/myApply',
+    meta: { title: '我的申请', icon: 'dashboard' },
+    children: [
+      {
+        path: '/myApply',
+        name: 'myApply',
+        // hidden:true,
+        // redirect: 'noRedirect',
+        component: () => import('@/views/myApply/index'),
+        meta: { title: '我的申请' }
+      }
+    ]
+  },
+
   /** when your routing map is too long, you can split it into small modules **/
   // chartsRouter,
 
