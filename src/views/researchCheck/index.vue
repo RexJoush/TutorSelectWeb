@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 10:07:01
+ * @LastEditTime: 2021-09-02 17:33:26
 -->
 <template>
   <div class="app-container">
@@ -116,7 +116,7 @@
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="50" align="center"/>
-            <el-table-column label="工号" align="center" prop="number" />
+            <el-table-column label="工号" align="center" prop="tutorId" />
             <el-table-column label="姓名" align="center" prop="name" />
             <el-table-column 
               label="所在单位（院系）"
@@ -248,9 +248,10 @@ export default {
   methods: {
     //查看详情
     handleDetail(row) {
-      const tutorId = row.number
+      const tutorId = row.tutorId
+      const applyId = row.applyId
       // console.log(row);
-      this.$router.push({path:"/research/researchDetail", query: {tutorId: tutorId}})
+      this.$router.push({path:"/research/researchDetail", query: {tutorId: tutorId,applyId: applyId}})
     },
 
     //初始化负责院系(下拉框)
@@ -359,7 +360,7 @@ export default {
       // 将需要审核后下发的数据对应起来
       for(let index = 0; index < this.multipleSelection.length; index++) {
         let obj = {id_1:0, status_1:0, commit_1:""};
-        obj.id_1 = this.multipleSelection[index].tutorId;
+        obj.id_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;
         obj.commit_1 = "";
         console.log(obj)

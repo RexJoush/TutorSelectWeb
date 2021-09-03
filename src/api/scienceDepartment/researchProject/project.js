@@ -4,16 +4,16 @@
  * @Author: Anna
  * @Date: 2021-08-27 10:03:15
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-30 21:55:13
+ * @LastEditTime: 2021-09-02 17:10:42
  */
 
 import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
 
 //查询科研项目表
-export function searchProject(tutorId){
+export function searchProject(tutorId, applyId){
     return request({
-        url: baseUrl + `/research_project/get/${tutorId}`,
+        url: baseUrl + `/research_project/get/${tutorId}/${applyId}`,
         method: 'get'
     })
 }
