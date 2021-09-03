@@ -4,16 +4,16 @@
  * @Author: Anna
  * @Date: 2021-08-26 15:43:09
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-30 21:56:47
+ * @LastEditTime: 2021-09-02 16:55:01
  */
 
 import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
 
 // 查询学术论文
-export function searchPaper(tutorId) {
+export function searchPaper(tutorId, applyId) {
   return request({
-    url: baseUrl + `/academic_paper/get/${tutorId}`,
+    url: baseUrl + `/academic_paper/get/${tutorId}/${applyId}`,
     method: 'get',
     // data: data  post请求时传参
   })

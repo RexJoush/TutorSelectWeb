@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 10:13:05
+ * @LastEditTime: 2021-09-02 11:02:07
 -->
 <template>
   <div class="app-container">
@@ -116,7 +116,7 @@
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="50" align="center"/>
-            <el-table-column label="工号" align="center" prop="number" />
+            <el-table-column label="工号" align="center" prop="tutorId" />
             <el-table-column label="姓名" align="center" prop="name" />
             <el-table-column 
               label="所在单位（院系）"
@@ -244,7 +244,7 @@ export default {
   methods: {
     //查看详情
     handleDetail(row) {
-      const tutorId = row.number
+      const tutorId = row.tutorId
       this.$router.push({path:"/social/socialDetail", query:{tutorId: tutorId}})
     },
 
