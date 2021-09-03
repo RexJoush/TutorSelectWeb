@@ -26,18 +26,18 @@ export function submitFirstPage(data, applyTypeId, applyCondition) {
 }
 //第二页信息提交 参数：表单/申请类别id/主键id
 
-export function submitSecondPage(data,applyTypeId,applyId){
+export function submitSecondPage(data,applyCondition,applyId){
   return request({
-    url:`${baseUrl}/tutor/firstApplyDoctor/updateSecondPage/${applyTypeId}/${applyId}`,
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateSecondPage/${applyCondition}/${applyId}`,
     method: 'post',
     data: data
   })
 }
 
-//第三页信息提交 参数：表单/申请类别id/主键id
-export function submitThirdPage(data,applyTypeId,applyId){
+//第三页信息提交 参数：表单/申请类别主键id/申请状态 102没有申请过此岗位 101申请过可以修改
+export function submitThirdPage(data,applyId,applyCondition){
   return request({
-    url:`${baseUrl}/tutor/firstApplyDoctor/updateThirdPage/${applyTypeId}/${applyId}`,
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateThirdPage/${applyId}/${applyCondition}`,
     method : 'post',
     data : data
   })
