@@ -44,9 +44,9 @@ export function submitThirdPage(data,applyId,applyCondition){
 }
 
 //第四页信息提交 
-export function submitFourthPage(data,applyTypeId,applyId){
+export function submitFourthPage1(data,applyId){
   return request({
-    url:`${baseUrl}/tutor/firstApplyDoctor/updateThirdPage/${applyTypeId}/${applyId}`,
+    url:`${baseUrl}/tutor/firstApplyDoctor/updateFourthPage/${applyId}`,
     method : 'post',
     data : data
   })

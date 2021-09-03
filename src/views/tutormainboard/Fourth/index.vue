@@ -429,6 +429,7 @@
 <script>
 
 import { submitFourthPage } from '@/api/tutor/applyMaster'
+import { submitFourthPage1 } from '@/api/tutor/ApplyDoctor/FirstApplyDoctor'
 
 export default {
   name: 'Index',
@@ -512,16 +513,35 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 4 页
         .then(() => {
-          submitFourthPage(this.formFourth, this.applyId).then(res => {
-            if (res.data.code === 1201) {
-              this.$message.error(res.data.message)
-              console.log(res.data.errorMessage)
-              return
-            }
+          switch(this.applyType){
+            case 1 : 
+            submitFourthPage1(this.formFourth,this.applyId).then( res => {       
+            if (res.data != null){
+                if (res.data.code === 1201) {
+                  this.$message.error(res.data.message)
+                  console.log(res.data.errorMessage)
+                  return
+                }
+              }
+            this.$message.success('提交成功')
+            this.$router.push('/tutorApply/tutorMainBoard')           
+            })
+            break
+            case 2 : 
+            submitFourthPage(this.formFourth, this.applyId).then(res => {
+            if (res.data != null){
+                if (res.data.code === 1201) {
+                  this.$message.error(res.data.message)
+                  console.log(res.data.errorMessage)
+                  return
+                }
+              }
             // this.$emit('closeFourth') // 等价于 this.formVisible.fourth = false
             this.$message.success('提交成功')
             this.$router.push('/tutorApply/tutorMainBoard')
           })
+            break
+          }          
         })
         .catch(() => {
           console.log('cancel')
