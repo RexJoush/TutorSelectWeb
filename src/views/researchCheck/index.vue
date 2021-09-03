@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 17:33:26
+ * @LastEditTime: 2021-09-03 19:19:53
 -->
 <template>
   <div class="app-container">
@@ -297,7 +297,6 @@ export default {
     },
     //初审通过
     passFun() {
-      // this.check(64)
       this.dialogVisiblePass = true;
     },
     //审核通过确认弹框确认按钮
