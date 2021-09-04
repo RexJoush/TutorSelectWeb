@@ -54,7 +54,7 @@
               plain
               icon="el-icon-download"
               size="mini"
-              @click="getList"
+              @click="exportFun()"
             >导出</el-button>
             (注意：导出的记录为表中所有同意上校分会的记录)
           </el-col>
@@ -133,6 +133,9 @@
 </template>
 
 <script>
+
+// eslint-disable-next-line no-unused-vars
+import { exportQualification } from '@/api/departmentSecretary/exportExcel'
 
 export default {
   data() {
@@ -280,6 +283,7 @@ export default {
       const { data: res } = await this.$http.get(
         '/organization/getAll'
       )
+      // eslint-disable-next-line eqeqeq
       if (res.code != 20000) return this.$message('获取院系失败')
       this.organizationOptions = res.data
       console.info(this.organizationOptions)
@@ -327,6 +331,26 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.getList()
+    },
+    exportFun() {
+      const date = new Date()
+      const year = date.getFullYear() // 获取当前年份
+      console.log(year)
+      this.loading = true
+      this.queryParams.applyStatus = 61 // 同意上校分会通过
+      exportQualification(this.queryParams).then((res) => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download =
+          '西北大学' +
+          year +
+          '年' +
+          '上岗资格审核汇总表.xlsx' // excel名称
+        link.href = url
+        link.click()
+      })
+      this.loading = false
     }
   }
 }
