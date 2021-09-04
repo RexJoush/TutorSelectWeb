@@ -85,8 +85,6 @@ export const constantRoutes = [
       {
         path: 'tutorMainBoard',
         name: 'tutorMainBoard',
-        // hidden:true,
-        // redirect: 'noRedirect',
         component: () => import('@/views/tutorMainBoard/index'),
         meta: { title: '教师申请' }
       },
@@ -96,6 +94,20 @@ export const constantRoutes = [
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyDoctor/index'),
         meta: { title: '首次申请博士生导师' }
+      },
+      {
+        path: 'addApplyDoctor/:applyType/:applyCondition',
+        name: 'addApplyDoctor',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/addApplyDoctor/index'),
+        meta: { title: '博士导师增列学科岗位' }
+      },
+      {
+        path: 'noInspectApplyDoctor/:applyType/:applyCondition',
+        name: 'noInspectApplyDoctor',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/noInspectApplyDoctor/index'),
+        meta: { title: '博士研究生导师免审上岗' }
       },
       {
         path: 'applyMaster/:applyType/:applyCondition',

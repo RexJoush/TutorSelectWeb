@@ -41,7 +41,7 @@
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary">博士研究生导师免审上岗</el-button>
+            <el-button class="grid-content" type="primary" @click="noInspectDoctor">博士研究生导师免审上岗</el-button>
           </div>
         </el-col>
       </el-row>
@@ -140,23 +140,15 @@ export default {
       })
     },
 
-    // 博士增列
+    // 博士增列 path: 'addApplyDoctor/:applyType/:applyCondition',
 
-    // addApplyDoctor: function () {
-    //     showTeacherInfo().then((res)=>{
-    //       console.log(this.TeacherInfo=res);
-    //       let obj= JSON.parse(this.TeacherInfo.data);
-    //       console.log(obj.data.Rows[0].MC);
-
-    //     })
-    //   // this.$router.push("applyMaster/2");
-    // },
-
-    addApplyDoctor: function() {
-      this.$router.push('applyMaster/2')
+    addApplyDoctor: function () {
+      this.$router.push("addApplyDoctor/2/102");
     },
-
-
+    //博士免审
+    noInspectDoctor: function() {
+      this.$router.push("noInspectApplyDoctor/3/102")
+    },
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function() {
       firstApply(4).then((res) => {

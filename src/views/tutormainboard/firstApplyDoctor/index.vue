@@ -85,7 +85,7 @@
                 <el-form-item>
                   <el-image
                     style="width: 150px; height: 210px"
-                    src="https://www.rexjoush.com/img/1.jpg"
+                    :src= this.formFirst.image 
                     fit="fit"
                   >
                     <div slot="placeholder" class="image-slot">
@@ -1313,6 +1313,7 @@ import {
 } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 import { getTeacherInfo } from "@/api/tutor/mainboard";
 import Fourth from '../Fourth'
+import { byteLength } from '@/utils';
 
 export default {
   components: { index , Fourth},
@@ -1334,20 +1335,36 @@ export default {
       // 第 1 页表单
       id: 0, //回传apply中id主键值
       formFirst: {
-        tutorId: "202032978", // 教师工号
-        name: "李一航", // 姓名
-        gender: "男", // 性别
-        image: "https://www.rexjoush.com/img/1.jpg",
-        organizationName: "24", // 所在单位
-        birthday: "1997-10-01", // 出生年月
-        identity: "411422199712195117", // 证件号码
-        phone: "13598892696", // 联系电话
-        email: "7772854362@qq.com", // 电子邮箱
-        title: "教授", // 职称
-        evaluateTime: "2021-07", // 评定时间
-        finalDegree: "博士", // 最后学位
-        awardDepartment: "西北大学", // 授予单位
-        awardTime: "2021-02", // 授予时间
+        tutorId: "", // 教师工号
+        name: "", // 姓名
+        gender: "", // 性别
+        image: "",
+        organizationName: "", // 所在单位
+        birthday: "", // 出生年月
+        identity: "", // 证件号码
+        phone: "", // 联系电话
+        email: "", // 电子邮箱
+        title: "", // 职称
+        evaluateTime: "", // 评定时间
+        finalDegree: "", // 最后学位
+        awardDepartment: "", // 授予单位
+        awardTime: "", // 授予时间
+
+        // awardingUnitTime: "", //授予单位及时间
+        // tutorId: "202032978", // 教师工号
+        // name: "李一航", // 姓名
+        // gender: "男", // 性别
+        // image: "https://www.rexjoush.com/img/1.jpg",
+        // organizationName: "24", // 所在单位
+        // birthday: "1997-10-01", // 出生年月
+        // identity: "411422199712195117", // 证件号码
+        // phone: "13598892696", // 联系电话
+        // email: "7772854362@qq.com", // 电子邮箱
+        // title: "教授", // 职称
+        // evaluateTime: "2021-07", // 评定时间
+        // finalDegree: "博士", // 最后学位
+        // awardDepartment: "西北大学", // 授予单位
+        // awardTime: "2021-02", // 授予时间
 
         // awardingUnitTime: "", //授予单位及时间
       },
@@ -1502,18 +1519,22 @@ export default {
     GetTutorInfoByClient: function () {
       //获取导师基本信息
       getTeacherInfo().then((res) => {
+       
         this.formFirst.tutorId = res.data.zgh;
         this.formFirst.name = res.data.xm;
         this.formFirst.gender = res.data.xb;
-        this.formFirst.image = res.data.shz;
-        this.formFirst.birthday = res.data.csrq.split(" ")[0];
+        this.formFirst.image = "data:image/png;base64,"+res.data.shz;
+        this.formFirst.birthday = res.data.csrq;
         this.formFirst.organizationName = res.data.mc;
         this.formFirst.identity = res.data.sfzjh;
         this.formFirst.phone = res.data.sjh;
         this.formFirst.title = res.data.zcmc;
         this.formFirst.finalDegree = res.data.zgxw;
       });
+      
+      console.log(this.formFirst)
     },
+    
     //******************************************************第一页 *****************************************
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
@@ -1580,7 +1601,6 @@ export default {
     /*====================================第二页============================ */
     // 第 2 页添加学术团体项 弹框
     addGroupsOrPartTimeJob: function () {
-      console.log(this.groupsOrPartTimeJob + "*********");
       this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob);
 
       this.groupsOrPartTimeJob = {
@@ -1623,12 +1643,9 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {
-          console.log(this.formSecond);
           submitSecondPage(this.formSecond, this.applyCondition, this.id).then((res) => {
             if (res.code == 20000) {
-              console.log("=================");
               this.formThird = res.data;
-              console.log(this.formThird)
               //更新成功
               this.$message.success("保存成功!");
               this.formVisible.second = false; // 关闭第二项
@@ -1645,7 +1662,6 @@ export default {
           console.log("cancel");
         });
     },
-
     /* 第三页 */
     /*====================================第三页============================ */
     // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
