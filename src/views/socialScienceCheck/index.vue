@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 10:06:21
+ * @LastEditTime: 2021-09-02 16:39:07
 -->
 <template>
   <div class="app-container">
@@ -116,7 +116,7 @@
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="50" align="center"/>
-            <el-table-column label="工号" align="center" prop="number" />
+            <el-table-column label="工号" align="center" prop="tutorId" />
             <el-table-column label="姓名" align="center" prop="name" />
             <el-table-column 
               label="所在单位（院系）"
@@ -178,6 +178,7 @@
 
 <script>
 import {
+  getApplyType,
   checkDate,//查询数据
   updateStatus//更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
@@ -201,8 +202,12 @@ export default {
       socialInitList: [],
       //所有负责院系列表
       organizationList: [],
+      //所有申请类别列表
+      applyTypeList: [],
       //选定的列表
       multipleSelection: [],
+      //申请id
+      applyId: 0,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -244,16 +249,14 @@ export default {
   methods: {
     //查看详情
     handleDetail(row) {
-      const tutorId = row.number
-      this.$router.push({path:"/social/socialDetail", query:{tutorId: tutorId}})
+      const tutorId = row.tutorId
+      const applyId = row.applyId
+      console.log(applyId)
+      this.$router.push({path:"/social/socialDetail", query:{tutorId: tutorId,applyId: applyId}})
     },
 
     //初始化负责院系(下拉框)
     async getOrganizationList() {
-      // getOrganization().then(res => {
-      //   this.organizationList = res.data;
-      // })
-
       const {data: res} = await this.$http.get(
         '/organization/getAll'
       )
@@ -268,6 +271,8 @@ export default {
       this.queryParams.applyStatus = 30;
       checkDate(this.queryParams).then(res => {
         if (res.code == 20000){
+          console.log("**************")
+          console.log(res.data)
           this.tutorList = res.data;
           this.totalData = res.total;
         }
