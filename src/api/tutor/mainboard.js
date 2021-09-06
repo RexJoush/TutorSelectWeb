@@ -23,10 +23,10 @@ export function addApply(data) {
   })
 }
 
-// 获取导师基本信息
-export function getTeacherInfo() {
+// 获取导师基本信息 申请类别和申请状态
+export function getTeacherInfo(applyTypeId,applyCondition) {
   return request({
-    url: `${baseUrl}/tutor/getTeacherInfo`,
+    url: `${baseUrl}/tutor/getTeacherInfo/${applyTypeId}/${applyCondition}`,
     method: 'get'
   })
 }

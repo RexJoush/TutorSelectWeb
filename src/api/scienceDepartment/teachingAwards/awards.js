@@ -4,16 +4,16 @@
  * @Author: Anna
  * @Date: 2021-08-27 10:03:22
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-30 21:54:52
+ * @LastEditTime: 2021-09-02 17:11:17
  */
 
 import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
 
  // 查询科研奖励
-export function searchAwards(tutorId) {
+export function searchAwards(tutorId,applyId) {
   return request({
-    url: baseUrl + `/teaching_awards/get/${tutorId}`,
+    url: baseUrl + `/teaching_awards/get/${tutorId}/${applyId}`,
     method: 'get',
   })
 }

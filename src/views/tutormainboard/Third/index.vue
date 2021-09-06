@@ -685,11 +685,13 @@ export default {
   name: 'Index',
   props: {
     applyId: Number,
-    applyCondition: String,
-    formThird: Object
+    formThird: Object,
+    loading: Boolean
   },
   data() {
     return {
+      // 申请状态
+      applyCondition: this.$route.params.applyCondition,
       isSummary: false, // 是否已经点击汇总按钮
 
       dialogThird1: false, // 社科学术论文添加按钮
@@ -979,6 +981,7 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 3 页
         .then(() => {
+          this.$emit('load', true)
           submitThirdPage(this.formThird, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
@@ -986,6 +989,7 @@ export default {
               return
             }
             this.$emit('func', res.data)
+            console.log(res.data)
           })
         })
         .catch(() => {

@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-08-31 11:38:55
+ * @LastEditTime: 2021-09-02 17:11:51
 -->
 <template>
   <div id="app-container"> 
@@ -341,6 +341,7 @@ export default {
   data() {
     return {
       id: "",
+      applyId: "",
       id1: "0",
       id2: "0",
       id3: "0",
@@ -416,30 +417,31 @@ export default {
     this.getAwardList()
   },
   methods: {
-    // 查询学术论文
+    // 1.查询学术论文
     getPaperList() {  
       this.id = this.$route.query.tutorId
+      this.applyId = this.$route.query.applyId
       console.log(this.id) //可以获取到
-      searchPaper(this.id).then((res)=>{
+      searchPaper(this.id,this.applyId).then((res)=>{
         this.paperList = res.data
         // console.log(res.data);       
       })
     },
-    // 查询科研项目
+    // 2.查询科研项目
     getProjectList() {
-      searchProject(this.id).then(res => {
+      searchProject(this.id, this.applyId).then(res => {
         this.projectList = res.data
       })
     },
-    // 查询教材或学术著作
+    // 3.查询教材或学术著作
     getWorkList() {
-      searchWorks(this.id).then(res => {
+      searchWorks(this.id, this.applyId).then(res => {
         this.workList = res.data
       })
     },
-    // 查询科研教学奖励
+    // 4.查询科研教学奖励
     getAwardList() {
-      searchAwards(this.id).then(res => {
+      searchAwards(this.id, this.applyId).then(res => {
         this.awardList = res.data
       })
     },

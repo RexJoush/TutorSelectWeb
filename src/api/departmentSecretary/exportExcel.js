@@ -5,8 +5,8 @@ export function exportSFH(data) {
   return request({
     url: '/export/sfh',
     method: 'get',
-    params:data,
-    responseType: "blob", 
+    params: data,
+    responseType: 'blob'
   })
 }
 
@@ -15,8 +15,17 @@ export function exportSXYFH(data) {
   return request({
     url: '/export/sxyfh',
     method: 'get',
-    params:data,
-    responseType: "blob", 
+    params: data,
+    responseType: 'blob'
+  })
+}
+// 研究生院管理员   导出学同意上校分会的的所有名单
+export function exportQualification(data) {
+  return request({
+    url: '/export/qualification',
+    method: 'get',
+    params: data,
+    responseType: 'blob'
   })
 }
 

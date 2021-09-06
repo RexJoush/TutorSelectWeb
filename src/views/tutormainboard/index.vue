@@ -41,7 +41,7 @@
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary">博士研究生导师免审上岗</el-button>
+            <el-button class="grid-content" type="primary" @click="noInspectDoctor">博士研究生导师免审上岗</el-button>
           </div>
         </el-col>
       </el-row>
@@ -110,13 +110,30 @@
 <script>
 
 import { firstApply ,showTeacherInfo} from "@/api/tutor/mainboard";
+import { getApplyType } from '@/api/departmentSecretary/secretaryFirst';
 
 export default {
   data(){
     return{
-      tutorId:"202032969",
       //老师基本信息
-      TeacherInfo:{},
+      firstPage: {
+        // tutorId: '202032978', // 教师工号
+        // name: '李一航', // 姓名
+        // gender: '男', // 性别
+        // image: 'https://www.rexjoush.com/img/1.jpg',
+        // organizationName: '24', // 所在单位
+        // birthday: '1997-10-01', // 出生年月
+        // identity: '411422199712195117', // 证件号码
+        // phone: '13598892696', // 联系电话
+        // email: '7772854362@qq.com', // 电子邮箱
+        // title: '教授', // 职称
+        // evaluateTime: '2021-07', // 评定时间
+        // finalDegree: '博士', // 最后学位
+        // awardDepartment: '西北大学', // 授予单位
+        // awardTime: '2021-02', // 授予时间
+        // applyCondition:'',
+        // applyType:''
+      }
     }
   },
 
@@ -124,10 +141,10 @@ export default {
     // 首次申请博士导师岗位
     firstApplyDoctor() {
       firstApply(1).then((res) => {
-        if (res.data === '101') {
+        if (res.data === 101) {
           // 查询出来的状态为0 ，老师可以进去修改
           this.$router.push('firstApplyDoctor/1/101')
-        } else if (res.data === '102') {
+        } else if (res.data === 102) {
           // 没有申请过此岗位
           this.$router.push('firstApplyDoctor/1/102')
         } else {
@@ -138,25 +155,41 @@ export default {
           )
         }
       })
+      // firstApply(1).then((res) => {
+      //   console.log(res.data.applyCondition)
+      //   switch(res.data.applyCondition){
+      //     case '101' : 
+      //     // 查询出来的状态为0 ，老师可以进去修改
+      //       this.firstPage.applyType = 1;
+      //       this.firstPage.applyCondition = '101'
+      //     break;
+      //     case '102' :
+      //       this.firstPage.applyType = 1;
+      //       this.firstPage.applyCondition = '102';
+      //     break;
+      //     default :
+      //     this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
+      //       () => {
+      //         this.$router.push('/') // 去我的申请页面
+      //       }
+      //     )
+      //     break;
+      //   }
+      //   this.firstPage = res.data.firstPage
+      //   this.$router.push({path : 'firstApplyDoctor',query : { firstPage : JSON.stringify(this.firstPage) }})
+        
+      // })
     },
 
-    // 博士增列
+    // 博士增列 path: 'addApplyDoctor/:applyType/:applyCondition',
 
-    // addApplyDoctor: function () {
-    //     showTeacherInfo().then((res)=>{
-    //       console.log(this.TeacherInfo=res);
-    //       let obj= JSON.parse(this.TeacherInfo.data);
-    //       console.log(obj.data.Rows[0].MC);
-
-    //     })
-    //   // this.$router.push("applyMaster/2");
-    // },
-
-    addApplyDoctor: function() {
-      this.$router.push('applyMaster/2')
+    addApplyDoctor: function () {
+      this.$router.push({path:"addApplyDoctor",query : { firstPage : JSON.stringify(this.firstPage) }});
     },
-
-
+    //博士免审
+    noInspectDoctor: function() {
+      this.$router.push("noInspectApplyDoctor/3/102")
+    },
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function() {
       firstApply(4).then((res) => {
@@ -165,10 +198,10 @@ export default {
           100：已经申请过此岗位，且信息已提交完成
           102：未申请过此岗位
          */
-        if (res.data === '101') {
+        if (res.data === 101) {
           // 查询出来的状态为 0 ，老师可以进去修改
           this.$router.push('applyMaster/4/101')
-        } else if (res.data === '102') {
+        } else if (res.data === 102) {
           // 没有申请过此岗位
           this.$router.push('applyMaster/4/102')
         } else {

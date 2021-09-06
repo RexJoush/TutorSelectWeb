@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 10:04:33
+ * @LastEditTime: 2021-09-03 20:44:58
 -->
 <template>
   <div class="app-container">
@@ -36,6 +36,22 @@
                 @keyup.enter.native="handleQuery"
               />
             </el-form-item>
+            <el-form-item label="申请类别" prop="applyType">
+              <el-select
+                v-model="queryParams.applyType"
+                placeholder="请选择申请类别"
+                clearable
+                size="small"
+                style="width: 240px"
+              >
+                <el-option
+                  v-for="dict in applyTypeList"
+                  :key="dict.applyTypeId"
+                  :label="dict.applyName"
+                  :value="dict.applyTypeId"
+                />
+              </el-select>
+            </el-form-item>
             <el-form-item label="负责院系" prop="organization">
               <el-select
                 v-model="queryParams.organization" 
@@ -49,6 +65,22 @@
                   :key="item.organizationId"
                   :label="item.organizationName"
                   :value="item.organizationId"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="学科名称" prop="subjectName">
+              <el-select
+                v-model="queryParams.subjectName"
+                placeholder="请选择学科"
+                clearable
+                size="small"
+                style="width: 240px"
+              >
+                <el-option
+                  v-for="dict in subjectNameOptions"
+                  :key="dict.dictValue"
+                  :label="dict.dictLabel"
+                  :value="dict.dictValue"
                 />
               </el-select>
             </el-form-item>
@@ -94,8 +126,7 @@
               icon="el-icon-success"
               size="small"
               @click="passFun()"
-              >同意上校会</el-button
-            >
+              >同意上校会</el-button>
             </el-col>
 
             <el-col :span="1.5">
@@ -110,19 +141,21 @@
             >
             </el-col>           
           </el-row>
-
           <el-table
             :data="tutorList"
             @selection-change="handleSelectionChange"
           >
             <el-table-column type="selection" width="50" align="center"/>
-            <el-table-column label="工号" align="center" prop="number" />
+            <el-table-column label="工号" align="center" prop="tutorId" />
             <el-table-column label="姓名" align="center" prop="name" />
             <el-table-column 
               label="所在单位（院系）"
               align="center"
               prop="organizationName" 
             />
+            <!-- 表格中的 prop 都和后端传的tutorList数据库一一对应 -->
+            <el-table-column label="申请一级学科代码" align="center" prop="doctoralMasterSubjectCode" />
+            <el-table-column label="申请一级学科名称" align="center" prop="doctoralMasterSubjectName" />
             <el-table-column label="申请类别" align="center" prop="applyName" />
             <el-table-column label="职称" align="center" prop="title" />
             <!-- 数据库中查询最后学位字段 -->
@@ -143,7 +176,13 @@
                   @click="handleDetail(scope.row)" 
                   >查看详情</el-button>
               </template>       
-            </el-table-column>                     
+            </el-table-column>  
+            <el-table-column
+              label="备注"
+              align="center"
+              prop="commit"
+              width="150"
+            />                   
           </el-table>
 
           <el-pagination
@@ -178,7 +217,8 @@
 
 <script>
 import {
-  checkDate,//查询数据
+  getApplyType,//查询数据
+  checkDate,
   updateStatus//更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
 
@@ -203,6 +243,10 @@ export default {
       organizationList: [],
       //选定的列表
       multipleSelection: [],
+      // 申请类别选项
+      applyTypeList: [],
+      // 学科名称选项
+      subjectNameOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -239,27 +283,32 @@ export default {
   },
   created() {
     this.getSocialCheckInit(); //初始化待初审的数据
-    this.getOrganizationList(); //初始化所有的负责院系                            //初始化负责院系
+    this.getOrganizationList(); //初始化所有的负责院系  
+    this.getApplyTypeList();//初始化申请的所有类别                          //初始化负责院系
   },
   methods: {
     //查看详情
     handleDetail(row) {
-      const tutorId = row.number
-      this.$router.push({path:"/social/socialDetail", query:{tutorId: tutorId}})
+      const tutorId = row.tutorId
+      const applyId = row.applyId
+      this.$router.push({path:"/social/socialDetail", query:{applyId: applyId}})
     },
 
     //初始化负责院系(下拉框)
     async getOrganizationList() {
-      // getOrganization().then(res => {
-      //   this.organizationList = res.data;
-      // })
-
       const {data: res} = await this.$http.get(
         '/organization/getAll'
       )
       if(res.code != 20000) return this.$message('获取院系失败')
       this.organizationList = res.data
       console.info(this.organizationList)
+    },
+
+    //初始化申请类别
+    async getApplyTypeList() {
+      getApplyType().then(res => {
+        this.applyTypeList = res.data
+      })
     },
 
     //查询社科处待初审的数据
@@ -269,6 +318,8 @@ export default {
       checkDate(this.queryParams).then(res => {
         if (res.code == 20000){
           this.tutorList = res.data;
+          // console.log("+++++++++++++++++++")
+          // console.log(res.data)
           this.totalData = res.total;
         }
         if (res.code == 20001) {
@@ -298,7 +349,7 @@ export default {
     },
     //审核通过确认弹框按钮
     rePassFun() {
-      this.check(63);
+      this.check(61);
       this.dialogVisiblePass = false;
       window.location.reload();//重新加载页面
     },
@@ -318,7 +369,7 @@ export default {
     returnFun() {
       //添加备注
       this.updataList[0].commit_1 = this.returnCommit;
-      this.check(42);
+      this.check(62);
       this.dialogVisible = false
       this.returnCommit = null
       window.location.reload();//重新加载页面
@@ -358,7 +409,7 @@ export default {
       // 将需要审核后下发的数据对应起来
       for(let index = 0; index < this.multipleSelection.length; index++) {
         let obj = {id_1:0, status_1:0, commit_1:""};
-        obj.id_1 = this.multipleSelection[index].tutorId;
+        obj.id_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;
         obj.commit_1 = "";
         console.log(obj)
