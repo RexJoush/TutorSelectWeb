@@ -48,7 +48,6 @@
           <el-form-item label="审核状态">
             <el-select
               v-model="queryParams.applyStatus"
-              placeholder="请选择"
               size="small"
               style="width: 240px"
             >
@@ -60,7 +59,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="btnSearch">
             <el-button
               type="primary"
               icon="el-icon-search"
@@ -88,7 +87,7 @@
               size="small"
               :disabled="single"
               @click="passFun()"
-              >通过</el-button
+              >符合条件</el-button
             >
           </el-col>
           <el-col :span="1.5">
@@ -99,7 +98,29 @@
               size="small"
               :disabled="multiple"
               @click="unPassFun()"
-              >不通过</el-button
+              >不符合条件</el-button
+            >
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-share"
+              size="small"
+              :disabled="multiple"
+              @click="unEnsureFun()"
+              >待定</el-button
+            >
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="info"
+              plain
+              icon="el-icon-edit"
+              size="small"
+              :disabled="multiple"
+              @click="alterFun()"
+              >需修改</el-button
             >
           </el-col>
         </el-row>
@@ -142,7 +163,7 @@
             label="申请类别"
             align="center"
             prop="applyName"
-            width="180"
+            width="200"
           />
           <el-table-column
             label="职称"
@@ -156,13 +177,25 @@
             prop="inspectDescribe"
             width="150"
           />
-          <el-table-column label="详情" align="center" prop="mr" />
+          <el-table-column
+            label="详情"
+            align="center"
+            prop="mr"
+            fixed="right"
+          />
           <el-table-column
             label="备注"
             align="center"
-            prop="commit"
             width="150"
-          />
+            fixed="right"
+          >
+            <template #default="scope">
+              <el-button @click="commitFun(scope.row)" type="text" size="small"
+                >添加备注</el-button
+              >
+              <!-- <el-button type="text" size="small">编辑</el-button> -->
+            </template>
+          </el-table-column>
         </el-table>
 
         <el-pagination
@@ -188,19 +221,32 @@
           </el-col>
         </el-row>
         <span>注意：导出上表所有的数据</span>
+        <el-row :gutter="10" class="mb8" style="left: 1300px">
+          <el-col :span="3">
+            <el-button
+              type="success"
+              plain
+              size="small"
+              :loading="exportLoading"
+              @click="submitFun()"
+              >提交</el-button
+            >
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
+
     <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
       <span>确认提交吗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisiblePass = false">取 消</el-button>
-        <el-button type="primary" @click="rePassFun()">确 定</el-button>
+        <el-button type="primary" @click="confirmFun()">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 驳回时的备注弹框 -->
+    <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>请输入驳回理由(可以为空)</span>
+      <span>(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
@@ -243,6 +289,8 @@ export default {
       applyTypeList: [],
       //选定的列表
       multipleSelection: [],
+      //当前操作的行
+      currentSelection: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -258,24 +306,36 @@ export default {
       //和秘书初审有关的审核状态
       statuOptions: [
         {
+          value: 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18,
+          label:"请选择",
+        },
+        {
           value: 10,
           label: "待初审",
         },
         {
-          value: 11,
-          label: "通过",
+          value: 15,
+          label: "符合条件",
         },
         {
-          value: 12,
-          label: "不通过",
+          value: 16,
+          label: "不符合条件",
         },
         {
+          value: 17,
+          label: "待定",
+        },
+        {
+          value: 18,
+          label: "需修改",
+        },
+         {
           value: 63,
-          label: "社科处审核通过",
+          label: "社科处已审核",
         },
-        {
+         {
           value: 64,
-          label: "科研处审核通过",
+          label: "科研处已审核",
         },
       ],
       //审核后需要下发的List数据
@@ -298,10 +358,10 @@ export default {
     // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 10;
+      this.queryParams.applyStatus =
+        10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18; //院系秘书页面初始化，待初审、秘书审核过中间状态
       // this.queryParams.organization = 50030;  //传入秘书院系id
       checkDate(this.queryParams).then((res) => {
-        console.log(res)
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
@@ -311,6 +371,7 @@ export default {
     searchQuery() {
       this.loading = true;
       checkDate(this.queryParams).then((res) => {
+        console.log(this.queryParams)
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
@@ -321,34 +382,37 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 10; // 审核状态码id
+      this.queryParams.applyStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18; // 审核状态码id
     },
-    //初审通过
+    //初审符合条件
     passFun() {
-      this.dialogVisiblePass = true;
+      this.check(15,"unCommit");
     },
-    //审核通过确认弹框确认按钮
-    rePassFun() {
-      this.check(11);
-      this.dialogVisiblePass = false;
-    },
-    //初审不通过
+    //初审不符合条件
     unPassFun() {
-      //驳回之前判断是否只选择了一条
-      if (this.multipleSelection.length > 1) {
-        this.$message.warning("注意:只能选择一条数据审核！");
-      } else {
-        this.dialogVisible = true;
-      }
-      // this.check(12);
+      this.check(16,"unCommit");
     },
-    //弹框确定按钮驳回操作
+    //初审待定
+    unEnsureFun() {
+      this.check(17,"unCommit");
+    },
+    //初审需修改
+    alterFun() {
+      this.check(18,"unCommit");
+    },
+    //点击备注按钮，添加备注
+    commitFun(row) {
+      this.dialogVisible = true;
+      this.returnCommit = row.commit;
+      this.currentSelection.length = 0;
+      this.currentSelection.push(row);
+    },
+    //备注弹框的确定按钮
     returnFun() {
-      //带上备注
-      this.updataList[0].commit_1 = this.returnCommit;
-      this.check(12);
+      this.currentSelection[0].commit = this.returnCommit;
+      this.updateObiect(this.currentSelection);
+      this.check(this.currentSelection[0].status, "commit"); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
       this.dialogVisible = false;
-      this.returnCommit = null;
     },
     //弹框取消按钮
     cancel() {
@@ -356,22 +420,49 @@ export default {
       this.returnCommit = null;
     },
     //更新操作
-    check(status) {
-      for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
+    check(status, initStatus) {
+      if (status === 9999) {
+        //如果status是9999，则执行提交按钮
+        console.log("提交按钮")
+        for (let index = 0; index < this.updataList.length; index++) {
+          this.updataList[index].status_1 = this.updataList[index].status_1 - 4; //-4是因为数据库绑定状态的原因，勿动
+        }
+      } else {
+        for (let index = 0; index < this.updataList.length; index++) {
+          this.updataList[index].status_1 = status;
+        }
       }
+
       updateStatus(this.updataList).then((res) => {
-        console.log(status)
         if (res.code == 20000) {
-          this.$message.success("审核成功!");
+          this.$message.success("操作成功!");
         }
         this.updataList.length = 0;
-        // 对搜索到的部分数据进行审批后，页面应该还停留在搜索界面还是直接初始化
-        this.getSecretaryInit();
-        this.resetQuery();
+        if (initStatus != "commit") {
+          this.getSecretaryInit();
+        }
       });
     },
-
+    //提交按鈕
+    submitFun(){
+      this.dialogVisiblePass = true
+    },
+    // 弹框的确定按钮
+    confirmFun() {
+      let flag = true;
+      for (let index = 0; index < this.updataList.length; index++) {
+        if (this.updataList[index].status_1 == 10) {
+          flag = false;
+        }
+      }
+      if (flag) {
+        this.check(9999);
+        this.getSecretaryInit();
+      } else {
+        this.$message.warning("有待初审的数据，请先进行审核！");
+      }
+      this.dialogVisiblePass = false
+    },
     //当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {
@@ -382,18 +473,20 @@ export default {
         this.multiple = true;
       }
       this.multipleSelection = val;
+      this.updateObiect(this.multipleSelection);
+    },
+    //封装更新数据
+    updateObiect(originArray) {
       //每次选择都要将之前的清空
       this.updataList = [];
+
       // 将需要审核后下发的数据对应起来
-      for (let index = 0; index < this.multipleSelection.length; index++) {
+      for (let index = 0; index < originArray.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].applyId;
-        // obj.number_1 = this.multipleSelection[index].number;
-        // obj.applyId_1 = this.multipleSelection[index].applyId;
-        obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1 = "";
-        console.log(obj);
+        obj.id_1 = originArray[index].applyId;
+        obj.status_1 = originArray[index].status;
+        obj.commit_1 = originArray[index].commit;
         this.updataList.push(obj);
       }
     },
@@ -407,3 +500,6 @@ export default {
   },
 };
 </script>
+<style scoped>
+
+</style>
