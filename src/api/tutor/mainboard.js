@@ -23,11 +23,18 @@ export function addApply(data) {
   })
 }
 
-// 获取导师基本信息 申请类别和申请状态
-export function getTeacherInfo(applyTypeId,applyCondition) {
+// 获取导师基本信息 申请类别和申请状态 首次申请
+export function getTeacherInfo(applyTypeId, applyCondition) {
   return request({
     url: `${baseUrl}/tutor/getTeacherInfo/${applyTypeId}/${applyCondition}`,
     method: 'get'
   })
 }
 
+// 获取导师基本信息 申请类别和申请状态主键 增列申请
+export function getFirstPage(applyTypeId,applyCondition,applyId) {
+  return request({
+    url: `${baseUrl}/tutor/getFirstPage/${applyTypeId}/${applyCondition}/${applyId}`,
+    method: 'get'
+  })
+}

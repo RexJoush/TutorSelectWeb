@@ -96,7 +96,7 @@ export const constantRoutes = [
         meta: { title: '首次申请博士生导师' }
       },
       {
-        path: 'addApplyDoctor/:applyType/:applyCondition',
+        path: 'addApplyDoctor/:applyType/:applyCondition/:applyId',
         name: 'addApplyDoctor',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/addApplyDoctor/index'),
@@ -110,7 +110,7 @@ export const constantRoutes = [
         meta: { title: '博士研究生导师免审上岗' }
       },
       {
-        path: 'applyMaster/:applyType/:applyCondition',
+        path: 'firstApplyMaster/:applyType/:applyCondition',
         name: 'firstApplyMaster',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyMaster/index'),
@@ -349,10 +349,6 @@ export const constantRoutes = [
     ]
 
   }
-
-
-
-
 ]
 
 /**
@@ -376,18 +372,14 @@ export const asyncRoutes = [
 
   // 导师查看我的申请页面
   {
-    path: '/tutorApply',
+    path: '/myApply',
     component: Layout,
-    redirect: '/tutorApply/myApply',
-    meta: { title: '我的申请', icon: 'dashboard' },
     children: [
       {
         path: '/myApply',
-        name: 'myApply',
-        // hidden:true,
-        // redirect: 'noRedirect',
         component: () => import('@/views/myApply/index'),
-        meta: { title: '我的申请' }
+        name: 'My Apply',
+        meta: { title: '我的申请', icon: 'dashboard' }
       }
     ]
   },

@@ -5,7 +5,7 @@
  * @LastEditTime: 2021-09-03 15:14:00
 -->
 <template>
-  <div class="main" v-loading="loading" element-loading-text="提交中...">
+  <div v-loading="loading" class="main" element-loading-text="提交中...">
     <!-- 步骤条 -->
     <el-row>
       <el-col :span="8" :offset="8">
@@ -42,8 +42,6 @@
                   <Col :span="12">
                     <el-form-item label="性别">
                       <span style="color: #606266;">{{ formFirst.gender }}</span>
-                      <!--                      <el-radio v-if="formFirst.gender === '男'" v-model="formFirst.gender" label="男">男</el-radio>-->
-                      <!--                      <el-radio v-else v-model="formFirst.gender" disabled label="女">女</el-radio>-->
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -54,12 +52,6 @@
                   <Col :span="12">
                     <el-form-item label="出生年月">
                       <el-input v-model="formFirst.birthday" disabled />
-                      <!--                      <el-date-picker-->
-                      <!--                        v-model="formFirst.birthday"-->
-                      <!--                        type="date"-->
-                      <!--                        style="width: 100%"-->
-                      <!--                        placeholder="选择日期"-->
-                      <!--                      />-->
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -90,12 +82,6 @@
                   <Col :span="12">
                     <el-form-item label="评定时间">
                       <el-input v-model="formFirst.evaluateTime" disabled />
-                      <!--                      <el-date-picker-->
-                      <!--                        v-model="formFirst.evaluateTime"-->
-                      <!--                        type="month"-->
-                      <!--                        style="width: 100%"-->
-                      <!--                        placeholder="选择日期"-->
-                      <!--                      />-->
                     </el-form-item>
                   </Col>
                 </Row>
@@ -104,34 +90,16 @@
                 <el-form-item>
                   <el-image
                     style="width: 150px; height: 210px"
-                    src="https://www.rexjoush.com/img/1.jpg"
+                    :src="formFirst.image"
                     fit="fit"
                   >
                     <div slot="placeholder" class="image-slot"><i class="el-icon-picture-outline" /></div>
                   </el-image>
-                  <!--                  <el-upload-->
-                  <!--                    class="upload-demo"-->
-                  <!--                    action="https://jsonplaceholder.typicode.com/posts/"-->
-                  <!--                  >-->
-                  <!--                    <el-button size="small" type="primary">点击上传</el-button>-->
-                  <!--                    <div slot="tip" class="el-upload__tip">-->
-                  <!--                      只能上传jpg/png文件, 500kb以下-->
-                  <!--                    </div>-->
-                  <!--                  </el-upload>-->
                 </el-form-item>
               </Col>
               <Col :span="8">
                 <el-form-item label="最后学位">
                   <el-input v-model="formFirst.finalDegree" disabled />
-                  <!--                  <el-select-->
-                  <!--                    v-model="formFirst.finalDegree"-->
-                  <!--                    style="width: 100%"-->
-                  <!--                    placeholder="请选择"-->
-                  <!--                  >-->
-                  <!--                    <el-option key="学士" lable="学士" value="学士" />-->
-                  <!--                    <el-option key="硕士" lable="硕士" value="硕士" />-->
-                  <!--                    <el-option key="博士" lable="博士" value="博士" />-->
-                  <!--                  </el-select>-->
                 </el-form-item>
               </Col>
               <Col :span="8">
@@ -141,12 +109,13 @@
               </Col>
               <Col :span="8">
                 <el-form-item label="授予时间">
-                  <!--                  <el-input v-model="formFirst.col1" disabled />-->
                   <el-date-picker
                     v-model="formFirst.awardTime"
                     type="month"
                     style="width: 100%"
                     placeholder="选择日期"
+                    format="yyyy-MM"
+                    value-format="yyyy-MM"
                   />
                 </el-form-item>
               </Col>
@@ -275,7 +244,7 @@
     <el-row v-if="formVisible.third">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <Third :apply-id="applyId" :loading="loading" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" @load="loading = true"/>
+          <Third :apply-id="applyId" :loading="loading" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" @load="loading = true" />
         </transition>
       </el-col>
     </el-row>
@@ -370,24 +339,24 @@ export default {
         third: false,
         fourth: false
       },
-      applyId: '66', // 此次申请的id，在第一页提交时传回
+      applyId: '', // 此次申请的id，在第一页提交时传回
 
       /* =========================  第 1 页  ================================= */
       formFirst: {
-        tutorId: '202032978', // 教师工号
-        name: '李一航', // 姓名
-        gender: '男', // 性别
-        image: 'https://www.rexjoush.com/img/1.jpg',
-        organizationName: '24', // 所在单位
-        birthday: '1997-10-01', // 出生年月
-        identity: '411422199712195117', // 证件号码
-        phone: '13598892696', // 联系电话
-        email: '7772854362@qq.com', // 电子邮箱
-        title: '教授', // 职称
-        evaluateTime: '2021-07', // 评定时间
-        finalDegree: '博士', // 最后学位
-        awardDepartment: '西北大学', // 授予单位
-        awardTime: '2021-02' // 授予时间
+        tutorId: '', // 教师工号
+        name: '', // 姓名
+        gender: '', // 性别
+        image: '',
+        organizationName: '', // 所在单位
+        birthday: '', // 出生年月
+        identity: '', // 证件号码
+        phone: '', // 联系电话
+        email: '', // 电子邮箱
+        title: '', // 职称
+        evaluateTime: '', // 评定时间
+        finalDegree: '', // 最后学位
+        awardDepartment: '', // 授予单位
+        awardTime: '' // 授予时间
       },
 
       /* =========================  第 2 页  ================================= */
@@ -459,23 +428,26 @@ export default {
 
     // 拉取基本信息
     getTeacherInfo: function() {
-      getTeacherInfo().then((res) => {
+      getTeacherInfo(4, this.applyCondition).then((res) => {
         if (res.data.code === 1201) {
           this.$message.error(res.data.message)
           this.$router.push('/tutorApply/tutorMainBoard')
           return
         }
         console.log(res)
-        this.formFirst.tutorId = res.data.zgh
-        this.formFirst.name = res.data.xm
-        this.formFirst.gender = res.data.xb
-        this.formFirst.image = res.data.shz
-        this.formFirst.birthday = res.data.csrq.split(' ')[0]
-        this.formFirst.organizationName = res.data.mc
-        this.formFirst.identity = res.data.sfzjh
-        this.formFirst.phone = res.data.sjh
-        this.formFirst.title = res.data.zcmc
-        this.formFirst.finalDegree = res.data.zgxw
+        this.formFirst = res.data
+
+        // 授予单位和时间
+        if (this.formFirst.awardTime === null) {
+          this.formFirst.awardDepartment = this.formFirst.awardingUnitTime.split(' ')[0]
+          this.formFirst.awardTime = this.formFirst.awardingUnitTime.split(' ')[1]
+        }
+        // 未申请过
+        if (this.applyCondition * 1 === 102) {
+          this.formFirst.image = 'data:image/png;base64,' + this.formFirst.blobImage
+        }
+        console.log(this.formFirst.image)
+        this.firstloading = false
       })
     },
 

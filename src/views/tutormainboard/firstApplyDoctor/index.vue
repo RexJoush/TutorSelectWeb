@@ -241,7 +241,7 @@
                         width="200"
                       />
                       <el-table-column prop="job" label="所任职务" />
-                      <el-table-column label="操作">
+                      <el-table-column label="操作" width="100">
                         <template slot-scope="scope">
                           <el-button
                             type="danger"
@@ -1305,22 +1305,18 @@
 </template>
 
 <script>
-import index from "@/components/Breadcrumb/index.vue";
 import { doctorPrimaryDiscipline } from "@/utils/data";
 import {
   submitFirstPage,
   submitSecondPage,
   submitThirdPage,
-  submitFourthPage,
   deleteFile,
 } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 import { getTeacherInfo } from "@/api/tutor/mainboard";
 import Fourth from '../Fourth'
-import { byteLength } from '@/utils';
-import { configure } from 'nprogress';
 
 export default {
-  components: { index , Fourth},
+  components: { Fourth},
   data() {
     return {
       //第一页loading
@@ -1527,12 +1523,12 @@ export default {
       //获取导师基本信息
       getTeacherInfo(1,this.applyCondition).then((res)=>{
         this.formFirst = res.data;
-        console.log(this.formFirst)
+        // console.log(this.formFirst.awardingUnitTime)
         //授予单位和时间
-      if(this.formFirst.awardTime !== null){
-        this.formFirst.awardDepartment = this.formFirst.awardingUnitTime.split(" ")[0];
-        this.formFirst.awardTime = this.formFirst.awardingUnitTime.split(" ")[1];
-      }  
+      // if(this.formFirst.awardTime !== null){
+      //   this.formFirst.awardDepartment = this.formFirst.awardingUnitTime.split(" ")[0];
+      //   this.formFirst.awardTime = this.formFirst.awardingUnitTime.split(" ")[1];
+      // }  
       //未申请过
       if(this.applyCondition * 1 === 102){
         this.formFirst.image = "data:image/png;base64," + this.formFirst.blobImage
@@ -1813,28 +1809,28 @@ export default {
           break;
         case 2:
           deleteItem.deleteId =
-            this.applyCondition === "102" ? -1 : scope.paperId;
+            this.applyCondition === "102" ? -1 : scope.projectId;
           deleteItem.deleteType = 2;
-          this.delFile(scope.projectProveMaterial);
+          this.delFile(scope.projectProveMaterials);
           this.formThird.researchProjects.splice(index, 1);
           break;
         case 3:
           deleteItem.deleteId =
-            this.applyCondition === "102" ? -1 : scope.paperId;
+            this.applyCondition === "102" ? -1 : scope.worksId;
           deleteItem.deleteType = 3;
           this.delFile(scope.worksProveMaterials);
           this.formThird.academicWorks.splice(index, 1);
           break;
         case 4:
           deleteItem.deleteId =
-            this.applyCondition === "102" ? -1 : scope.paperId;
+            this.applyCondition === "102" ? -1 : scope.awardsId;
           deleteItem.deleteType = 4;
           this.delFile(scope.awardsProveMaterials);
           this.formThird.teachingAwards.splice(index, 1);
           break;
         case 5:
           deleteItem.deleteId =
-            this.applyCondition === "102" ? -1 : scope.paperId;
+            this.applyCondition === "102" ? -1 : scope.patentId;
           deleteItem.deleteType = 5;
           this.delFile(scope.patentProveMaterials);
           this.formThird.inventionPatents.splice(index, 1);

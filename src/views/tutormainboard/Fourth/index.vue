@@ -430,7 +430,7 @@
 
 import { submitFourthPage } from '@/api/tutor/applyMaster'
 import { submitFourthPage1 } from '@/api/tutor/ApplyDoctor/FirstApplyDoctor'
-
+import { submitFourthPage2 } from '@/api/tutor/ApplyDoctor/addApplyDoctor'  
 export default {
   name: 'Index',
   props: {
@@ -527,7 +527,20 @@ export default {
             this.$router.push('/tutorApply/tutorMainBoard')           
             })
             break
-            case 2 : 
+            case 2 : //博士导师增岗
+            submitFourthPage2(this.formFourth,this.applyId).then( res => {       
+            if (res.data != null){
+                if (res.data.code === 1201) {
+                  this.$message.error(res.data.message)
+                  console.log(res.data.errorMessage)
+                  return
+                }
+              }
+            this.$message.success('提交成功')
+            this.$router.push('/tutorApply/tutorMainBoard')           
+            })
+            break
+            case 4 : 
             submitFourthPage(this.formFourth, this.applyId).then(res => {
             if (res.data != null){
                 if (res.data.code === 1201) {
