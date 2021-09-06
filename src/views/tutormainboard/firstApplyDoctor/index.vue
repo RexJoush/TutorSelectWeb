@@ -23,6 +23,7 @@
             :model="formFirst"
             label-width="100px"
             label-position="right"
+            v-loading="firstloading"
           >
             <Row type="flex" justify="center" align="top" class="code-row-bg">
               <Col :span="16">
@@ -76,7 +77,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="评定时间">
-                      <el-input v-model="formFirst.evaluateTime" disabled />
+                      <el-input v-model="formFirst.evaluateTime" />
                     </el-form-item>
                   </Col>
                 </Row>
@@ -85,7 +86,7 @@
                 <el-form-item>
                   <el-image
                     style="width: 150px; height: 210px"
-                    :src= this.formFirst.image 
+                    :src= this.formFirst.image
                     fit="fit"
                   >
                     <div slot="placeholder" class="image-slot">
@@ -112,6 +113,8 @@
                     type="month"
                     style="width: 100%"
                     placeholder="选择日期"
+                    format="yyyy-MM"
+                    value-format="yyyy-MM"
                   />
                 </el-form-item>
               </Col>
@@ -165,7 +168,7 @@
                     <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
                         <el-select
-                          v-model="currentDepartment"
+                          v-model="formSecond.doctoralMasterApplicationSubjectUnit"
                           placeholder="请选择"
                           @change="setChildNode"
                         >
@@ -1314,11 +1317,14 @@ import {
 import { getTeacherInfo } from "@/api/tutor/mainboard";
 import Fourth from '../Fourth'
 import { byteLength } from '@/utils';
+import { configure } from 'nprogress';
 
 export default {
   components: { index , Fourth},
   data() {
     return {
+      //第一页loading
+      firstloading: true,
       // 博士学科代码
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       // 步骤条
@@ -1330,7 +1336,7 @@ export default {
         third: false,
         fourth: false,
       },
-      applyCondition: "", //申请的状态  修改还是未申请
+      applyCondition: 0, //申请的状态  修改还是未申请
       /**第一页 */
       // 第 1 页表单
       id: 0, //回传apply中id主键值
@@ -1517,22 +1523,37 @@ export default {
 
     //提交第一页表单 完成第一页基本信息的填写
     GetTutorInfoByClient: function () {
+      this.applyCondition = this.$route.params.applyCondition
       //获取导师基本信息
-      getTeacherInfo().then((res) => {
-       
-        this.formFirst.tutorId = res.data.zgh;
-        this.formFirst.name = res.data.xm;
-        this.formFirst.gender = res.data.xb;
-        this.formFirst.image = "data:image/png;base64,"+res.data.shz;
-        this.formFirst.birthday = res.data.csrq;
-        this.formFirst.organizationName = res.data.mc;
-        this.formFirst.identity = res.data.sfzjh;
-        this.formFirst.phone = res.data.sjh;
-        this.formFirst.title = res.data.zcmc;
-        this.formFirst.finalDegree = res.data.zgxw;
-      });
-      
-      console.log(this.formFirst)
+      getTeacherInfo(1,this.applyCondition).then((res)=>{
+        this.formFirst = res.data;
+        console.log(this.formFirst)
+        //授予单位和时间
+      if(this.formFirst.awardTime !== null){
+        this.formFirst.awardDepartment = this.formFirst.awardingUnitTime.split(" ")[0];
+        this.formFirst.awardTime = this.formFirst.awardingUnitTime.split(" ")[1];
+      }  
+      //未申请过
+      if(this.applyCondition * 1 === 102){
+        this.formFirst.image = "data:image/png;base64," + this.formFirst.blobImage
+      }
+      console.log(this.formFirst.image) 
+        this.firstloading = false
+      })
+  
+      // getTeacherInfo(this.$route.params.applyCondition).then((res) => {
+      //   this.formFirst.tutorId = res.data.zgh;
+      //   this.formFirst.name = res.data.xm;
+      //   this.formFirst.gender = res.data.xb;
+      //   this.formFirst.image = "data:image/png;base64,"+res.data.shz;
+      //   this.formFirst.birthday = res.data.csrq;
+      //   this.formFirst.organizationName = res.data.mc;
+      //   this.formFirst.identity = res.data.sfzjh;
+      //   this.formFirst.phone = res.data.sjh;
+      //   this.formFirst.title = res.data.zcmc;
+      //   this.formFirst.finalDegree = res.data.zgxw;
+      //   this.firstloading = false
+      // }); 
     },
     
     //******************************************************第一页 *****************************************
@@ -1540,51 +1561,28 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第一页
         .then(() => {
-          this.applyCondition = this.$route.params.applyCondition;
+          // this.applyCondition = this.formFirst.applyCondition;
           //首次申请博士提交到后台
+          this.formFirst.image="";
           submitFirstPage(this.formFirst, 1, this.applyCondition)
             .then((res) => {
-              if (res.code == 20000) {
-                console.log(res.data);
+              if (res.code == 20000) {                
                 this.id = res.data.applyId;
-                console.log(this.id);
                 this.$message.success("保存成功！");
+                this.formSecond = res.data
+                console.log("222222222222222")
+                console.log(this.formSecond);
                 //信息填写到第二页
-                if (res.data.applySubject * 1 == 0 ){
-                  this.formSecond.applySubject = ""
+                if(res.data.applySubject == null){
+                  this.formSecond.applySubject = "";
                 }
                 else{
                   this.formSecond.applySubject = res.data.applySubject * 1;
                 }
-                
-                this.formSecond.doctoralMasterApplicationSubjectUnit =
-                  res.data.doctoralMasterApplicationSubjectUnit;
-
-                this.currentDepartment =
-                  res.data.doctoralMasterApplicationSubjectUnit; //申请学科负责单位
-                console.log(this.currentDepartment)
-                if (this.currentDepartment ==null){
-                  this.formSecond.doctoralMasterSubjectCodeName = "";
-                }
-                else{
-                //一级学科代码及名称
-                this.formSecond.doctoralMasterSubjectCodeName =
-                  res.data.doctoralMasterSubjectCodeName; 
-                }
-                
-                //主要研究方向的内容及意义
-                this.formSecond.major = res.data.major;
-                //何时参加何种学术团体、任何种职务，有何社会兼职
-                this.formSecond.groupsOrPartTimeJobs =
-                  res.data.groupsOrPartTimeJobs;
-                //获得专家称号及时间
-                this.formSecond.expertTitles = res.data.expertTitles;
+          
                 this.formVisible.first = false; // 关闭第一项
                 this.formVisible.second = true; // 打开第二项
                 this.active = 1;
-                console.log(
-                  this.formSecond.doctoralMasterApplicationSubjectUnit
-                );
               } else {
                 this.$message.error;
                 ("保存失败！");
