@@ -85,7 +85,7 @@
                 <el-form-item>
                   <el-image
                     style="width: 150px; height: 210px"
-                    src="https://www.rexjoush.com/img/1.jpg"
+                    :src= this.formFirst.image 
                     fit="fit"
                   >
                     <div slot="placeholder" class="image-slot">
@@ -727,117 +727,13 @@
     </div>
     <!-- 第三页内容结束 -->
     <!-- 第四页内容 -->
-    <div v-if="formVisible.fourth">
-      <el-row>
-        <el-col :span="18" :offset="3">
-          <div>
-            <!-- 协助指导硕士生情况 -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">协助指导硕士生情况</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">增加</el-button></el-col
-                >
-              </el-row>
-              <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column prop="name" label="研究生姓名">
-                </el-table-column>
-                <el-table-column prop="name" label="入学时间">
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="硕士学位论文题目"
-                  show-overflow-tooltip="true"
-                >
-                </el-table-column>
-                <el-table-column prop="name" label="是否获得学位">
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <!-- 指导本科生毕业设计情况 -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">指导本科生毕业设计情况</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">增加</el-button></el-col
-                >
-              </el-row>
-              <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column prop="name" label="本科生姓名">
-                </el-table-column>
-                <el-table-column prop="name" label="毕业时间">
-                </el-table-column>
-                <el-table-column prop="name" label="毕业设计题目">
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <!-- 研究生课程教学情况 -->
-            <el-card class="box-card" shadow="always">
-              <div slot="header" class="clearfix">
-                <span style="font-size: 18px">研究生课程教学情况</span>
-              </div>
-              <el-row>
-                <el-col :span="4"
-                  ><el-button type="primary">增加</el-button></el-col
-                >
-              </el-row>
-              <br />
-              <el-table
-                :data="tableData"
-                height="250"
-                border
-                style="width: 100%"
-              >
-                <el-table-column prop="name" label="授课时间">
-                </el-table-column>
-                <el-table-column prop="name" label="课程名称">
-                </el-table-column>
-                <el-table-column prop="name" label="授课总课时">
-                </el-table-column>
-                <el-table-column prop="name" label="授课对象">
-                </el-table-column>
-              </el-table>
-            </el-card>
-            <br />
-            <br />
-
-            <el-row>
-              <!-- <el-col  :span="3"
-                ><el-button type="primary" @click="backThirdPage"
-                  >返回上一页</el-button
-                ></el-col
-              > -->
-              <el-col offset="10" :span="3"
-                ><el-button type="primary" @click="onSubmitFourthPage"
-                  >提交</el-button
-                ></el-col
-              >
-            </el-row>
-          </div>
-        </el-col>
-      </el-row>
-      <br />
-      <br />
-      <br />
-    </div>
+    <el-row v-if="formVisible.fourth">
+      <el-col :span="18" :offset="3">
+        <transition name="el-fade-in-linear">
+          <Fourth :apply-id="this.id" :form-fourth="formFourth" :tutor-name="formFirst.name" />
+        </transition>
+      </el-col>
+    </el-row>
     <!-- 第四页内容 结束-->
 
     <!-- 第二页弹框内容 -->
@@ -1416,9 +1312,11 @@ import {
   deleteFile,
 } from "@/api/tutor/ApplyDoctor/FirstApplyDoctor";
 import { getTeacherInfo } from "@/api/tutor/mainboard";
+import Fourth from '../Fourth'
+import { byteLength } from '@/utils';
 
 export default {
-  components: { index },
+  components: { index , Fourth},
   data() {
     return {
       // 博士学科代码
@@ -1437,20 +1335,36 @@ export default {
       // 第 1 页表单
       id: 0, //回传apply中id主键值
       formFirst: {
-        tutorId: "202032978", // 教师工号
-        name: "李一航", // 姓名
-        gender: "男", // 性别
-        image: "https://www.rexjoush.com/img/1.jpg",
-        organizationName: "24", // 所在单位
-        birthday: "1997-10-01", // 出生年月
-        identity: "411422199712195117", // 证件号码
-        phone: "13598892696", // 联系电话
-        email: "7772854362@qq.com", // 电子邮箱
-        title: "教授", // 职称
-        evaluateTime: "2021-07", // 评定时间
-        finalDegree: "博士", // 最后学位
-        awardDepartment: "西北大学", // 授予单位
-        awardTime: "2021-02", // 授予时间
+        tutorId: "", // 教师工号
+        name: "", // 姓名
+        gender: "", // 性别
+        image: "",
+        organizationName: "", // 所在单位
+        birthday: "", // 出生年月
+        identity: "", // 证件号码
+        phone: "", // 联系电话
+        email: "", // 电子邮箱
+        title: "", // 职称
+        evaluateTime: "", // 评定时间
+        finalDegree: "", // 最后学位
+        awardDepartment: "", // 授予单位
+        awardTime: "", // 授予时间
+
+        // awardingUnitTime: "", //授予单位及时间
+        // tutorId: "202032978", // 教师工号
+        // name: "李一航", // 姓名
+        // gender: "男", // 性别
+        // image: "https://www.rexjoush.com/img/1.jpg",
+        // organizationName: "24", // 所在单位
+        // birthday: "1997-10-01", // 出生年月
+        // identity: "411422199712195117", // 证件号码
+        // phone: "13598892696", // 联系电话
+        // email: "7772854362@qq.com", // 电子邮箱
+        // title: "教授", // 职称
+        // evaluateTime: "2021-07", // 评定时间
+        // finalDegree: "博士", // 最后学位
+        // awardDepartment: "西北大学", // 授予单位
+        // awardTime: "2021-02", // 授予时间
 
         // awardingUnitTime: "", //授予单位及时间
       },
@@ -1559,6 +1473,33 @@ export default {
         patentProveMaterials: "", // 证明材料，图片，pdf等
       },
 
+       /* =========================  第 4 页  ================================= */
+      // 第四页提交信息
+      formFourth: {},
+      dialogFourth1: false, // 社科学术论文添加按钮
+      dialogFourth2: false, // 理工学术论文添加按钮
+      dialogFourth3: false, // 科研项目添加按钮
+
+      // 学生信息
+      guidingStudent: {
+        studentName: '', // 学生姓名
+        studentType: '', // 学生类型，用于区分是本科生，硕士生和博士生
+        studentEntryTime: '', // 学生入学时间
+        degreePaperTitle: '', // 学位论文题目
+        isGainDegree: '', // 是否获得学位
+        directType: '', // 指导类型，协助指导，指导
+        tutorName: '', // 导师姓名
+        graduateTime: '' // 毕业时间
+      },
+
+      // 研究生课程教学情况
+      courseTeaching: {
+        courseName: '', // 课程名称
+        courseTime: '', // 课程时间
+        courseDuration: '', // 授课总课时
+        courseObject: '' // 授课对象
+      },
+
       //第二页操作内容
       //学术论文 社科成果增加
       SocialSciencesPaperAdd: false,
@@ -1578,18 +1519,22 @@ export default {
     GetTutorInfoByClient: function () {
       //获取导师基本信息
       getTeacherInfo().then((res) => {
+       
         this.formFirst.tutorId = res.data.zgh;
         this.formFirst.name = res.data.xm;
         this.formFirst.gender = res.data.xb;
-        this.formFirst.image = res.data.shz;
-        this.formFirst.birthday = res.data.csrq.split(" ")[0];
+        this.formFirst.image = "data:image/png;base64,"+res.data.shz;
+        this.formFirst.birthday = res.data.csrq;
         this.formFirst.organizationName = res.data.mc;
         this.formFirst.identity = res.data.sfzjh;
         this.formFirst.phone = res.data.sjh;
         this.formFirst.title = res.data.zcmc;
         this.formFirst.finalDegree = res.data.zgxw;
       });
+      
+      console.log(this.formFirst)
     },
+    
     //******************************************************第一页 *****************************************
     onSubmitFirstPage: function () {
       this.$confirm("提交填写?")
@@ -1605,14 +1550,28 @@ export default {
                 console.log(this.id);
                 this.$message.success("保存成功！");
                 //信息填写到第二页
-                this.formSecond.applySubject = res.data.applySubject * 1;
+                if (res.data.applySubject * 1 == 0 ){
+                  this.formSecond.applySubject = ""
+                }
+                else{
+                  this.formSecond.applySubject = res.data.applySubject * 1;
+                }
+                
                 this.formSecond.doctoralMasterApplicationSubjectUnit =
                   res.data.doctoralMasterApplicationSubjectUnit;
+
                 this.currentDepartment =
                   res.data.doctoralMasterApplicationSubjectUnit; //申请学科负责单位
+                console.log(this.currentDepartment)
+                if (this.currentDepartment ==null){
+                  this.formSecond.doctoralMasterSubjectCodeName = "";
+                }
+                else{
                 //一级学科代码及名称
                 this.formSecond.doctoralMasterSubjectCodeName =
-                  res.data.doctoralMasterSubjectCodeName;
+                  res.data.doctoralMasterSubjectCodeName; 
+                }
+                
                 //主要研究方向的内容及意义
                 this.formSecond.major = res.data.major;
                 //何时参加何种学术团体、任何种职务，有何社会兼职
@@ -1642,7 +1601,6 @@ export default {
     /*====================================第二页============================ */
     // 第 2 页添加学术团体项 弹框
     addGroupsOrPartTimeJob: function () {
-      console.log(this.groupsOrPartTimeJob + "*********");
       this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob);
 
       this.groupsOrPartTimeJob = {
@@ -1685,12 +1643,9 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {
-          console.log(this.formSecond);
           submitSecondPage(this.formSecond, this.applyCondition, this.id).then((res) => {
             if (res.code == 20000) {
-              console.log("=================");
               this.formThird = res.data;
-              console.log(this.formThird)
               //更新成功
               this.$message.success("保存成功!");
               this.formVisible.second = false; // 关闭第二项
@@ -1707,7 +1662,6 @@ export default {
           console.log("cancel");
         });
     },
-
     /* 第三页 */
     /*====================================第三页============================ */
     // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
@@ -1995,11 +1949,11 @@ export default {
                 console.log(res.data.erorMessage);
                 return;
               }
-              console.log("***************")
-              this.$message.success("保存成功!");
-              this.formVisible.third = false; // 关闭第 3 页
-              this.formVisible.fourth = true; // 打开第 4 页
-              this.active = 3;
+              this.$message.success("保存成功!"); 
+              this.formVisible.third = false // 关闭第 3 页
+               this.formFourth = response.data;
+              this.formVisible.fourth = true // 打开第 4 页
+              this.active = 3
             }
           );
         })
@@ -2009,20 +1963,9 @@ export default {
     },
 
     /* 第 4 页 */
+  
     //************************************************ 完成第4页基本信息的填写 表单提交按钮********************************************
-    // 完成第 4 页学术信息的填写
-    onSubmitFourthPage: function () {
-      this.$confirm("提交填写?")
-        // 提交保存第 4 页
-        .then(() => {
-          this.formVisible.third = false; // 关闭第 4 页
-          this.$router.push("/tutorApply"); // 回到首页
-          this.active = 0;
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
-    },
+    
   },
 };
 </script>

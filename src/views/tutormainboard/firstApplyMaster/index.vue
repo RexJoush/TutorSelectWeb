@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-19 20:16:38
+ * @LastEditTime: 2021-09-03 15:14:00
 -->
 <template>
   <div class="main" v-loading="loading" element-loading-text="提交中...">
@@ -492,7 +492,7 @@ export default {
                 console.log(res.data.errorMessage)
                 return
               }
-              console.log(res.data)
+              console.log('test', res.data)
               this.applyId = res.data.applyId
               if (res.data.applySubject !== null) {
                 this.formSecond.applySubject = res.data.applySubject * 1
@@ -501,16 +501,11 @@ export default {
               }
               this.formSecond.doctoralMasterApplicationSubjectUnit = res.data.doctoralMasterApplicationSubjectUnit
               this.currentDepartment = res.data.doctoralMasterApplicationSubjectUnit
-              if (res.data.doctoralMasterSubjectCode !== null) {
-                this.formSecond.doctoralMasterSubjectCodeName = res.data.doctoralMasterSubjectCode + ' ' + res.data.doctoralMasterSubjectName
-              } else {
-                this.formSecond.doctoralMasterSubjectCodeName = ''
-              }
+              this.formSecond.doctoralMasterSubjectCodeName = res.data.doctoralMasterSubjectCodeName + ' ' + res.data.doctoralMasterSubjectName
               this.formSecond.major = res.data.major
               this.formSecond.groupsOrPartTimeJobs = res.data.groupsOrPartTimeJobs
               this.formSecond.expertTitles = res.data.expertTitles
 
-              console.log(res)
               this.formVisible.first = false // 关闭第 1 页
               this.loading = false
               this.formVisible.second = true // 打开第 2 页
@@ -522,7 +517,7 @@ export default {
         })
     },
 
-    /* =========================  第 2 页  ================================= */
+    /* ==========================  第 2 页  ================================== */
 
     // 完成第 2 页研究信息的填写
     onSubmitSecondPage: function() {
