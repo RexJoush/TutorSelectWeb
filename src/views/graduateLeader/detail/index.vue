@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-05 15:42:59
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-06 10:57:25
+ * @LastEditTime: 2021-09-06 15:16:00
 -->
 <template>
   <div id="app-container"> 
@@ -16,37 +16,37 @@
         border
       >
         <el-table-column label="序号" type="index" width="50" />
-        <el-table-column label="工号" align="center" prop="ZGH" />
-        <el-table-column label="姓名" align="center" prop="XM" />
+        <el-table-column label="工号" align="center" prop="zgh" />
+        <el-table-column label="姓名" align="center" prop="xm" />
         <el-table-column
           label="出生日期"
           align="center"
-          prop="CSRQ"
+          prop="csrq"
         />
         <el-table-column
           label="身份证号"
           align="center"
-          prop="SFZJH"
+          prop="sfzjh"
         />
         <el-table-column
           label="手机号"
           align="center"
-          prop="SJH"
+          prop="sjh"
         />
         <el-table-column 
           label="单位"
           align="center" 
-          prop="MC">
+          prop="mc">
         </el-table-column>
         <el-table-column 
           label="职称"
           align="center" 
-          prop="ZCMC">
+          prop="zcmc">
         </el-table-column>
         <el-table-column 
           label="最高学位"
           align="center" 
-          prop="ZGXW">
+          prop="zgxw">
         </el-table-column>
       </el-table> 
       
@@ -197,13 +197,14 @@ export default {
       console.log("教师申请的ID："+this.applyId)
       searchTeachers(this.id).then((res)=>{
         this.teacherList = res.data
-        // console.log(res.data);       
+        console.log(this.teacherList);       
       })
     },
     // 2.查询科研教学奖励
     getAwardList() {
       searchAwards(this.id, this.applyId).then(res => {
         this.awardList = res.data
+        console.log(this.awardList)
       })
     },
     // 3.查询指导学生情况
