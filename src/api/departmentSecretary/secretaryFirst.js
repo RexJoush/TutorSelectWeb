@@ -20,7 +20,7 @@ export function updateStatus(data) {
   return request({
     url: '/update-status/update',
     method: 'post',
-    data: data,
+    data: data
   })
 }
 
