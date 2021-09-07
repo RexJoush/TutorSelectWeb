@@ -195,7 +195,6 @@
               <el-button @click="commitFun(scope.row)" type="text" size="small"
                 >添加备注</el-button
               >
-              <!-- <el-button type="text" size="small">编辑</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -218,6 +217,7 @@
               icon="el-icon-download"
               size="small"
               :loading="exportLoading"
+              @click="exportFun()"
               >导出excel</el-button
             >
           </el-col>
@@ -264,6 +264,7 @@ import {
   checkDate,
   updateStatus,
 } from "@/api/departmentSecretary/secretaryFirst";
+import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
@@ -306,8 +307,7 @@ export default {
         subjectType: null, // 学科属性，文科，理科，交叉
       },
       // 查询参数
-      queryParamCopy: {
-      },
+      queryParamCopy: {},
       //和秘书初审有关的审核状态
       statuOptions: [
         {
@@ -349,6 +349,30 @@ export default {
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
+    //excel导出，包含状态10 15 16 17 18
+    exportFun() {
+      let date = new Date();
+      let year = date.getFullYear(); // 获取当前年份
+      console.log(year);
+      this.loading = true;
+      this.queryParams.applyStatus =
+        10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18; //表中所有的数据
+      //   this.queryParams.organization = 30130;//院系
+      exportSFH(this.queryParams).then((res) => {
+        let blob = new Blob([res], { type: "application/vnd.ms-excel" });
+        let url = window.URL.createObjectURL(blob);
+        let link = document.createElement("a");
+        link.download =
+          "西北大学" +
+          year +
+          "年" +
+          "网络和数据中心" +
+          "学位评定分委员会推荐汇总表.xlsx"; //excel名称
+        link.href = url;
+        link.click();
+      });
+      this.loading = false;
+    },
     // 初始化申请的所有类别（下拉框）
     async getApplyTypeList() {
       getApplyType().then((res) => {
@@ -356,21 +380,23 @@ export default {
       });
     },
     // 查询院系秘书待初审的数据
-    // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
     getSecretaryInit() {
-      this.filterDataByStatus(this.queryParams)
+      this.filterDataByStatus();
     },
     //根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
     //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
     filterDataByStatus() {
       this.loading = true;
       let defaultStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18;
-      if (this.queryParams.applyStatus == null || this.queryParams.applyStatus == "") {
+      if (
+        this.queryParams.applyStatus == null ||
+        this.queryParams.applyStatus == ""
+      ) {
         this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
         this.queryParamCopy.applyStatus = defaultStatus;
-        this.searchByOptions(this.queryParamCopy)
-      }else{
-        this.searchByOptions(this.queryParams)
+        this.searchByOptions(this.queryParamCopy);
+      } else {
+        this.searchByOptions(this.queryParams);
       }
     },
     //按条件搜索
@@ -493,6 +519,7 @@ export default {
         this.updataList.push(obj);
       }
     },
+
     //每页显示条数
     handleSizeChange(val) {},
     //当前页数

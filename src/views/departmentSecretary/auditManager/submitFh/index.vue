@@ -121,9 +121,15 @@
           <el-table-column
             label="备注"
             align="center"
-            prop="commit"
             width="150"
-          />
+            fixed="right"
+          >
+            <template #default="scope">
+              <el-button @click="commitFun(scope.row)" type="text" size="small"
+                >添加备注</el-button
+              >
+            </template>
+          </el-table-column>
         </el-table>
 
         <el-pagination
@@ -155,6 +161,15 @@
         >
       </el-col>
     </el-row>
+    <!-- 备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+      <span>(可以为空)</span>
+      <el-input v-model="returnCommit" autocomplete="off"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel()">取 消</el-button>
+        <el-button type="primary" @click="returnFun()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -196,14 +211,16 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
-        subjectType: undefined, // 学科属性，文科，理科，交叉
+        userId: null, // 工号
+        userName: null, // 姓名
+        organization: null, // 院系id
+        applyType: null, // 申请类别id
+        subjectName: null, // 学科名称id
+        applyStatus: null, // 审核状态码id
+        subjectType: null, // 学科属性，文科，理科，交叉
       },
+      // 查询参数
+      queryParamCopy: {},
       //当前页
       currentPage: 1,
       updataList: [],
@@ -219,16 +236,6 @@ export default {
     async getApplyTypeList() {
       getApplyType().then((res) => {
         this.applyTypeList = res.data;
-      });
-    },
-    // 数据初始化，包括同意上分会和不同意上分会
-    getSecretaryInit() {
-      this.loading = true;
-      this.queryParams.applyStatus = 13 + "-" + 22;
-      checkDate(this.queryParams).then((res) => {
-        this.tutorList = res.data;
-        this.totalData = res.total;
-        this.loading = false;
       });
     },
     //导出按钮，只导出同意上分会的数据
@@ -254,10 +261,29 @@ export default {
       });
       this.loading = false;
     },
-    //搜索按钮
-    searchQuery() {
+    // 查询院系主管已审核的数据
+    getSecretaryInit() {
+      this.filterDataByStatus();
+    },
+    //根据审核状态，选择查询对象。因为该页面只查状态值为21 22的数据，而后端只有一个获取数据接口。
+    //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
+    filterDataByStatus() {
       this.loading = true;
-      checkDate(this.queryParams).then((res) => {
+      let defaultStatus = 21 + "-" + 22;
+      if (
+        this.queryParams.applyStatus == null ||
+        this.queryParams.applyStatus == ""
+      ) {
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+        this.queryParamCopy.applyStatus = defaultStatus;
+        this.searchByOptions(this.queryParamCopy);
+      } else {
+        this.searchByOptions(this.queryParams);
+      }
+    },
+    //按条件搜索
+    searchByOptions(queryParams) {
+      checkDate(queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
@@ -268,7 +294,49 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 13 + "-" + 22; // 审核状态码id
+      this.queryParams.applyStatus = null; // 审核状态码id
+    },
+    //点击备注按钮，添加备注
+    commitFun(row) {
+      this.dialogVisible = true;
+      this.returnCommit = row.commit;
+      this.currentSelection.length = 0;
+      this.currentSelection.push(row);
+    },
+    //备注弹框的确定按钮
+    returnFun() {
+      this.currentSelection[0].commit = this.returnCommit;
+      this.updateObiect(this.currentSelection);
+      this.check(this.currentSelection[0].status, "commit"); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
+      this.dialogVisible = false;
+    },
+    //弹框取消按钮
+    cancel() {
+      this.dialogVisible = false;
+      this.returnCommit = null;
+    },
+    //更新操作
+    check(status, initStatus) {
+      if (status === 9999) {
+        //如果status是9999，则执行提交按钮
+        for (let index = 0; index < this.updataList.length; index++) {
+          this.updataList[index].status_1 = this.updataList[index].status_1 - 4; //-4是因为数据库绑定状态的原因，勿动
+        }
+      } else {
+        for (let index = 0; index < this.updataList.length; index++) {
+          this.updataList[index].status_1 = status;
+        }
+      }
+
+      updateStatus(this.updataList).then((res) => {
+        if (res.code == 20000) {
+          this.$message.success("操作成功!");
+        }
+        this.updataList.length = 0;
+        if (initStatus != "commit") {
+          this.getSecretaryInit();
+        }
+      });
     },
 
     //当前选中
