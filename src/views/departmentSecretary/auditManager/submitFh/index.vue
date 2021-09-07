@@ -45,21 +45,6 @@
               />
             </el-select>
           </el-form-item>
-          <!-- <el-form-item label="审核状态">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择"
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="item in statuOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item> -->
           <el-form-item>
             <el-button
               type="primary"

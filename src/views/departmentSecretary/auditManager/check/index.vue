@@ -48,6 +48,8 @@
           <el-form-item label="审核状态">
             <el-select
               v-model="queryParams.applyStatus"
+              placeholder="请选择"
+              clearable
               size="small"
               style="width: 240px"
             >
@@ -64,7 +66,7 @@
               type="primary"
               icon="el-icon-search"
               size="small"
-              @click="searchQuery()"
+              @click="filterDataByStatus()"
               >搜索</el-button
             >
             <el-button
@@ -295,20 +297,19 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
-        subjectType: undefined, // 学科属性，文科，理科，交叉
+        userId: null, // 工号
+        userName: null, // 姓名
+        organization: null, // 院系id
+        applyType: null, // 申请类别id
+        subjectName: null, // 学科名称id
+        applyStatus: null, // 审核状态码id
+        subjectType: null, // 学科属性，文科，理科，交叉
+      },
+      // 查询参数
+      queryParamCopy: {
       },
       //和秘书初审有关的审核状态
       statuOptions: [
-        {
-          value: 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18,
-          label:"请选择",
-        },
         {
           value: 10,
           label: "待初审",
@@ -329,11 +330,11 @@ export default {
           value: 18,
           label: "需修改",
         },
-         {
+        {
           value: 63,
           label: "社科处已审核",
         },
-         {
+        {
           value: 64,
           label: "科研处已审核",
         },
@@ -357,21 +358,24 @@ export default {
     // 查询院系秘书待初审的数据
     // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
     getSecretaryInit() {
-      this.loading = true;
-      this.queryParams.applyStatus =
-        10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18; //院系秘书页面初始化，待初审、秘书审核过中间状态
-      // this.queryParams.organization = 50030;  //传入秘书院系id
-      checkDate(this.queryParams).then((res) => {
-        this.tutorList = res.data;
-        this.totalData = res.total;
-        this.loading = false;
-      });
+      this.filterDataByStatus(this.queryParams)
     },
-    //搜索按钮
-    searchQuery() {
+    //根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
+    //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
+    filterDataByStatus() {
       this.loading = true;
-      checkDate(this.queryParams).then((res) => {
-        console.log(this.queryParams)
+      let defaultStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18;
+      if (this.queryParams.applyStatus == null || this.queryParams.applyStatus == "") {
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+        this.queryParamCopy.applyStatus = defaultStatus;
+        this.searchByOptions(this.queryParamCopy)
+      }else{
+        this.searchByOptions(this.queryParams)
+      }
+    },
+    //按条件搜索
+    searchByOptions(queryParams) {
+      checkDate(queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
@@ -382,23 +386,23 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18; // 审核状态码id
+      this.queryParams.applyStatus = null; // 审核状态码id
     },
     //初审符合条件
     passFun() {
-      this.check(15,"unCommit");
+      this.check(15, "unCommit");
     },
     //初审不符合条件
     unPassFun() {
-      this.check(16,"unCommit");
+      this.check(16, "unCommit");
     },
     //初审待定
     unEnsureFun() {
-      this.check(17,"unCommit");
+      this.check(17, "unCommit");
     },
     //初审需修改
     alterFun() {
-      this.check(18,"unCommit");
+      this.check(18, "unCommit");
     },
     //点击备注按钮，添加备注
     commitFun(row) {
@@ -423,7 +427,6 @@ export default {
     check(status, initStatus) {
       if (status === 9999) {
         //如果status是9999，则执行提交按钮
-        console.log("提交按钮")
         for (let index = 0; index < this.updataList.length; index++) {
           this.updataList[index].status_1 = this.updataList[index].status_1 - 4; //-4是因为数据库绑定状态的原因，勿动
         }
@@ -444,8 +447,8 @@ export default {
       });
     },
     //提交按鈕
-    submitFun(){
-      this.dialogVisiblePass = true
+    submitFun() {
+      this.dialogVisiblePass = true;
     },
     // 弹框的确定按钮
     confirmFun() {
@@ -461,7 +464,7 @@ export default {
       } else {
         this.$message.warning("有待初审的数据，请先进行审核！");
       }
-      this.dialogVisiblePass = false
+      this.dialogVisiblePass = false;
     },
     //当前选中
     handleSelectionChange(val) {
@@ -501,5 +504,4 @@ export default {
 };
 </script>
 <style scoped>
-
 </style>

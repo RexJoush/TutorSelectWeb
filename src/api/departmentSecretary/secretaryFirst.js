@@ -12,7 +12,8 @@ export function checkDate(data) {
   return request({
     url: '/tutor-inspect/admin/getAll',
     method: 'get',
-    params: data
+    params: data,
+    contentType:'application/json;charset=UTF-8'
   })
 }
 // 更新操作
