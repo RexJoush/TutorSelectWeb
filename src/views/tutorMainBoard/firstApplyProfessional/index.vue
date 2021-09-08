@@ -30,6 +30,8 @@
             :model="formFirst"
             label-width="100px"
             label-position="right"
+            v-loading="firstLoading"
+            element-loading-text="获取中..."
           >
             <Row type="flex" justify="center" align="top" class="code-row-bg">
               <Col :span="16">
@@ -333,6 +335,8 @@ export default {
     return {
       // 硕士学科代码
       academicMasterPrimaryDiscipline: academicMasterPrimaryDiscipline,
+
+      firstLoading: false,
       // 提交的加载状态
       loading: false,
       // 当前的申请状态
@@ -427,7 +431,7 @@ export default {
   },
   created() {
     // 拉取首页基本信息
-    this.loading = true
+    this.firstLoading = true
     this.applyCondition = this.$route.params.applyCondition
     this.getTeacherInfo()
   },
@@ -436,7 +440,7 @@ export default {
 
     // 拉取基本信息
     getTeacherInfo: function() {
-      getTeacherInfo(4, this.applyCondition).then((res) => {
+      getTeacherInfo(7, this.applyCondition).then((res) => {
         if (res.data.code === 1201) {
           this.$message.error(res.data.message)
           this.$router.push('/tutorApply/tutorMainBoard')
@@ -449,8 +453,7 @@ export default {
         if (this.applyCondition * 1 === 102) {
           this.formFirst.image = 'data:image/png;base64,' + this.formFirst.blobImage
         }
-        console.log(this.formFirst.image)
-        this.loading = false
+        this.firstLoading = false
       })
     },
 

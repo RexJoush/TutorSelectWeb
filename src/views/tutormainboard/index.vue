@@ -115,24 +115,7 @@ export default {
   data() {
     return {
       // 老师基本信息
-      firstPage: {
-        // tutorId: '202032978', // 教师工号
-        // name: '李一航', // 姓名
-        // gender: '男', // 性别
-        // image: 'https://www.rexjoush.com/img/1.jpg',
-        // organizationName: '24', // 所在单位
-        // birthday: '1997-10-01', // 出生年月
-        // identity: '411422199712195117', // 证件号码
-        // phone: '13598892696', // 联系电话
-        // email: '7772854362@qq.com', // 电子邮箱
-        // title: '教授', // 职称
-        // evaluateTime: '2021-07', // 评定时间
-        // finalDegree: '博士', // 最后学位
-        // awardDepartment: '西北大学', // 授予单位
-        // awardTime: '2021-02', // 授予时间
-        // applyCondition:'',
-        // applyType:''
-      }
+      firstPage: {}
     }
   },
 
@@ -197,6 +180,7 @@ export default {
     noInspectDoctor: function() {
       this.$router.push('noInspectApplyDoctor/3/102')
     },
+
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function() {
       firstApply(4).then((res) => {
@@ -223,7 +207,16 @@ export default {
 
     // 学硕导师增列学科岗位
     addApplyMaster: function() {
-      this.$router.push('addApplyMaster/5/102')
+      addApply(2).then((res) => {
+        const applyId = res.data.applyId
+        if (res.data.applyCondition === 102) {
+          // 没有申请过此岗位
+          this.$router.push(`addApplyMaster/5/102/${applyId}`)
+        } else if (res.data.applyCondition === 101) {
+          // 申请信息还没有填写完整
+          this.$router.push(`addApplyMaster/5/102/${applyId}`)
+        }
+      })
     },
 
     // 学硕导师免审岗位

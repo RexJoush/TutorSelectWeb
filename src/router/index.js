@@ -122,6 +122,13 @@ export const constantRoutes = [
         hidden: true,
         component: () => import('@/views/tutorMainBoard/addApplyMaster/index'),
         meta: { title: '学硕导师增列学科' }
+      },
+      {
+        path: 'firstApplyProfessional/:applyType/:applyCondition',
+        name: 'firstApplyProfessional',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/firstApplyProfessional/index'),
+        meta: { title: '首次申请硕士生导师（专业学位）' }
       }
     ]
   },
@@ -365,7 +372,7 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/icons/index'),
         name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true, roles: ['dev'] }
+        meta: { title: 'Icons', icon: 'icon', noCache: true, roles: ['root'] }
       }
     ]
   },
@@ -379,7 +386,14 @@ export const asyncRoutes = [
         path: '/myApply',
         component: () => import('@/views/myApply/index'),
         name: 'My Apply',
-        meta: { title: '我的申请', icon: 'dashboard' }
+        meta: { title: '我的申请', icon: 'dashboard', roles: ['tutor'] }
+      },
+      {
+        path: '/applyDetails/:applyId',
+        component: () => import('@/views/myApply/details/index'),
+        name: 'Apply Details',
+        meta: { title: '申请详情' },
+        hidden: true
       }
     ]
   },
