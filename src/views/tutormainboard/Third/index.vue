@@ -865,7 +865,7 @@
 </template>
 
 <script>
-import { submitThirdPage } from "@/api/tutor/applyMaster";
+import { submitThirdPage } from "@/api/tutor/applyMaster/firstApplyMaster";
 import { submitThirdPage2 ,deleteFile} from "@/api/tutor/ApplyDoctor/addApplyDoctor";
 export default {
   name: "Index",
@@ -1183,7 +1183,7 @@ export default {
                   return;
                 }
                 this.$emit("func", res.data);
-              
+
                 console.log(res.data);
               });
               break;
@@ -1267,7 +1267,7 @@ export default {
       };
 
       switch (type) {
-        case 1: 
+        case 1:
           deleteItem.deleteId = this.applyCondition === "102" ? -1 : scope.paperId;
           deleteItem.deleteType = 1;
           //删除文件
@@ -1301,7 +1301,7 @@ export default {
           //删除记录
           this.formThird.teachingAwards.splice(index, 1);
           break;
-    
+
           case 5:
           deleteItem.deleteId = this.applyCondition === "102" ? -1 : scope.patentId;
           deleteItem.deleteType = 5;
@@ -1311,7 +1311,7 @@ export default {
           this.formThird.inventionPatents.splice(index, 1);
         break;
       }
-      this.formThird.deleteItems.push(deleteItem); 
+      this.formThird.deleteItems.push(deleteItem);
     },
 
     //删除文件 参数 文件的路径

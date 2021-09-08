@@ -428,9 +428,9 @@
 
 <script>
 
-import { submitFourthPage } from '@/api/tutor/applyMaster'
+import { submitFourthPage } from '@/api/tutor/applyMaster/firstApplyMaster'
 import { submitFourthPage1 } from '@/api/tutor/ApplyDoctor/FirstApplyDoctor'
-import { submitFourthPage2 } from '@/api/tutor/ApplyDoctor/addApplyDoctor'  
+import { submitFourthPage2 } from '@/api/tutor/ApplyDoctor/addApplyDoctor'
 export default {
   name: 'Index',
   props: {
@@ -514,8 +514,8 @@ export default {
         // 提交保存第 4 页
         .then(() => {
           switch(this.applyType){
-            case 1 : 
-            submitFourthPage1(this.formFourth,this.applyId).then( res => {       
+            case 1 :
+            submitFourthPage1(this.formFourth,this.applyId).then( res => {
             if (res.data != null){
                 if (res.data.code === 1201) {
                   this.$message.error(res.data.message)
@@ -524,11 +524,11 @@ export default {
                 }
               }
             this.$message.success('提交成功')
-            this.$router.push('/tutorApply/tutorMainBoard')           
+            this.$router.push('/tutorApply/tutorMainBoard')
             })
             break
             case 2 : //博士导师增岗
-            submitFourthPage2(this.formFourth,this.applyId).then( res => {       
+            submitFourthPage2(this.formFourth,this.applyId).then( res => {
             if (res.data != null){
                 if (res.data.code === 1201) {
                   this.$message.error(res.data.message)
@@ -537,10 +537,10 @@ export default {
                 }
               }
             this.$message.success('提交成功')
-            this.$router.push('/tutorApply/tutorMainBoard')           
+            this.$router.push('/tutorApply/tutorMainBoard')
             })
             break
-            case 4 : 
+            case 4 :
             submitFourthPage(this.formFourth, this.applyId).then(res => {
             if (res.data != null){
                 if (res.data.code === 1201) {
@@ -554,7 +554,7 @@ export default {
             this.$router.push('/tutorApply/tutorMainBoard')
           })
             break
-          }          
+          }
         })
         .catch(() => {
           console.log('cancel')

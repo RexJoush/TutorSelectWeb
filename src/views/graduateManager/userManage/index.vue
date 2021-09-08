@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <!--用户表格部分-->
       <el-col :span="20" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
           <el-form-item label="用户名称" prop="userName">
             <el-input
               v-model="queryParams.userName"
@@ -50,7 +50,7 @@
               range-separator="-"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-            ></el-date-picker>
+            />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -91,19 +91,19 @@
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="学工号" align="center"  prop="userId"  />
-          <el-table-column label="姓名" align="center"  prop="userName" />
-          <el-table-column label="院系" align="center"  prop="organization" />
-          <el-table-column label="用户角色" align="center"  prop="userRole" />
-          <el-table-column label="管理员角色" align="center"  prop="mr"  />
+          <el-table-column label="学工号" align="center" prop="userId" />
+          <el-table-column label="姓名" align="center" prop="userName" />
+          <el-table-column label="院系" align="center" prop="organization" />
+          <el-table-column label="用户角色" align="center" prop="userRole" />
+          <el-table-column label="管理员角色" align="center" prop="mr" />
           <el-table-column label="状态" align="center" prop="status">
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.status"
-                :active-value= 0
-                :inactive-value= 1
+                :active-value="0"
+                :inactive-value="1"
                 @change="handleStatusChange(scope.row)"
-              ></el-switch>
+              />
             </template>
           </el-table-column>
           <el-table-column label="创建时间" align="center" prop="createTime" width="160">
@@ -119,7 +119,7 @@
             width="160"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope" v-if="scope.row.userId !== 1">
+            <template v-if="scope.row.userId !== 1" slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
@@ -141,8 +141,8 @@
             :current-page="queryParams.pageNum"
             :page-size="queryParams.pageSize"
             layout="total, prev, pager, next"
-            :total="total">
-          </el-pagination>
+            :total="total"
+          />
         </div>
       </el-col>
     </el-row>
@@ -163,7 +163,7 @@
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
                   :label="dict.dictValue"
-                >{{dict.dictLabel}}
+                >{{ dict.dictLabel }}
                 </el-radio>
               </el-radio-group>
             </el-form-item>
@@ -171,38 +171,35 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item  label="用户姓名" prop="userName">
+            <el-form-item label="用户姓名" prop="userName">
               <el-input v-model="form.userName" placeholder="请输入用户姓名" maxlength="30" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="角色" prop="userRole"  >
-              <el-select v-model="form.userRole"  filterable  placeholder="请选择">
+            <el-form-item label="角色" prop="userRole">
+              <el-select v-model="form.userRole" filterable placeholder="请选择">
                 <el-option
                   v-for="item in roleOptions"
                   :key="item.roleId"
                   :label="item.roleDescribe"
                   :value="item.roleDescribe"
-                >
-                </el-option>
+                />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
+          <el-col :span="12" />
           <el-col :span="12">
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="机构" prop="organization"  >
-              <el-select v-model="form.organization"  filterable  placeholder="请选择">
+            <el-form-item label="机构" prop="organization">
+              <el-select v-model="form.organization" filterable placeholder="请选择">
                 <el-option
                   v-for="item in organizationOptions"
                   :key="item.organizationId"
                   :label="item.organizationName"
                   :value="item.organizationName"
                   :disabled="item.status == 1"
-                >
-                </el-option>
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -243,12 +240,12 @@ export default {
       // 状态数据字典
       statusOptions: [
         {
-          dictLabel:'启用',
-          dictValue: 0,
+          dictLabel: '启用',
+          dictValue: 0
         },
         {
-          dictLabel:'禁用',
-          dictValue: 1,
+          dictLabel: '禁用',
+          dictValue: 1
         }
       ],
       // 角色选项
@@ -272,11 +269,11 @@ export default {
       // 表单校验
       rules: {
         userName: [
-          {required: true, message: '用户名称不能为空', trigger: "blur"},
-          {min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur'}
-        ],
+          { required: true, message: '用户名称不能为空', trigger: 'blur' },
+          { min: 2, max: 20, message: '用户名称长度必须介于 2 和 20 之间', trigger: 'blur' }
+        ]
       }
-    };
+    }
   },
   created() {
     this.getList()
@@ -287,7 +284,7 @@ export default {
     async getList() {
       this.loading = true
       const { data: res } = await this.$http.get(
-        '/graduate/system-user/getAll',{params:this.queryParams}
+        '/admin/system-user/getAll', { params: this.queryParams }
       )
       this.userList = res.users
       this.total = res.total
@@ -308,34 +305,34 @@ export default {
     },
     // 用户状态修改
     handleStatusChange(row) {
-      let text = row.status == "1" ? "停用" : "启用";
+      const text = row.status == '1' ? '停用' : '启用'
       this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async() => {
-        const {data : res } = await this.$http.post(
-          '/graduate/system-user/updateUser',row
+        const { data: res } = await this.$http.post(
+          '/admin/system-user/updateUser', row
         )
-        let mes = text;
-        if(res == 20000) {
-          mes = text + "成功";
-        }else{
-          mes = text + "失败";
+        let mes = text
+        if (res == 20000) {
+          mes = text + '成功'
+        } else {
+          mes = text + '失败'
         }
         console.info(res)
         this.$message({
           type: 'success',
           message: mes
-        });
+        })
       }).catch(() => {
-        row.status = row.status === "0" ? "1" : "0";
+        row.status = row.status === '0' ? '1' : '0'
         this.getList()
         this.$message({
           type: 'info',
           message: '已取消修改'
-        });
-      });
+        })
+      })
     },
     // 取消按钮
     cancel() {
@@ -368,15 +365,15 @@ export default {
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.userId)
       console.info(this.ids)
-      if(selection.length==1) {
+      if (selection.length == 1) {
         this.single = true
         this.multiple = false
       }
-      if(selection.length>1) {
+      if (selection.length > 1) {
         this.single = false
         this.multiple = true
       }
-      if(selection.length<1){
+      if (selection.length < 1) {
         this.single = false
         this.multiple = false
       }
@@ -408,45 +405,34 @@ export default {
       this.getOrginization()
 
       const { data: user } = await this.$http.get(
-        '/graduate/system-user/getAll',{params:query}
+        '/admin/system-user/getAll', { params: query }
       )
-      this.form = user.users[0];
+      this.form = user.users[0]
       this.open = true
-
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs['form'].validate(async valid => {
         if (valid) {
           if (this.choose != 1) {
-            const { data: res} = await this.$http.post(
-              '/graduate/system-user/updateUser',this.form
+            const { data: res } = await this.$http.post(
+              '/admin/system-user/updateUser', this.form
             )
-            if (res == 20000) {
-              this.$message.success("修改成功")
-            }else{
-              this.$message.error("修改失败")
-            }
             this.open = false
             this.getList()
           } else {
-            const { data: res} = await this.$http.post(
-              '/graduate/system-user/addUser',this.form
+            const { data: res } = await this.$http.post(
+              '/admin/system-user/addUser', this.form
             )
-            if (res == 20000) {
-              this.$message.success("添加成功")
-            }else{
-              this.$message.error("添加失败")
-            }
             this.open = false
             this.getList()
           }
         }
-      });
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      this.$confirm('是否确认删除？删除不可撤销，请谨慎操作"！', "警告",{
+      this.$confirm('是否确认删除？删除不可撤销，请谨慎操作"！', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -454,43 +440,42 @@ export default {
         console.info(this.single)
         if (this.single) {
           const userIds = row.userId || this.ids[0]
-          const {data: res} = await this.$http.post(
-            '/graduate/system-user/delUser/' + userIds
+          const { data: res } = await this.$http.post(
+            '/admin/system-user/delUser/' + userIds
           )
-          if(res == 20000) {
+          if (res == 20000) {
             this.getList()
             this.$message({
               type: 'success',
-              message: "删除成功",
-            });
+              message: '删除成功'
+            })
           }
-        }else if (this.multiple) {
-          const {data: res} = await this.$http.post(
-            '/graduate/system-user/delUsers', this.ids
+        } else if (this.multiple) {
+          const { data: res } = await this.$http.post(
+            '/admin/system-user/delUsers', this.ids
           )
           this.getList()
           this.$message({
             type: 'success',
-            message: "批量删除成功",
-          });
-        }else{
-          const {data: res} = await this.$http.post(
-            '/graduate/system-user/delUser/' + row.userId
+            message: '批量删除成功'
+          })
+        } else {
+          const { data: res } = await this.$http.post(
+            '/admin/system-user/delUser/' + row.userId
           )
           this.getList()
           this.$message({
             type: 'success',
-            message: "删除成功",
-          });
+            message: '删除成功'
+          })
         }
-
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消修改'
-        });
-      });
-    },
+        })
+      })
+    }
   }
-};
+}
 </script>

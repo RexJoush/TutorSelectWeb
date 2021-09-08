@@ -44,12 +44,14 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 // 引入axios实现跨域请求
-import axios from 'axios'
+// import axios from 'axios'
 import qs from 'qs'
-axios.defaults.baseURL = 'http://127.0.0.1:8081'
+// axios.defaults.baseURL = 'http://127.0.0.1:8081'
+import request from '@/utils/request'
+
 Vue.prototype.qs = qs
 // 挂载，使全局能用
-Vue.prototype.$http = axios
+Vue.prototype.$http = request
 Vue.config.productionTip = false
 
 // Vue.prototype.moment = Moment
