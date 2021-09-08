@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-07 17:55:56
+ * @LastEditTime: 2021-09-08 16:48:23
 -->
 <template>
   <div class="app-container">
@@ -265,9 +265,11 @@ export default {
 
     //初始化负责院系(下拉框)
     async getOrganizationList() {
-      const { data: res } = await this.$http.get("/organization/getAll");
-      if (res.code != 20000) return this.$message("获取院系失败");
-      this.organizationList = res.data;
+      const { data: res } = await this.$http.get("/admin/organization/getAll");  
+      if (res.data == null) return this.$message("获取院系失败");
+      console.log("初始化负责院系的数据")
+      console.log(res.data.data)
+      this.organizationList = res.data.data;
       console.info(this.organizationList);
     },
 
@@ -276,10 +278,11 @@ export default {
     getSocialCheckInit() {
       this.queryParams.applyStatus = 30;
       checkDate(this.queryParams).then((res) => {
-        if (res.code == 20000) {
-          console.log("**************");
-          console.log(res.data);
-          this.tutorList = res.data;
+        console.log("--------------")
+        console.log(res.data.data);
+        if (res.code == 20000) {        
+          this.tutorList = res.data.data
+          console.log(this.tutorList)
           this.totalData = res.total;
           //对材料进行审核
           const cs1 = this.$route.query.commit_1;
@@ -303,7 +306,6 @@ export default {
           } else {
             this.csDes = "材料审核不通过";
           }
-
           // console.log("---------------：：：",this.$route.query.commit_1)
           //console.log("78787878",cs1)
           this.tutorList[0].commit = this.csDes;
@@ -317,7 +319,7 @@ export default {
     //搜索按钮
     searchQuery() {
       checkDate(this.queryParams).then((res) => {
-        this.tutorList = res.data;
+        this.tutorList = res.data.data;
         this.totalData = res.total;
       });
     },
@@ -370,6 +372,7 @@ export default {
     check(status) {
       for (let index = 0; index < this.updataList.length; index++) {
         this.updataList[index].status_1 = status;
+        console.log("90909",status)
       }
       updateStatus(this.updataList).then((res) => {
         if (res.code == 20000) {
