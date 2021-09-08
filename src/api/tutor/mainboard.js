@@ -14,11 +14,11 @@ export function firstApply(data) {
     method: 'get'
   })
 }
-/* 所有增列申请 */
-export function addApply(data) {
+/* 增列博士，增列学硕，增列专硕，免审 */
+export function addNoInspectApply(applyTypeId) {
   return request({
     // url: baseUrl + '/user/login',
-    url: `${baseUrl}/tutor/addApply/${data}`,
+    url: `${baseUrl}/tutor/addNoInspectApply/${applyTypeId}`,
     method: 'get'
   })
 }
@@ -31,10 +31,11 @@ export function getTeacherInfo(applyTypeId, applyCondition) {
   })
 }
 
-// 获取导师基本信息 申请类别和申请状态主键 增列申请
-export function getFirstPage(applyTypeId,applyCondition,applyId) {
+// 获取导师基本信息 增列申请 申请状态 导师信息主键 
+export function getFirstPage(applyCondition,applyId) {
   return request({
-    url: `${baseUrl}/tutor/getFirstPage/${applyTypeId}/${applyCondition}/${applyId}`,
+    url: `${baseUrl}/tutor/getFirstPage/${applyCondition}/${applyId}`,
     method: 'get'
   })
 }
+

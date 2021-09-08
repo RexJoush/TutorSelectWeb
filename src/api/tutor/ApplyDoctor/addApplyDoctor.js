@@ -39,7 +39,7 @@ export function submitThirdPage2(data,applyCondition,applyId){
 //博士增岗提交第四页
 export function submitFourthPage2(data,applyId){
     return request({
-        url: `${baseUrl}/tutor/addApplyDoctor/updateThirdPage/${applyId}`,
+        url: `${baseUrl}/tutor/addApplyDoctor/updateFourthPage/${applyId}`,
         method : 'post',
         data : data
     })

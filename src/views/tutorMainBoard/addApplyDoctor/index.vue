@@ -35,9 +35,7 @@
                   </Col>
                   <Col :span="12">
                     <el-form-item label="性别">
-                      <span style="color: #606266">{{ formFirst.gender }}</span>
-                      <!--                      <el-radio v-if="formFirst.gender === '男'" v-model="formFirst.gender" label="男">男</el-radio>-->
-                      <!--                      <el-radio v-else v-model="formFirst.gender" disabled label="女">女</el-radio>-->
+                      <span style="color: #606266">{{ formFirst.gender }}</span>                     
                     </el-form-item>
                   </Col>
                   <Col :span="12">
@@ -86,42 +84,7 @@
                         value-format="yyyy-MM"
                       />
                     </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="博导在岗学科">
-                      <el-input v-model="formFirst.doctoralTutorOnDuty" />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="博导上岗时间">
-                      <el-date-picker
-                        v-model="formFirst.doctoralStartTime"
-                        type="month"
-                        style="width: 100%"
-                        placeholder="选择日期"
-                        format="yyyy-MM"
-                        value-format="yyyy-MM"
-                      />
-                    </el-form-item>
-                  </Col>
-
-                  <Col :span="12">
-                    <el-form-item label="原单位名称">
-                      <el-input v-model="formFirst.sourceUnitName" />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="调入时间">
-                      <el-date-picker
-                        v-model="formFirst.transferInTime"
-                        type="month"
-                        style="width: 100%"
-                        placeholder="选择日期"
-                        format="yyyy-MM"
-                        value-format="yyyy-MM"
-                      />
-                    </el-form-item>
-                  </Col>
+                  </Col>                  
                 </Row>
               </Col>
               <Col :span="8">
@@ -195,10 +158,11 @@
             >
               <Row>
                 <Col :span="24">
-                  <Row>
+                  <Row :gutter="20">
                     <Col :span="8">
-                      <el-form-item label="申请学科">
-                        <el-select
+                      <el-form-item label="申请学科" >
+                        <el-select 
+                          style="width: 100%;"
                           v-model="formSecond.applySubject"
                           placeholder="请选择"
                         >
@@ -214,6 +178,7 @@
                     <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
                         <el-select
+                        style="width: 100%;"
                           v-model="
                             formSecond.doctoralMasterApplicationSubjectUnit
                           "
@@ -234,6 +199,7 @@
                     <Col :span="8">
                       <el-form-item label="一级学科代码及名称">
                         <el-select
+                        style="width: 100%;"
                           v-model="formSecond.doctoralMasterSubjectCodeName"
                           placeholder="请选择"
                         >
@@ -251,7 +217,47 @@
                         </el-select>
                       </el-form-item>
                     </Col>
+                    <Col :span="8">
+                      <el-form-item label="博导在岗学科">
+                        <el-input v-model="formSecond.doctoralTutorOnDuty" />
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
+                      <el-form-item label="上岗时间">
+                    
+                        <el-date-picker
+                          v-model="formSecond.doctoralStartTime"
+                          format="yyyy-MM"
+                          value-format="yyyy-MM"
+                          type="month"
+                          style="width: 100%"
+                          placeholder="选择时间"
+                        />
+                      </el-form-item>
+                    </Col>
                   </Row>
+                  <el-divider content-position="left"><b><span style="color: red;">*</span> 仅外单位调入填写</b></el-divider>      
+                  <Row :gutter="20">                      
+                    <Col :span="8">
+                      <el-form-item label="原单位名称">
+                        <el-input v-model="formSecond.sourceUnitName" />
+                      </el-form-item>
+                    </Col>
+                    <Col :span="8">
+                      <el-form-item label="调入时间">
+                        <el-date-picker
+                          v-model="formSecond.transferInTime"
+                          format="yyyy-MM"
+                          value-format="yyyy-MM"
+                          type="month"
+                          style="width: 100%"
+                          placeholder="选择时间"
+                        />
+                      </el-form-item>
+                    </Col>        
+                  </Row>
+ 
+                  <el-divider />
                 </Col>
                 <Col :span="24">
                   <el-form-item label="主要研究方向的内容及其意义">
@@ -485,10 +491,7 @@ export default {
         // finalDegree: "", // 最后学位
         // awardDepartment: "", // 授予单位
         // awardTime: "", // 授予时间
-        // doctoralTutorOnDuty: "",    //博导在岗学科
-        // doctoralStartTime: "",  //上岗时间
-        // sourceUnitName: "", //原单位名称
-        // transferInTime: ""  //原单位调入时间
+        
       },
       // ===========================================================第 2 页表单===================================
       childNodes: [], // 院系的子专业信息
@@ -503,21 +506,28 @@ export default {
       ],
 
       formSecond: {
-        applySubject: "", // 申请学科
-        doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
-        doctoralMasterSubjectCodeName: "", // 一级学科代码 + " " + 名称
-        major: "", // 主要研究方向的内容及其意义
+        //=========博士增岗 非免审============
+        doctoralTutorOnDuty: '',
+        doctoralStartTime: '',
+        //外单位调入填写
+        sourceUnitName: '',
+        transferInTime: '',
+
+        applySubject: '', // 申请学科
+        doctoralMasterApplicationSubjectUnit: '', // 申请学科负责单位
+        doctoralMasterSubjectCodeName: '', // 一级学科代码 + " " + 名称
+        major: '', // 主要研究方向的内容及其意义
         groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         expertTitles: [], // 获何专家称号及时间列表
       },
       groupsOrPartTimeJob: {
-        time: "",
-        groups: "",
-        job: "",
+        time: '',
+        groups: '',
+        job: '',
       },
       expertTitle: {
-        time: "",
-        title: "",
+        time: '',
+        title: '',
       },
       /**第三页表单 */
       formThird: {},
@@ -537,14 +547,14 @@ export default {
     GetTutorInfoByClient: function () {
       this.id = this.$route.params.applyId;
       this.applyCondition = this.$route.params.applyCondition;
-      getFirstPage(2, this.applyCondition, this.id).then((res) => {
-        this.formFirst = res.data;
+      getFirstPage(this.applyCondition, this.id).then((res) => {
+        this.formFirst = res.data;    
         //未申请过
         if (this.applyCondition * 1 === 102) {
           this.formFirst.image =
             "data:image/png;base64," + this.formFirst.blobImage;
         }
-        console.log(this.formFirst.image)
+
         this.firstloading = false;
       });
     },
@@ -625,6 +635,7 @@ export default {
     },
     //************************************************ 完成第二页基本信息的填写 表单提交按钮********************************************
     onSubmitSecondPage: function () {
+        console.log(this.formSecond)
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {

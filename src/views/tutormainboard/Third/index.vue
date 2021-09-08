@@ -1183,6 +1183,7 @@ export default {
                   return;
                 }
                 this.$emit("func", res.data);
+              
                 console.log(res.data);
               });
               break;
@@ -1451,8 +1452,6 @@ export default {
           break;
         // 科研项目
         case 3:
-          console.log("33333333333333")
-          console.log(response.data.path)
           this.researchProject.projectProveMaterials = response.data.path; // 论文的存储地址
           this.formThird.researchProjects.push(this.researchProject); // 加入列表
           // 置空科研项目
