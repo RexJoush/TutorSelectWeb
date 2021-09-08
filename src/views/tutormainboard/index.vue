@@ -109,7 +109,7 @@
 
 <script>
 
-import { firstApply ,showTeacherInfo} from "@/api/tutor/mainboard";
+import { firstApply , addApply , showTeacherInfo} from "@/api/tutor/mainboard";
 import { getApplyType } from '@/api/departmentSecretary/secretaryFirst';
 
 export default {
@@ -155,36 +155,21 @@ export default {
           )
         }
       })
-      // firstApply(1).then((res) => {
-      //   console.log(res.data.applyCondition)
-      //   switch(res.data.applyCondition){
-      //     case '101' : 
-      //     // 查询出来的状态为0 ，老师可以进去修改
-      //       this.firstPage.applyType = 1;
-      //       this.firstPage.applyCondition = '101'
-      //     break;
-      //     case '102' :
-      //       this.firstPage.applyType = 1;
-      //       this.firstPage.applyCondition = '102';
-      //     break;
-      //     default :
-      //     this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
-      //       () => {
-      //         this.$router.push('/') // 去我的申请页面
-      //       }
-      //     )
-      //     break;
-      //   }
-      //   this.firstPage = res.data.firstPage
-      //   this.$router.push({path : 'firstApplyDoctor',query : { firstPage : JSON.stringify(this.firstPage) }})
-        
-      // })
     },
 
     // 博士增列 path: 'addApplyDoctor/:applyType/:applyCondition',
-
     addApplyDoctor: function () {
-      this.$router.push({path:"addApplyDoctor",query : { firstPage : JSON.stringify(this.firstPage) }});
+      addApply(2).then((res)=>{
+        let applyId = res.data.applyId
+        if(res.data.applyCondition === 102){
+          //没有申请过此岗位
+          this.$router.push(`addApplyDoctor/2/102/${applyId}`);
+        }
+        else if (res.data.applyCondition === 101){
+          //申请信息还没有填写完整
+          this.$router.push(`addApplyDoctor/2/101/${applyId}`)
+        }
+      }) 
     },
     //博士免审
     noInspectDoctor: function() {
