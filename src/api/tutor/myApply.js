@@ -14,3 +14,11 @@ export function getApplyList(data) {
     method: 'get'
   })
 }
+
+/* 将驳回的申请状态改为 0 */
+export function changeStatus(data) {
+  return request({
+    url: `${baseUrl}/tutor/changeStatus/${data}`,
+    method: 'get'
+  })
+}

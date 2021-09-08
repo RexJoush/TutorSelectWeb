@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-05 15:48:08
+ * @LastEditTime: 2021-09-06 11:00:06
 -->
 <template>
   <div class="app-container">
@@ -288,7 +288,7 @@ export default {
     handleDetail(row) {
       const tutorId = row.tutorId
       const applyId = row.applyId
-      this.$router.push({ path: '/graduate/graduateDetail', query: { applyId: applyId }})
+      this.$router.push({ path: '/graduate/graduateDetail', query: { applyId: applyId, tutorId: tutorId}})
     },
 
     // 初始化负责院系(下拉框)

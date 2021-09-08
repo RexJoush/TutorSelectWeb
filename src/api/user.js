@@ -5,11 +5,11 @@
  * @LastEditTime: 2021-08-11 15:29:22
  */
 import request from '@/utils/request'
-import {baseUrl} from '@/api/url';
+import { baseUrl } from '@/api/url'
 export function login(data) {
   return request({
     // url: baseUrl + '/user/login',
-    url: baseUrl+'/user/login',
+    url: baseUrl + '/user/login',
     method: 'post',
     data
   })

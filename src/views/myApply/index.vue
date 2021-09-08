@@ -13,14 +13,34 @@
         </el-divider>
       </el-col>
     </el-row>
-    <el-table :data="applyList" stripe style="width: 100%;">
+    <el-table v-loading="loading" :data="applyList" stripe style="width: 100%;" element-loading-text="获取中...">
       <el-table-column type="index" width="50" label="序号" />
-      <el-table-column prop="applyTypeId" label="申请类别" />
-      <el-table-column prop="status" label="当前状态" />
+      <el-table-column prop="applyName" label="申请类别" />
+      <el-table-column prop="applyDepartment" label="申请负责单位" />
+      <el-table-column prop="applySubject" label="申请学科" />
+      <el-table-column prop="statusDisplay" label="当前状态">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status === 14 ? 'danger': scope.row.status === 0 ? 'warning': 'info'">
+            {{ scope.row.statusDisplay }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="commit" label="备注信息" />
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" plain @click="pply(scope.$index)">查 看</el-button>
-          <el-button size="mini" type="info" plain @click="editApply(scope)">修 改</el-button>
+          <el-button
+            v-if="scope.row.status !== 14 && scope.row.status !== 0"
+            size="mini"
+            type="primary"
+            plain
+            @click="toApplyDetails(scope.row.applyId)"
+          >查 看
+          </el-button>
+          <el-button v-if="scope.row.status === 14" size="mini" type="danger" plain @click="editApply(scope.row)">修 改
+          </el-button>
+          <el-button v-else-if="scope.row.status === 0" size="mini" type="warning" plain @click="editApply(scope.row)">
+            填写
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -28,49 +48,69 @@
 </template>
 
 <script>
-import { getApplyList } from '@/api/tutor/myApply'
+import { changeStatus, getApplyList } from '@/api/tutor/myApply'
 
 export default {
   name: 'Index',
   data() {
     return {
+      loading: false, // 申请的加载态
       applyList: [] // 我的申请列表
     }
   },
   created() {
     this.getApplyList()
+    this.loading = true
   },
   methods: {
     // 获取我的申请
-    /*
-    [
-      {
-          "applyId": 11,
-          "tutorId": "20133220",
-          "applyTypeId": 1,
-          "status": 10,
-          "subject": 0,
-          "professional": 0,
-          "commit": null
-      },
-      {
-          "applyId": 106,
-          "tutorId": "20133220",
-          "applyTypeId": 4,
-          "status": 10,
-          "subject": 3,
-          "professional": 0,
-          "commit": null
-      }
-    ]
-    */
     getApplyList: function() {
       getApplyList().then(res => {
         console.log(res)
         this.applyList = res.data
+        this.loading = false
       }).catch(error => {
         throw error
       })
+    },
+
+    // 修改信息
+    editApply: async function(value) {
+      let url = 'tutorApply/'
+      switch (value.applyTypeId) {
+        case 1:
+          url += 'firstApplyDoctor/1/101'
+          await changeStatus(value.applyId)
+          break
+        case 2:
+          url += `addApplyDoctor/2/101/${value.applyId}`
+          break
+        case 3:
+          url += `noInspectApplyDoctor/3/101/${value.applyId}`
+          break
+        case 4:
+          url += 'firstApplyMaster/4/101'
+          await changeStatus(value.applyId)
+          break
+        case 5:
+          url += `addApplyMaster/5/101/${value.applyId}`
+          break
+        case 6:
+          url += `applyNoInspectMaster/6/101/${value.applyId}`
+          break
+        case 7:
+          url += 'firstApplyProfessional/7/101'
+          break
+        case 8:
+          url += `addApplyProfessional/8/101/${value.applyId}`
+          break
+      }
+      this.$router.push(url)
+    },
+
+    // 查看申请信息
+    toApplyDetails: function(applyId) {
+      this.$router.push(`/applyDetails/${applyId}`)
     }
   }
 
