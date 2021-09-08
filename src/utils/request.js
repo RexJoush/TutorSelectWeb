@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL:'http://localhost:8081',
+  baseURL: 'http://localhost:8081',
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 50000 // request timeout
@@ -44,18 +44,17 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-
     const res = response.data
-    if(res instanceof Blob){  //返回excel数据
+    if (res instanceof Blob) { // 返回excel数据
       return res
-    }else{
-      if (res.code !== 20000 && res.code !==20001) {
+    } else {
+      if (res.code !== 20000 && res.code !== 20001) {
         Message({
           message: res.message || 'Error',
           type: 'error',
           duration: 5 * 1000
         })
-  
+
         // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
         if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
           // to re-login
@@ -73,17 +72,14 @@ service.interceptors.response.use(
       } else {
         return res
       }
-
     }
- 
+
     // if the custom code is not 20000, it is judged as an error.
     // if(res.code === 10000){
     //   return res
     // }else{
-      
+
     // }
-
-
   },
   error => {
     console.log('err' + error) // for debug
