@@ -45,12 +45,12 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="btnSearch">
             <el-button
               type="primary"
               icon="el-icon-search"
               size="small"
-              @click="searchQuery()"
+              @click="searchByOptions()"
               >搜索</el-button
             >
             <el-button
@@ -63,10 +63,8 @@
         </el-form>
         <br />
         <br />
-
         <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
         <el-table v-loading="loading" :data="tutorList">
-          <!-- <el-table-column type="selection" width="50" align="center" /> -->
           <el-table-column
             label="工号"
             align="center"
@@ -99,7 +97,7 @@
             label="申请类别"
             align="center"
             prop="applyName"
-            width="180"
+            width="200"
           />
           <el-table-column
             label="职称"
@@ -112,13 +110,13 @@
             align="center"
             prop="inspectDescribe"
             width="150"
+            fixed="right"
           />
-          <el-table-column label="详情" align="center" prop="mr" />
           <el-table-column
-            label="备注"
+            label="详情"
             align="center"
-            prop="commit"
-            width="150"
+            prop="mr"
+            fixed="right"
           />
         </el-table>
 
@@ -131,6 +129,7 @@
           :total="totalData"
         >
         </el-pagination>
+        <br />
       </el-col>
     </el-row>
   </div>
@@ -140,18 +139,10 @@
 import {
   getApplyType,
   checkDate,
-  updateStatus,
 } from "@/api/departmentSecretary/secretaryFirst";
-import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
-      //备注内容
-      returnCommit: "",
-      //备注弹框显示
-      dialogVisible: false,
-      //通过确认框
-      dialogVisiblePass: false,
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -174,13 +165,13 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
-        subjectType: undefined, // 学科属性，文科，理科，交叉
+        userId: null, // 工号
+        userName: null, // 姓名
+        organization: null, // 院系id
+        applyType: null, // 申请类别id
+        subjectName: null, // 学科名称id
+        applyStatus: null, // 审核状态码id
+        subjectType: null, // 学科属性，文科，理科，交叉
       },
       tutorList: [],
     };
@@ -196,21 +187,18 @@ export default {
         this.applyTypeList = res.data;
       });
     },
-    // 数据初始化，包括同意上分会和不同意上分会
+    // 查询研究生院审核数据,查状态值为25 30 31的数据（待初审 送审社科处 送审科研处）
     getSecretaryInit() {
       this.loading = true;
-      //研究生院秘书 待初审（研究生院秘书复审通过）、审核通过（送审科研处、送审社科处），其不符合的会返回给院系秘书
-      this.queryParams.applyStatus = 14 + "-" + 30 + "-" + 31;
-      // this.queryParams.organization = 50030;  //传入秘书院系id
+      this.queryParams.applyStatus = 25 + "-" + 30 + "-" + 31;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
       });
     },
-    //搜索按钮
-    searchQuery() {
-      this.loading = true;
+    //按条件搜索
+    searchByOptions() {
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
@@ -222,7 +210,6 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 14 + "-" + 30 + "-" + 31; // 审核状态码id
     },
 
     //每页显示条数

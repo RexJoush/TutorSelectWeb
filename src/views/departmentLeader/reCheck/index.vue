@@ -269,11 +269,11 @@ export default {
           label: "初审待定",
         },
         {
-          value: 21,
+          value: 19,
           label: "同意上分会",
         },
         {
-          value: 22,
+          value: 20,
           label: "不同意上分会",
         },
       ],

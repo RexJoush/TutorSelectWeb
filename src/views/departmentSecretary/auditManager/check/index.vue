@@ -349,16 +349,31 @@ export default {
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
+    //导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
+    dataOption(func) {
+      this.loading = true;
+      //   this.queryParams.organization = 30130;//院系
+      let defaultStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18;
+      if (
+        this.queryParams.applyStatus == null ||
+        this.queryParams.applyStatus == ""
+      ) {
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+        this.queryParamCopy.applyStatus = defaultStatus;
+        func(this.queryParamCopy);
+      } else {
+        func(this.queryParams);
+      }
+    },
     //excel导出，包含状态10 15 16 17 18
     exportFun() {
+      this.dataOption(this.exportExcel);
+    },
+    //导出excel实现
+    exportExcel(queryParams) {
       let date = new Date();
       let year = date.getFullYear(); // 获取当前年份
-      console.log(year);
-      this.loading = true;
-      this.queryParams.applyStatus =
-        10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18; //表中所有的数据
-      //   this.queryParams.organization = 30130;//院系
-      exportSFH(this.queryParams).then((res) => {
+      exportSFH(queryParams).then((res) => {
         let blob = new Blob([res], { type: "application/vnd.ms-excel" });
         let url = window.URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -386,18 +401,7 @@ export default {
     //根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
     //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
     filterDataByStatus() {
-      this.loading = true;
-      let defaultStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18;
-      if (
-        this.queryParams.applyStatus == null ||
-        this.queryParams.applyStatus == ""
-      ) {
-        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
-        this.queryParamCopy.applyStatus = defaultStatus;
-        this.searchByOptions(this.queryParamCopy);
-      } else {
-        this.searchByOptions(this.queryParams);
-      }
+      this.dataOption(this.searchByOptions);
     },
     //按条件搜索
     searchByOptions(queryParams) {
@@ -508,7 +512,6 @@ export default {
     updateObiect(originArray) {
       //每次选择都要将之前的清空
       this.updataList = [];
-
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < originArray.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };

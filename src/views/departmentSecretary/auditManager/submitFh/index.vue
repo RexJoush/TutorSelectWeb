@@ -50,7 +50,7 @@
               type="primary"
               icon="el-icon-search"
               size="small"
-              @click="searchQuery()"
+              @click="filterDataByStatus()"
               >搜索</el-button
             >
             <el-button
@@ -207,6 +207,8 @@ export default {
       applyTypeList: [],
       //选定的列表
       multipleSelection: [],
+      //当前操作的行
+      currentSelection: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -238,13 +240,12 @@ export default {
         this.applyTypeList = res.data;
       });
     },
-    //导出按钮，只导出同意上分会的数据
+ 
+    //excel导出同意上分会的数据 状态为21
     exportFun() {
       let date = new Date();
       let year = date.getFullYear(); // 获取当前年份
-      console.log(year);
-      this.loading = true;
-      this.queryParams.applyStatus = 13; //同意上分会
+      this.queryParams.applyStatus = 21;
       //   this.queryParams.organization = 30130;//院系
       exportSFH(this.queryParams).then((res) => {
         let blob = new Blob([res], { type: "application/vnd.ms-excel" });
@@ -261,41 +262,32 @@ export default {
       });
       this.loading = false;
     },
-    // 查询院系主管已审核的数据
+    //导出excel实现
+    exportExcel(queryParams) {},
+
+    // 查询院系主管已审核的数据(初始化)
     getSecretaryInit() {
       this.filterDataByStatus();
     },
+
     //根据审核状态，选择查询对象。因为该页面只查状态值为21 22的数据，而后端只有一个获取数据接口。
     //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
     filterDataByStatus() {
-      this.loading = true;
-      let defaultStatus = 21 + "-" + 22;
-      if (
-        this.queryParams.applyStatus == null ||
-        this.queryParams.applyStatus == ""
-      ) {
-        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
-        this.queryParamCopy.applyStatus = defaultStatus;
-        this.searchByOptions(this.queryParamCopy);
-      } else {
-        this.searchByOptions(this.queryParams);
-      }
-    },
-    //按条件搜索
-    searchByOptions(queryParams) {
-      checkDate(queryParams).then((res) => {
+      this.queryParams.applyStatus = 21 + "-" + 22;
+       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
       });
     },
+
     //重置按钮
     resetQuery() {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = null; // 审核状态码id
     },
+
     //点击备注按钮，添加备注
     commitFun(row) {
       this.dialogVisible = true;
@@ -303,11 +295,12 @@ export default {
       this.currentSelection.length = 0;
       this.currentSelection.push(row);
     },
+
     //备注弹框的确定按钮
     returnFun() {
       this.currentSelection[0].commit = this.returnCommit;
       this.updateObiect(this.currentSelection);
-      this.check(this.currentSelection[0].status, "commit"); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
+      this.check(this.currentSelection[0].status); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
       this.dialogVisible = false;
     },
     //弹框取消按钮
@@ -316,27 +309,31 @@ export default {
       this.returnCommit = null;
     },
     //更新操作
-    check(status, initStatus) {
-      if (status === 9999) {
-        //如果status是9999，则执行提交按钮
-        for (let index = 0; index < this.updataList.length; index++) {
-          this.updataList[index].status_1 = this.updataList[index].status_1 - 4; //-4是因为数据库绑定状态的原因，勿动
-        }
-      } else {
-        for (let index = 0; index < this.updataList.length; index++) {
-          this.updataList[index].status_1 = status;
-        }
+    check(status) {
+      for (let index = 0; index < this.updataList.length; index++) {
+        this.updataList[index].status_1 = status;
       }
-
       updateStatus(this.updataList).then((res) => {
         if (res.code == 20000) {
           this.$message.success("操作成功!");
         }
         this.updataList.length = 0;
-        if (initStatus != "commit") {
-          this.getSecretaryInit();
-        }
       });
+    },
+
+    //封装更新数据
+    updateObiect(originArray) {
+      //每次选择都要将之前的清空
+      this.updataList = [];
+      // 将需要审核后下发的数据对应起来
+      for (let index = 0; index < originArray.length; index++) {
+        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
+        let obj = { id_1: 0, status_1: 0, commit_1: "" };
+        obj.id_1 = originArray[index].applyId;
+        obj.status_1 = originArray[index].status;
+        obj.commit_1 = originArray[index].commit;
+        this.updataList.push(obj);
+      }
     },
 
     //当前选中

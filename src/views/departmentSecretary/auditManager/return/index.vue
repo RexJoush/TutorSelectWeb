@@ -39,33 +39,18 @@
             >
               <el-option
                 v-for="item in applyTypeList"
-                :key="item.applytypeId"
+                :key="item.applyTypeId"
                 :label="item.applyName"
                 :value="item.applyTypeId"
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="审核状态">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择"
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="item in statuOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item>
+          <el-form-item class="btnSearch">
             <el-button
               type="primary"
               icon="el-icon-search"
               size="small"
-              @click="searchQuery()"
+              @click="searchByOptions()"
               >搜索</el-button
             >
             <el-button
@@ -78,27 +63,8 @@
         </el-form>
         <br />
         <br />
-
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="small"
-              :disabled="multiple"
-              @click="returnFun()"
-              >驳回</el-button
-            >
-          </el-col>
-        </el-row>
         <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
-        <el-table
-          v-loading="loading"
-          :data="tutorList"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column type="selection" width="50" align="center" />
+        <el-table v-loading="loading" :data="tutorList">
           <el-table-column
             label="工号"
             align="center"
@@ -131,7 +97,7 @@
             label="申请类别"
             align="center"
             prop="applyName"
-            width="180"
+            width="200"
           />
           <el-table-column
             label="职称"
@@ -144,13 +110,13 @@
             align="center"
             prop="inspectDescribe"
             width="150"
+            fixed="right"
           />
-          <el-table-column label="详情" align="center" prop="mr" />
           <el-table-column
-            label="备注"
+            label="详情"
             align="center"
-            prop="commit"
-            width="150"
+            prop="mr"
+            fixed="right"
           />
         </el-table>
 
@@ -166,32 +132,17 @@
         <br />
       </el-col>
     </el-row>
-    <!-- 审批通过的确认弹框 -->
-    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
-      <span>确认提交吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisiblePass = false">取 消</el-button>
-        <el-button type="primary" @click="rePassFun()">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import {
   getApplyType,
-  checkDate,
-  updateStatus,
+  checkDate
 } from "@/api/departmentSecretary/secretaryFirst";
 export default {
   data() {
     return {
-      //备注内容
-      returnCommit: "",
-      //备注弹框显示
-      dialogVisible: false,
-      //通过确认框
-      dialogVisiblePass: false,
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -214,31 +165,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
-        subjectType: undefined, // 学科属性，文科，理科，交叉
+        userId: null, // 工号
+        userName: null, // 姓名
+        organization: null, // 院系id
+        applyType: null, // 申请类别id
+        subjectName: null, // 学科名称id
+        applyStatus: null, // 审核状态码id
+        subjectType: null, // 学科属性，文科，理科，交叉
       },
-      //和秘书初审有关的审核状态
-      statuOptions: [
-        {
-          value: 22,
-          label: "主管驳回",
-        },
-        {
-          value: 37,
-          label: "研究生院驳回",
-        },
-        {
-          value: 12,
-          label: "已驳回",
-        }
-      ],
-      //审核后需要下发的List数据
-      updataList: [],
       tutorList: [],
     };
   },
@@ -253,21 +187,34 @@ export default {
         this.applyTypeList = res.data;
       });
     },
-    // 查询院系秘书待初审的数据
-    // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
+    // 查询返回教师修改的数据,只查状态值为14的数据
     getSecretaryInit() {
       this.loading = true;
-      this.queryParams.applyStatus = 22 + "-" + 37; //  院系主管复审不通过 + 研究生院
-      // this.queryParams.organization = 50030;  //传入秘书院系id
+      this.queryParams.applyStatus = 14;
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
       });
     },
-    //搜索按钮
-    searchQuery() {
-      this.loading = true;
+    // //根据审核状态，选择查询对象。因为该页面只查状态值为14的数据，而后端只有一个获取数据接口。
+    // //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
+    // filterDataByStatus() {
+    //   this.loading = true;
+    //   let defaultStatus = 14;
+    //   if (
+    //     this.queryParams.applyStatus == null ||
+    //     this.queryParams.applyStatus == ""
+    //   ) {
+    //     this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+    //     this.queryParamCopy.applyStatus = defaultStatus;
+    //     this.searchByOptions(this.queryParamCopy);
+    //   } else {
+    //     this.searchByOptions(this.queryParams);
+    //   }
+    // },
+    // //按条件搜索
+    searchByOptions() {
       checkDate(this.queryParams).then((res) => {
         this.tutorList = res.data;
         this.totalData = res.total;
@@ -279,60 +226,8 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 22 + "-" + 37; // 审核状态码id
     },
 
-    //驳回按钮
-    returnFun() {
-      this.dialogVisiblePass = true;
-    },
-    //初审通过
-    rePassFun() {
-      this.check(12);
-      this.dialogVisiblePass = false;
-    },
-
-    //更新操作
-    check(status) {
-      for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
-      }
-      updateStatus(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
-        }
-        this.updataList.length = 0;
-        // 对搜索到的部分数据进行审批后，页面应该还停留在搜索界面还是直接初始化
-        this.getSecretaryInit();
-        this.resetQuery();
-      });
-    },
-
-    //当前选中
-    handleSelectionChange(val) {
-      if (val.length > 0) {
-        this.single = false;
-        this.multiple = false;
-      } else {
-        this.single = true;
-        this.multiple = true;
-      }
-      this.multipleSelection = val;
-      //每次选择都要将之前的清空
-      this.updataList = [];
-      // 将需要审核后下发的数据对应起来
-      for (let index = 0; index < this.multipleSelection.length; index++) {
-        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
-        let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].applyId;
-        // obj.number_1 = this.multipleSelection[index].number;
-        // obj.applyId_1 = this.multipleSelection[index].applyId;
-        obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1 = "";
-        console.log(obj);
-        this.updataList.push(obj);
-      }
-    },
     //每页显示条数
     handleSizeChange(val) {},
     //当前页数
