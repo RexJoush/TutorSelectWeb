@@ -2,7 +2,7 @@
  * @Author: Rex Joush
  * @Date: 2021-08-16 09:59:56
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-08-17 19:35:47
+ * @LastEditTime: 2021-09-09 19:34:54
  */
 
 // 学术硕士一级学科
@@ -170,126 +170,284 @@ export const professionalMasterDiscipline = [
   {
     department: 'MBA 中心',
     professional: [
-      { code: '1251', professionalDegreeCategory: '工商管理硕士（MBA）', domainCode: '', domainName: '' }
+      {
+        code: '1251',
+        professionalDegreeCategory: '工商管理硕士（MBA）',
+        domain: []
+      }
     ]
   },
   {
     department: 'MPA 中心',
     professional: [
-      { code: '1252', professionalDegreeCategory: '公共管理硕士（MPA）', domainCode: '', domainName: '' }
+      {
+        code: '1252',
+        professionalDegreeCategory: '公共管理硕士（MPA）',
+        domain: []
+      }
     ]
   },
   {
     department: '城市与环境学院',
     professional: [
-      { code: '0853', professionalDegreeCategory: '城市规划硕士（MUP）', domainCode: '', domainName: '' },
-      { code: '0857', professionalDegreeCategory: '资源与环境', domainCode: '085701', domainName: '环境工程' }
+      {
+        code: '0853',
+        professionalDegreeCategory: '城市规划硕士（MUP）',
+        domain: []
+      },
+      {
+        code: '0857',
+        professionalDegreeCategory: '资源与环境',
+        domain: [
+          {
+            domainCode: '085701',
+            domainName: '环境工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '地质学系',
     professional: [
-      { code: '0857', professionalDegreeCategory: '资源与环境', domainCode: '085703', domainName: '地质工程' },
-      { code: '0857', professionalDegreeCategory: '资源与环境', domainCode: '085706', domainName: '石油与天然气工程' }
+      {
+        code: '0857',
+        professionalDegreeCategory: '资源与环境',
+        domain: [
+          {
+            domainCode: '085703',
+            domainName: '地质工程'
+          },
+          {
+            domainCode: '085706',
+            domainName: '石油与天然气工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '法学院',
     professional: [
-      { code: '0351', professionalDegreeCategory: '法律硕士（J.M）', domainCode: '', domainName: '' }
+      {
+        code: '0351',
+        professionalDegreeCategory: '法律硕士（J.M）',
+        domain: []
+      }
     ]
   },
   {
     department: '化学与材料科学学院',
     professional: [
-      { code: '0856', professionalDegreeCategory: '材料与化工', domainCode: '085601', domainName: '材料工程' }
+      {
+        code: '0856',
+        professionalDegreeCategory: '材料与化工',
+        domain: [
+          {
+            domainCode: '085601',
+            domainName: '材料工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '化工学院',
     professional: [
-      { code: '0856', professionalDegreeCategory: '材料与化工', domainCode: '085602', domainName: '化学工程' },
-      { code: '0860', professionalDegreeCategory: '材料与化工', domainCode: '086002', domainName: '制药工程' }
+      {
+        code: '0856',
+        professionalDegreeCategory: '材料与化工',
+        domain: [
+          {
+            domainCode: '085602',
+            domainName: '化学工程'
+          }
+        ]
+      },
+      {
+        code: '0860',
+        professionalDegreeCategory: '生物与医药',
+        domain: [
+          {
+            domainCode: '086002',
+            domainName: '制药工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '经济管理学院',
     professional: [
-      { code: '0251', professionalDegreeCategory: '金融硕士（MF）', domainCode: '', domainName: '' }
+      {
+        code: '0251',
+        professionalDegreeCategory: '金融硕士（MF）',
+        domain: []
+      }
     ]
   },
   {
     department: '生命科学学院',
     professional: [
-      { code: '0860', professionalDegreeCategory: '生物与医药', domainCode: '086001', domainName: '生物技术与工程' },
-      { code: '1056', professionalDegreeCategory: '中药学硕士（MCMM）', domainCode: '', domainName: '' }
+      {
+        code: '0860',
+        professionalDegreeCategory: '生物与医药',
+        domain: [
+          {
+            domainCode: '086001',
+            domainName: '生物技术与工程'
+          }
+        ]
+      },
+      {
+        code: '1056',
+        professionalDegreeCategory: '中药学硕士（MCMM）',
+        domain: []
+      }
     ]
   },
   {
     department: '食品科学与工程学院',
     professional: [
-      { code: '0860', professionalDegreeCategory: '生物与医药', domainCode: '086003', domainName: '食品工程' }
+      {
+        code: '0860',
+        professionalDegreeCategory: '生物与医药',
+        domain: [
+          {
+            domainCode: '086003',
+            domainName: '食品工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '数学学院',
     professional: [
-      { code: '0252', professionalDegreeCategory: '应用统计硕士（MAS）', domainCode: '', domainName: '' }
+      {
+        code: '0252',
+        professionalDegreeCategory: '应用统计硕士（MAS）',
+        domain: []
+      }
     ]
   },
   {
     department: '外国语学院',
     professional: [
-      { code: '0551', professionalDegreeCategory: '翻译硕士(MTI)', domainCode: '055101', domainName: '英语笔译' }
+      {
+        code: '0551',
+        professionalDegreeCategory: '翻译硕士（MTI）',
+        domain: [
+          {
+            domainCode: '055101',
+            domainName: '英语笔译'
+          }
+        ]
+      }
     ]
   },
   {
     department: '文化遗产学院',
     professional: [
-      { code: '0651', professionalDegreeCategory: '文物与博物馆硕士（M.C.H.M）', domainCode: '', domainName: '' }
+      {
+        code: '0651',
+        professionalDegreeCategory: '文物与博物馆硕士（M.C.H.M）',
+        domain: []
+      }
     ]
   },
   {
     department: '文学院',
     professional: [
-      { code: '0453', professionalDegreeCategory: '汉语国际教育硕士（MTCSOL）', domainCode: '', domainName: '' }
+      {
+        code: '0453',
+        professionalDegreeCategory: '汉语国际教育硕士（MTCSOL）',
+        domain: []
+      }
     ]
   },
   {
     department: '物理学院',
     professional: [
-      { code: '0854', professionalDegreeCategory: '电子信息', domainCode: '085408', domainName: '光电信息工程' }
+      {
+        code: '0854',
+        professionalDegreeCategory: '电子信息',
+        domain: [
+          {
+            domainCode: '085408',
+            domainName: '光电信息工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '新闻传播学院',
     professional: [
-      { code: '0552', professionalDegreeCategory: '新闻与传播硕士（MJC）', domainCode: '', domainName: '' }
+      {
+        code: '0552',
+        professionalDegreeCategory: '新闻与传播硕士（MJC）',
+        domain: []
+      }
     ]
   },
   {
     department: '信息科学与技术学院',
     professional: [
-      { code: '0854', professionalDegreeCategory: '电子信息', domainCode: '085402', domainName: '新一代电子信息技术（含量子技术等）' }
+      {
+        code: '0854',
+        professionalDegreeCategory: '电子信息',
+        domain: [
+          {
+            domainCode: '085402',
+            domainName: '新一代电子信息技术'
+          }
+        ]
+      }
     ]
   },
   {
     department: '网络和数据中心',
     professional: [
-      { code: '0854', professionalDegreeCategory: '电子信息', domainCode: '085405', domainName: '软件工程' }
+      {
+        code: '0854',
+        professionalDegreeCategory: '电子信息',
+        domain: [
+          {
+            domainCode: '085405',
+            domainName: '软件工程'
+          }
+        ]
+      }
     ]
   },
   {
     department: '艺术学院',
     professional: [
-      { code: '1351', professionalDegreeCategory: '艺术硕士（MFA）', domainCode: '135104', domainName: '电影' },
-      { code: '1351', professionalDegreeCategory: '艺术硕士（MFA）', domainCode: '135107', domainName: '美术' }
+      {
+        code: '1351',
+        professionalDegreeCategory: '艺术硕士（MFA）',
+        domain: [
+          {
+            domainCode: '135104',
+            domainName: '电影'
+          },
+          {
+            domainCode: '135107',
+            domainName: '美术'
+          }
+        ]
+      }
     ]
   },
   {
     department: '哲学学院',
     professional: [
-      { code: '0352', professionalDegreeCategory: '社会工作硕士（MSW）', domainCode: '', domainName: '' }
+      {
+        code: '0352',
+        professionalDegreeCategory: '社会工作硕士（MSW）',
+        domain: []
+      }
     ]
   }
 ]

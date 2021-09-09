@@ -27,10 +27,10 @@
           </div>
           <el-form
             ref="formFirst"
+            v-loading="firstLoading"
             :model="formFirst"
             label-width="100px"
             label-position="right"
-            v-loading="firstLoading"
             element-loading-text="获取中..."
           >
             <Row type="flex" justify="center" align="top" class="code-row-bg">
@@ -171,10 +171,10 @@
                       </el-form-item>
                     </Col>
                     <Col :span="8">
-                      <el-form-item label="申请学科负责单位：">
-                        <el-select v-model="currentDepartment" placeholder="请选择" @change="setChildNode">
+                      <el-form-item label="申请类别负责单位：">
+                        <el-select v-model="currentDepartment" placeholder="请选择" @change="setChildProfessional">
                           <el-option
-                            v-for="item in academicMasterPrimaryDiscipline"
+                            v-for="item in professionalMasterDiscipline"
                             :key="item.department"
                             :label="item.department"
                             :value="item"
@@ -184,13 +184,26 @@
                       </el-form-item>
                     </Col>
                     <Col :span="8">
-                      <el-form-item label="一级学科代码及名称">
-                        <el-select v-model="formSecond.doctoralMasterSubjectCodeName" placeholder="请选择">
+                      <el-form-item label="申请类别代码及名称">
+                        <el-select v-model="currentProfessional" placeholder="请选择" @change="setChildDomain">
                           <el-option
-                            v-for="item in childNodes"
+                            v-for="item in childProfessional"
                             :key="item.code"
-                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
-                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :label="item.code + ' ' + item.professionalDegreeCategory"
+                            :value="item"
+                            style="color: #606266; font-weight: normal"
+                          />
+                        </el-select>
+                      </el-form-item>
+                    </Col>
+                    <Col v-if="this.childDomain.length !== 0" :span="8">
+                      <el-form-item label="申请领域代码及名称">
+                        <el-select v-model="formSecond.professionalFieldCodeName" placeholder="请选择">
+                          <el-option
+                            v-for="item in childDomain"
+                            :key="item.domainCode"
+                            :label="item.domainCode + ' ' + item.domainName"
+                            :value="item.domainCode + ' ' + item.domainName"
                           />
                         </el-select>
                       </el-form-item>
@@ -320,8 +333,8 @@
 </template>
 
 <script>
-import { academicMasterPrimaryDiscipline } from '@/utils/data'
-import { submitFirstPage, submitSecondPage } from '@/api/tutor/applyMaster'
+import { professionalMasterDiscipline } from '@/utils/data'
+import { submitFirstPage, submitSecondPage } from '@/api/tutor/applyMaster/firstApplyProfessional'
 import { getTeacherInfo } from '@/api/tutor/mainboard'
 import Third from '../Third'
 import Fourth from '../Fourth'
@@ -333,8 +346,8 @@ export default {
   },
   data() {
     return {
-      // 硕士学科代码
-      academicMasterPrimaryDiscipline: academicMasterPrimaryDiscipline,
+      // 专业硕士学科代码和领域代码
+      professionalMasterDiscipline: professionalMasterDiscipline,
 
       firstLoading: false,
       // 提交的加载状态
@@ -345,8 +358,8 @@ export default {
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: true,
-        second: false,
+        first: false,
+        second: true,
         third: false,
         fourth: false
       },
@@ -371,8 +384,10 @@ export default {
       },
 
       /* =========================  第 2 页  ================================= */
-      childNodes: [], // 院系的子专业信息
+      childProfessional: [], // 院系的子类别信息
+      childDomain: [], // 类别的子领域信息
       currentDepartment: '', // 院系信息
+      currentProfessional: '', // 当前的专业类别信息
       dialogSecond1: false, // 学术团体或职务的显示框
       dialogSecond2: false, // 专家称号的显示框
       applySubjects: [
@@ -382,8 +397,9 @@ export default {
       ], // 申请类型
       formSecond: {
         applySubject: '', // 申请学科
-        doctoralMasterApplicationSubjectUnit: '', // 申请学科负责单位
-        doctoralMasterSubjectCodeName: '', // 一级学科代码 + " " + 名称
+        professionalApplicationSubjectUnit: '', // 申请类别负责单位
+        professionalApplicationSubjectCodeName: '', // 专业类别代码 + " " + 名称
+        professionalFieldCodeName: '', // 领域代码 + " " + 名称
         major: '', // 主要研究方向的内容及其意义
         groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         expertTitles: [] // 获何专家称号及时间列表
@@ -504,7 +520,7 @@ export default {
         .then(() => {
           this.loading = true
           console.log(this.formSecond)
-          submitSecondPage(this.formSecond, 4, this.applyId, this.applyCondition).then(res => {
+          submitSecondPage(this.formSecond, 7, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
               console.log(res.data.errorMessage)
@@ -522,16 +538,39 @@ export default {
           console.log('cancel')
         })
     },
-    // 设置选择院系的子专业
-    setChildNode: function(value) {
-      // 将子列表的选择置空
-      this.formSecond.doctoralMasterSubjectCodeName = ''
-      // 将当前选择加入 form 提交中
-      this.formSecond.doctoralMasterApplicationSubjectUnit = value.department
+
+    // 设置选择院系的子类别代码
+    setChildProfessional: function(value) {
+      // 将两级子列表的选择置空
+      this.currentProfessional = ''
+      this.formSecond.professionalApplicationSubjectCodeName = ''
+      this.formSecond.professionalFieldCodeName = ''
+
       // 修改当前页面的显示院系
       this.currentDepartment = value.department
-      // 设置子项目为当前院系的专业
-      this.childNodes = value.professional
+
+      // 修改第二页的提交信息
+      this.formSecond.professionalApplicationSubjectUnit = value.department
+
+      // 设置子领域为当前院系的专业
+      this.childProfessional = value.professional
+      this.childDomain = []
+    },
+
+    // 设置领域的子选择
+    setChildDomain: function(value) {
+      console.log(value)
+      // 将子列表的选择置空
+      this.formSecond.professionalFieldCodeName = ''
+
+      // 修改当前页面的显示专业类别信息
+      this.currentProfessional = value.code + ' ' + value.professionalDegreeCategory
+
+      // 修改提交信息
+      this.formSecond.professionalApplicationSubjectCodeName = value.code + ' ' + value.professionalDegreeCategory
+
+      // 设置子领域为当前院系的专业
+      this.childDomain = value.domain
     },
 
     // 添加学术团体项
