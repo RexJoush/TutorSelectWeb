@@ -177,7 +177,7 @@
 import {
   getApplyType,
   checkDate,
-  updateStatus,
+  updateStatusSfh
 } from "@/api/departmentSecretary/secretaryFirst";
 import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 export default {
@@ -275,6 +275,7 @@ export default {
     filterDataByStatus() {
       this.queryParams.applyStatus = 21 + "-" + 22;
        checkDate(this.queryParams).then((res) => {
+         console.log(res)
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
@@ -291,15 +292,16 @@ export default {
     //点击备注按钮，添加备注
     commitFun(row) {
       this.dialogVisible = true;
-      this.returnCommit = row.commit;
+      this.returnCommit = row.commitYxSfh;
       this.currentSelection.length = 0;
       this.currentSelection.push(row);
     },
 
     //备注弹框的确定按钮
     returnFun() {
-      this.currentSelection[0].commit = this.returnCommit;
+      this.currentSelection[0].commitYxSfh = this.returnCommit;
       this.updateObiect(this.currentSelection);
+      console.log(this.updataList)
       this.check(this.currentSelection[0].status); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
       this.dialogVisible = false;
     },
@@ -313,7 +315,7 @@ export default {
       for (let index = 0; index < this.updataList.length; index++) {
         this.updataList[index].status_1 = status;
       }
-      updateStatus(this.updataList).then((res) => {
+      updateStatusSfh(this.updataList).then((res) => {
         if (res.code == 20000) {
           this.$message.success("操作成功!");
         }
@@ -331,7 +333,7 @@ export default {
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
         obj.id_1 = originArray[index].applyId;
         obj.status_1 = originArray[index].status;
-        obj.commit_1 = originArray[index].commit;
+        obj.commit_1 = originArray[index].commitYxSfh;
         this.updataList.push(obj);
       }
     },
