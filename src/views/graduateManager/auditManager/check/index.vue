@@ -411,7 +411,7 @@ export default {
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       const { data: res } = await this.$http.get(
-        '/tutor-inspect/admin/getAll', { params: this.queryParams }
+        '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
       if (res.code != 20000) {
         this.tutorList = []
@@ -435,7 +435,7 @@ export default {
       }
       console.info(updateStatus)
       const { data: res } = await this.$http.post(
-        '/update-status/update', updateStatus
+        '/admin/update-status/update', updateStatus
       )
       this.getList()
       if (res.code != 20000) {
@@ -447,7 +447,7 @@ export default {
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
-        '/apply-type/getApplyType'
+        '/admin/apply-type/getApplyType'
       )
       if (res.code != 20000) return this.$message('获取类别失败')
       this.applyTypeOptions = res.data
@@ -482,7 +482,7 @@ export default {
     },
     async getOrginization() {
       const { data: res } = await this.$http.get(
-        '/organization/getAll'
+        '/admin/organization/getAll'
       )
       if (res.code != 20000) return this.$message('获取院系失败')
       this.organizationOptions = res.data
@@ -557,7 +557,7 @@ export default {
     // 研究生院管理员提交按钮，一次修改两个状态 将符合条件以及不符合条件的一起提交给研究生院主管
     async submitUpdate() {
       const { data: res } = await this.$http.post(
-        '/update-status/submitUpdate'
+        '/admin/update-status/submitUpdate'
       )
       this.dialogVisibleSubmit = false
       this.getList()
