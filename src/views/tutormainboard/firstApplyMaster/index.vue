@@ -319,7 +319,7 @@
 
 <script>
 import { academicMasterPrimaryDiscipline } from '@/utils/data'
-import { submitFirstPage, submitSecondPage } from '@/api/tutor/applyMaster'
+import { submitFirstPage, submitSecondPage } from '@/api/tutor/applyMaster/firstApplyMaster'
 import { getTeacherInfo } from '@/api/tutor/mainboard'
 import Third from '../Third'
 import Fourth from '../Fourth'
