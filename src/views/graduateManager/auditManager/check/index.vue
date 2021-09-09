@@ -303,18 +303,18 @@
     </el-dialog>
     <!-- 驳回时的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>请输入驳回理由(可以为空)</span>
+      <span>请添加备注(可以为空)</span>
       <el-input v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
-        <el-button type="primary" @click="returnFun()">确 定</el-button>
+        <el-button type="primary" @click="submitCommit()">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 点击提交按钮时显示 -->
     <el-dialog title="提示" :visible.sync="dialogVisibleSubmit" width="30%">
       <span>确认提交吗？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button @click="dialogVisibleSubmit = false">取 消</el-button>
         <el-button type="primary" @click="rePassFun(2)">确 定</el-button>
       </span>
     </el-dialog>
@@ -394,6 +394,7 @@ export default {
       },
       choose: 0,
       commit: undefined,
+      row: {},
       currentSelection: []
     }
   },
@@ -426,7 +427,7 @@ export default {
         var json = {
           'id_1': this.ids[i],
           'status_1': code,
-          'commit_1': this.commit || '研究生院返回修改'
+          'commit_1': this.commit
         }
         updateStatus[i] = json
       }
@@ -514,6 +515,14 @@ export default {
       console.log(num)
       console.log('.....................')
     },
+    submitCommit() {
+      this.row.commitYjsyCs = this.commit
+      this.$http.post(
+        '/admin/update-status/updateCommitByGraduate', this.row
+      )
+      this.row = {}
+      this.dialogVisible = false
+    },
     // 审核通过确认弹框确认按钮
     rePassFun(num) {
       console.log(this.choose)
@@ -546,16 +555,12 @@ export default {
     },
     // 研究生院管理员提交按钮，一次修改两个状态 将符合条件以及不符合条件的一起提交给研究生院主管
     async submitUpdate() {
+      // eslint-disable-next-line no-unused-vars
       const { data: res } = await this.$http.post(
         '/admin/update-status/submitUpdate'
       )
       this.dialogVisibleSubmit = false
       this.getList()
-      if (res.code !== 20000) {
-        return this.$message('提交失败！请稍候再试')
-      } else {
-        return this.$message('提交成功！！！')
-      }
     },
     // 初审不通过
     unPassFun() {
@@ -596,11 +601,9 @@ export default {
     },
     // 点击备注按钮，添加备注
     commitFun(row) {
-      this.dialogVisiblePass = true
       this.dialogVisible = true
-      // this.commit = row.commit
-      // this.currentSelection.length = 0
-      // this.currentSelection.push(row)
+      this.commit = row.commitYjsyCs
+      this.row = row
     },
     // 提交按钮的方法
     submitFun() {
