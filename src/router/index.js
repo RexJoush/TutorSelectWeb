@@ -289,10 +289,16 @@ export const asyncRoutes = [
         meta: { title: '秘书初审', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
+        path: 'return',
+        component: () => import('@/views/departmentSecretary/auditManager/return/index'),
+        name: 'ReturnDS',
+        meta: { title: '返还教师修改列表', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+      },
+      {
         path: 'submitFh',
         component: () => import('@/views/departmentSecretary/auditManager/submitFh/index'),
         name: 'SubmitFh',
-        meta: { title: '院系主管已审核', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '提交分会', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'reCheckDS',
@@ -305,12 +311,6 @@ export const asyncRoutes = [
         component: () => import('@/views/departmentSecretary/auditManager/graducateComments/index'),
         name: 'GraducateComments',
         meta: { title: '查看研究生院意见', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
-      },
-      {
-        path: 'return',
-        component: () => import('@/views/departmentSecretary/auditManager/return/index'),
-        name: 'ReturnDS',
-        meta: { title: '驳回操作', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'finalListDS',

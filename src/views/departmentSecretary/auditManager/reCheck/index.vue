@@ -49,6 +49,7 @@
             <el-select
               v-model="queryParams.applyStatus"
               placeholder="请选择"
+              clearable
               size="small"
               style="width: 240px"
             >
@@ -60,12 +61,12 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="btnSearch">
             <el-button
               type="primary"
               icon="el-icon-search"
               size="small"
-              @click="searchQuery()"
+              @click="filterDataByStatus()"
               >搜索</el-button
             >
             <el-button
@@ -78,6 +79,7 @@
         </el-form>
         <br />
         <br />
+
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
@@ -114,6 +116,7 @@
             align="center"
             prop="tutorId"
             width="100"
+            width:180
             fixed
           />
           <el-table-column label="姓名" align="center" prop="name" fixed />
@@ -140,7 +143,7 @@
             label="申请类别"
             align="center"
             prop="applyName"
-            width="180"
+            width="200"
           />
           <el-table-column
             label="职称"
@@ -154,13 +157,24 @@
             prop="inspectDescribe"
             width="150"
           />
-          <el-table-column label="详情" align="center" prop="mr" />
+          <el-table-column
+            label="详情"
+            align="center"
+            prop="mr"
+            fixed="right"
+          />
           <el-table-column
             label="备注"
             align="center"
-            prop="commit"
             width="150"
-          />
+            fixed="right"
+          >
+            <template #default="scope">
+              <el-button @click="commitFun(scope.row)" type="text" size="small"
+                >添加备注</el-button
+              >
+            </template>
+          </el-table-column>
         </el-table>
 
         <el-pagination
@@ -186,23 +200,33 @@
             >
           </el-col>
         </el-row>
-        <span
-          >注意：导出上表<span style="color: red">学院分会通过</span
-          >的数据</span
-        >
+        <span>注意：导出上表所有审核状态为<span style="color:red">学院分会通过</span>的记录</span>
+        <el-row :gutter="10" class="mb8" style="left: 1300px">
+          <el-col :span="3">
+            <el-button
+              type="success"
+              plain
+              size="small"
+              :loading="exportLoading"
+              @click="submitFun()"
+              >提交</el-button
+            >
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
+
     <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
       <span>确认提交吗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisiblePass = false">取 消</el-button>
-        <el-button type="primary" @click="rePassFun()">确 定</el-button>
+        <el-button type="primary" @click="confirmFun()">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 驳回时的备注弹框 -->
+    <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>请输入备注(可以为空)</span>
+      <span>(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
@@ -216,7 +240,7 @@
 import {
   getApplyType,
   checkDate,
-  updateStatus,
+  updateStatusXy,
 } from "@/api/departmentSecretary/secretaryFirst";
 import { exportSXYFH } from "@/api/departmentSecretary/exportExcel";
 export default {
@@ -246,31 +270,31 @@ export default {
       applyTypeList: [],
       //选定的列表
       multipleSelection: [],
+      //当前操作的行
+      currentSelection: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
-        subjectType: undefined, // 学科属性，文科，理科，交叉
+        userId: null, // 工号
+        userName: null, // 姓名
+        organization: null, // 院系id
+        applyType: null, // 申请类别id
+        subjectName: null, // 学科名称id
+        applyStatus: null, // 审核状态码id
+        subjectType: null, // 学科属性，文科，理科，交叉
       },
+      // 查询参数
+      queryParamCopy: {},
       //和秘书初审有关的审核状态
       statuOptions: [
         {
-          value: 13,
-          label: "待复审",
+          value: 23,
+          label: "学院分会同意",
         },
         {
-          value: 14,
-          label: "学院分会通过",
-        },
-        {
-          value: 15,
-          label: "学院分会不通过",
+          value: 24,
+          label: "学院分会不同意",
         },
       ],
       //审核后需要下发的List数据
@@ -283,32 +307,31 @@ export default {
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
-    // 初始化申请的所有类别（下拉框）
-    async getApplyTypeList() {
-      getApplyType().then((res) => {
-        this.applyTypeList = res.data;
-      });
-    },
-    // 查询院系秘书待初审的数据
-    // 可以通过设置  this.queryParams.applyStatus 状态码，固定返回列表中的数据全部是秘书待审核
-    getSecretaryInit() {
+    //导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
+    dataOption(func) {
       this.loading = true;
-      this.queryParams.applyStatus = 13;
-      checkDate(this.queryParams).then((res) => {
-        this.tutorList = res.data;
-        this.totalData = res.total;
-        this.loading = false;
-      });
+      //   this.queryParams.organization = 30130;//院系
+      let defaultStatus = 21 + "-" + 23 + "-" + 24;
+      if (
+        this.queryParams.applyStatus == null ||
+        this.queryParams.applyStatus == ""
+      ) {
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+        this.queryParamCopy.applyStatus = defaultStatus;
+        func(this.queryParamCopy);
+      } else {
+        func(this.queryParams);
+      }
     },
-    //导出按钮，导出状态为“学院分会”的数据
-    exportFun(){
+    //excel导出，包含状态23  学院分会同意
+    exportFun() {
+      this.dataOption(this.exportExcel);
+    },
+    //导出excel实现
+    exportExcel(queryParams) {
       let date = new Date();
       let year = date.getFullYear(); // 获取当前年份
-      console.log(year);
-      this.loading = true;
-      this.queryParams.applyStatus = 14; //学院分会通过
-      //   this.queryParams.organization = 30130;//院系
-      exportSXYFH(this.queryParams).then((res) => {
+      exportSXYFH(queryParams).then((res) => {
         let blob = new Blob([res], { type: "application/vnd.ms-excel" });
         let url = window.URL.createObjectURL(blob);
         let link = document.createElement("a");
@@ -322,12 +345,26 @@ export default {
         link.click();
       });
       this.loading = false;
-
     },
-    //搜索按钮
-    searchQuery() {
-      this.loading = true;
-      checkDate(this.queryParams).then((res) => {
+    // 初始化申请的所有类别（下拉框）
+    async getApplyTypeList() {
+      getApplyType().then((res) => {
+        this.applyTypeList = res.data;
+      });
+    },
+    // 查询院系秘书待初审的数据
+    getSecretaryInit() {
+      this.filterDataByStatus();
+    },
+    //根据审核状态，选择查询对象。因为该页面只查状态值为23  24的数据，而后端只有一个获取数据接口。
+    //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
+    filterDataByStatus() {
+      this.dataOption(this.searchByOptions);
+    },
+    //按条件搜索
+    searchByOptions(queryParams) {
+      checkDate(queryParams).then((res) => {
+        console.log(res);
         this.tutorList = res.data;
         this.totalData = res.total;
         this.loading = false;
@@ -338,33 +375,30 @@ export default {
       this.queryParams.userId = null; // 工号
       this.queryParams.userName = null; // 姓名
       this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = 13; // 审核状态码id
+      this.queryParams.applyStatus = null; // 审核状态码id
     },
-    //同意上分会
+    //学院分会通过
     passFun() {
-      this.dialogVisiblePass = true;
+      this.check(23, "unCommit");
     },
-    //审核通过确认弹框确认按钮
-    rePassFun() {
-      this.check(14);
-      this.dialogVisiblePass = false;
-    },
-    //不同意上分会
+    //学院分会不通过
     unPassFun() {
-      //驳回之前判断是否只选择了一条
-      if (this.multipleSelection.length > 1) {
-        this.$message.warning("注意:只能选择一条数据审核！");
-      } else {
-        this.dialogVisible = true;
-      }
+      this.check(24, "unCommit");
     },
-    //弹框确定按钮驳回操作
+    //点击备注按钮，添加备注
+    commitFun(row) {
+      this.dialogVisible = true;
+      this.returnCommit = row.commitYxXy;
+      this.currentSelection.length = 0;
+      this.currentSelection.push(row);
+    },
+    //备注弹框的确定按钮
     returnFun() {
-      //带上备注
-      this.updataList[0].commit_1 = this.returnCommit;
-      this.check(15);
+      this.currentSelection[0].commitYxXy = this.returnCommit;
+      this.updateObiect(this.currentSelection);
+      console.log(this.currentSelection)
+      this.check(this.currentSelection[0].status, "commit"); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
       this.dialogVisible = false;
-      this.returnCommit = null;
     },
     //弹框取消按钮
     cancel() {
@@ -372,21 +406,48 @@ export default {
       this.returnCommit = null;
     },
     //更新操作
-    check(status) {
-      for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
+    check(status, initStatus) {
+      if (status === 9999) {
+        //如果status是9999，则执行提交按钮
+        for (let index = 0; index < this.updataList.length; index++) {
+          this.updataList[index].status_1 = this.updataList[index].status_1 + 2; // + 2是因为数据库绑定状态的原因，勿动
+        }
+      } else {
+        for (let index = 0; index < this.updataList.length; index++) {
+          this.updataList[index].status_1 = status;
+        }
       }
-      updateStatus(this.updataList).then((res) => {
+      console.log(this.updataList)
+      updateStatusXy(this.updataList).then((res) => {
         if (res.code == 20000) {
-          this.$message.success("审核成功");
+          this.$message.success("操作成功!");
         }
         this.updataList.length = 0;
-        // 对搜索到的部分数据进行审批后，页面应该还停留在搜索界面还是直接初始化
-        this.resetQuery();
-        this.getSecretaryInit();
+        if (initStatus != "commit") {
+          this.getSecretaryInit();
+        }
       });
     },
-
+    //提交按鈕
+    submitFun() {
+      this.dialogVisiblePass = true;
+    },
+    // 弹框的确定按钮
+    confirmFun() {
+      let flag = true;
+      for (let index = 0; index < this.updataList.length; index++) {
+        if (this.updataList[index].status_1 == 21) {
+          flag = false;
+        }
+      }
+      if (flag) {
+        this.check(9999);
+        this.getSecretaryInit();
+      } else {
+        this.$message.warning("有待审核的数据，请先进行审核！");
+      }
+      this.dialogVisiblePass = false;
+    },
     //当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {
@@ -397,21 +458,22 @@ export default {
         this.multiple = true;
       }
       this.multipleSelection = val;
+      this.updateObiect(this.multipleSelection);
+    },
+    //封装更新数据
+    updateObiect(originArray) {
       //每次选择都要将之前的清空
       this.updataList = [];
       // 将需要审核后下发的数据对应起来
-      for (let index = 0; index < this.multipleSelection.length; index++) {
-        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
+      for (let index = 0; index < originArray.length; index++) {
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].applyId;
-        // obj.number_1 = this.multipleSelection[index].number;
-        // obj.applyId_1 = this.multipleSelection[index].applyId;
-        obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1 = "";
-        console.log(obj);
+        obj.id_1 = originArray[index].applyId;
+        obj.status_1 = originArray[index].status;
+        obj.commit_1 = originArray[index].commitYxXy;
         this.updataList.push(obj);
       }
     },
+
     //每页显示条数
     handleSizeChange(val) {},
     //当前页数
@@ -422,3 +484,5 @@ export default {
   },
 };
 </script>
+<style scoped>
+</style>
