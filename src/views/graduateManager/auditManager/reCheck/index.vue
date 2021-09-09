@@ -214,7 +214,7 @@ export default {
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       const { data: res } = await this.$http.get(
-        '/tutor-inspect/admin/getAll', { params: this.queryParams }
+        '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
       if (res.code != 20000) {
         this.tutorList = []
@@ -238,7 +238,7 @@ export default {
       }
       console.info(updateStatus)
       const { data: res } = await this.$http.post(
-        '/update-status/update', updateStatus
+        '/admin/update-status/update', updateStatus
       )
       this.getList()
       if (res.code != 20000) return this.$message('操作失败！！！')
@@ -246,7 +246,7 @@ export default {
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
-        '/apply-type/getApplyType'
+        '/admin/apply-type/getApplyType'
       )
       if (res.code != 20000) return this.$message('获取类别失败')
       this.applyTypeOptions = res.data
@@ -281,7 +281,7 @@ export default {
     },
     async getOrginization() {
       const { data: res } = await this.$http.get(
-        '/organization/getAll'
+        '/admin/organization/getAll'
       )
       // eslint-disable-next-line eqeqeq
       if (res.code != 20000) return this.$message('获取院系失败')

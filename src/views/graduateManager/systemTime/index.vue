@@ -66,7 +66,7 @@ export default {
       // 设置院系id,0代表超级管理员设置的系统时间，
       const orgId = 0
       const { data: res } = await this.$http.get(
-        '/system-time/get/' + orgId
+        '/admin/system-time/get/' + orgId
       )
       this.time = []
       this.time.push(res[0])
