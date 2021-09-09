@@ -52,7 +52,7 @@ export default {
         return this.$message('请选择设置的开始时间与结束时间')
       }
       const { data: res } = await this.$http.get(
-        '/system-time/save/' + this.time + '/' + orgId
+        '/admin/system-time/save/' + this.time + '/' + orgId
       )
       if (res == '20000') {
         return this.$message.success('时间更新成功')
@@ -66,7 +66,7 @@ export default {
       // 设置院系id,0代表超级管理员设置的系统时间，
       const orgId = 0
       const { data: res } = await this.$http.get(
-        '/system-time/get/' + orgId
+        '/admin/system-time/get/' + orgId
       )
       this.time = []
       this.time.push(res[0])

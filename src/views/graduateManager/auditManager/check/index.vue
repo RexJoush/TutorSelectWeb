@@ -449,8 +449,9 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/apply-type/getApplyType'
       )
-      if (res.code != 20000) return this.$message('获取类别失败')
-      this.applyTypeOptions = res.data
+      console.log('aaa', res)
+      // if (res.code != 20000) return this.$message('获取类别失败')
+      this.applyTypeOptions = res
     },
     async getApplyStatus() {
       this.applyStatusOptions = [
