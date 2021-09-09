@@ -413,13 +413,10 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000) {
-        this.tutorList = []
-        this.loading = false
-        return this.$message('暂无待初审教师！！！')
-      }
+      console.info('getList')
+
+      console.info(res)
       this.tutorList = res.data
-      console.info(res.data)
       this.total = res.total
       this.loading = false
     },
@@ -438,19 +435,13 @@ export default {
         '/admin/update-status/update', updateStatus
       )
       this.getList()
-      if (res.code != 20000) {
-        return this.$message('操作失败！！！')
-      } else {
-        return this.$message('操作成功！！！')
-      }
       this.commit = undefined
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
         '/admin/apply-type/getApplyType'
       )
-      if (res.code != 20000) return this.$message('获取类别失败')
-      this.applyTypeOptions = res.data
+      this.applyTypeOptions = res
     },
     async getApplyStatus() {
       this.applyStatusOptions = [
@@ -484,8 +475,7 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/organization/getAll'
       )
-      if (res.code != 20000) return this.$message('获取院系失败')
-      this.organizationOptions = res.data
+      this.organizationOptions = res
       console.info(this.organizationOptions)
     },
     async getSubject() {
@@ -493,7 +483,7 @@ export default {
       //   '/apply-type/getAll'
       // )
       // if(res.code != 1000) return this.$message("获取类别失败")
-      // this.applyTypeOptions = res.data
+      // this.applyTypeOptions = res
     },
     // 表单重置
     reset() {

@@ -284,7 +284,7 @@ export default {
     async getList() {
       this.loading = true
       const { data: res } = await this.$http.get(
-        '/graduate/system-user/getAll', { params: this.queryParams }
+        '/admin/system-user/getAll', { params: this.queryParams }
       )
       this.userList = res.users
       this.total = res.total
@@ -312,7 +312,7 @@ export default {
         type: 'warning'
       }).then(async() => {
         const { data: res } = await this.$http.post(
-          '/graduate/system-user/updateUser', row
+          '/admin/system-user/updateUser', row
         )
         let mes = text
         if (res == 20000) {
@@ -405,7 +405,7 @@ export default {
       this.getOrginization()
 
       const { data: user } = await this.$http.get(
-        '/graduate/system-user/getAll', { params: query }
+        '/admin/system-user/getAll', { params: query }
       )
       this.form = user.users[0]
       this.open = true
@@ -416,24 +416,14 @@ export default {
         if (valid) {
           if (this.choose != 1) {
             const { data: res } = await this.$http.post(
-              '/graduate/system-user/updateUser', this.form
+              '/admin/system-user/updateUser', this.form
             )
-            if (res == 20000) {
-              this.$message.success('修改成功')
-            } else {
-              this.$message.error('修改失败')
-            }
             this.open = false
             this.getList()
           } else {
             const { data: res } = await this.$http.post(
-              '/graduate/system-user/addUser', this.form
+              '/admin/system-user/addUser', this.form
             )
-            if (res == 20000) {
-              this.$message.success('添加成功')
-            } else {
-              this.$message.error('添加失败')
-            }
             this.open = false
             this.getList()
           }
@@ -451,7 +441,7 @@ export default {
         if (this.single) {
           const userIds = row.userId || this.ids[0]
           const { data: res } = await this.$http.post(
-            '/graduate/system-user/delUser/' + userIds
+            '/admin/system-user/delUser/' + userIds
           )
           if (res == 20000) {
             this.getList()
@@ -462,7 +452,7 @@ export default {
           }
         } else if (this.multiple) {
           const { data: res } = await this.$http.post(
-            '/graduate/system-user/delUsers', this.ids
+            '/admin/system-user/delUsers', this.ids
           )
           this.getList()
           this.$message({
@@ -471,7 +461,7 @@ export default {
           })
         } else {
           const { data: res } = await this.$http.post(
-            '/graduate/system-user/delUser/' + row.userId
+            '/admin/system-user/delUser/' + row.userId
           )
           this.getList()
           this.$message({

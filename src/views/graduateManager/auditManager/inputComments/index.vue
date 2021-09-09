@@ -295,11 +295,6 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      if (res.code != 20000) {
-        this.tutorList = []
-        this.loading = false
-        return this.$message('暂无数据！！！')
-      }
       this.tutorList = res.data
       console.info(res.data)
       this.total = res.total
@@ -320,16 +315,13 @@ export default {
         '/admin/update-status/update', updateStatus
       )
       this.getList()
-      if (res.code != 20000) return this.$message('操作失败！！！')
-      else return this.$message('操作成功！！！')
       this.commit = undefined
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
         '/admin/apply-type/getApplyType'
       )
-      if (res.code != 20000) return this.$message('获取类别失败')
-      this.applyTypeOptions = res.data
+      this.applyTypeOptions = res
     },
     async getApplyStatus() {
       this.applyStatusOptions = [
@@ -351,8 +343,7 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/organization/getAll'
       )
-      if (res.code != 20000) return this.$message('获取院系失败')
-      this.organizationOptions = res.data
+      this.organizationOptions = res
       console.info(this.organizationOptions)
     },
     async getSubject() {
@@ -414,7 +405,7 @@ export default {
 
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.tutorId)
+      this.ids = selection.map(item => item.applyId)
       if (selection.length > 0) {
         this.single = false
         this.multiple = false

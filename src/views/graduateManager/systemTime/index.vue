@@ -3,14 +3,14 @@
     <el-row>
       <el-col :span="8">
         <div class="grid-content bg-purple">
-          <span class="demonstration"/>
+          <span class="demonstration" />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple-light">
           <div class="block">
-          <span class="demonstration">申请时间范围
-          </span>
+            <span class="demonstration">申请时间范围
+            </span>
             <el-date-picker
               v-model="time"
               type="daterange"
@@ -52,7 +52,7 @@ export default {
         return this.$message('请选择设置的开始时间与结束时间')
       }
       const { data: res } = await this.$http.get(
-        '/system-time/save/' + this.time + '/' + orgId
+        '/admin/system-time/save/' + this.time + '/' + orgId
       )
       if (res == '20000') {
         return this.$message.success('时间更新成功')
