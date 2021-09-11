@@ -5,8 +5,6 @@
         <el-steps :active="active" finish-status="success">
           <el-step title="基本信息"></el-step>
           <el-step title="研究信息"></el-step>
-          <el-step title="学术信息"></el-step>
-          <el-step title="教学信息"></el-step>
         </el-steps>
       </el-col>
     </el-row>
@@ -245,148 +243,130 @@
                 </Col>
                 <Col :span="24">
                   <el-form-item label="免审条件">
-                    <el-button type="primary" class="addButton" size="small"
-                      >上传证明材料</el-button
+                    <el-upload
+                      ref="upload"
+                      class="upload-demo"
+                      name="material"
+                      action="http://localhost:8081/user/upload/7"
+                      :file-list="fileList"
+                      :on-success="uploadSuccessFunc"
+                      :on-error="uploadErrorFunc"
+                      :before-upload="checkFileType"
+                      :before-remove="beforeRemove"
+                      :on-remove="removeFile"
+                      :limit="1"
+                      accept=".zip , .rar"
                     >
-                    仅支持.rar/.zip文件
+                      <!--     action="http://localhost:8081/tutor/upload/7" -->
+                      <el-button slot="trigger" size="small" type="primary"
+                        >上传免审资料</el-button
+                      >
+
+                      &nbsp;&nbsp;&nbsp; 上传资料仅支持.rar/.zip文件
+                    </el-upload>
                     <el-input
                       type="textarea"
+                      placeholder="免审条件填写"
                       v-model="formSecond.exemptionConditions"
                       :autosize="{ minRows: 6 }"
                     ></el-input>
                   </el-form-item>
                 </Col>
-                </Row>
-           
-                <Col :span="24">
-                  <!-- 科研项目（近五年） -->
-                  <el-card class="box-card" shadow="always">
-                    <div slot="header" class="clearfix">
-                      <span style="font-size: 18px">科研项目（近五年）</span>
-                      <el-button
-                        class="addButton"
-                        style="float: right"
-                        type="primary"
-                        @click="addFunc(3)"
-                        >添加科研项目</el-button
-                      >
-                    </div>
-                    <el-table
-                      :data="formSecond.researchProjects"
-                      border
-                      style="width: 100%"
+              </Row>
+
+              <Col :span="24">
+                <!-- 科研项目（近五年） -->
+                <el-card class="box-card" shadow="always">
+                  <div slot="header" class="clearfix">
+                    <span style="font-size: 18px">科研项目（近五年）</span>
+                    <el-button
+                      class="addButton"
+                      style="float: right"
+                      type="primary"
+                      @click="dialogSecond1 = true"
+                      >添加科研项目</el-button
                     >
-                      <el-table-column type="index" label="序号" width="50" />
-                      <el-table-column prop="projectName" label="项目名称" />
-                      <el-table-column prop="approvalNumber" label="批准号" />
-                      <el-table-column
-                        prop="projectChargeName"
-                        label="负责人姓名"
-                        width="100"
-                      />
-                      <el-table-column
-                        prop="projectStartTime"
-                        label="开始日期"
-                      />
-                      <el-table-column prop="projectEndTime" label="结束日期" />
-                      <el-table-column
-                        prop="projectCategory"
-                        label="项目分类"
-                      />
-                      <el-table-column
-                        prop="projectTotalPrice"
-                        label="总经费"
-                        width="120"
-                      />
-                      <el-table-column prop="projectLevel" label="项目级别" />
-                      <el-table-column
-                        label="证明资料"
-                        width="90"
-                        align="center"
-                      >
-                        <!-- <template slot-scope="scope">
-                <a target="_blank" :href="scope.row.projectProveMaterials"
-                  ><el-button size="mini" type="primary" plain
-                    >查 看</el-button
-                  ></a
-                >
-              </template> -->
-                      </el-table-column>
-                      <el-table-column label="操作" align="center" width="90">
-                        <!-- <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  type="danger"
-                  plain
-                  @click="deleteFunc(scope.$index, scope.row, 2)"
-                  >删 除</el-button
-                >
-              </template> -->
-                      </el-table-column>
-                    </el-table>
-                  </el-card>                 
-                </Col>
-                <br />
-                <!-- 科研教学奖励（近五年） -->
-                <Col :span="24">
-                  <el-card class="box-card" shadow="always">
-                    <div slot="header" class="clearfix">
-                      <span style="font-size: 18px"
-                        >科研教学奖励（近五年）</span
-                      >
-                      <el-button
-                      style="float:right"
-                          class="addButton"
-                          type="primary"
-                          @click="addFunc(5)"
-                          >添加科研教学奖励</el-button
+                  </div>
+                  <el-table
+                    :data="formSecond.researchProjects"
+                    border
+                    style="width: 100%"
+                  >
+                    <el-table-column type="index" label="序号" width="50" />
+                    <el-table-column prop="projectName" label="项目名称" />
+                    <el-table-column prop="approvalNumber" label="批准号" />
+                    <el-table-column
+                      prop="projectChargeName"
+                      label="负责人姓名"
+                      width="100"
+                    />
+                    <el-table-column prop="projectStartTime" label="开始日期" />
+                    <el-table-column prop="projectEndTime" label="结束日期" />
+                    <el-table-column prop="projectCategory" label="项目分类" />
+                    <el-table-column
+                      prop="projectTotalPrice"
+                      label="总经费"
+                      width="120"
+                    />
+                    <el-table-column prop="projectLevel" label="项目级别" />
+                    <el-table-column label="操作" align="center" width="90">
+                      <template slot-scope="scope">
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          plain
+                          @click="delResearchProject(scope.$index)"
+                          >删 除</el-button
                         >
-                    </div>
-                
-                    <el-table
-                      :data="formSecond.teachingAwards"
-                      border
-                      style="width: 100%"
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-card>
+              </Col>
+              <br />
+              <!-- 科研教学情况（近五年） -->
+              <Col :span="24">
+                <el-card class="box-card" shadow="always">
+                  <div slot="header" class="clearfix">
+                    <span style="font-size: 18px">科研教学奖励（近五年）</span>
+                    <el-button
+                      style="float: right"
+                      class="addButton"
+                      type="primary"
+                      @click="dialogSecond2 = true"
+                      >添加科研教学奖励</el-button
                     >
-                      <el-table-column type="index" label="序号" width="50px" />
-                      <el-table-column prop="awardsName" label="奖励名称" />
-                      <el-table-column prop="awardsRank" label="排名" />
-                      <el-table-column prop="awardsUnit" label="颁奖单位" />
-                      <el-table-column prop="awardsLevel" label="获奖级别" />
-                      <el-table-column prop="awardsTime" label="获奖日期" />
-                      <el-table-column
-                        prop="awardsAuthorName"
-                        label="获奖人姓名"
-                      />
-                      <el-table-column
-                        label="证明资料"
-                        width="90"
-                        align="center"
-                      >
-                        <template slot-scope="scope">
-                          <a
-                            target="_blank"
-                            :href="scope.row.awardsProveMaterials"
-                            ><el-button size="mini" type="primary" plain
-                              >查 看</el-button
-                            ></a
-                          >
-                        </template>
-                      </el-table-column>
-                      <el-table-column label="操作" align="center" width="90">
-                        <template slot-scope="scope">
-                          <el-button
-                            size="mini"
-                            type="danger"
-                            plain
-                            @click="deleteFunc(scope.$index, scope.row, 4)"
-                            >删 除</el-button
-                          >
-                        </template>
-                      </el-table-column>
-                    </el-table>
-                  </el-card>
-                </Col>               
+                  </div>
+
+                  <el-table
+                    :data="formSecond.teachingAwards"
+                    border
+                    style="width: 100%"
+                  >
+                    <el-table-column type="index" label="序号" width="50px" />
+                    <el-table-column prop="awardsName" label="奖励名称" />
+                    <el-table-column prop="awardsRank" label="排名" />
+                    <el-table-column prop="awardsUnit" label="颁奖单位" />
+                    <el-table-column prop="awardsLevel" label="获奖级别" />
+                    <el-table-column prop="awardsTime" label="获奖日期" />
+                    <el-table-column
+                      prop="awardsAuthorName"
+                      label="获奖人姓名"
+                    />
+                    <el-table-column label="操作" align="center" width="90">
+                      <template slot-scope="scope">
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          plain
+                          @click="delTeachingAward(scope.$index)"
+                          >删 除</el-button
+                        >
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-card>
+              </Col>
 
               <Row>
                 <Col :offset="8">
@@ -404,18 +384,153 @@
       </Col>
     </Row>
     <!-- 第二页弹框内容 -->
-    
+    <!-- 添加科研项目 -->
+    <el-dialog title="添加科研项目" width="40%" :visible.sync="dialogSecond1">
+      <el-form :model="researchProject">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="项目名称">
+              <el-input v-model="researchProject.projectName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="批准号">
+              <el-input v-model="researchProject.approvalNumber" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="负责人姓名">
+              <el-input v-model="researchProject.projectChargeName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="开始日期">
+              <el-date-picker
+                v-model="researchProject.projectStartTime"
+                type="month"
+                format="yyyy-MM"
+                value-format="yyyy-MM"
+                style="width: 100%"
+                placeholder="选择日期"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="结束日期">
+              <el-date-picker
+                v-model="researchProject.projectEndTime"
+                type="month"
+                format="yyyy-MM"
+                value-format="yyyy-MM"
+                style="width: 100%"
+                placeholder="选择日期"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="项目分类">
+              <el-input
+                v-model="researchProject.projectCategory"
+                placeholder="国家自然科学基金等"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="总经费">
+              <el-input v-model="researchProject.projectTotalPrice" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="项目级别">
+              <el-select
+                v-model="researchProject.projectLevel"
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option label="国家级" value="国家级" />
+                <el-option label="省部级" value="省部级" />
+                <el-option label="厅局级" value="厅局级" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogSecond1 = false">取 消</el-button>
+        <el-button type="primary" @click="addResearchProject">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 添加科研教学奖励 -->
+    <el-dialog title="科研教学奖励" width="40%" :visible.sync="dialogSecond2">
+      <el-form :model="teachingAward">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="奖励名称">
+              <el-input v-model="teachingAward.awardsName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="排名">
+              <el-input v-model="teachingAward.awardsRank" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="颁奖单位">
+              <el-input v-model="teachingAward.awardsUnit" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="获奖日期">
+              <el-date-picker
+                v-model="teachingAward.awardsTime"
+                type="month"
+                format="yyyy-MM"
+                value-format="yyyy-MM"
+                style="width: 100%"
+                placeholder="选择日期"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="获奖人姓名">
+              <el-input v-model="teachingAward.awardsAuthorName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="获奖级别">
+              <el-select
+                v-model="teachingAward.awardsLevel"
+                style="width: 100%"
+                placeholder="请选择"
+              >
+                <el-option label="国家级" value="国家级" />
+                <el-option label="省部级" value="省部级" />
+                <el-option label="厅局级" value="厅局级" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogSecond2 = false">取 消</el-button>
+        <el-button type="primary" @click="addTeachingAward">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { doctorPrimaryDiscipline } from "@/utils/data";
 
-import { getFirstPage } from "@/api/tutor/mainboard";
+import { getTeacherInfo, deleteFile } from "@/api/tutor/mainboard";
+
+import { submitFirstPage } from "@/api/tutor/ApplyDoctor/noInspectApplyDoctor";
 
 export default {
   data() {
     return {
+      fileList: [],
       //第一页loading
       firstloading: true,
       // 提交的加载状态
@@ -428,10 +543,12 @@ export default {
       formVisible: {
         first: true,
         second: false,
-        third: false,
-        fourth: false,
       },
+      //第二页弹框
+      dialogSecond1: false, //科研项目
+      dialogSecond2: false,
       applyCondition: 0, //申请的状态  修改还是未申请
+
       /**第一页 */
       // 第 1 页表单
       id: 0, //回传apply中id主键值
@@ -439,8 +556,7 @@ export default {
       // ===========================================================第 2 页表单===================================
       childNodes: [], // 院系的子专业信息
       currentDepartment: "", // 院系信息
-      dialogSecond1: false, // 学术团体或职务的显示框
-      dialogSecond2: false, // 专家称号的显示框
+
       //申请类型
       applySubjects: [
         { label: "文史", value: 1 },
@@ -449,28 +565,29 @@ export default {
       ],
 
       formSecond: {
-        //=========博士增岗 非免审============
-        doctoralTutorOnDuty: "",
-        doctoralStartTime: "",
-        //外单位调入填写
-        sourceUnitName: "",
-        transferInTime: "",
+        researchProjects: [],
+        teachingAwards: [],
+      },
 
-        applySubject: "", // 申请学科
-        doctoralMasterApplicationSubjectUnit: "", // 申请学科负责单位
-        doctoralMasterSubjectCodeName: "", // 一级学科代码 + " " + 名称
-        major: "", // 主要研究方向的内容及其意义
-        groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
-        expertTitles: [], // 获何专家称号及时间列表
+      //科研项目
+      researchProject: {
+        projectName: "",
+        approvalNumber: "",
+        projectStartTime: "",
+        projectEndTime: "",
+        projectTotalPrice: "",
+        projectLevel: "",
+        projectCategory: "",
+        projectChargeName: "",
       },
-      groupsOrPartTimeJob: {
-        time: "",
-        groups: "",
-        job: "",
-      },
-      expertTitle: {
-        time: "",
-        title: "",
+      //教学情况
+      teachingAward: {
+        awardsName: "",
+        awardsRank: "",
+        awardsUnit: "",
+        awardsTime: "",
+        awardsAuthorName: "",
+        awardsLevel: "",
       },
     };
   },
@@ -500,53 +617,97 @@ export default {
         .then(() => {
           //博士免审提交到后台
           this.formFirst.image = "";
-          //   submitFirstPage(this.formFirst, this.applyCondition, this.id)
-          //     .then((res) => {
-          //       if (res.code == 20000) {
-          this.$message.success("保存成功！");
-          this.formVisible.first = false; // 关闭第一项
-          this.formVisible.second = true; // 打开第二项
-          this.active = 1;
-          //   } else {
-          //     this.$message.error;
-          //     ("保存失败！");
-          //   }
-          // })
-          // .catch(() => {
-          //   console.log("cancel");
-          // });
+          submitFirstPage(this.formFirst, this.applyCondition, this.id).then(
+            (res) => {
+              if (res.code == 20000) {
+                this.$message.success("保存成功！");    
+                this.formVisible.first = false; // 关闭第一项
+                //回显第二页信息
+                
+                this.formVisible.second = true; // 打开第二项
+                this.active = 1;
+              }
+            }
+          );
         })
         .catch(() => {
           console.log("cancel");
         });
     },
     /*====================================第二页============================ */
-    // 第 2 页添加学术团体项 弹框
-    addGroupsOrPartTimeJob: function () {
-      this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob);
-      this.groupsOrPartTimeJob = {
-        time: "",
-        groups: "",
-        job: "",
-      };
-      this.dialogSecond1 = false;
+
+    // 上传成功
+    uploadSuccessFunc: function (response, file, fileList) {
+      console.log("上传成功", file);
+      console.log(response.data.path);
+      this.fileList.name = file.name;
+      this.fileList.url = response.data.path;
+      this.formSecond.exemptionConditionsMaterials = response.data.path;
+      console.log(fileList);
     },
-    // 删除某项学术团体项
-    delGroupsOrPartTimeJob: function (index) {
-      this.formSecond.groupsOrPartTimeJobs.splice(index, 1);
+    // 上传镜像失败
+    uploadErrorFunc: function (err, file, fileList) {
+      console.log(file);
+      console.log(fileList);
     },
-    // 添加某项专家称号 弹框
-    addExpertTitle: function () {
-      this.formSecond.expertTitles.push(this.expertTitle);
-      this.expertTitle = {
-        time: "",
-        title: "",
-      };
-      this.dialogSecond2 = false;
+    // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
+    checkFileType: function (file) {
+      if (file.name.endsWith(".zip") || file.name.endsWith(".rar")) {
+        return true;
+      } else {
+        this.$message.error("请上传 zip/rar 文件");
+        return false;
+      }
     },
-    // 删除某项专家称号
-    delExpertTitle: function (index) {
-      this.formSecond.expertTitles.splice(index, 1);
+    //文件移除之前
+    beforeRemove: function () {
+      return this.$confirm("确定要移除选取的文件吗?").then(() => {
+        deleteFile(this.formSecond.exemptionConditionsMaterials).then(
+          (res) => {}
+        );
+      });
+    },
+    //移除文件的钩子
+    removeFile: function () {
+      this.formSecond.exemptionConditionsMaterials = "";
+      return this.$message.success("删除成功！");
+    },
+    //第 2 页 添科研项目情况 弹框
+    addResearchProject: function () {
+      this.formSecond.researchProjects.push(this.researchProject);
+      //科研项目
+      (this.researchProject = {
+        projectName: "",
+        approvalNumber: "",
+        projectStartTime: "",
+        projectEndTime: "",
+        projectTotalPrice: "",
+        projectLevel: "",
+        projectCategory: "",
+        projectChargeName: "",
+      }),
+        (this.dialogSecond1 = false);
+    },
+    // 删除某项科研项目情况
+    delResearchProject: function (index) {
+      this.formSecond.researchProjects.splice(index, 1);
+    },
+    // 第 2 页添加科研教学奖励
+    addTeachingAward: function () {
+      this.formSecond.teachingAwards.push(this.teachingAward);
+      (this.teachingAward = {
+        awardsName: "",
+        awardsRank: "",
+        awardsUnit: "",
+        awardsTime: "",
+        awardsAuthorName: "",
+        awardsLevel: "",
+      }),
+        (this.dialogSecond2 = false);
+    },
+    // 删除某项科研教学奖励
+    delTeachingAward: function (index) {
+      this.formSecond.teachingAwards.splice(index, 1);
     },
     // 设置选择院系的子专业
     setChildNode: function (value) {
@@ -568,7 +729,6 @@ export default {
           this.$message.success("保存成功!");
           this.formVisible.second = false; // 关闭第二项
           this.$router.push("/");
-
           this.active = 2;
         })
         .catch(() => {

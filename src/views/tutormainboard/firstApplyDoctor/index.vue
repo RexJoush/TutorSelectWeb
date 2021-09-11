@@ -1566,7 +1566,6 @@ export default {
                 this.id = res.data.applyId;
                 this.$message.success("保存成功！");
                 this.formSecond = res.data
-                console.log("222222222222222")
                 console.log(this.formSecond);
                 //信息填写到第二页
                 if(res.data.applySubject == null){
@@ -1596,7 +1595,6 @@ export default {
     // 第 2 页添加学术团体项 弹框
     addGroupsOrPartTimeJob: function () {
       this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob);
-
       this.groupsOrPartTimeJob = {
         time: "",
         groups: "",

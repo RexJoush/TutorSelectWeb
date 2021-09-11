@@ -111,7 +111,7 @@ export const asyncRoutes = [
         meta: { title: '博士导师增列学科岗位', roles: ['admin', 'tutor'] }
       },
       {
-        path: 'noInspectApplyDoctor/:applyType/:applyCondition',
+        path: 'noInspectApplyDoctor/:applyType/:applyCondition/:applyId',
         name: 'noInspectApplyDoctor',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/noInspectApplyDoctor/index'),
