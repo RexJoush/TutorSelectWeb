@@ -158,7 +158,7 @@
                 <Col :span="24">
                   <Row :gutter="20">
                     <Col :span="8">
-                      <el-form-item label="申请学科">
+                      <el-form-item label="申请学科类别">
                         <el-select
                           style="width: 100%"
                           v-model="formSecond.applySubject"
@@ -236,7 +236,7 @@
                   <el-form-item label="主要研究方向的内容及其意义">
                     <el-input
                       type="textarea"
-                      v-model="formSecond.major"
+                      v-model="formSecond.researchDirections"
                       :autosize="{ minRows: 6 }"
                     ></el-input>
                   </el-form-item>
@@ -257,11 +257,9 @@
                       :limit="1"
                       accept=".zip , .rar"
                     >
-                      <!--     action="http://localhost:8081/tutor/upload/7" -->
                       <el-button slot="trigger" size="small" type="primary"
                         >上传免审资料</el-button
                       >
-
                       &nbsp;&nbsp;&nbsp; 上传资料仅支持.rar/.zip文件
                     </el-upload>
                     <el-input
@@ -371,10 +369,8 @@
               <Row>
                 <Col :offset="8">
                   <el-form-item style="margin-top: 20px">
-                    <!-- <el-button @click="backFirstPage">返回上一页</el-button> -->
                     <el-button type="primary" @click="onSubmitSecondPage"
-                      >保存此部分，填写下一项</el-button
-                    >
+                      >保存此部分，填写下一项</el-button>
                   </el-form-item>
                 </Col>
               </Row>
@@ -523,9 +519,12 @@
 <script>
 import { doctorPrimaryDiscipline } from "@/utils/data";
 
-import { getTeacherInfo, deleteFile } from "@/api/tutor/mainboard";
+import { getNoFirstPage, deleteFile } from "@/api/tutor/mainboard";
 
-import { submitFirstPage } from "@/api/tutor/ApplyDoctor/noInspectApplyDoctor";
+import {
+  submitFirstPage,
+  sumbitSecondPage,
+} from "@/api/tutor/ApplyDoctor/noInspectApplyDoctor";
 
 export default {
   data() {
@@ -565,7 +564,7 @@ export default {
       ],
 
       formSecond: {
-        researchProjects: [],
+        researchProjects: [], 
         teachingAwards: [],
       },
 
@@ -600,8 +599,10 @@ export default {
     GetTutorInfoByClient: function () {
       this.id = this.$route.params.applyId;
       this.applyCondition = this.$route.params.applyCondition;
-      getFirstPage(this.applyCondition, this.id).then((res) => {
+      //applyTypeId,applyCondition,applyId
+      getNoFirstPage(3, this.applyCondition, this.id).then((res) => {
         this.formFirst = res.data;
+        console.log(this.formFirst);
         //未申请过
         if (this.applyCondition * 1 === 102) {
           this.formFirst.image =
@@ -620,10 +621,9 @@ export default {
           submitFirstPage(this.formFirst, this.applyCondition, this.id).then(
             (res) => {
               if (res.code == 20000) {
-                this.$message.success("保存成功！");    
+                this.$message.success("保存成功！");
                 this.formVisible.first = false; // 关闭第一项
                 //回显第二页信息
-                
                 this.formVisible.second = true; // 打开第二项
                 this.active = 1;
               }
@@ -639,11 +639,9 @@ export default {
     // 上传成功
     uploadSuccessFunc: function (response, file, fileList) {
       console.log("上传成功", file);
-      console.log(response.data.path);
       this.fileList.name = file.name;
       this.fileList.url = response.data.path;
       this.formSecond.exemptionConditionsMaterials = response.data.path;
-      console.log(fileList);
     },
     // 上传镜像失败
     uploadErrorFunc: function (err, file, fileList) {
@@ -726,10 +724,18 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第二页
         .then(() => {
-          this.$message.success("保存成功!");
-          this.formVisible.second = false; // 关闭第二项
-          this.$router.push("/");
-          this.active = 2;
+          sumbitSecondPage(this.formSecond, this.id).then((res) => {
+            if (res.data != null) {
+              if (res.data.code === 1201) {
+                this.$message.error(res.data.message);
+                console.log(res.data.errorMessage);
+              }
+            }
+            this.$message.success("保存成功!");
+            this.formVisible.second = false; // 关闭第二项
+            this.$router.push("/");
+            this.active = 2;
+          });
         })
         .catch(() => {
           console.log("cancel");

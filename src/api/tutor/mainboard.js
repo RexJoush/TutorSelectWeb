@@ -23,7 +23,7 @@ export function addNoInspectApply(applyTypeId) {
   })
 }
 
-// 获取导师基本信息 申请类别和申请状态 首次申请
+// 获取导师基本信息 申请类别和申请状态 首次申请 免审
 export function getTeacherInfo(applyTypeId, applyCondition) {
   return request({
     url: `${baseUrl}/tutor/getTeacherInfo/${applyTypeId}/${applyCondition}`,
@@ -38,6 +38,15 @@ export function getFirstPage(applyCondition,applyId) {
     method: 'get'
   })
 }
+
+//获取博士免审第一页信息 博士免审
+export function getNoFirstPage(applyTypeId,applyCondition,applyId){
+  return request({
+      url: `${baseUrl}/tutor/getNoFirstPage/${applyTypeId}/${applyCondition}/${applyId}`,
+      method :'get',
+  })
+}
+
 
 //删除文件 公共方法
 export function deleteFile(httpPath){

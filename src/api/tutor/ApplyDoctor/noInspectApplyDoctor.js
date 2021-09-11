@@ -10,6 +10,14 @@ export function submitFirstPage(data,applyCondition,applyId){
     })
 }
 
-//
+//第二页提交
+export function sumbitSecondPage(data,applyId){
+    return request({
+        url:`${baseUrl}/tutor/noInspect/saveSecondPage/${applyId}`,
+        method: 'post',
+        data: data
+    })
+}
+
 
 
