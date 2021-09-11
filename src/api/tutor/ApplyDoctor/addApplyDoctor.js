@@ -46,12 +46,5 @@ export function submitFourthPage2(data,applyId){
 }
 
 
-//删除文件 公共方法
-export function deleteFile(httpPath){
-    return request({
-      url:`${baseUrl}/user/delFile`,
-      method: 'post',
-      data: httpPath
-    })
-  }
+
 

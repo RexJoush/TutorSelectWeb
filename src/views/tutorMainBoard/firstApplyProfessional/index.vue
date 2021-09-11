@@ -358,8 +358,8 @@ export default {
       active: 0,
       // 表格的隐藏和展示
       formVisible: {
-        first: false,
-        second: true,
+        first: true,
+        second: false,
         third: false,
         fourth: false
       },
@@ -479,7 +479,7 @@ export default {
         // 提交保存第 1 页
         .then(() => {
           this.loading = true
-          submitFirstPage(this.formFirst, 4, this.applyCondition)
+          submitFirstPage(this.formFirst, 7, this.applyCondition)
             .then(res => {
               if (res.data.code === 1201) {
                 this.$message.error(res.data.message)

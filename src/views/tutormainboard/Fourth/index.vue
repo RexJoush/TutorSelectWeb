@@ -22,14 +22,15 @@
             </el-col>
           </el-row>
           <el-table :data="formFourth.courseTeachings" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50px" />
-            <el-table-column prop="courseName" label="课程名称" />
-            <el-table-column prop="courseTime" label="课程时间" width="120" />
-            <el-table-column prop="courseDuration" label="授课总课时" width="120" />
-            <el-table-column prop="courseObject" label="授课对象" width="180" />
+            <el-table-column type="index" label="序号" width="50px"/>
+            <el-table-column prop="courseName" label="课程名称"/>
+            <el-table-column prop="courseTime" label="课程时间" width="120"/>
+            <el-table-column prop="courseDuration" label="授课总课时" width="120"/>
+            <el-table-column prop="courseObject" label="授课对象" width="180"/>
             <el-table-column label="操作" align="center" width="90">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 1)">删 除</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 1)">删 除
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -48,14 +49,15 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.doctorStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px" />
-              <el-table-column prop="studentName" label="学生姓名" width="120" />
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目" />
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120" />
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120" />
+              <el-table-column type="index" label="序号" width="50px"/>
+              <el-table-column prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
               <el-table-column label="操作" align="center" width="90">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除</el-button>
+                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -75,14 +77,15 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.assistDoctorStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px" />
-              <el-table-column prop="studentName" label="学生姓名" width="120" />
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目" />
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120" />
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120" />
+              <el-table-column type="index" label="序号" width="50px"/>
+              <el-table-column prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
               <el-table-column label="操作" align="center" width="90">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
+                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -102,14 +105,15 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.masterStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px" />
-              <el-table-column prop="studentName" label="学生姓名" width="120" />
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目" />
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120" />
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120" />
+              <el-table-column type="index" label="序号" width="50px"/>
+              <el-table-column prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
               <el-table-column label="操作" align="center" width="90">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 4)">删 除</el-button>
+                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 4)">删 除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -129,14 +133,15 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.assistMasterStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px" />
-              <el-table-column prop="studentName" label="学生姓名" width="120" />
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目" />
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120" />
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120" />
+              <el-table-column type="index" label="序号" width="50px"/>
+              <el-table-column prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
               <el-table-column label="操作" align="center" width="90">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 5)">删 除</el-button>
+                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 5)">删 除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -156,13 +161,14 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.undergraduateStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px" />
-              <el-table-column prop="studentName" label="学生姓名" width="120" />
-              <el-table-column prop="degreePaperTitle" label="学位论文题目" />
-              <el-table-column prop="graduateTime" label="毕业时间" width="120" />
+              <el-table-column type="index" label="序号" width="50px"/>
+              <el-table-column prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column prop="degreePaperTitle" label="学位论文题目"/>
+              <el-table-column prop="graduateTime" label="毕业时间" width="120"/>
               <el-table-column label="操作" align="center" width="90">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 6)">删 除</el-button>
+                  <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 6)">删 除
+                  </el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -188,12 +194,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="课程名称">
-              <el-input v-model="courseTeaching.courseName" />
+              <el-input v-model="courseTeaching.courseName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="授课对象">
-              <el-input v-model="courseTeaching.courseObject" />
+              <el-input v-model="courseTeaching.courseObject"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -210,7 +216,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="授课总课时">
-              <el-input v-model="courseTeaching.courseDuration" />
+              <el-input v-model="courseTeaching.courseDuration"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -227,12 +233,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
+              <el-input v-model="guidingStudent.studentName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="博士学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
+              <el-input v-model="guidingStudent.degreePaperTitle"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -250,8 +256,8 @@
           <el-col :span="12">
             <el-form-item label="学生是否获得学位">
               <el-select v-model="guidingStudent.isGainDegree" style="width: 100%" placeholder="请选择">
-                <el-option label="是" value="是" />
-                <el-option label="否" value="否" />
+                <el-option label="是" value="是"/>
+                <el-option label="否" value="否"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -269,12 +275,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
+              <el-input v-model="guidingStudent.studentName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="博士学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
+              <el-input v-model="guidingStudent.degreePaperTitle"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -292,8 +298,8 @@
           <el-col :span="12">
             <el-form-item label="学生是否获得学位">
               <el-select v-model="guidingStudent.isGainDegree" style="width: 100%" placeholder="请选择">
-                <el-option label="是" value="是" />
-                <el-option label="否" value="否" />
+                <el-option label="是" value="是"/>
+                <el-option label="否" value="否"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -311,12 +317,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
+              <el-input v-model="guidingStudent.studentName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="硕士学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
+              <el-input v-model="guidingStudent.degreePaperTitle"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -334,8 +340,8 @@
           <el-col :span="12">
             <el-form-item label="学生是否获得学位">
               <el-select v-model="guidingStudent.isGainDegree" style="width: 100%" placeholder="请选择">
-                <el-option label="是" value="是" />
-                <el-option label="否" value="否" />
+                <el-option label="是" value="是"/>
+                <el-option label="否" value="否"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -353,12 +359,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
+              <el-input v-model="guidingStudent.studentName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="硕士学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
+              <el-input v-model="guidingStudent.degreePaperTitle"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -376,8 +382,8 @@
           <el-col :span="12">
             <el-form-item label="学生是否获得学位">
               <el-select v-model="guidingStudent.isGainDegree" style="width: 100%" placeholder="请选择">
-                <el-option label="是" value="是" />
-                <el-option label="否" value="否" />
+                <el-option label="是" value="是"/>
+                <el-option label="否" value="否"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -395,12 +401,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="学生姓名">
-              <el-input v-model="guidingStudent.studentName" />
+              <el-input v-model="guidingStudent.studentName"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="学位论文题目">
-              <el-input v-model="guidingStudent.degreePaperTitle" />
+              <el-input v-model="guidingStudent.degreePaperTitle"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -428,21 +434,20 @@
 
 <script>
 
-import { submitFourthPage } from '@/api/tutor/applyMaster/firstApplyMaster'
-import { submitFourthPage1 } from '@/api/tutor/ApplyDoctor/FirstApplyDoctor'
-import { submitFourthPage2 } from '@/api/tutor/ApplyDoctor/addApplyDoctor'
+import { submitFourthPage } from '@/api/tutor/inspect'
+
 export default {
   name: 'Index',
   props: {
     applyId: Number,
+    applyType: Number,
+    applyCondition: Number,
     tutorName: String,
-    formFourth: Object
+    formFourth: Object,
+    loading: Boolean
   },
   data() {
     return {
-      // 申请类型
-      applyCondition: this.$route.params.applyCondition,
-      applyType: this.$route.params.applyType * 1,
 
       dialogFourth1: false, // 添加研究生课程教学情况
       dialogFourth2: false, // 添加指导博士生
@@ -474,7 +479,6 @@ export default {
   },
 
   created() {
-    console.log('formFourth init', this.formFourth)
     const students = this.formFourth.guidingStudents
     switch (this.applyType) {
       case 1: // 首次博导, 协助指导博士生 指导硕士生
@@ -513,48 +517,16 @@ export default {
       this.$confirm('提交填写?')
         // 提交保存第 4 页
         .then(() => {
-          switch(this.applyType){
-            case 1 :
-            submitFourthPage1(this.formFourth,this.applyId).then( res => {
-            if (res.data != null){
-                if (res.data.code === 1201) {
-                  this.$message.error(res.data.message)
-                  console.log(res.data.errorMessage)
-                  return
-                }
-              }
-            this.$message.success('提交成功')
-            this.$router.push('/tutorApply/tutorMainBoard')
-            })
-            break
-            case 2 : //博士导师增岗
-            submitFourthPage2(this.formFourth,this.applyId).then( res => {
-            if (res.data != null){
-                if (res.data.code === 1201) {
-                  this.$message.error(res.data.message)
-                  console.log(res.data.errorMessage)
-                  return
-                }
-              }
-            this.$message.success('提交成功')
-            this.$router.push('/tutorApply/tutorMainBoard')
-            })
-            break
-            case 4 :
-            submitFourthPage(this.formFourth, this.applyId).then(res => {
-            if (res.data != null){
-                if (res.data.code === 1201) {
-                  this.$message.error(res.data.message)
-                  console.log(res.data.errorMessage)
-                  return
-                }
-              }
-            // this.$emit('closeFourth') // 等价于 this.formVisible.fourth = false
+          this.$emit('load', true)
+          submitFourthPage(this.formFourth, this.applyId).then(res => {
+            if (res.data.code === 1201) {
+              this.$message.error(res.data.message)
+              console.log(res.data.errorMessage)
+              return
+            }
             this.$message.success('提交成功')
             this.$router.push('/tutorApply/tutorMainBoard')
           })
-            break
-          }
         })
         .catch(() => {
           console.log('cancel')
