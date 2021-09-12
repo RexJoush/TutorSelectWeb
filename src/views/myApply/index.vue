@@ -79,33 +79,22 @@ export default {
       let url = 'tutorApply/'
       switch (value.applyTypeId) {
         case 1:
-          url += 'firstApplyDoctor/1/101'
+          url += `firstApplyDoctor/1`
           await changeStatus(value.applyId)
           break
-        case 2:
-          url += `addApplyDoctor/2/101/${value.applyId}`
-          break
-        case 3:
-          url += `noInspectApplyDoctor/3/101/${value.applyId}`
-          break
+        case 2: url += `addApplyDoctor/2`; break
+        case 3: url += `noInspectApplyDoctor/3`; break
         case 4:
-          url += 'firstApplyMaster/4/101'
+          url += `firstApplyMaster/4`
           await changeStatus(value.applyId)
           break
-        case 5:
-          url += `addApplyMaster/5/101/${value.applyId}`
-          break
-        case 6:
-          url += `applyNoInspectMaster/6/101/${value.applyId}`
-          break
-        case 7:
-          url += 'firstApplyProfessional/7/101'
-          break
-        case 8:
-          url += `addApplyProfessional/8/101/${value.applyId}`
-          break
+        case 5: url += `addApplyMaster/5`; break
+        case 6: url += `noInspectApplyMaster/6`; break
+        case 7: url += `firstApplyProfessional/7`; break
+        case 8: url += `addApplyProfessional/8`; break
       }
-      this.$router.push(url)
+      // console.log(`${url}/101/${value.applyId}`)
+      this.$router.push(`${url}/101/${value.applyId}`)
     },
 
     // 查看申请信息

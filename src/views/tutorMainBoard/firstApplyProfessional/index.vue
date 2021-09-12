@@ -2,7 +2,7 @@
  * @Author: zjz
  * @Date: 2021-08-13 16:36:21
  * @LastEditors: Rex Joush
- * @LastEditTime: 2021-09-03 15:14:00
+ * @LastEditTime: 2021-09-12 21:18:40
 -->
 <template>
   <div v-loading="loading" class="main" element-loading-text="请稍等...">
@@ -41,12 +41,12 @@
               label-width="100px"
               label-position="top"
             >
-              <Row>
-                <Col :span="24">
-                  <Row>
-                    <Col :span="8">
+              <el-row>
+                <el-col :span="24">
+                  <el-row>
+                    <el-col :span="8">
                       <el-form-item label="申请学科">
-                        <el-select v-model="formSecond.applySubject" placeholder="请选择">
+                        <el-select v-model="formSecond.applySubject" placeholder="请选择" style="width: 100%">
                           <el-option
                             v-for="item in applySubjects"
                             :key="item.value"
@@ -55,10 +55,10 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="申请类别负责单位：">
-                        <el-select v-model="currentDepartment" placeholder="请选择" @change="setChildProfessional">
+                        <el-select v-model="currentDepartment" placeholder="请选择" style="width: 100%" @change="setChildProfessional">
                           <el-option
                             v-for="item in professionalMasterDiscipline"
                             :key="item.department"
@@ -68,10 +68,10 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="申请类别代码及名称">
-                        <el-select v-model="currentProfessional" placeholder="请选择" @change="setChildDomain">
+                        <el-select v-model="currentProfessional" placeholder="请选择" style="width: 100%" @change="setChildDomain">
                           <el-option
                             v-for="item in childProfessional"
                             :key="item.code"
@@ -81,10 +81,10 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col v-if="isDomain" :span="8">
+                    </el-col>
+                    <el-col v-if="isDomain" :span="8">
                       <el-form-item label="申请领域代码及名称">
-                        <el-select v-model="formSecond.professionalFieldCodeName" placeholder="请选择">
+                        <el-select v-model="formSecond.professionalFieldCodeName" placeholder="请选择" style="width: 100%">
                           <el-option
                             v-for="item in childDomain"
                             :key="item.domainCode"
@@ -93,16 +93,16 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col :span="24">
+                    </el-col>
+                  </el-row>
+                </el-col>
+                <el-col :span="24">
                   <el-form-item label="主要研究方向的内容及其意义">
                     <el-input v-model="formSecond.major" type="textarea" :autosize="{ minRows: 6 }" />
                   </el-form-item>
-                </Col>
+                </el-col>
                 <!-- 何时参加何种学术团体、任何种职务，有何社会兼职 -->
-                <Col :span="24">
+                <el-col :span="24">
                   <el-form-item label="何时参加何种学术团体、任何种职务，有何社会兼职">
                     <el-button type="primary" class="addButton" @click="dialogSecond1 = true">添加</el-button>
                     <el-table :data="formSecond.groupsOrPartTimeJobs" border style="width: 100%">
@@ -117,9 +117,9 @@
                       </el-table-column>
                     </el-table>
                   </el-form-item>
-                </Col>
+                </el-col>
                 <!-- 获何专家称号及时间 -->
-                <Col :span="24">
+                <el-col :span="24">
                   <el-form-item v-model="formSecond.expertTitles" label="获何专家称号及时间">
                     <el-button type="primary" class="addButton" @click="dialogSecond2 = true">添加</el-button>
                     <el-table :data="formSecond.expertTitles" border style="width: 100%">
@@ -133,15 +133,15 @@
                       </el-table-column>
                     </el-table>
                   </el-form-item>
-                </Col>
-              </Row>
-              <Row>
-                <Col :offset="9">
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :offset="9">
                   <el-form-item style="margin-top: 20px">
                     <el-button type="primary" @click="onSubmitSecondPage">保存此部分，填写下一项</el-button>
                   </el-form-item>
-                </Col>
-              </Row>
+                </el-col>
+              </el-row>
             </el-form>
           </el-card>
         </transition>
@@ -293,31 +293,7 @@ export default {
 
       /* =========================  第 4 页  ================================= */
       // 第四页提交信息
-      formFourth: {},
-      dialogFourth1: false, // 社科学术论文添加按钮
-      dialogFourth2: false, // 理工学术论文添加按钮
-      dialogFourth3: false, // 科研项目添加按钮
-
-      // 学生信息
-      guidingStudent: {
-        studentName: '', // 学生姓名
-        studentType: '', // 学生类型，用于区分是本科生，硕士生和博士生
-        studentEntryTime: '', // 学生入学时间
-        degreePaperTitle: '', // 学位论文题目
-        isGainDegree: '', // 是否获得学位
-        directType: '', // 指导类型，协助指导，指导
-        tutorName: '', // 导师姓名
-        graduateTime: '' // 毕业时间
-      },
-
-      // 研究生课程教学情况
-      courseTeaching: {
-        courseName: '', // 课程名称
-        courseTime: '', // 课程时间
-        courseDuration: '', // 授课总课时
-        courseObject: '' // 授课对象
-      }
-
+      formFourth: {}
     }
   },
   created() {
@@ -350,7 +326,7 @@ export default {
       // 设置领域
       this.formSecond.professionalFieldCodeName = data.professionalFieldCodeName
       this.formSecond.major = data.major
-      if (data.professionalFieldCodeName !== null) {
+      if (data.professionalFieldCodeName !== '' && data.professionalFieldCodeName != null) {
         this.isDomain = true
       }
       this.formSecond.groupsOrPartTimeJobs = data.groupsOrPartTimeJobs
@@ -393,6 +369,7 @@ export default {
       this.currentProfessional = ''
       this.formSecond.professionalApplicationSubjectCodeName = ''
       this.formSecond.professionalFieldCodeName = ''
+      this.isDomain = false
 
       // 修改当前页面的显示院系
       this.currentDepartment = value.department
