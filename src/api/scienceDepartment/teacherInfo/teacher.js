@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-05 17:35:21
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-06 15:09:02
+ * @LastEditTime: 2021-09-12 16:54:43
  */
 import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
@@ -12,7 +12,7 @@ import { baseUrl } from '@/api/url'
  // 查询教师信息
 export function searchTeachers(ZGH) {
   return request({
-    url: baseUrl + `/teacher_info/get/${ZGH}`,
+    url: baseUrl + `/admin/teacher_info/get/${ZGH}`,
     method: 'get',
   })
 }
