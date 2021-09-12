@@ -221,8 +221,8 @@ export default {
     //按条件搜索
     searchByOptions(queryParams) {
       checkDate(queryParams).then((res) => {
-        this.tutorList = res.data;
-        this.totalData = res.total;
+        this.tutorList = res.data.data;
+        this.totalData = res.data.total;
         this.loading = false;
       });
     },

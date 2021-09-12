@@ -100,7 +100,7 @@
               plain
               icon="el-icon-error"
               size="small"
-              @click="upDateStatus(37)"
+              @click="upDateStatus(10)"
             >驳回至研究生秘书
             </el-button>
           </el-col>
@@ -261,7 +261,6 @@ export default {
         '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
       this.tutorList = res.data
-      console.info(res.data)
       this.total = res.total
       this.loading = false
     },
@@ -274,10 +273,12 @@ export default {
         }
         updateStatus[i] = json
       }
-      console.info(updateStatus)
-      const { data: res } = await this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/update', updateStatus
       )
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
       this.getList()
     },
     async getApplyType() {
@@ -311,7 +312,6 @@ export default {
         '/admin/organization/getAll'
       )
       this.organizationOptions = res
-      console.info(this.organizationOptions)
     },
     async getSubject() {
       // const { data: res } = await this.$http.get(

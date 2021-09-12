@@ -173,8 +173,15 @@
             align="center"
             prop="commit"
             width="150"
-          />
-        </el-table>
+          >
+            <template #default="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="commitFun(scope.row)"
+              >添加备注
+              </el-button>
+            </template></el-table-column></el-table>
         <div class="block">
           <el-pagination
             v-show="total>0"
@@ -195,16 +202,25 @@
         <el-button type="primary" @click="rePassFun()">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 校会不通过的备注弹框 -->
+    <!-- 提交校分会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span v-if="multiple">批量不通过只能批量添加备注</span>
-      <span v-if="multiple==false">逐条通过可逐条添加备注</span>
+      <span>请添加学位委员会的备注信息(可以为空)</span>
       <el-input v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
-        <el-button type="primary" @click="returnFun()">确 定</el-button>
+        <el-button type="primary" @click="submitCommit()">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 校会不通过的备注弹框 -->
+    <!--    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">-->
+    <!--      <span v-if="multiple">批量不通过只能批量添加备注</span>-->
+    <!--      <span v-if="multiple==false">逐条通过可逐条添加备注</span>-->
+    <!--      <el-input v-model="commit" autocomplete="off" />-->
+    <!--      <span slot="footer" class="dialog-footer">-->
+    <!--        <el-button @click="cancel()">取 消</el-button>-->
+    <!--        <el-button type="primary" @click="returnFun()">确 定</el-button>-->
+    <!--      </span>-->
+    <!--    </el-dialog>-->
   </div>
 </template>
 
@@ -306,14 +322,17 @@ export default {
         var json = {
           'id_1': this.ids[i],
           'status_1': code,
-          'commit_1': this.commit || '研究生院管理未录入校会意见'
+          'commit_1': this.commit
         }
         updateStatus[i] = json
       }
-      console.info(updateStatus)
-      const { data: res } = await this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/update', updateStatus
       )
+      console.info(res)
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
       this.getList()
       this.commit = undefined
     },
@@ -413,7 +432,7 @@ export default {
         this.single = true
         this.multiple = true
       }
-      if (selection.length == 1) {
+      if (selection.length === 1) {
         this.multiple = false
       } else {
         this.multiple = true
@@ -422,6 +441,24 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.getList()
+    },
+    // 点击备注按钮，添加备注
+    commitFun(row) {
+      this.dialogVisible = true
+      this.commit = row.commitYjsyLr
+      this.row = row
+    },
+    async submitCommit() {
+      this.row.commitYjsyLr = this.commit
+      const { code: res } = await this.$http.post(
+        '/admin/update-status/updateCommitByGraduate', this.row
+      )
+      this.row = {}
+      this.dialogVisible = false
+      console.info(res)
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
     }
   }
 }

@@ -192,8 +192,8 @@ export default {
       this.loading = true;
       this.queryParams.applyStatus = 25 + "-" + 30 + "-" + 31;
       checkDate(this.queryParams).then((res) => {
-        this.tutorList = res.data;
-        this.totalData = res.total;
+        this.tutorList = res.data.data;
+        this.totalData = res.data.total;
         this.loading = false;
       });
     },
