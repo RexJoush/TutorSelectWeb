@@ -108,7 +108,7 @@
                           style="width: 100%"
                         >
                           <el-option
-                            v-for="item in firstDiscipline"
+                            v-for="item in masterFirstDiscipline"
                             :key="item.code"
                             :label="item.code + ' ' + item.degreeAuthorizationPoint"
                             :value="item.code + ' ' + item.degreeAuthorizationPoint"
@@ -289,7 +289,7 @@
 </template>
 
 <script>
-import { doctorPrimaryDiscipline, firstDiscipline } from '@/utils/data'
+import { doctorPrimaryDiscipline, masterFirstDiscipline } from '@/utils/data'
 import { submitSecondPage } from '@/api/tutor/inspect'
 import First from '../First'
 import Third from '../Third'
@@ -303,7 +303,7 @@ export default {
       loading: false,
       // 博士学科代码
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
-      firstDiscipline: firstDiscipline,
+      masterFirstDiscipline: masterFirstDiscipline,
       // 此次申请的id，在第一页提交时传回
       applyId: 0,
       // 当前申请的类型

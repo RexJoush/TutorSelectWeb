@@ -56,9 +56,7 @@
                     <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
                         <el-select
-                          v-model="
-                            formSecond.doctoralMasterApplicationSubjectUnit
-                          "
+                          v-model="formSecond.doctoralMasterApplicationSubjectUnit"
                           style="width: 100%;"
                           placeholder="请选择"
                           @change="setChildNode"
@@ -84,12 +82,8 @@
                           <el-option
                             v-for="item in childNodes"
                             :key="item.code"
-                            :label="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
-                            :value="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
+                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
                           >
                           </el-option>
                         </el-select>
@@ -97,7 +91,19 @@
                     </Col>
                     <Col :span="8">
                       <el-form-item label="博导在岗学科">
-                        <el-input v-model="formSecond.doctoralTutorOnDuty" />
+                        <el-select
+                          style="width: 100%;"
+                          v-model="formSecond.doctoralTutorOnDuty"
+                          placeholder="请选择"
+                        >
+                          <el-option
+                            v-for="item in doctorFirstDiscipline"
+                            :key="item.code"
+                            :label="item.code + ' ' + item.degreeAuthorizationPoint"
+                            :value="item.code + ' ' + item.degreeAuthorizationPoint"
+                          >
+                          </el-option>
+                        </el-select>
                       </el-form-item>
                     </Col>
                     <Col :span="8">
@@ -311,7 +317,7 @@
 </template>
 
 <script>
-import { doctorPrimaryDiscipline } from '@/utils/data'
+import { doctorFirstDiscipline, doctorPrimaryDiscipline } from '@/utils/data'
 import { submitSecondPage } from '@/api/tutor/inspect'
 import First from '../First'
 import Third from '../Third'
@@ -325,6 +331,8 @@ export default {
       loading: false,
       // 博士学科代码
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
+      // 博士一级学科
+      doctorFirstDiscipline: doctorFirstDiscipline,
       // 此次申请的id，在第一页提交时传回
       applyId: 0,
       // 当前申请的类型
