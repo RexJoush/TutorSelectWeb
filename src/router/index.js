@@ -241,6 +241,7 @@ export const asyncRoutes = [
       {
         path: 'socialDetail',
         name: 'SocialDetail',
+        hidden: true,
         component: () => import('@/views/socialScienceCheck/detail/index'),
         meta: { title: '社科处详情页面', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
       }
@@ -262,6 +263,7 @@ export const asyncRoutes = [
       {
         path: 'researchDetail',
         name: 'ResearchDetail',
+        hidden: true,
         component: () => import('@/views/researchCheck/detail/index'),
         meta: { title: '科研处详情信息', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
       }
@@ -372,6 +374,7 @@ export const asyncRoutes = [
       {
         path: 'graduateDetail',
         name: 'GraduateDetail',
+        hidden: true,
         component: () => import('@/views/graduateLeader/detail/index'),
         meta: { title: '研究生院领导基本信息', icon: 'tree', roles: ['admin', 'graduateLeader'] }
       }

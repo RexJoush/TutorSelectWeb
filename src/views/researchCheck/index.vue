@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-10 10:50:06
+ * @LastEditTime: 2021-09-12 15:41:05
 -->
 <template>
   <div class="app-container">
@@ -112,10 +112,14 @@
           </el-row>
 
           <el-table
+            ref="singleTable"
             :data="tutorList"
+            highlight-current-row
             @selection-change="handleSelectionChange"
+            :row-class-name="tableRowClassName"
           >
             <el-table-column type="selection" width="50" align="center"/>
+            <el-table-column label="序号" type="index" width="50" />
             <el-table-column label="工号" align="center" prop="tutorId" />
             <el-table-column label="姓名" align="center" prop="name" />
             <el-table-column 
@@ -132,6 +136,7 @@
               align="center"
               prop="inspectDescribe"
             />
+            <el-table-column label="备注" align="center" prop="commit" />
             <el-table-column 
               label="详情" 
               align="center" 
@@ -156,17 +161,6 @@
           >
           </el-pagination>
       </el-row>
-      <el-row :gutter="10" class="mb8" style="left: 1300px">
-          <el-col :span="3">
-            <el-button
-              type="success"
-              plain
-              size="small"
-              @click="submitFun()"
-              >提交</el-button
-            >
-          </el-col>
-        </el-row>
 
       <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
@@ -257,25 +251,43 @@ export default {
     this.getOrganizationList(); //初始化所有的负责院系
   },
   methods: {
+    //高亮当前行
+    setCurrent(row) {
+      this.$refs.singleTable.setCurrentRow(row);
+    },
+    //高亮表格
+    tableRowClassName() {
+      //详情页返回时让该行高亮
+      this.applyId = this.$route.query.applyId;
+      if (this.applyId !== undefined) {
+        // console.log("高亮显示", this.applyId);
+        // console.log("hhhhhhhhhhhhh", this.tutorList);
+        this.tutorList.forEach((row) => {
+          if (row.applyId === this.applyId) {
+            // console.log("898989",row);
+            this.setCurrent(row)
+          }
+        });
+      } else {
+        console.log("无状态");
+      }
+    },
     //查看详情
     handleDetail(row) {
       const tutorId = row.tutorId
       const applyId = row.applyId
+      const name = row.name;
       // console.log(row);
-      this.$router.push({path:"/research/researchDetail", query: {tutorId: tutorId,applyId: applyId}})
+      this.$router.push({
+        path:"/research/researchDetail", 
+        query: {tutorId: tutorId,applyId: applyId, name: name}})
     },
 
     //初始化负责院系(下拉框)
     async getOrganizationList() {
-      // getOrganization().then(res => {
-      //   this.organizationList = res.data;
-      // })
-
       const {data: res} = await this.$http.get(
         '/admin/organization/getAll'
       )
-      // if(res.code != 20000) return this.$message('获取院系失败')
-      // this.organizationList = res.data.data
       this.organizationList = res
       console.info(this.organizationList)
     },
@@ -288,6 +300,9 @@ export default {
         if(res.code == 20000){
           this.tutorList = res.data.data;
           this.totalData = res.total;
+        }
+        if (res.code == 20001) {
+          this.$message("暂无待初审的教师!");
         }
       })
     },
@@ -309,51 +324,33 @@ export default {
     },
     //初审通过
     passFun() {
-      // this.dialogVisiblePass = true;
-      this.check(64, "unCommit");
-    },
-    //初审不通过
-    unPassFun() {
-      //驳回之前判断是否只选择了一条
-      // if (this.multipleSelection.length > 1) {
-      //   this.$message.warning("注意:只能选择一条数据审核！");
-      // } else {
-      //   this.dialogVisible = true
-      // }
-      this.check(53, "unCommit");
-    },
-    //提交按鈕
-    submitFun() {
       this.dialogVisiblePass = true;
     },
     //审核通过确认弹框确认按钮
     rePassFun() {
-      // this.check(64);
-      let flag = true;
-      for (let index = 0; index < this.updataList.length; index++) {
-        if (this.updataList[index].status_1 == 31) {
-          flag = false;
-        }
-      }
-      if (flag) {
-        this.check(9999);
-        this.getResearchCheckInit();
-      } else {
-        this.$message.warning("有待初审的数据，请先进行审核！");
-      }
+      this.check(64);
       this.dialogVisiblePass = false;
-      // window.location.reload();//重新加载页面
+      window.location.reload();//重新加载页面
     },
-    
+    //初审不通过
+    unPassFun() {
+      //驳回之前判断是否只选择了一条
+      if (this.multipleSelection.length > 1) {
+        this.$message.warning("注意:只能选择一条数据审核！");
+      } else {
+        this.dialogVisible = true
+      }
+
+    },
     //弹框确定按钮驳回操作
-    // returnFun() {
-    //   //备注
-    //   this.updataList[0].commit_1 = this.returnCommit;
-    //   this.check(53);
-    //   this.dialogVisible = false
-    //   this.returnCommit = null
-    //   window.location.reload();//重新加载页面
-    // },
+    returnFun() {
+      //备注
+      this.updataList[0].commit_1 = this.returnCommit;
+      this.check(53);
+      this.dialogVisible = false
+      this.returnCommit = null
+      window.location.reload();//重新加载页面
+    },
 
     //弹框取消按钮
     cancel() {
@@ -362,28 +359,17 @@ export default {
     },
 
     //更新操作
-    check(status, initStatus) {
-      if(status === 9999) {
-        //如果status是9999，则执行提交按钮
-        for(let index = 0; index < this.updataList.length; index ++) {
-          this.updataList[index].status_1 = this.updataList[index].status_1 - 4;
-        }
-      } else {
-        for(let index = 0; index < this.updataList.length; index ++) {
-          this.updataList[index].status_1 = status;
-        }
+    check(status) {
+      for(let index = 0; index < this.updataList.length; index ++) {
+        this.updataList[index].status_1 = status;
       }
-      
       updateStatus(this.updataList).then( res => {
         if(res.code == 20000) {
           this.$message.success("审核成功");
         }
         this.updataList.length = 0
-        if (initStatus != "commit") {
-          this.getResearchCheckInit();
-        }
-        // this.resetQuery();
-        // this.getSecretaryInit();
+        this.resetQuery();
+        this.getSecretaryInit();
       });
     },
 
@@ -415,11 +401,6 @@ export default {
       this.currentPage.pageNum = val;
       this.getResearchCheckInit();
     },
-    
-
   },
-
-
-
 };
 </script>

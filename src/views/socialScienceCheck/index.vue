@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-08 17:15:28
+ * @LastEditTime: 2021-09-12 16:36:42
 -->
 <template>
   <div class="app-container">
@@ -110,8 +110,15 @@
         </el-col>
       </el-row>
 
-      <el-table :data="tutorList" @selection-change="handleSelectionChange">
+      <el-table
+        ref="singleTable"
+        :data="tutorList"
+        highlight-current-row
+        @selection-change="handleSelectionChange"
+        :row-class-name="tableRowClassName"
+      >
         <el-table-column type="selection" width="50" align="center" />
+        <el-table-column label="序号" type="index" width="50" />
         <el-table-column label="工号" align="center" prop="tutorId" />
         <el-table-column label="姓名" align="center" prop="name" />
         <el-table-column
@@ -170,7 +177,7 @@
 
 <script>
 import {
-  getApplyType,
+  // getApplyType,
   checkDate, //查询数据
   updateStatus, //更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
@@ -235,6 +242,7 @@ export default {
       //审核后需要下发的List数据
       updataList: [],
       tutorList: [],
+      hightList: [],
     };
   },
   created() {
@@ -242,12 +250,25 @@ export default {
     this.getOrganizationList(); //初始化所有的负责院系
   },
   methods: {
+    //高亮当前行
+    setCurrent(row) {
+      this.$refs.singleTable.setCurrentRow(row);
+    },
     //高亮表格
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex === row) {
-        return "warning-row";
+    tableRowClassName() {
+      //详情页返回时让该行高亮
+      this.applyId = this.$route.query.applyId;
+      if (this.applyId !== undefined) {
+        // console.log("高亮显示", this.applyId);
+        // console.log("hhhhhhhhhhhhh", this.tutorList);
+        this.tutorList.forEach((row) => {
+          if (row.applyId === this.applyId) {
+            // console.log("898989",row);
+            this.setCurrent(row)
+          }
+        });
       } else {
-        return "";
+        console.log("无状态");
       }
     },
     //查看详情
@@ -256,6 +277,7 @@ export default {
       const tutorId = row.tutorId;
       const applyId = row.applyId;
       const name = row.name;
+      console.log("///////////////");
       console.log(applyId);
       this.$router.push({
         path: "/social/socialDetail",
@@ -266,13 +288,12 @@ export default {
     //初始化负责院系(下拉框)
     async getOrganizationList() {
       const { data: res } = await this.$http.get(
-        "/admin/organization/getAll"
-      );  
+        "/admin/organization/getAll");
       // if (res.data == null) return this.$message("获取院系失败");
       // console.log("初始化负责院系的数据")
       // console.log(res.data.data)
       // this.organizationList = res.data.data;
-      this.organizationList = res
+      this.organizationList = res;
       console.info(this.organizationList);
     },
 
@@ -281,37 +302,12 @@ export default {
     getSocialCheckInit() {
       this.queryParams.applyStatus = 30;
       checkDate(this.queryParams).then((res) => {
-        console.log("--------------")
+        console.log("--------------");
         console.log(res.data.data);
-        if (res.code == 20000) {        
-          this.tutorList = res.data.data
-          console.log(this.tutorList)
+        if (res.code == 20000) {
+          this.tutorList = res.data.data;
+          console.log(this.tutorList);
           this.totalData = res.total;
-          //对材料进行审核
-          const cs1 = this.$route.query.commit_1;
-          const cs2 = this.$route.query.commit_2;
-          const cs3 = this.$route.query.commit_3;
-          const cs4 = this.$route.query.commit_4;
-
-          console.log(cs1);
-          console.log(cs2);
-          console.log(cs3);
-          console.log(cs4);
-          if (
-            cs1 == "材料审核通过" &&
-            cs2 == "材料审核通过" &&
-            cs3 == "材料审核通过" &&
-            cs4 == "材料审核通过"
-          ) {
-            this.csDes = "材料审核通过";
-          } else if (cs1 == "" && cs2 == "" && cs3 == "" && cs4 == "") {
-            this.csDes = "待审核";
-          } else {
-            this.csDes = "材料审核不通过";
-          }
-          // console.log("---------------：：：",this.$route.query.commit_1)
-          //console.log("78787878",cs1)
-          this.tutorList[0].commit = this.csDes;
         }
         if (res.code == 20001) {
           this.$message("暂无待初审的教师!");
@@ -341,6 +337,7 @@ export default {
     //审核通过确认弹框按钮
     rePassFun() {
       this.check(63);
+      // console.log("000000",this.updataList)
       this.dialogVisiblePass = false;
       window.location.reload(); //重新加载页面
     },
@@ -375,7 +372,6 @@ export default {
     check(status) {
       for (let index = 0; index < this.updataList.length; index++) {
         this.updataList[index].status_1 = status;
-        console.log("90909",this.updataList[index])
       }
       updateStatus(this.updataList).then((res) => {
         if (res.code == 20000) {
@@ -400,7 +396,8 @@ export default {
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
         let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].tutorId;
+        //记得传applyId,很重要！！！！！！！
+        obj.id_1 = this.multipleSelection[index].applyId;
         obj.status_1 = this.multipleSelection[index].status;
         obj.commit_1 = "";
         console.log(obj);
