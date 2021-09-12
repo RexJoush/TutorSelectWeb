@@ -104,6 +104,7 @@ export default {
     // 检测申请状态函数
     checkApply: function(type) {
       checkApply(type).then((res) => {
+        console.log(res.data)
         let url = ''
         switch (type) {
           case 1: url += `firstApplyDoctor/1`; break
