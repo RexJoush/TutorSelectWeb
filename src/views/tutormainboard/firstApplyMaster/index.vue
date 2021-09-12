@@ -58,7 +58,7 @@
                     </Col>
                     <Col :span="8">
                       <el-form-item label="申请学科负责单位：">
-                        <el-select v-model="currentDepartment" placeholder="请选择" @change="setChildNode">
+                        <el-select v-model="formSecond.doctoralMasterApplicationSubjectUnit" placeholder="请选择" @change="setChildNode">
                           <el-option
                             v-for="item in academicMasterPrimaryDiscipline"
                             :key="item.department"
@@ -241,11 +241,10 @@ export default {
       },
 
       /* =========================  第 1 页  ================================= */
-      tutorName: '',
+      tutorName: '', // 教师姓名, 第 4 页用到
 
       /* =========================  第 2 页  ================================= */
       childNodes: [], // 院系的子专业信息
-      currentDepartment: '', // 院系信息
       dialogSecond1: false, // 学术团体或职务的显示框
       dialogSecond2: false, // 专家称号的显示框
       applySubjects: [
@@ -323,7 +322,6 @@ export default {
         this.formSecond.applySubject = ''
       }
       this.formSecond.doctoralMasterApplicationSubjectUnit = data.doctoralMasterApplicationSubjectUnit
-      this.currentDepartment = data.doctoralMasterApplicationSubjectUnit
       this.formSecond.doctoralMasterSubjectCodeName = data.doctoralMasterSubjectCodeName
       this.formSecond.major = data.major
       this.formSecond.groupsOrPartTimeJobs = data.groupsOrPartTimeJobs
@@ -364,15 +362,12 @@ export default {
       this.formSecond.doctoralMasterSubjectCodeName = ''
       // 将当前选择加入 form 提交中
       this.formSecond.doctoralMasterApplicationSubjectUnit = value.department
-      // 修改当前页面的显示院系
-      this.currentDepartment = value.department
       // 设置子项目为当前院系的专业
       this.childNodes = value.professional
     },
 
     // 添加学术团体项
     addGroupsOrPartTimeJob: function() {
-      console.log(this.groupsOrPartTimeJob)
       this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
       this.groupsOrPartTimeJob = {
         time: '',
