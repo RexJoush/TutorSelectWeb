@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-27 10:02:58
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 17:11:01
+ * @LastEditTime: 2021-09-08 10:07:26
  */
 
 import request from '@/utils/request'
@@ -13,7 +13,7 @@ import { baseUrl } from '@/api/url'
 //查询教材或学术著作
 export function searchWorks(tutorId, applyId) {
     return request({
-        url: baseUrl + `/academic_works/get/${tutorId}/${applyId}`,
+        url: baseUrl + `/admin/academic_works/get/${tutorId}/${applyId}`,
         method: 'get'
     })
 }
@@ -21,7 +21,7 @@ export function searchWorks(tutorId, applyId) {
 //更新审核状态和备注
 export function updateWorks(data) {
     return request({
-      url: baseUrl + '/academic_works/update',
+      url: baseUrl + '/admin/academic_works/update',
       method: 'post',
       data: data
     })

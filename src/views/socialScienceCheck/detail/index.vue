@@ -4,10 +4,13 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-02 17:11:51
+ * @LastEditTime: 2021-09-07 15:29:29
 -->
 <template>
   <div id="app-container"> 
+      <br>
+      <el-page-header style="margin-left: 30px;" @back="goBack" :content=this.name>
+      </el-page-header>
       <!-- 学术论文 -->
       <p class="paper_title">学术论文</p>               
       <el-table
@@ -320,328 +323,375 @@
 </template>
 
 <script>
-import { 
-  searchPaper,
-  updatePaper 
-} from "@/api/scienceDepartment/academicPaper/paper"
-import {
-  searchWorks,
-  updateWorks
-} from "@/api/scienceDepartment/academicWorks/works"
-import {
-  searchProject,
-  updateProject
-} from "@/api/scienceDepartment/researchProject/project"
-import {
-  searchAwards,
-  updateAwards
-  } from "@/api/scienceDepartment/teachingAwards/awards"
-// import axios from 'axios'
-export default {
-  data() {
-    return {
-      id: "",
-      applyId: "",
-      id1: "0",
-      id2: "0",
-      id3: "0",
-      id4: "0",
-      returnCommit1: "",//备注内容
-      returnCommit2: "",
-      returnCommit3: "",
-      returnCommit4: "",
-      dialogVisible1: false,//备注弹框显示
-      dialogVisible2: false,
-      dialogVisible3: false,
-      dialogVisible4: false,
-      paperList: [], //学术论文
-      projectList: [],//科研项目
-      workList: [],//教材或学术著作
-      awardList: [],//科研教学奖励
-      
-      //学术论文表单查询参数
-      paperQueryParams:{
-        tutorId: "",
-        paperName: "",//论文名称
-        firstAuthorName: "",//第一作者
-        paperPublicationTime: "",//发表时间
-        journalName: "",//期刊名称
-        journalLevel: "",//期刊等级
-        paperProveMaterials: "",//证明材料
-        col1: "",//成果认定（通过、驳回）
-        col2: "",//备注
+  import { 
+    searchPaper,
+    updatePaper 
+  } from "@/api/scienceDepartment/academicPaper/paper"
+  import {
+    searchWorks,
+    updateWorks
+  } from "@/api/scienceDepartment/academicWorks/works"
+  import {
+    searchProject,
+    updateProject
+  } from "@/api/scienceDepartment/researchProject/project"
+  import {
+    searchAwards,
+    updateAwards
+    } from "@/api/scienceDepartment/teachingAwards/awards"
+  // import axios from 'axios'
+  export default {
+    data() {
+      return {
+        id: "",
+        applyId: "",
+        name: "",
+        id1: "0",
+        id2: "0",
+        id3: "0",
+        id4: "0",
+        commit_1: "",
+        commit_2: "",
+        commit_3: "",
+        commit_4: "",
+        returnCommit1: "",//备注内容
+        returnCommit2: "",
+        returnCommit3: "",
+        returnCommit4: "",
+        dialogVisible1: false,//备注弹框显示
+        dialogVisible2: false,
+        dialogVisible3: false,
+        dialogVisible4: false,
+        paperList: [], //学术论文
+        projectList: [],//科研项目
+        workList: [],//教材或学术著作
+        awardList: [],//科研教学奖励
+        
+        //学术论文表单查询参数
+        paperQueryParams:{
+          tutorId: "",
+          paperName: "",//论文名称
+          firstAuthorName: "",//第一作者
+          paperPublicationTime: "",//发表时间
+          journalName: "",//期刊名称
+          journalLevel: "",//期刊等级
+          paperProveMaterials: "",//证明材料
+          col1: "",//成果认定（通过、驳回）
+          col2: "",//备注
+        },
+        //科研项目表单查询参数
+        projectQueryParams:{
+          projectName: "",//项目名称
+          approvalNumber: "",//批准号
+          projectChargeName: "",//负责人姓名
+          projectStartTime: "",//开始日期
+          projectEndTime: "",//结束日期
+          projectLevel: "",//项目级别
+          projectTotalPrice: "",//总经费
+          projectProveMaterials: "",//证明材料
+          col1: "",//成果认定（通过、驳回）
+          col2: "",//备注
+        },
+        //教材或学术著作表单查询参数
+        workQueryParams:{
+          worksName: "",//著作名称
+          worksRank: "",//排名
+          worksPublicationTime: "",//出版日期
+          worksPublicationUnit: "",//出版单位
+          totalWords: "",//完成字数
+          worksProveMaterials: "",//证明材料
+          col1: "",//成果认定（通过、驳回）
+          col2: "",//备注
+        },
+        //科研教学奖励表单查询参数
+        awardQueryParams:{
+          awardsName: "",//奖励名称
+          awardsRank: "",//排名
+          awardsUnit: "",//颁奖单位
+          awardsLevel: "",//获奖级别
+          awardsClass: "",//获奖等级
+          awardsTime: "",//获奖日期
+          awardsProveMaterials: "",//证明材料
+          col1: "",//成果认定（通过、驳回）
+          col2: "",//备注
+        },
+
+      }
+    },
+    created() {
+      this.getPaperList()
+      this.getProjectList()
+      this.getWorkList()
+      this.getAwardList()
+    },
+    methods: {
+      // 1.查询学术论文
+      getPaperList() {  
+        this.id = this.$route.query.tutorId
+        this.applyId = this.$route.query.applyId
+        this.name = this.$route.query.name + "老师的详细信息"
+        console.log(this.id) //可以获取到
+        searchPaper(this.id,this.applyId).then((res)=>{
+          this.paperList = res.data
+          console.log("000000000000000")
+          console.log(res.data); 
+          //判断论文材料审核是否通过
+          for(let item1 of this.paperList){
+            if(item1.col1!="通过"){
+              this.commit_1 = "材料审核不通过"
+            }
+          }
+          console.log("--------学术论文---------") 
+          if(!this.commit_1) this.commit_1 = "材料审核通过" 
+          console.log(this.commit_1)   
+        })
+        
       },
-      //科研项目表单查询参数
-      projectQueryParams:{
-        projectName: "",//项目名称
-        approvalNumber: "",//批准号
-        projectChargeName: "",//负责人姓名
-        projectStartTime: "",//开始日期
-        projectEndTime: "",//结束日期
-        projectLevel: "",//项目级别
-        projectTotalPrice: "",//总经费
-        projectProveMaterials: "",//证明材料
-        col1: "",//成果认定（通过、驳回）
-        col2: "",//备注
+      // 2.查询科研项目
+      getProjectList() {
+        searchProject(this.id, this.applyId).then(res => {
+          this.projectList = res.data
+          for(let item of this.projectList){
+            if(item.col1!="通过"){
+              this.commit_4 = "材料审核不通过"
+            }
+          }
+          console.log("--------科研项目----------")  
+          if(!this.commit_4) this.commit_4 = "材料审核通过"
+          console.log(this.commit_4)
+        })
       },
-      //教材或学术著作表单查询参数
-      workQueryParams:{
-        worksName: "",//著作名称
-        worksRank: "",//排名
-        worksPublicationTime: "",//出版日期
-        worksPublicationUnit: "",//出版单位
-        totalWords: "",//完成字数
-        worksProveMaterials: "",//证明材料
-        col1: "",//成果认定（通过、驳回）
-        col2: "",//备注
+      // 3.查询教材或学术著作
+      getWorkList() {
+        searchWorks(this.id, this.applyId).then(res => {
+          this.workList = res.data
+          for(let item of this.workList){
+            if(item.col1!="通过"){
+              this.commit_3 = "材料审核不通过"
+            }
+          }
+          console.log("---------------教材或学术著作------------")  
+          if(!this.commit_3) this.commit_3 = "材料审核通过"
+          console.log(this.commit_3)
+        })
       },
-      //科研教学奖励表单查询参数
-      awardQueryParams:{
-        awardsName: "",//奖励名称
-        awardsRank: "",//排名
-        awardsUnit: "",//颁奖单位
-        awardsLevel: "",//获奖级别
-        awardsClass: "",//获奖等级
-        awardsTime: "",//获奖日期
-        awardsProveMaterials: "",//证明材料
-        col1: "",//成果认定（通过、驳回）
-        col2: "",//备注
+      // 4.查询科研教学奖励
+      getAwardList() {
+        searchAwards(this.id, this.applyId).then(res => {
+          this.awardList = res.data
+          for(let item2 of this.awardList){
+            if(item2.col1!="通过"){
+              this.commit_2 = "材料审核不通过"
+            }
+          }
+          console.log("-----------科研教学奖励表-----------------")  
+          if(!this.commit_2) this.commit_2 = "材料审核通过"
+          console.log(this.commit_2)
+        })
       },
 
-    }
-  },
-  created() {
-    this.getPaperList()
-    this.getProjectList()
-    this.getWorkList()
-    this.getAwardList()
-  },
-  methods: {
-    // 1.查询学术论文
-    getPaperList() {  
-      this.id = this.$route.query.tutorId
-      this.applyId = this.$route.query.applyId
-      console.log(this.id) //可以获取到
-      searchPaper(this.id,this.applyId).then((res)=>{
-        this.paperList = res.data
-        // console.log(res.data);       
-      })
-    },
-    // 2.查询科研项目
-    getProjectList() {
-      searchProject(this.id, this.applyId).then(res => {
-        this.projectList = res.data
-      })
-    },
-    // 3.查询教材或学术著作
-    getWorkList() {
-      searchWorks(this.id, this.applyId).then(res => {
-        this.workList = res.data
-      })
-    },
-    // 4.查询科研教学奖励
-    getAwardList() {
-      searchAwards(this.id, this.applyId).then(res => {
-        this.awardList = res.data
-      })
-    },
+      //返回
+      goBack() {
+        this.$router.push({path:"/social/socialScienceCheck", query:{commit_1:this.commit_1,commit_2:this.commit_2,commit_3:this.commit_3,commit_4:this.commit_4}});
+        // this.$route.query.commit({commit_1:this.commit_1})
+      },
 
-    //---------------------1.学术论文表------------------
-    //论文审核通过(不需要弹框)
-    passPaperFun(row) {
-      console.log(row)
-      const infoId1 = row.paperId
-      // this.infoId = row.paperId
-      console.log(infoId1)
-      let editPaperForm = {
-        paperId: row.paperId,
-        col1: "通过",
-        col2: ""
-      }
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
-      updatePaper(editPaperForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+      //---------------------1.学术论文表------------------
+      //论文审核通过(不需要弹框)
+      passPaperFun(row) {
+        console.log(row)
+        const infoId1 = row.paperId
+        // this.infoId = row.paperId
+        console.log(infoId1)
+        let editPaperForm = {
+          paperId: row.paperId,
+          col1: "通过",
+          col2: ""
         }
-      
-      })
-      window.location.reload();
-    },
-    //论文审核不通过
-    unPassPaperFun(row) {
-      const unInfoId1 = row.paperId;
-      this.id1 = unInfoId1;
-      // console.log(unInfoId)
-      // console.log(row)
-      this.dialogVisible1 = true;
-      // this.returnFun(unInfoId);
-    },
-    //弹框确定按钮驳回操作
-    returnFun1() {
-      let updatePaperForm = {
-        paperId: this.id1,
-        col1: "不通过",
-        col2: this.returnCommit1
-      }
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
-      updatePaper(updatePaperForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+        // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
+        updatePaper(editPaperForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        
+        })
+        window.location.reload();
+      },
+      //论文审核不通过
+      unPassPaperFun(row) {
+        const unInfoId1 = row.paperId;
+        this.id1 = unInfoId1;
+        // console.log(unInfoId)
+        // console.log(row)
+        this.dialogVisible1 = true;
+        // this.returnFun(unInfoId);
+      },
+      //弹框确定按钮驳回操作
+      returnFun1() {
+        let updatePaperForm = {
+          paperId: this.id1,
+          col1: "不通过",
+          col2: this.returnCommit1
         }
-      })
-      window.location.reload();
-      this.dialogVisible1 = false;
-    },
-    //弹框取消按钮
-    cancel1() {
-      this.dialogVisible1 = false;
-      this.returnCommit1 = null;
-    },
+        // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
+        updatePaper(updatePaperForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        })
+        window.location.reload();
+        this.dialogVisible1 = false;
+      },
+      //弹框取消按钮
+      cancel1() {
+        this.dialogVisible1 = false;
+        this.returnCommit1 = null;
+      },
 
-    //------------------------2.科研项目表----------------
-    //科研项目审核通过(不需要弹框)
-    passProjectFun(row) {
-      console.log(row)
-      const infoId2 = row.projectId
-      console.log(infoId2)
-      let editProjectForm = {
-        projectId: row.projectId,
-        col1: "通过",
-        col2: ""
-      }
-      updateProject(editProjectForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+      //------------------------2.科研项目表----------------
+      //科研项目审核通过(不需要弹框)
+      passProjectFun(row) {
+        console.log(row)
+        const infoId2 = row.projectId
+        console.log(infoId2)
+        let editProjectForm = {
+          projectId: row.projectId,
+          col1: "通过",
+          col2: ""
         }
-      
-      })
-      window.location.reload();
-    },
-    //科研项目审核不通过
-    unPassProjectFun(row) {
-      const unInfoId2 = row.projectId;
-      this.id2 = unInfoId2;
-      this.dialogVisible2 = true;
-    },
-    //弹框确定按钮驳回操作
-    returnFun2() {
-      let updatePaperForm = {
-        projectId: this.id2,
-        col1: "不通过",
-        col2: this.returnCommit2
-      }
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
-      updateProject(updatePaperForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+        updateProject(editProjectForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        
+        })
+        window.location.reload();
+      },
+      //科研项目审核不通过
+      unPassProjectFun(row) {
+        const unInfoId2 = row.projectId;
+        this.id2 = unInfoId2;
+        this.dialogVisible2 = true;
+      },
+      //弹框确定按钮驳回操作
+      returnFun2() {
+        let updatePaperForm = {
+          projectId: this.id2,
+          col1: "不通过",
+          col2: this.returnCommit2
         }
-      })
-      window.location.reload();
-      this.dialogVisible2 = false;
-    },
-    //弹框取消按钮
-    cancel2() {
-      this.dialogVisible2 = false;
-      this.returnCommit2 = null;
-    },
+        // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
+        updateProject(updatePaperForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        })
+        window.location.reload();
+        this.dialogVisible2 = false;
+      },
+      //弹框取消按钮
+      cancel2() {
+        this.dialogVisible2 = false;
+        this.returnCommit2 = null;
+      },
 
-    // //-------------------3.教材或学术著作表----------------
-    //教材或学术著作审核通过(不需要弹框)
-    passWorkFun(row) {
-      console.log(row)
-      const infoId3 = row.worksId
-      console.log(infoId3)
-      let editWorkForm = {
-        worksId: row.worksId,
-        col1: "通过",
-        col2: ""
-      }
-      updateWorks(editWorkForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+      // //-------------------3.教材或学术著作表----------------
+      //教材或学术著作审核通过(不需要弹框)
+      passWorkFun(row) {
+        console.log(row)
+        const infoId3 = row.worksId
+        console.log(infoId3)
+        let editWorkForm = {
+          worksId: row.worksId,
+          col1: "通过",
+          col2: ""
         }
-      
-      })
-      window.location.reload();
-    },
-    //教材或学术著作审核不通过
-    unPassWorkFun(row) {
-      const unInfoId3 = row.worksId;
-      this.id3 = unInfoId3;
-      // console.log(unInfoId)
-      // console.log(row)
-      this.dialogVisible3 = true;
-      // this.returnFun(unInfoId);
-    },
-    //弹框确定按钮驳回操作
-    returnFun3() {
-      let updateWorkForm = {
-        worksId: this.id3,
-        col1: "不通过",
-        col2: this.returnCommit3
-      }
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
-      updateWorks(updateWorkForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+        updateWorks(editWorkForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        
+        })
+        window.location.reload();
+      },
+      //教材或学术著作审核不通过
+      unPassWorkFun(row) {
+        const unInfoId3 = row.worksId;
+        this.id3 = unInfoId3;
+        // console.log(unInfoId)
+        // console.log(row)
+        this.dialogVisible3 = true;
+        // this.returnFun(unInfoId);
+      },
+      //弹框确定按钮驳回操作
+      returnFun3() {
+        let updateWorkForm = {
+          worksId: this.id3,
+          col1: "不通过",
+          col2: this.returnCommit3
         }
-      })
-      window.location.reload();
-      this.dialogVisible3 = false;
-    },
-    //弹框取消按钮
-    cancel3() {
-      this.dialogVisible3 = false;
-      this.returnCommit3 = null;
-    },
+        // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
+        updateWorks(updateWorkForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        })
+        window.location.reload();
+        this.dialogVisible3 = false;
+      },
+      //弹框取消按钮
+      cancel3() {
+        this.dialogVisible3 = false;
+        this.returnCommit3 = null;
+      },
 
 
-    // //----------------------4.科研教学奖励表----------------
-     //科研教学奖励审核通过(不需要弹框)
-    passAwardFun(row) {
-      console.log(row)
-      const infoId4 = row.awardsId
-      console.log(infoId4)
-      let editAwardForm = {
-        awardsId: row.awardsId,
-        col1: "通过",
-        col2: ""
-      }
-      updateAwards(editAwardForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+      // //----------------------4.科研教学奖励表----------------
+      //科研教学奖励审核通过(不需要弹框)
+      passAwardFun(row) {
+        console.log(row)
+        const infoId4 = row.awardsId
+        console.log(infoId4)
+        let editAwardForm = {
+          awardsId: row.awardsId,
+          col1: "通过",
+          col2: ""
         }
-      
-      })
-      window.location.reload();
-    },
-    //科研教学奖励审核不通过
-    unPassAwardFun(row) {
-      const unInfoId4 = row.awardsId;
-      this.id4 = unInfoId4;
-      this.dialogVisible4 = true;
-    },
-    //弹框确定按钮驳回操作
-    returnFun4() {
-      let updateAwardForm = {
-        awardsId: this.id4,
-        col1: "不通过",
-        col2: this.returnCommit4
-      }
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
-      updateAwards(updateAwardForm).then(res => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功!");
+        updateAwards(editAwardForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        
+        })
+        window.location.reload();
+      },
+      //科研教学奖励审核不通过
+      unPassAwardFun(row) {
+        const unInfoId4 = row.awardsId;
+        this.id4 = unInfoId4;
+        this.dialogVisible4 = true;
+      },
+      //弹框确定按钮驳回操作
+      returnFun4() {
+        let updateAwardForm = {
+          awardsId: this.id4,
+          col1: "不通过",
+          col2: this.returnCommit4
         }
-      })
-      window.location.reload();
-      this.dialogVisible4 = false;
-    },
-    //弹框取消按钮
-    cancel4() {
-      this.dialogVisible4 = false;
-      this.returnCommit4 = null;
-    },
+        // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
+        updateAwards(updateAwardForm).then(res => {
+          if (res.code == 20000) {
+            this.$message.success("审核成功!");
+          }
+        })
+        window.location.reload();
+        this.dialogVisible4 = false;
+      },
+      //弹框取消按钮
+      cancel4() {
+        this.dialogVisible4 = false;
+        this.returnCommit4 = null;
+      },
 
 
   },
