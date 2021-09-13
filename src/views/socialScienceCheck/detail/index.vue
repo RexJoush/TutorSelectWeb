@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-12 16:25:42
+ * @LastEditTime: 2021-09-13 15:09:37
 -->
 <template>
   <div id="app-container"> 
@@ -47,9 +47,9 @@
           align="center" 
           prop="paperProveMaterials">
           <template slot-scope="scope">
-            <el-button @click="downPaper(scope.row)" type="primary" size="mini" plain>
-              <a href="">下载文件</a>
-            </el-button>
+            <a :href="scope.row.paperProveMaterials">
+              <el-button type="primary" size="mini" plain>下载文件</el-button>
+            </a>
           </template>
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
@@ -129,9 +129,9 @@
           align="center" 
           prop="projectProveMaterials">
           <template slot-scope="scope">
-            <el-button @click="handleDetail(scope.row)" type="primary" size="mini" plain>
-              下载文件
-            </el-button>
+            <a :href="scope.row.projectProveMaterials">
+              <el-button type="primary" size="mini" plain>下载文件</el-button>
+            </a>
           </template>
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
@@ -201,9 +201,9 @@
           align="center" 
           prop="worksProveMaterials">
           <template slot-scope="scope">
-            <el-button @click="handleDetail(scope.row)" type="primary" size="mini" plain>
-              下载文件
-            </el-button>
+            <a :href="scope.row.worksProveMaterials">
+              <el-button type="primary" size="mini" plain>下载文件</el-button>
+            </a>
           </template>
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
@@ -278,9 +278,9 @@
           align="center" 
           prop="awardsProveMaterials">
           <template slot-scope="scope">
-            <el-button @click="handleDetail(scope.row)" type="primary" size="mini" plain>
-              下载文件
-            </el-button>
+            <a :href="scope.row.awardsProveMaterials">
+              <el-button type="primary" size="mini" plain>下载文件</el-button>
+            </a>
           </template>
         </el-table-column>
         <el-table-column label="成果认定" align="center" prop="col1" />
@@ -492,12 +492,6 @@
       this.getAwardList()
     },
     methods: {
-      //下载论文
-      downPaper(row) {
-        this.paperUrl = row.paperProveMaterials
-        // return paperUrl
-        console.log("论文地址：====",paperUrl)
-      },
       //审核成功，刷新界面
       checkSuccess() {
         // this.$message.success("材料审核成功!");
@@ -814,6 +808,6 @@
         this.dialogVisible4 = false;
         this.returnCommit4 = null;
       },
-  },
+  }
 }
 </script>
