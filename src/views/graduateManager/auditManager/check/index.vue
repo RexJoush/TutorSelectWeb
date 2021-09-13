@@ -414,9 +414,6 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
       )
-      console.info('getList')
-
-      console.info(res)
       this.tutorList = res.data
       this.total = res.total
       this.loading = false
@@ -432,9 +429,12 @@ export default {
         updateStatus[i] = json
       }
       console.info(updateStatus)
-      const { data: res } = await this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/update', updateStatus
       )
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
       this.getList()
       this.commit = undefined
     },
@@ -512,22 +512,20 @@ export default {
     passFun(num) {
       this.dialogVisiblePass = true
       this.choose = num
-      console.log(num)
-      console.log('.....................')
     },
-    submitCommit() {
+    async submitCommit() {
       this.row.commitYjsyCs = this.commit
-      this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/updateCommitByGraduate', this.row
       )
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
       this.row = {}
       this.dialogVisible = false
     },
     // 审核通过确认弹框确认按钮
     rePassFun(num) {
-      console.log(this.choose)
-      console.log('.....................')
-
       if (num === 1) {
         if (this.choose === 1) {
           // 送审社科处
@@ -549,16 +547,17 @@ export default {
         // 点击了提交按钮的确认，将符合条件以及不符合条件的一起提交给研究生院主管
         this.submitUpdate()
       }
-
-      // this.check(11)
       this.dialogVisiblePass = false
     },
     // 研究生院管理员提交按钮，一次修改两个状态 将符合条件以及不符合条件的一起提交给研究生院主管
     async submitUpdate() {
       // eslint-disable-next-line no-unused-vars
-      const { data: res } = await this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/submitUpdate'
       )
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
       this.dialogVisibleSubmit = false
       this.getList()
     },
