@@ -210,24 +210,7 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
-                      <el-form-item label="硕士招生学科">
-                        <el-input v-model="formSecond.masterDirectorSubject" />
-                      </el-form-item>
-                    </Col>
-                    <Col :span="8">
-                      <el-form-item label="硕导上岗时间">
-                        <el-date-picker
-                          v-model="formSecond.masterDirectorTime"
-                          format="yyyy-MM"
-                          value-format="yyyy-MM"
-                          type="month"
-                          style="width: 100%"
-                          placeholder="选择时间"
-                        />
-                      </el-form-item>
-                    </Col>
+                    </Col>                  
                   </Row>
                 </Col>
                 <Col :span="24">
@@ -596,6 +579,8 @@ export default {
     this.applyId = this.$route.params.applyId;
     this.applyCondition = this.$route.params.applyCondition;
     this.applyTypeId = this.$route.params.applyType;
+    console.log("ooooooooooo")
+    console.log(this.applyTypeId)
     this.GetTutorInfoByClient();
   },
   methods: {
@@ -604,7 +589,6 @@ export default {
     GetTutorInfoByClient: function () {
       getFirstPage(this.applyId).then((res) => {
         this.formFirst = res.data;
-
         console.log(this.formFirst);
         // 未申请过
         if (this.applyCondition === 102) {
@@ -619,9 +603,8 @@ export default {
       this.$confirm("提交填写?")
         // 提交保存第一页
         .then(() => {
-          // 博士免审提交到后台
+          // 学硕免审提交到后台
           this.formFirst.image = "";
-
           submitFirstPage(
             this.formFirst,
             this.applyId,

@@ -97,7 +97,7 @@ export const asyncRoutes = [
         meta: { title: '教师申请', roles: ['admin', 'tutor'] }
       },
       {
-        path: 'firstApplyDoctor/:applyType/:applyCondition',
+        path: 'firstApplyDoctor/:applyType/:applyCondition/:applyId',
         name: 'firstApplyDoctor',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyDoctor/index'),
@@ -111,32 +111,46 @@ export const asyncRoutes = [
         meta: { title: '博士导师增列学科岗位', roles: ['admin', 'tutor'] }
       },
       {
-        path: 'noInspectApplyDoctor/:applyType/:applyCondition',
+        path: 'noInspectApplyDoctor/:applyType/:applyCondition/:applyId',
         name: 'noInspectApplyDoctor',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/noInspectApplyDoctor/index'),
         meta: { title: '博士研究生导师免审上岗', roles: ['admin', 'tutor'] }
       },
       {
-        path: 'firstApplyMaster/:applyType/:applyCondition',
+        path: 'firstApplyMaster/:applyType/:applyCondition/:applyId',
         name: 'firstApplyMaster',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyMaster/index'),
         meta: { title: '首次申请硕士生导师（学术学位）', roles: ['admin', 'tutor'] }
       },
       {
-        path: 'addApplyMaster/:applyId/:applyCondition',
+        path: 'addApplyMaster/:applyType/:applyCondition/:applyId',
         name: 'addApplyMaster',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/addApplyMaster/index'),
-        meta: { title: '学硕导师增列学科', roles: ['admin', 'tutor'] }
+        meta: { title: '学硕导师增列学科岗位', roles: ['admin', 'tutor'] }
       },
       {
-        path: 'firstApplyProfessional/:applyType/:applyCondition',
+        path: 'noInspectApplyMaster/:applyType/:applyCondition/:applyId',
+        name: 'noInspectApplyMaster',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/noInspectApplyMaster/index'),
+        meta: { title: '硕士研究生导师免审上岗', roles: ['admin', 'tutor'] }
+      },
+      {
+        path: 'firstApplyProfessional/:applyType/:applyCondition/:applyId',
         name: 'firstApplyProfessional',
         hidden: true,
         component: () => import('@/views/tutorMainBoard/firstApplyProfessional/index'),
         meta: { title: '首次申请硕士生导师（专业学位）', roles: ['admin', 'tutor'] }
+      },
+      {
+        path: 'addApplyProfessional/:applyType/:applyCondition/:applyId',
+        name: 'addApplyProfessional',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/addApplyProfessional/index'),
+        meta: { title: '专硕导师增列学科岗位', roles: ['admin', 'tutor'] }
       }
     ]
   },

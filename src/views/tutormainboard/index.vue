@@ -21,27 +21,17 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="firstApplyDoctor(1)"
-            >首次申请博士导师岗位
-            </el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(1)">首次申请博士导师岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="addApplyDoctor"
-            >博士导师增列学科岗位
-            </el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(2)">博士导师增列学科岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="noInspectDoctor">博士研究生导师免审上岗</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(3)">博士研究生导师免审上岗</el-button>
           </div>
         </el-col>
       </el-row>
@@ -54,27 +44,17 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="firstApplyMaster"
-            >首次申请学硕导师岗位
-            </el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(4)">首次申请学硕导师岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="addApplyMaster"
-            >学硕导师增列学科岗位
-            </el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(5)">学硕导师增列学科岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary">硕士研究生导师免审上岗</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(6)">硕士研究生导师免审上岗</el-button>
           </div>
         </el-col>
       </el-row>
@@ -86,21 +66,16 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button
-              class="grid-content"
-              type="primary"
-              @click="firstApplyProfessional"
-            >首次申请专硕导师岗位
-            </el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(7)">首次申请专硕导师岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="addApplyProfessional">专硕导师增列学科岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(8)">专硕导师增列学科岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
-          <div/>
+          <div />
         </el-col>
       </el-row>
     </el-card>
@@ -109,7 +84,7 @@
 
 <script>
 
-import { firstApply, addNoInspectApply } from '@/api/tutor/mainboard'
+import { checkApply, addNoInspectApply } from '@/api/tutor/mainboard'
 
 export default {
   data() {
@@ -120,15 +95,64 @@ export default {
   },
 
   methods: {
+    /*
+      101：已经申请过此岗位，但信息未填写完成
+      100：已经申请过此岗位，且信息已提交完成
+      102：未申请过此岗位
+    */
+
+    // 检测申请状态函数
+    checkApply: function(type) {
+      checkApply(type).then((res) => {
+        console.log(res.data)
+        let url = ''
+        switch (type) {
+          case 1: url += `firstApplyDoctor/1`; break
+          case 2: url += `addApplyDoctor/2`; break
+          case 3: url += `noInspectApplyDoctor/3`; break
+          case 4: url += `firstApplyMaster/4`; break
+          case 5: url += `addApplyMaster/5`; break
+          case 6: url += `noInspectApplyMaster/6`; break
+          case 7: url += `firstApplyProfessional/7`; break
+          case 8: url += `addApplyProfessional/8`; break
+        }
+
+        // 查询出来的状态为 0 ，老师可以进去修改
+        if (res.data.applyCondition === 101) {
+          url += `/101/${res.data.applyId}`
+          this.$router.push(url)
+        } // 没有申请过此岗位
+        else if (res.data.applyCondition === 102) {
+          url += `/102/${res.data.applyId}`
+          this.$router.push(url)
+        }
+        // 已交过该申请
+        else {
+          if (type === 1 || type === 4 || type === 7) {
+            this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
+              (res) => {
+                this.$router.push('/myApply') // 去我的申请页面
+              }
+            ).catch(() => {
+              return
+            })
+          } else {
+            url += `/102/${res.data.applyId}`
+            this.$router.push(url)
+          }
+        }
+      })
+    },
+
     // 首次申请博士导师岗位
     firstApplyDoctor() {
-      firstApply(1).then((res) => {
-        if (res.data === 101) {
+      checkApply(1).then((res) => {
+        if (res.data.applyCondition === 101) {
           // 查询出来的状态为0 ，老师可以进去修改
-          this.$router.push('firstApplyDoctor/1/101')
+          this.$router.push(`firstApplyDoctor/1/101/${res.data.applyId}`)
         } else if (res.data === 102) {
           // 没有申请过此岗位
-          this.$router.push('firstApplyDoctor/1/102')
+          this.$router.push('firstApplyDoctor/1/102/-1')
         } else {
           this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
             (res) => {
@@ -141,7 +165,7 @@ export default {
 
     // 博士增列 path: 'addApplyDoctor/:applyType/:applyCondition',
     addApplyDoctor: function() {
-      addNoInspectApply(2).then((res) => {
+      checkApply(2).then((res) => {
         const applyId = res.data.applyId
         if (res.data.applyCondition === 102) {
           // 没有申请过此岗位
@@ -154,8 +178,8 @@ export default {
     },
     // 博士免审
     noInspectDoctor: function() {
-      addNoInspectApply(3).then((res)=>{
-        //数据库有返回主键 否则返回 -1
+      addNoInspectApply(3).then((res) => {
+        // 数据库有返回主键 否则返回 -1
         const applyId = res.data.applyId
         if (res.data.applyCondition === 102) {
           // 没有申请过此岗位
@@ -170,11 +194,6 @@ export default {
     // 首次申请硕士导师岗位（学术硕士）
     firstApplyMaster: function() {
       firstApply(4).then((res) => {
-        /*
-          101：已经申请过此岗位，但信息未填写完成
-          100：已经申请过此岗位，且信息已提交完成
-          102：未申请过此岗位
-         */
         if (res.data === 101) {
           // 查询出来的状态为 0 ，老师可以进去修改
           this.$router.push('firstApplyMaster/4/101')
