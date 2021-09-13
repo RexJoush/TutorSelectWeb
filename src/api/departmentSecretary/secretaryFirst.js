@@ -28,7 +28,7 @@ export function updateStatus(data) {
 // 更新操作（提交分会页面）
 export function updateStatusSfh(data) {
   return request({
-    url: '/update-status/updateSfh',
+    url: '/admin/update-status/updateSfh',
     method: 'post',
     data: data,
   })
@@ -37,7 +37,7 @@ export function updateStatusSfh(data) {
 // 更新操作（录入分会意见页面）
 export function updateStatusXy(data) {
   return request({
-    url: '/update-status/updateXy',
+    url: '/admin/update-status/updateXy',
     method: 'post',
     data: data,
   })
