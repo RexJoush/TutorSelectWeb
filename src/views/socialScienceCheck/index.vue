@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-08 16:48:23
+ * @LastEditTime: 2021-09-08 17:15:28
 -->
 <template>
   <div class="app-container">
@@ -239,7 +239,7 @@ export default {
   },
   created() {
     this.getSocialCheckInit(); //初始化待初审的数据
-    this.getOrganizationList(); //初始化所有的负责院系                            //初始化负责院系
+    this.getOrganizationList(); //初始化所有的负责院系
   },
   methods: {
     //高亮表格
@@ -265,11 +265,14 @@ export default {
 
     //初始化负责院系(下拉框)
     async getOrganizationList() {
-      const { data: res } = await this.$http.get("/admin/organization/getAll");  
-      if (res.data == null) return this.$message("获取院系失败");
-      console.log("初始化负责院系的数据")
-      console.log(res.data.data)
-      this.organizationList = res.data.data;
+      const { data: res } = await this.$http.get(
+        "/admin/organization/getAll"
+      );  
+      // if (res.data == null) return this.$message("获取院系失败");
+      // console.log("初始化负责院系的数据")
+      // console.log(res.data.data)
+      // this.organizationList = res.data.data;
+      this.organizationList = res
       console.info(this.organizationList);
     },
 
@@ -372,7 +375,7 @@ export default {
     check(status) {
       for (let index = 0; index < this.updataList.length; index++) {
         this.updataList[index].status_1 = status;
-        console.log("90909",status)
+        console.log("90909",this.updataList[index])
       }
       updateStatus(this.updataList).then((res) => {
         if (res.code == 20000) {

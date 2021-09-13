@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-03 19:19:53
+ * @LastEditTime: 2021-09-10 10:50:06
 -->
 <template>
   <div class="app-container">
@@ -156,6 +156,17 @@
           >
           </el-pagination>
       </el-row>
+      <el-row :gutter="10" class="mb8" style="left: 1300px">
+          <el-col :span="3">
+            <el-button
+              type="success"
+              plain
+              size="small"
+              @click="submitFun()"
+              >提交</el-button
+            >
+          </el-col>
+        </el-row>
 
       <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
@@ -243,7 +254,7 @@ export default {
   },
   created() {
     this.getResearchCheckInit(); //初始化待初审的数据
-    this.getOrganizationList(); //初始化所有的负责院系                            //初始化负责院系
+    this.getOrganizationList(); //初始化所有的负责院系
   },
   methods: {
     //查看详情
@@ -261,10 +272,11 @@ export default {
       // })
 
       const {data: res} = await this.$http.get(
-        '/organization/getAll'
+        '/admin/organization/getAll'
       )
-      if(res.code != 20000) return this.$message('获取院系失败')
-      this.organizationList = res.data
+      // if(res.code != 20000) return this.$message('获取院系失败')
+      // this.organizationList = res.data.data
+      this.organizationList = res
       console.info(this.organizationList)
     },
 
@@ -274,7 +286,7 @@ export default {
       this.queryParams.applyStatus = 31;
       checkDate(this.queryParams).then(res => {
         if(res.code == 20000){
-          this.tutorList = res.data;
+          this.tutorList = res.data.data;
           this.totalData = res.total;
         }
       })
@@ -283,7 +295,7 @@ export default {
     //搜索按钮
     searchQuery() {
       checkDate(this.queryParams).then(res => {
-        this.tutorList = res.data;
+        this.tutorList = res.data.data;
         this.totalData = res.total;
       })
     },
@@ -297,33 +309,51 @@ export default {
     },
     //初审通过
     passFun() {
-      this.dialogVisiblePass = true;
-    },
-    //审核通过确认弹框确认按钮
-    rePassFun() {
-      this.check(64);
-      this.dialogVisiblePass = false;
-      window.location.reload();//重新加载页面
+      // this.dialogVisiblePass = true;
+      this.check(64, "unCommit");
     },
     //初审不通过
     unPassFun() {
       //驳回之前判断是否只选择了一条
-      if (this.multipleSelection.length > 1) {
-        this.$message.warning("注意:只能选择一条数据审核！");
-      } else {
-        this.dialogVisible = true
+      // if (this.multipleSelection.length > 1) {
+      //   this.$message.warning("注意:只能选择一条数据审核！");
+      // } else {
+      //   this.dialogVisible = true
+      // }
+      this.check(53, "unCommit");
+    },
+    //提交按鈕
+    submitFun() {
+      this.dialogVisiblePass = true;
+    },
+    //审核通过确认弹框确认按钮
+    rePassFun() {
+      // this.check(64);
+      let flag = true;
+      for (let index = 0; index < this.updataList.length; index++) {
+        if (this.updataList[index].status_1 == 31) {
+          flag = false;
+        }
       }
-
+      if (flag) {
+        this.check(9999);
+        this.getResearchCheckInit();
+      } else {
+        this.$message.warning("有待初审的数据，请先进行审核！");
+      }
+      this.dialogVisiblePass = false;
+      // window.location.reload();//重新加载页面
     },
+    
     //弹框确定按钮驳回操作
-    returnFun() {
-      //备注
-      this.updataList[0].commit_1 = this.returnCommit;
-      this.check(53);
-      this.dialogVisible = false
-      this.returnCommit = null
-      window.location.reload();//重新加载页面
-    },
+    // returnFun() {
+    //   //备注
+    //   this.updataList[0].commit_1 = this.returnCommit;
+    //   this.check(53);
+    //   this.dialogVisible = false
+    //   this.returnCommit = null
+    //   window.location.reload();//重新加载页面
+    // },
 
     //弹框取消按钮
     cancel() {
@@ -332,17 +362,28 @@ export default {
     },
 
     //更新操作
-    check(status) {
-      for(let index = 0; index < this.updataList.length; index ++) {
-        this.updataList[index].status_1 = status;
+    check(status, initStatus) {
+      if(status === 9999) {
+        //如果status是9999，则执行提交按钮
+        for(let index = 0; index < this.updataList.length; index ++) {
+          this.updataList[index].status_1 = this.updataList[index].status_1 - 4;
+        }
+      } else {
+        for(let index = 0; index < this.updataList.length; index ++) {
+          this.updataList[index].status_1 = status;
+        }
       }
+      
       updateStatus(this.updataList).then( res => {
         if(res.code == 20000) {
           this.$message.success("审核成功");
         }
         this.updataList.length = 0
-        this.resetQuery();
-        this.getSecretaryInit();
+        if (initStatus != "commit") {
+          this.getResearchCheckInit();
+        }
+        // this.resetQuery();
+        // this.getSecretaryInit();
       });
     },
 
