@@ -51,7 +51,7 @@
                   <el-row :gutter="20">
                     <el-col :span="8">
                       <el-form-item label="申请学科">
-                        <el-select v-model="formSecond.applySubject" placeholder="请选择">
+                        <el-select v-model="formSecond.applySubject" placeholder="请选择" style="width: 100%;">
                           <el-option
                             v-for="item in applySubjects"
                             :key="item.value"
@@ -407,6 +407,7 @@ export default {
             }
             console.log(res.data)
             this.formThird = res.data
+            this.$message.success('保存成功!')
             this.formVisible.second = false // 关闭第 2 页
             this.loading = false
             this.formVisible.third = true // 打开第 3 页

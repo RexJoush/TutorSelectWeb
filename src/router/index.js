@@ -406,7 +406,7 @@ export const asyncRoutes = [
         meta: { title: '我的申请', icon: 'dashboard', roles: ['admin', 'tutor'] }
       },
       {
-        path: '/applyDetails/:applyId',
+        path: '/applyDetails/:applyId/:applyTypeId',
         component: () => import('@/views/myApply/details/index'),
         name: 'Apply Details',
         meta: { title: '申请详情', roles: ['admin', 'tutor'] },

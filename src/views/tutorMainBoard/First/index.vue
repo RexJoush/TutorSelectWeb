@@ -32,7 +32,7 @@
                 </el-form-item>
               </Col>
               <Col :span="12">
-                <el-form-item label="出生年月">
+                <el-form-item label="出生日期">
                   <el-input v-model="formFirst.birthday" disabled />
                 </el-form-item>
               </Col>
@@ -191,6 +191,7 @@ export default {
                 return
               }
               this.loading = false
+              this.$message.success('保存成功!')
               this.$emit('func', res.data, this.formFirst.name)
             })
         })

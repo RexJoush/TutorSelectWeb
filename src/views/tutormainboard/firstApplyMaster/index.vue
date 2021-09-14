@@ -43,10 +43,10 @@
             >
               <el-row>
                 <el-col :span="24">
-                  <el-row>
+                  <el-row :gutter="20">
                     <el-col :span="8">
                       <el-form-item label="申请学科">
-                        <el-select v-model="formSecond.applySubject" placeholder="请选择">
+                        <el-select v-model="formSecond.applySubject" placeholder="请选择" style="width: 100%">
                           <el-option
                             v-for="item in applySubjects"
                             :key="item.value"
@@ -58,7 +58,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="申请学科负责单位：">
-                        <el-select v-model="formSecond.doctoralMasterApplicationSubjectUnit" placeholder="请选择" @change="setChildNode">
+                        <el-select v-model="formSecond.doctoralMasterApplicationSubjectUnit" placeholder="请选择" style="width: 100%" @change="setChildNode">
                           <el-option
                             v-for="item in academicMasterPrimaryDiscipline"
                             :key="item.department"
@@ -71,7 +71,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="一级学科代码及名称">
-                        <el-select v-model="formSecond.doctoralMasterSubjectCodeName" placeholder="请选择">
+                        <el-select v-model="formSecond.doctoralMasterSubjectCodeName" placeholder="请选择" style="width: 100%">
                           <el-option
                             v-for="item in childNodes"
                             :key="item.code"
@@ -324,6 +324,7 @@ export default {
             }
             console.log(res.data)
             this.formThird = res.data
+            this.$message.success('保存成功!')
             this.formVisible.second = false // 关闭第 2 页
             this.loading = false
             this.formVisible.third = true // 打开第 3 页
