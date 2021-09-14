@@ -4,9 +4,9 @@
       <!--用户数据-->
       <el-col :span="20" :xs="24">
         <el-form
+          v-show="showSearch"
           ref="queryForm"
           :inline="true"
-          v-show="showSearch"
           label-width="68px"
         >
           <el-form-item label="工号">
@@ -67,18 +67,16 @@
               icon="el-icon-search"
               size="small"
               @click="filterDataByStatus()"
-              >搜索</el-button
-            >
+            >搜索</el-button>
             <el-button
               icon="el-icon-refresh"
               size="small"
               @click="resetQuery(queryParams)"
-              >重置</el-button
-            >
+            >重置</el-button>
           </el-form-item>
         </el-form>
-        <br />
-        <br />
+        <br>
+        <br>
 
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
@@ -89,8 +87,7 @@
               size="small"
               :disabled="single"
               @click="passFun()"
-              >符合条件</el-button
-            >
+            >符合条件</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -100,8 +97,7 @@
               size="small"
               :disabled="multiple"
               @click="unPassFun()"
-              >不符合条件</el-button
-            >
+            >不符合条件</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -111,8 +107,7 @@
               size="small"
               :disabled="multiple"
               @click="unEnsureFun()"
-              >待定</el-button
-            >
+            >待定</el-button>
           </el-col>
           <el-col :span="1.5">
             <el-button
@@ -122,8 +117,7 @@
               size="small"
               :disabled="multiple"
               @click="alterFun()"
-              >需修改</el-button
-            >
+            >需修改</el-button>
           </el-col>
         </el-row>
         <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
@@ -192,23 +186,24 @@
             fixed="right"
           >
             <template #default="scope">
-              <el-button @click="commitFun(scope.row)" type="text" size="small"
-                >添加备注</el-button
-              >
+              <el-button
+                type="text"
+                size="small"
+                @click="commitFun(scope.row)"
+              >添加备注</el-button>
             </template>
           </el-table-column>
         </el-table>
 
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
           :current-page="queryParams.pageNum"
           :page-size="queryParams.pageSize"
           layout="total, prev, pager, next"
           :total="totalData"
-        >
-        </el-pagination>
-        <br />
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+        <br>
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
@@ -218,8 +213,7 @@
               size="small"
               :loading="exportLoading"
               @click="exportFun()"
-              >导出excel</el-button
-            >
+            >导出excel</el-button>
           </el-col>
         </el-row>
         <span>注意：导出上表所有的数据</span>
@@ -232,8 +226,7 @@
               :disabled="multiple"
               :loading="exportLoading"
               @click="submitFun()"
-              >提交</el-button
-            >
+            >提交</el-button>
           </el-col>
         </el-row>
       </el-col>
@@ -250,7 +243,7 @@
     <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>(可以为空)</span>
-      <el-input v-model="returnCommit" autocomplete="off"></el-input>
+      <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="returnFun()">确 定</el-button>
@@ -263,17 +256,17 @@
 import {
   getApplyType,
   checkDate,
-  updateStatus,
-} from "@/api/departmentSecretary/secretaryFirst";
-import { exportSFH } from "@/api/departmentSecretary/exportExcel";
+  updateStatus
+} from '@/api/departmentSecretary/secretaryFirst'
+import { exportSFH } from '@/api/departmentSecretary/exportExcel'
 export default {
   data() {
     return {
-      //备注内容
-      returnCommit: "",
-      //备注弹框显示
+      // 备注内容
+      returnCommit: '',
+      // 备注弹框显示
       dialogVisible: false,
-      //通过确认框
+      // 通过确认框
       dialogVisiblePass: false,
       // 遮罩层
       loading: true,
@@ -289,11 +282,11 @@ export default {
       totalData: 0,
       // 待院系秘书初审列表
       secretaryInitList: [],
-      //所有申请类别列表
+      // 所有申请类别列表
       applyTypeList: [],
-      //选定的列表
+      // 选定的列表
       multipleSelection: [],
-      //当前操作的行
+      // 当前操作的行
       currentSelection: [],
       // 查询参数
       queryParams: {
@@ -305,234 +298,235 @@ export default {
         applyType: null, // 申请类别id
         subjectName: null, // 学科名称id
         applyStatus: null, // 审核状态码id
-        subjectType: null, // 学科属性，文科，理科，交叉
+        subjectType: null // 学科属性，文科，理科，交叉
       },
       // 查询参数
       queryParamCopy: {},
-      //和秘书初审有关的审核状态
+      // 和秘书初审有关的审核状态
       statuOptions: [
         {
           value: 10,
-          label: "待初审",
+          label: '待初审'
         },
         {
           value: 15,
-          label: "符合条件",
+          label: '符合条件'
         },
         {
           value: 16,
-          label: "不符合条件",
+          label: '不符合条件'
         },
         {
           value: 17,
-          label: "待定",
+          label: '待定'
         },
         {
           value: 18,
-          label: "需修改",
+          label: '需修改'
         },
         {
           value: 63,
-          label: "社科处已审核",
+          label: '社科处已审核'
         },
         {
           value: 64,
-          label: "科研处已审核",
-        },
+          label: '科研处已审核'
+        }
       ],
-      //审核后需要下发的List数据
+      // 审核后需要下发的List数据
       updataList: [],
-      tutorList: [],
-    };
+      tutorList: []
+    }
   },
   created() {
-    this.getSecretaryInit(); //初始化待初审的数据
-    this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
+    this.getSecretaryInit() // 初始化待初审的数据
+    this.getApplyTypeList() // 初始化申请的所有类别（下拉框）
   },
   methods: {
-    //导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
+    // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
     dataOption(func) {
-      this.loading = true;
+      this.loading = true
       //   this.queryParams.organization = 30130;//院系
-      let defaultStatus = 10 + "-" + 15 + "-" + 16 + "-" + 17 + "-" + 18;
+      const defaultStatus = 10 + '-' + 15 + '-' + 16 + '-' + 17 + '-' + 18
       if (
         this.queryParams.applyStatus == null ||
-        this.queryParams.applyStatus == ""
+        this.queryParams.applyStatus == ''
       ) {
-        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
-        this.queryParamCopy.applyStatus = defaultStatus;
-        func(this.queryParamCopy);
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams))
+        this.queryParamCopy.applyStatus = defaultStatus
+        func(this.queryParamCopy)
       } else {
-        func(this.queryParams);
+        func(this.queryParams)
       }
     },
-    //excel导出，包含状态10 15 16 17 18
+    // excel导出，包含状态10 15 16 17 18
     exportFun() {
-      this.dataOption(this.exportExcel);
+      this.dataOption(this.exportExcel)
     },
-    //导出excel实现
+    // 导出excel实现
     exportExcel(queryParams) {
-      let date = new Date();
-      let year = date.getFullYear(); // 获取当前年份
+      const date = new Date()
+      const year = date.getFullYear() // 获取当前年份
       exportSFH(queryParams).then((res) => {
-        let blob = new Blob([res], { type: "application/vnd.ms-excel" });
-        let url = window.URL.createObjectURL(blob);
-        let link = document.createElement("a");
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
         link.download =
-          "西北大学" +
+          '西北大学' +
           year +
-          "年" +
-          "网络和数据中心" +
-          "学位评定分委员会推荐汇总表.xlsx"; //excel名称
-        link.href = url;
-        link.click();
-      });
-      this.loading = false;
+          '年' +
+          '网络和数据中心' +
+          '学位评定分委员会推荐汇总表.xlsx' // excel名称
+        link.href = url
+        link.click()
+      })
+      this.loading = false
     },
     // 初始化申请的所有类别（下拉框）
     async getApplyTypeList() {
       getApplyType().then((res) => {
-        this.applyTypeList = res.data;
-      });
+        this.applyTypeList = res.data
+      })
     },
     // 查询院系秘书待初审的数据
     getSecretaryInit() {
-      this.filterDataByStatus();
+      this.filterDataByStatus()
     },
-    //根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
-    //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
+    // 根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
+    // 所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
     filterDataByStatus() {
-      this.dataOption(this.searchByOptions);
+      this.dataOption(this.searchByOptions)
     },
-    //按条件搜索
+    // 按条件搜索
     searchByOptions(queryParams) {
       checkDate(queryParams).then((res) => {
-        this.tutorList = res.data.data;
-        this.totalData = res.data.total;
-        this.loading = false;
-      });
+        this.tutorList = res.data.data
+        this.totalData = res.data.total
+        this.loading = false
+      })
     },
-    //重置按钮
+    // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null; // 工号
-      this.queryParams.userName = null; // 姓名
-      this.queryParams.applyType = null; // 申请类别id
-      this.queryParams.applyStatus = null; // 审核状态码id
+      this.queryParams.userId = null // 工号
+      this.queryParams.userName = null // 姓名
+      this.queryParams.applyType = null // 申请类别id
+      this.queryParams.applyStatus = null // 审核状态码id
     },
-    //初审符合条件
+    // 初审符合条件
     passFun() {
-      this.check(15, "unCommit");
+      this.check(15, 'unCommit')
     },
-    //初审不符合条件
+    // 初审不符合条件
     unPassFun() {
-      this.check(16, "unCommit");
+      this.check(16, 'unCommit')
     },
-    //初审待定
+    // 初审待定
     unEnsureFun() {
-      this.check(17, "unCommit");
+      this.check(17, 'unCommit')
     },
-    //初审需修改
+    // 初审需修改
     alterFun() {
-      this.check(18, "unCommit");
+      this.check(18, 'unCommit')
     },
-    //点击备注按钮，添加备注
+    // 点击备注按钮，添加备注
     commitFun(row) {
-      this.dialogVisible = true;
-      this.returnCommit = row.commit;
-      this.currentSelection.length = 0;
-      this.currentSelection.push(row);
+      this.dialogVisible = true
+      this.returnCommit = row.commit
+      this.currentSelection.length = 0
+      this.currentSelection.push(row)
     },
-    //备注弹框的确定按钮
+    // 备注弹框的确定按钮
     returnFun() {
-      this.currentSelection[0].commit = this.returnCommit;
-      this.updateObiect(this.currentSelection);
-      this.check(this.currentSelection[0].status, "commit"); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
-      this.dialogVisible = false;
+      this.currentSelection[0].commit = this.returnCommit
+      this.updateObiect(this.currentSelection)
+      this.check(this.currentSelection[0].status, 'commit') // commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
+      this.dialogVisible = false
     },
-    //弹框取消按钮
+    // 弹框取消按钮
     cancel() {
-      this.dialogVisible = false;
-      this.returnCommit = null;
+      this.dialogVisible = false
+      this.returnCommit = null
     },
-    //更新操作
+    // 更新操作
     check(status, initStatus) {
       if (status === 9999) {
-        //如果status是9999，则执行提交按钮
+        // 如果status是9999，则执行提交按钮
         for (let index = 0; index < this.updataList.length; index++) {
-          this.updataList[index].status_1 = this.updataList[index].status_1 - 4; //-4是因为数据库绑定状态的原因，勿动
+          this.updataList[index].status_1 = this.updataList[index].status_1 - 4 // -4是因为数据库绑定状态的原因，勿动
         }
       } else {
         for (let index = 0; index < this.updataList.length; index++) {
-          this.updataList[index].status_1 = status;
+          this.updataList[index].status_1 = status
         }
       }
 
       updateStatus(this.updataList).then((res) => {
+        console.info(res)
         if (res.code == 20000) {
-          this.$message.success("操作成功!");
+          this.$message.success('操作成功!')
         }
         this.updataList.length = 0;
         if (initStatus != "commit") {
           this.getSecretaryInit();  
         }
-      });
+      })
     },
-    //提交按鈕
+    // 提交按鈕
     submitFun() {
-      this.dialogVisiblePass = true;
+      this.dialogVisiblePass = true
     },
     // 弹框的确定按钮
     confirmFun() {
-      let flag = true;
+      let flag = true
       for (let index = 0; index < this.updataList.length; index++) {
         if (this.updataList[index].status_1 == 10) {
-          flag = false;
+          flag = false
         }
       }
       if (flag) {
-        this.check(9999);
-        this.getSecretaryInit();
+        this.check(9999)
+        this.getSecretaryInit()
       } else {
-        this.$message.warning("有待初审的数据，请先进行审核！");
+        this.$message.warning('有待初审的数据，请先进行审核！')
       }
-      this.dialogVisiblePass = false;
+      this.dialogVisiblePass = false
     },
-    //当前选中
+    // 当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {
-        this.single = false;
-        this.multiple = false;
+        this.single = false
+        this.multiple = false
       } else {
-        this.single = true;
-        this.multiple = true;
+        this.single = true
+        this.multiple = true
       }
-      this.multipleSelection = val;
-      this.updateObiect(this.multipleSelection);
+      this.multipleSelection = val
+      this.updateObiect(this.multipleSelection)
     },
-    //封装更新数据
+    // 封装更新数据
     updateObiect(originArray) {
-      //每次选择都要将之前的清空
-      this.updataList = [];
+      // 每次选择都要将之前的清空
+      this.updataList = []
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < originArray.length; index++) {
         // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
-        let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = originArray[index].applyId;
-        obj.status_1 = originArray[index].status;
-        obj.commit_1 = originArray[index].commit;
-        this.updataList.push(obj);
+        const obj = { id_1: 0, status_1: 0, commit_1: '' }
+        obj.id_1 = originArray[index].applyId
+        obj.status_1 = originArray[index].status
+        obj.commit_1 = originArray[index].commit
+        this.updataList.push(obj)
       }
     },
 
-    //每页显示条数
+    // 每页显示条数
     handleSizeChange(val) {},
-    //当前页数
+    // 当前页数
     handleCurrentChange(val) {
-      this.queryParams.pageNum = val;
-      this.getSecretaryInit();
-    },
-  },
-};
+      this.queryParams.pageNum = val
+      this.getSecretaryInit()
+    }
+  }
+}
 </script>
 <style scoped>
 </style>

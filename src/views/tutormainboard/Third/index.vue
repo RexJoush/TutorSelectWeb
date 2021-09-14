@@ -35,28 +35,20 @@
             </el-col>
           </el-row>
           <el-table :data="formThird.academicPapers" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"/>
-            <el-table-column prop="paperName" label="论文名称"/>
-            <el-table-column prop="paperPublicationTime" label="发表时间"/>
-            <el-table-column prop="firstAuthorName" label="第一作者"/>
-            <el-table-column prop="communicationAuthorName" label="通讯作者"/>
-            <el-table-column prop="journalName" label="期刊名称"/>
-            <el-table-column prop="journalCategory" label="期刊类别"/>
-            <el-table-column prop="sciPart" label="分区"/>
-            <el-table-column prop="journalLevel" label="期刊等级"/>
-            <el-table-column prop="impactFactors" label="影响因子"/>
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="paperName" label="论文名称" />
+            <el-table-column prop="paperPublicationTime" label="发表时间" />
+            <el-table-column prop="firstAuthorName" label="第一作者" />
+            <el-table-column prop="communicationAuthorName" label="通讯作者" />
+            <el-table-column prop="journalName" label="期刊名称" />
+            <el-table-column prop="journalCategory" label="期刊类别" />
+            <el-table-column prop="sciPart" label="分区" />
+            <el-table-column prop="journalLevel" label="期刊等级" />
+            <el-table-column prop="impactFactors" label="影响因子" />
             <el-table-column label="证明资料" width="90" align="center">
               <template slot-scope="scope">
-                <a
-                  target="_blank"
-                  :href="scope.row.paperProveMaterials"
-                >
-                  <el-button
-                    size="mini"
-                    type="primary"
-                    plain
-                  >查 看
-                  </el-button>
+                <a target="_blank" :href="scope.row.paperProveMaterials">
+                  <el-button size="mini" type="primary" plain>查 看</el-button>
                 </a>
               </template>
             </el-table-column>
@@ -89,20 +81,16 @@
               </el-button>
             </el-col>
           </el-row>
-          <el-table
-            :data="formThird.researchProjects"
-            border
-            style="width: 100%"
-          >
-            <el-table-column type="index" label="序号" width="50"/>
-            <el-table-column prop="projectName" label="项目名称"/>
-            <el-table-column prop="approvalNumber" label="批准号"/>
-            <el-table-column prop="projectChargeName" label="负责人姓名" width="100"/>
-            <el-table-column prop="projectStartTime" label="开始日期"/>
-            <el-table-column prop="projectEndTime" label="结束日期"/>
-            <el-table-column prop="projectCategory" label="项目分类"/>
-            <el-table-column prop="projectTotalPrice" label="总经费" width="120"/>
-            <el-table-column prop="projectLevel" label="项目级别"/>
+          <el-table :data="formThird.researchProjects" border style="width: 100%">
+            <el-table-column type="index" label="序号" width="50" />
+            <el-table-column prop="projectName" label="项目名称" />
+            <el-table-column prop="approvalNumber" label="批准号" />
+            <el-table-column prop="projectChargeName" label="负责人姓名" width="100" />
+            <el-table-column prop="projectStartTime" label="开始日期" />
+            <el-table-column prop="projectEndTime" label="结束日期" />
+            <el-table-column prop="projectCategory" label="项目分类" />
+            <el-table-column prop="projectTotalPrice" label="总经费（万元）" width="120" />
+            <el-table-column prop="projectLevel" label="项目级别" />
             <el-table-column label="证明资料" width="90" align="center">
               <template slot-scope="scope">
                 <a target="_blank" :href="scope.row.projectProveMaterials">
@@ -135,13 +123,13 @@
             </el-col>
           </el-row>
           <el-table :data="formThird.academicWorks" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50px"/>
-            <el-table-column prop="worksName" label="著作名称"/>
-            <el-table-column prop="worksNumber" label="著作编号"/>
-            <el-table-column prop="worksPublicationTime" label="出版日期"/>
-            <el-table-column prop="worksPublicationUnit" label="出版单位"/>
-            <el-table-column prop="totalWords" label="完成字数（万字）"/>
-            <el-table-column prop="authorName" label="作者姓名"/>
+            <el-table-column type="index" label="序号" width="50px" />
+            <el-table-column prop="worksName" label="著作名称" />
+            <el-table-column prop="worksNumber" label="著作编号" />
+            <el-table-column prop="worksPublicationTime" label="出版日期" />
+            <el-table-column prop="worksPublicationUnit" label="出版单位" />
+            <el-table-column prop="totalWords" label="完成字数（万字）" />
+            <el-table-column prop="authorName" label="作者姓名" />
             <el-table-column label="证明资料" width="90" align="center">
               <template slot-scope="scope">
                 <a target="_blank" :href="scope.row.worksProveMaterials">
@@ -174,13 +162,13 @@
             </el-col>
           </el-row>
           <el-table :data="formThird.teachingAwards" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50px"/>
-            <el-table-column prop="awardsName" label="奖励名称"/>
-            <el-table-column prop="awardsRank" label="排名"/>
-            <el-table-column prop="awardsUnit" label="颁奖单位"/>
-            <el-table-column prop="awardsLevel" label="获奖级别"/>
-            <el-table-column prop="awardsTime" label="获奖日期"/>
-            <el-table-column prop="awardsAuthorName" label="获奖人姓名"/>
+            <el-table-column type="index" label="序号" width="50px" />
+            <el-table-column prop="awardsName" label="奖励名称" />
+            <el-table-column prop="awardsRank" label="排名" />
+            <el-table-column prop="awardsUnit" label="颁奖单位" />
+            <el-table-column prop="awardsLevel" label="获奖级别" />
+            <el-table-column prop="awardsTime" label="获奖日期" />
+            <el-table-column prop="awardsAuthorName" label="获奖人姓名" />
             <el-table-column label="证明资料" width="90" align="center">
               <template slot-scope="scope">
                 <a target="_blank" :href="scope.row.awardsProveMaterials">
@@ -212,17 +200,13 @@
               </el-button>
             </el-col>
           </el-row>
-          <el-table
-            :data="formThird.inventionPatents"
-            border
-            style="width: 100%"
-          >
-            <el-table-column type="index" label="序号" width="50px"/>
-            <el-table-column prop="patentName" label="专利名称"/>
-            <el-table-column prop="patentAuthorName" label="第一作者"/>
-            <el-table-column prop="patentGrantTime" label="专利授权日期"/>
-            <el-table-column prop="patentGrantNumber" label="专利授权号"/>
-            <el-table-column prop="patentType" label="专利类型"/>
+          <el-table :data="formThird.inventionPatents" border style="width: 100%">
+            <el-table-column type="index" label="序号" width="50px" />
+            <el-table-column prop="patentName" label="专利名称" />
+            <el-table-column prop="patentAuthorName" label="第一作者" />
+            <el-table-column prop="patentGrantTime" label="专利授权日期" />
+            <el-table-column prop="patentGrantNumber" label="专利授权号" />
+            <el-table-column prop="patentType" label="专利类型" />
             <el-table-column label="证明资料" width="90" align="center">
               <template slot-scope="scope">
                 <a target="_blank" :href="scope.row.patentProveMaterials">
@@ -318,17 +302,17 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="论文名称">
-              <el-input v-model="academicPaper.paperName"/>
+              <el-input v-model="academicPaper.paperName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="第一作者">
-              <el-input v-model="academicPaper.firstAuthorName"/>
+              <el-input v-model="academicPaper.firstAuthorName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="期刊名称">
-              <el-input v-model="academicPaper.journalName"/>
+              <el-input v-model="academicPaper.journalName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -346,14 +330,14 @@
           <el-col :span="12">
             <el-form-item label="期刊等级">
               <el-select
-                v-model="academicPaper.c"
+                v-model="academicPaper.journalLevel"
                 style="width: 100%"
                 placeholder="请选择"
               >
-                <el-option label="顶级期刊（A类）" value="顶级期刊（A类）"/>
-                <el-option label="权威期刊（B类）" value="权威期刊（B类）"/>
-                <el-option label="核心期刊（C类）" value="核心期刊（C类）"/>
-                <el-option label="其他" value="其他"/>
+                <el-option label="顶级期刊（A类）" value="顶级期刊（A类）" />
+                <el-option label="权威期刊（B类）" value="权威期刊（B类）" />
+                <el-option label="核心期刊（C类）" value="核心期刊（C类）" />
+                <el-option label="其他" value="其他" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -392,7 +376,7 @@
         <el-row :gutter="20">
           <el-col :span="24">
             <el-form-item label="论文名称">
-              <el-input v-model="academicPaper.paperName"/>
+              <el-input v-model="academicPaper.paperName" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -409,12 +393,12 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="第一作者">
-              <el-input v-model="academicPaper.firstAuthorName"/>
+              <el-input v-model="academicPaper.firstAuthorName" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="通讯作者">
-              <el-input v-model="academicPaper.communicationAuthorName"/>
+              <el-input v-model="academicPaper.communicationAuthorName" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -426,12 +410,12 @@
                 style="width: 100%"
                 placeholder="请选择"
               >
-                <el-option label="SCIE" value="SCIE"/>
-                <el-option label="EI" value="EI"/>
-                <el-option label="SSCI" value="SSCI"/>
-                <el-option label="CPCI-S" value="CPCI-S"/>
-                <el-option label="CSCD" value="CSCD"/>
-                <el-option label="other" value="other"/>
+                <el-option label="SCIE" value="SCIE" />
+                <el-option label="EI" value="EI" />
+                <el-option label="SSCI" value="SSCI" />
+                <el-option label="CPCI-S" value="CPCI-S" />
+                <el-option label="CSCD" value="CSCD" />
+                <el-option label="other" value="other" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -448,10 +432,10 @@
                 style="width: 100%"
                 placeholder="请选择"
               >
-                <el-option label="一区" value="一区"/>
-                <el-option label="二区" value="二区"/>
-                <el-option label="三区" value="三区"/>
-                <el-option label="四区" value="四区"/>
+                <el-option label="一区" value="一区" />
+                <el-option label="二区" value="二区" />
+                <el-option label="三区" value="三区" />
+                <el-option label="四区" value="四区" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -459,12 +443,12 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="期刊名称">
-              <el-input v-model="academicPaper.journalName"/>
+              <el-input v-model="academicPaper.journalName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="影响因子">
-              <el-input v-model="academicPaper.impactFactors"/>
+              <el-input v-model="academicPaper.impactFactors" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -502,17 +486,17 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="项目名称">
-              <el-input v-model="researchProject.projectName"/>
+              <el-input v-model="researchProject.projectName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="批准号">
-              <el-input v-model="researchProject.approvalNumber"/>
+              <el-input v-model="researchProject.approvalNumber" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="负责人姓名">
-              <el-input v-model="researchProject.projectChargeName"/>
+              <el-input v-model="researchProject.projectChargeName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -548,8 +532,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="总经费">
-              <el-input v-model="researchProject.projectTotalPrice"/>
+            <el-form-item label="总经费（万元）">
+              <el-input v-model="researchProject.projectTotalPrice" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -559,9 +543,9 @@
                 style="width: 100%"
                 placeholder="请选择"
               >
-                <el-option label="国家级" value="国家级"/>
-                <el-option label="省部级" value="省部级"/>
-                <el-option label="厅局级" value="厅局级"/>
+                <el-option label="国家级" value="国家级" />
+                <el-option label="省部级" value="省部级" />
+                <el-option label="厅局级" value="厅局级" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -595,21 +579,17 @@
     </el-dialog>
 
     <!-- 添加教材或学术著作 -->
-    <el-dialog
-      title="添加教材或学术著作"
-      width="40%"
-      :visible.sync="dialogThird4"
-    >
+    <el-dialog title="添加教材或学术著作" width="40%" :visible.sync="dialogThird4">
       <el-form :model="academicWork">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="著作名称">
-              <el-input v-model="academicWork.worksName"/>
+              <el-input v-model="academicWork.worksName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="著作编号">
-              <el-input v-model="academicWork.worksNumber"/>
+              <el-input v-model="academicWork.worksNumber" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -626,17 +606,17 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="出版单位">
-              <el-input v-model="academicWork.worksPublicationUnit"/>
+              <el-input v-model="academicWork.worksPublicationUnit" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="完成字数（万字）">
-              <el-input v-model="academicWork.totalWords"/>
+              <el-input v-model="academicWork.totalWords" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="作者姓名">
-              <el-input v-model="academicWork.authorName"/>
+              <el-input v-model="academicWork.authorName" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -674,17 +654,17 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="奖励名称">
-              <el-input v-model="teachingAward.awardsName"/>
+              <el-input v-model="teachingAward.awardsName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="排名">
-              <el-input v-model="teachingAward.awardsRank"/>
+              <el-input v-model="teachingAward.awardsRank" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="颁奖单位">
-              <el-input v-model="teachingAward.awardsUnit"/>
+              <el-input v-model="teachingAward.awardsUnit" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -701,7 +681,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="获奖人姓名">
-              <el-input v-model="teachingAward.awardsAuthorName"/>
+              <el-input v-model="teachingAward.awardsAuthorName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -711,9 +691,9 @@
                 style="width: 100%"
                 placeholder="请选择"
               >
-                <el-option label="国家级" value="国家级"/>
-                <el-option label="省部级" value="省部级"/>
-                <el-option label="厅局级" value="厅局级"/>
+                <el-option label="国家级" value="国家级" />
+                <el-option label="省部级" value="省部级" />
+                <el-option label="厅局级" value="厅局级" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -747,21 +727,17 @@
     </el-dialog>
 
     <!-- 添加发明专利 -->
-    <el-dialog
-      title="添加教材或学术著作"
-      width="40%"
-      :visible.sync="dialogThird6"
-    >
+    <el-dialog title="添加教材或学术著作" width="40%" :visible.sync="dialogThird6">
       <el-form :model="inventionPatent">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="专利名称">
-              <el-input v-model="inventionPatent.patentName"/>
+              <el-input v-model="inventionPatent.patentName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="第一作者">
-              <el-input v-model="inventionPatent.patentAuthorName"/>
+              <el-input v-model="inventionPatent.patentAuthorName" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -778,7 +754,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="专利授权号">
-              <el-input v-model="inventionPatent.patentGrantNumber"/>
+              <el-input v-model="inventionPatent.patentGrantNumber" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -788,8 +764,8 @@
                 style="width: 100%"
                 placeholder="请选择"
               >
-                <el-option label="实用新型专利" value="实用新型专利"/>
-                <el-option label="发明专利" value="发明专利"/>
+                <el-option label="实用新型专利" value="实用新型专利" />
+                <el-option label="发明专利" value="发明专利" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -934,6 +910,7 @@ export default {
               console.log(res.data.errorMessage)
               return
             }
+            this.$message.success('保存成功!')
             this.$emit('func', res.data)
             console.log(res.data)
           })

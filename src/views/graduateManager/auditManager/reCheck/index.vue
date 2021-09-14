@@ -253,10 +253,12 @@ export default {
         }
         updateStatus[i] = json
       }
-      console.info(updateStatus)
-      const { data: res } = await this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/update', updateStatus
       )
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
       this.getList()
     },
     async getApplyType() {
@@ -372,13 +374,17 @@ export default {
       this.commit = row.commitYjsySfh
       this.row = row
     },
-    submitCommit() {
+    async submitCommit() {
       this.row.commitYjsySfh = this.commit
-      this.$http.post(
+      const { code: res } = await this.$http.post(
         '/admin/update-status/updateCommitByGraduate', this.row
       )
       this.row = {}
       this.dialogVisible = false
+      console.info(res)
+      if (res === 20000) {
+        this.$message.success('操作成功!')
+      }
     }
   }
 }

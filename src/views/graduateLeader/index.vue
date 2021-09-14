@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-06 11:00:06
+ * @LastEditTime: 2021-09-12 16:45:23
 -->
 <template>
   <div class="app-container">
@@ -294,10 +294,9 @@ export default {
     // 初始化负责院系(下拉框)
     async getOrganizationList() {
       const { data: res } = await this.$http.get(
-        '/organization/getAll'
+        '/admin/organization/getAll'
       )
-      if (res.code != 20000) return this.$message('获取院系失败')
-      this.organizationList = res.data
+      this.organizationList = res
       console.info(this.organizationList)
     },
 
@@ -315,9 +314,7 @@ export default {
       this.queryParams.applyStatus = 34
       checkDate(this.queryParams).then(res => {
         if (res.code == 20000) {
-          this.tutorList = res.data
-          // console.log("+++++++++++++++++++")
-          // console.log(res.data)
+          this.tutorList = res.data.data
           this.totalData = res.total
         }
         if (res.code == 20001) {
@@ -329,7 +326,7 @@ export default {
     // 搜索按钮
     searchQuery() {
       checkDate(this.queryParams).then(res => {
-        this.tutorList = res.data
+        this.tutorList = res.data.data
         this.totalData = res.total
       })
     },

@@ -33,13 +33,13 @@
             size="mini"
             type="primary"
             plain
-            @click="toApplyDetails(scope.row.applyId)"
+            @click="toApplyDetails(scope.row)"
           >查 看
           </el-button>
           <el-button v-if="scope.row.status === 14" size="mini" type="danger" plain @click="editApply(scope.row)">修 改
           </el-button>
           <el-button v-else-if="scope.row.status === 0" size="mini" type="warning" plain @click="editApply(scope.row)">
-            填写
+            填 写
           </el-button>
         </template>
       </el-table-column>
@@ -49,6 +49,7 @@
 
 <script>
 import { changeStatus, getApplyList } from '@/api/tutor/myApply'
+import { toDetails } from '@/utils/funcation'
 
 export default {
   name: 'Index',
@@ -98,8 +99,9 @@ export default {
     },
 
     // 查看申请信息
-    toApplyDetails: function(applyId) {
-      this.$router.push(`/applyDetails/${applyId}`)
+    toApplyDetails: function(apply) {
+      console.log(apply)
+      toDetails(this, apply.applyId, apply.applyTypeId)
     }
   }
 

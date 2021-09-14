@@ -84,14 +84,11 @@
 
 <script>
 
-import { checkApply, addNoInspectApply } from '@/api/tutor/mainboard'
+import { checkApply } from '@/api/tutor/mainboard'
 
 export default {
   data() {
-    return {
-      // 老师基本信息
-      firstPage: {}
-    }
+    return {}
   },
 
   methods: {
@@ -121,136 +118,24 @@ export default {
         if (res.data.applyCondition === 101) {
           url += `/101/${res.data.applyId}`
           this.$router.push(url)
-        } // 没有申请过此岗位
-        else if (res.data.applyCondition === 102) {
+        } else if (res.data.applyCondition === 102) {
+          // 没有申请过此岗位
           url += `/102/${res.data.applyId}`
           this.$router.push(url)
-        }
-        // 已交过该申请
-        else {
+        } else {
+          // 已交过该申请
           if (type === 1 || type === 4 || type === 7) {
             this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
               (res) => {
                 this.$router.push('/myApply') // 去我的申请页面
               }
-            ).catch(() => {
-              return
-            })
+            )
           } else {
             url += `/102/${res.data.applyId}`
             this.$router.push(url)
           }
         }
       })
-    },
-
-    // 首次申请博士导师岗位
-    firstApplyDoctor() {
-      checkApply(1).then((res) => {
-        if (res.data.applyCondition === 101) {
-          // 查询出来的状态为0 ，老师可以进去修改
-          this.$router.push(`firstApplyDoctor/1/101/${res.data.applyId}`)
-        } else if (res.data === 102) {
-          // 没有申请过此岗位
-          this.$router.push('firstApplyDoctor/1/102/-1')
-        } else {
-          this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
-            (res) => {
-              this.$router.push('/myApply') // 去我的申请页面
-            }
-          )
-        }
-      })
-    },
-
-    // 博士增列 path: 'addApplyDoctor/:applyType/:applyCondition',
-    addApplyDoctor: function() {
-      checkApply(2).then((res) => {
-        const applyId = res.data.applyId
-        if (res.data.applyCondition === 102) {
-          // 没有申请过此岗位
-          this.$router.push(`addApplyDoctor/2/102/${applyId}`)
-        } else if (res.data.applyCondition === 101) {
-          // 申请信息还没有填写完整
-          this.$router.push(`addApplyDoctor/2/101/${applyId}`)
-        }
-      })
-    },
-    // 博士免审
-    noInspectDoctor: function() {
-      addNoInspectApply(3).then((res) => {
-        // 数据库有返回主键 否则返回 -1
-        const applyId = res.data.applyId
-        if (res.data.applyCondition === 102) {
-          // 没有申请过此岗位
-          this.$router.push(`noInspectApplyDoctor/3/102/${applyId}`)
-        } else if (res.data.applyCondition === 101) {
-          // 申请信息还没有填写完整
-          this.$router.push(`noInspectApplyDoctor/3/101/${applyId}`)
-        }
-      })
-    },
-
-    // 首次申请硕士导师岗位（学术硕士）
-    firstApplyMaster: function() {
-      firstApply(4).then((res) => {
-        if (res.data === 101) {
-          // 查询出来的状态为 0 ，老师可以进去修改
-          this.$router.push('firstApplyMaster/4/101')
-        } else if (res.data === 102) {
-          // 没有申请过此岗位
-          this.$router.push('firstApplyMaster/4/102')
-        } else {
-          this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
-            (res) => {
-              this.$router.push('/myApply') // 去我的申请页面
-            }
-          )
-        }
-      })
-    },
-
-    // 学硕导师增列学科岗位
-    addApplyMaster: function() {
-      addApply(2).then((res) => {
-        const applyId = res.data.applyId
-        if (res.data.applyCondition === 102) {
-          // 没有申请过此岗位
-          this.$router.push(`addApplyMaster/5/102/${applyId}`)
-        } else if (res.data.applyCondition === 101) {
-          // 申请信息还没有填写完整
-          this.$router.push(`addApplyMaster/5/102/${applyId}`)
-        }
-      })
-    },
-
-    // 学硕导师免审岗位
-    applyNoInspectMaster: function() {
-      this.$router.push('applyNoInspectMaster/6/102')
-    },
-
-    // 首次申请专硕导师岗位
-    firstApplyProfessional: function() {
-      firstApply(7).then((res) => {
-        if (res.data === 101) {
-          // 查询出来的状态为 0 ，老师可以进去修改
-          this.$router.push('firstApplyProfessional/7/101')
-        } else if (res.data === 102) {
-          // 没有申请过此岗位
-          this.$router.push('firstApplyProfessional/7/102')
-        } else {
-          this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
-            (res) => {
-              this.$router.push('/myApply') // 去我的申请页面
-            }
-          )
-        }
-      })
-    },
-
-    // 专硕导师增列学科岗位
-    addApplyProfessional: function() {
-      this.$router.push('addApplyProfessional/8/102')
     }
   }
 }
@@ -262,8 +147,6 @@ export default {
 }
 
 .el-row {
-  //   margin-bottom: 10px;
-  //   height: 100px;
   &:last-child {
     margin-bottom: 0;
   }
@@ -274,7 +157,7 @@ export default {
 }
 
 /*
-申请类别选择
+  申请类别选择
 */
 .bg-purple-dark {
   background: #99a9bf;
@@ -284,7 +167,7 @@ export default {
   margin-bottom: 30px;
 }
 
-/**button按钮 */
+/* button按钮 */
 .grid-content {
   border-radius: 4px;
   min-height: 80px;
@@ -292,9 +175,9 @@ export default {
   // background-color: #304156;
 }
 
-/**
-el-card 卡片
- */
+/*
+  el-card 卡片
+*/
 .box-card {
   margin-bottom: 20px;
 }

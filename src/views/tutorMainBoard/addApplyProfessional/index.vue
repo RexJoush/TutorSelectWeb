@@ -80,7 +80,7 @@
                     <el-col :span="8">
                       <el-form-item label="上岗时间">
                         <el-date-picker
-                          v-model="formSecond.professionalMasterStartTime"
+                          v-model="formSecond.masterDegreeIncreaseTutorStartTime"
                           type="month"
                           format="yyyy-MM"
                           value-format="yyyy-MM"
@@ -351,8 +351,8 @@ export default {
         // 外单位调入填写
         sourceUnitName: '', // 原单位地址
         transferInTime: '', // 转入时间
-        professionalMasterOnDuty: '', // 硕导在岗类别
-        professionalMasterStartTime: '', // 上岗时间
+        masterDegreeIncreaseTutorOnDuty: '', // 硕导在岗类别
+        masterDegreeIncreaseTutorStartTime: '', // 上岗时间
         major: '', // 主要研究方向的内容及其意义
         groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         expertTitles: [] // 获何专家称号及时间列表
@@ -404,8 +404,8 @@ export default {
       if (data.professionalFieldCodeName !== '' && data.professionalFieldCodeName != null) {
         this.isDomain = true
       }
-      this.formSecond.professionalMasterOnDuty = data.professionalMasterOnDuty
-      this.formSecond.professionalMasterStartTime = data.professionalMasterStartTime
+      this.formSecond.masterDegreeIncreaseTutorOnDuty = data.masterDegreeIncreaseTutorOnDuty
+      this.formSecond.masterDegreeIncreaseTutorStartTime = data.masterDegreeIncreaseTutorStartTime
       this.formSecond.sourceUnitName = data.sourceUnitName
       this.formSecond.transferInTime = data.transferInTime
       this.formSecond.major = data.major
@@ -430,6 +430,7 @@ export default {
             }
             console.log(res.data)
             this.formThird = res.data
+            this.$message.success('保存成功!')
             this.formVisible.second = false // 关闭第 2 页
             this.loading = false
             this.formVisible.third = true // 打开第 3 页
