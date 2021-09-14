@@ -229,6 +229,7 @@
               type="success"
               plain
               size="small"
+              :disabled="multiple"
               :loading="exportLoading"
               @click="submitFun()"
               >提交</el-button
@@ -472,7 +473,7 @@ export default {
         }
         this.updataList.length = 0;
         if (initStatus != "commit") {
-          this.getSecretaryInit();
+          this.getSecretaryInit();  
         }
       });
     },

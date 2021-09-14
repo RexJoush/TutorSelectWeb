@@ -207,6 +207,7 @@
               type="success"
               plain
               size="small"
+              :disabled="multiple"
               :loading="exportLoading"
               @click="submitFun()"
               >提交</el-button
