@@ -172,12 +172,12 @@
             align="center"
             prop="inspectDescribe"
             width="150"
-            fixed="right"
           />
           <el-table-column
             label="详情"
             align="center"
             prop="mr"
+            fixed="right"
           />
           <el-table-column
             label="备注"
@@ -223,7 +223,6 @@
               type="success"
               plain
               size="small"
-              :disabled="multiple"
               :loading="exportLoading"
               @click="submitFun()"
             >提交</el-button>
@@ -280,14 +279,12 @@ export default {
       showSearch: true,
       // 分页总条数
       totalData: 0,
-      // 待院系秘书初审列表
-      secretaryInitList: [],
       // 所有申请类别列表
       applyTypeList: [],
       // 选定的列表
       multipleSelection: [],
-      // 当前操作的行
-      currentSelection: [],
+      //备注列表
+      commitArrays:[],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -414,33 +411,46 @@ export default {
     },
     // 初审符合条件
     passFun() {
-      this.check(15, 'unCommit')
+      this.check(15)
     },
     // 初审不符合条件
     unPassFun() {
-      this.check(16, 'unCommit')
+      this.check(16)
     },
     // 初审待定
     unEnsureFun() {
-      this.check(17, 'unCommit')
+      this.check(17)
     },
     // 初审需修改
     alterFun() {
-      this.check(18, 'unCommit')
+      this.check(18)
     },
     // 点击备注按钮，添加备注
     commitFun(row) {
+      this.commitArrays.length = 0
       this.dialogVisible = true
-      this.returnCommit = row.commit
-      this.currentSelection.length = 0
-      this.currentSelection.push(row)
+      this.returnCommit = row.commit  //回显数据
+      let obj = { id_1: 0, status_1: 0, commit_1: '' }
+      obj.id_1 = row.applyId
+      obj.status_1 =row.status
+      obj.commit_1 = row.commit
+      this.commitArrays.push(obj)
     },
     // 备注弹框的确定按钮
     returnFun() {
-      this.currentSelection[0].commit = this.returnCommit
-      this.updateObiect(this.currentSelection)
-      this.check(this.currentSelection[0].status, 'commit') // commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
+      this.commitArrays[0].commit_1 = this.returnCommit
+      this.updateStatusFun(this.commitArrays,false)
+      console.log("备注确定按钮",this.commitArrays)
       this.dialogVisible = false
+    },
+    //更新tutorList中的commit
+    updateTutorListDataCommit(currentId){
+      for(let i=0; i< this.tutorList.length;i++){
+        if(currentId === this.tutorList[i].applyId){
+          this.tutorList[i].commit = this.returnCommit
+          break
+        }
+      }
     },
     // 弹框取消按钮
     cancel() {
@@ -448,26 +458,35 @@ export default {
       this.returnCommit = null
     },
     // 更新操作
-    check(status, initStatus) {
-      if (status === 9999) {
-        // 如果status是9999，则执行提交按钮
+    check(status) {
+      if (status === "submit") {
+        console.log("submit")
+        // 如果status是submit，则执行提交按钮
         for (let index = 0; index < this.updataList.length; index++) {
           this.updataList[index].status_1 = this.updataList[index].status_1 - 4 // -4是因为数据库绑定状态的原因，勿动
         }
       } else {
+        console.log(status)
         for (let index = 0; index < this.updataList.length; index++) {
           this.updataList[index].status_1 = status
         }
       }
-
-      updateStatus(this.updataList).then((res) => {
-        console.info(res)
+      this.updateStatusFun(this.updataList,true)
+      console.log("更新状态",this.updataList)
+    },
+    // 更新状态
+    updateStatusFun(updataList, isInit){
+      updateStatus(updataList).then((res) => {
         if (res.code == 20000) {
           this.$message.success('操作成功!')
         }
-        this.updataList.length = 0;
-        if (initStatus != "commit") {
-          this.getSecretaryInit();  
+        if(isInit){
+          //走四个按钮＋提交，刷新页面
+          this.getSecretaryInit()
+        }else{
+          //走备注，不刷新页面，
+          //更新tutorList中的commit
+          this.updateTutorListDataCommit(this.commitArrays[0].id_1)
         }
       })
     },
@@ -484,7 +503,7 @@ export default {
         }
       }
       if (flag) {
-        this.check(9999)
+        this.check("submit")
         this.getSecretaryInit()
       } else {
         this.$message.warning('有待初审的数据，请先进行审核！')
@@ -509,7 +528,6 @@ export default {
       this.updataList = []
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < originArray.length; index++) {
-        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
         const obj = { id_1: 0, status_1: 0, commit_1: '' }
         obj.id_1 = originArray[index].applyId
         obj.status_1 = originArray[index].status
