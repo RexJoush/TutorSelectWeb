@@ -41,3 +41,9 @@ export function deleteFile(httpPath) {
   })
 }
 
+export function getPdf(applyId,applyTypeId){
+  return request({
+    url:`${baseUrl}/tutor/getPdf/138/1`,
+    method: 'get'
+  })
+}

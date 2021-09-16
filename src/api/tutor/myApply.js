@@ -22,3 +22,11 @@ export function changeStatus(data) {
     method: 'get'
   })
 }
+
+/* 获取当前申请的详细信息 */
+export function getApplyDetails(applyId, isInspect) {
+  return request({
+    url: `${baseUrl}/tutor/getApplyDetails/${applyId}/${isInspect}`,
+    method: 'get'
+  })
+}

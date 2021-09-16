@@ -172,12 +172,12 @@
             align="center"
             prop="inspectDescribe"
             width="150"
+            fixed="right"
           />
           <el-table-column
             label="详情"
             align="center"
             prop="mr"
-            fixed="right"
           />
           <el-table-column
             label="备注"
@@ -223,6 +223,7 @@
               type="success"
               plain
               size="small"
+              :disabled="multiple"
               :loading="exportLoading"
               @click="submitFun()"
             >提交</el-button>
@@ -464,9 +465,9 @@ export default {
         if (res.code == 20000) {
           this.$message.success('操作成功!')
         }
-        this.updataList.length = 0
-        if (initStatus != 'commit') {
-          this.getSecretaryInit()
+        this.updataList.length = 0;
+        if (initStatus != "commit") {
+          this.getSecretaryInit();  
         }
       })
     },

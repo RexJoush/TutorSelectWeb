@@ -43,7 +43,7 @@
             >
               <el-row>
                 <el-col :span="24">
-                  <el-row>
+                  <el-row :gutter="20">
                     <el-col :span="8">
                       <el-form-item label="申请学科">
                         <el-select v-model="formSecond.applySubject" placeholder="请选择" style="width: 100%">
@@ -58,7 +58,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="申请类别负责单位：">
-                        <el-select v-model="currentDepartment" placeholder="请选择" style="width: 100%" @change="setChildProfessional">
+                        <el-select v-model="formSecond.professionalApplicationSubjectUnit" placeholder="请选择" style="width: 100%" @change="setChildProfessional">
                           <el-option
                             v-for="item in professionalMasterDiscipline"
                             :key="item.department"
@@ -71,7 +71,7 @@
                     </el-col>
                     <el-col :span="8">
                       <el-form-item label="申请类别代码及名称">
-                        <el-select v-model="currentProfessional" placeholder="请选择" style="width: 100%" @change="setChildDomain">
+                        <el-select v-model="formSecond.professionalApplicationSubjectCodeName" placeholder="请选择" style="width: 100%" @change="setChildDomain">
                           <el-option
                             v-for="item in childProfessional"
                             :key="item.code"
@@ -261,8 +261,8 @@ export default {
       childProfessional: [], // 院系的子类别信息
       childDomain: [], // 类别的子领域信息
       isDomain: false, // 领域的框是否显示
-      currentDepartment: '', // 院系信息
-      currentProfessional: '', // 当前的专业类别信息
+      // currentDepartment: '', // 院系信息
+      // currentProfessional: '', // 当前的专业类别信息
       dialogSecond1: false, // 学术团体或职务的显示框
       dialogSecond2: false, // 专家称号的显示框
       applySubjects: [
@@ -317,11 +317,11 @@ export default {
       }
       // 设置院系
       this.formSecond.professionalApplicationSubjectUnit = data.professionalApplicationSubjectUnit
-      this.currentDepartment = data.professionalApplicationSubjectUnit
+      // this.currentDepartment = data.professionalApplicationSubjectUnit
 
       // 设置类别
       this.formSecond.professionalApplicationSubjectCodeName = data.professionalApplicationSubjectCodeName
-      this.currentProfessional = data.professionalApplicationSubjectCodeName
+      // this.currentProfessional = data.professionalApplicationSubjectCodeName
 
       // 设置领域
       this.formSecond.professionalFieldCodeName = data.professionalFieldCodeName
@@ -352,6 +352,7 @@ export default {
             }
             console.log(res.data)
             this.formThird = res.data
+            this.$message.success('保存成功!')
             this.formVisible.second = false // 关闭第 2 页
             this.loading = false
             this.formVisible.third = true // 打开第 3 页
@@ -366,13 +367,13 @@ export default {
     // 设置选择院系的子类别代码
     setChildProfessional: function(value) {
       // 将两级子列表的选择置空
-      this.currentProfessional = ''
+      // this.currentProfessional = ''
       this.formSecond.professionalApplicationSubjectCodeName = ''
       this.formSecond.professionalFieldCodeName = ''
       this.isDomain = false
 
       // 修改当前页面的显示院系
-      this.currentDepartment = value.department
+      // this.currentDepartment = value.department
 
       // 修改第二页的提交信息
       this.formSecond.professionalApplicationSubjectUnit = value.department
@@ -389,15 +390,18 @@ export default {
       this.formSecond.professionalFieldCodeName = ''
 
       // 修改当前页面的显示专业类别信息
-      this.currentProfessional = value.code + ' ' + value.professionalDegreeCategory
+      // this.currentProfessional = value.code + ' ' + value.professionalDegreeCategory
 
       // 修改提交信息
       this.formSecond.professionalApplicationSubjectCodeName = value.code + ' ' + value.professionalDegreeCategory
 
       // 设置子领域为当前院系的专业
       this.childDomain = value.domain
-      if (this.childDomain.length !== 0) {
+      if (value.domain.length !== 0) {
         this.isDomain = true
+        this.childDomain = value.domain
+      } else {
+        this.isDomain = false
       }
     },
 
