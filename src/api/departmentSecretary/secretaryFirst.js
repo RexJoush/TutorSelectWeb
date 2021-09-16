@@ -1,5 +1,13 @@
 import request from '@/utils/request'
+import { baseUrl } from '@/api/url'
 
+// 获取所有初始信息
+export function getInit(organizationId, applyStatuss) {
+  return request({
+    url: `${baseUrl}/admin/tutor-inspect/getInit/${organizationId}/${applyStatuss}`,
+    method: 'get',
+  })
+}
 // 初始化申请的所有类别（下拉框）
 export function getApplyType() {
   return request({
