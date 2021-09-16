@@ -172,12 +172,12 @@
             align="center"
             prop="inspectDescribe"
             width="150"
+            fixed="right"
           />
           <el-table-column
             label="详情"
             align="center"
             prop="mr"
-            fixed="right"
           />
           <el-table-column
             label="备注"
