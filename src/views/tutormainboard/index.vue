@@ -75,7 +75,7 @@
           </div>
         </el-col>
         <el-col :span="7">
-          <!-- <div><el-button type="success" @click="getpdf">pdf</el-button></div> -->
+          <div><el-button type="success" @click="getpdf">pdf</el-button></div>
         </el-col>
       </el-row>
     </el-card>
