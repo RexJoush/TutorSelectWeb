@@ -271,6 +271,7 @@ export default {
       this.loading = false
     },
     async upDateStatus(code) {
+      console.log('update')
       const updateStatus = []
       for (var i = 0; i < this.ids.length; i++) {
         var json = {
@@ -341,15 +342,8 @@ export default {
     },
     // 审核通过确认弹框确认按钮
     rePassFun() {
-      if (this.choose == 1) {
-        // 送审社科处
-        this.upDateStatus(30)
-      }
-      if (this.choose == 2) {
-        // 送审社科处
-        this.upDateStatus(31)
-      }
-      this.check(11)
+      // eslint-disable-next-line eqeqeq
+      this.upDateStatus(34)
       this.dialogVisiblePass = false
     },
     // 弹框取消按钮
