@@ -30,3 +30,11 @@ export function getApplyDetails(applyId, isInspect) {
     method: 'get'
   })
 }
+
+/*导出pdf */
+export function exportPdf(applyId,applyTypeId){
+  return request({
+    url:`${baseUrl}/tutor/getPdf/${applyId}/${applyTypeId}`,
+    method: 'get'
+  })
+}

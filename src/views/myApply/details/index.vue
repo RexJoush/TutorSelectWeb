@@ -7,7 +7,7 @@
             <h2>申请详情信息</h2>
           </el-col>
           <el-col :span="12">
-            <el-button style="float: right;" type="primary">导出pdf</el-button>
+            <el-button style="float: right;" type="primary" @click="exportPdfBtn">导出pdf</el-button>
           </el-col>
         </el-row>
       </div>
@@ -586,7 +586,7 @@
 </template>
 
 <script>
-import { getApplyDetails } from '@/api/tutor/myApply'
+import { getApplyDetails,exportPdf } from '@/api/tutor/myApply'
 
 export default {
   name: 'Index',
@@ -603,6 +603,13 @@ export default {
     this.loading = true
   },
   methods: {
+    //导出pdf
+    exportPdfBtn :function(){
+      exportPdf(this.applyId,this.applyTypeId).then( res =>{
+        this.$message.success("success!")
+      })
+    },
+
     getApplyDetails: function() {
       getApplyDetails(this.applyId, this.applyTypeId === 3 || this.applyTypeId === 6 ? 0 : 1).then(res => {
         if (!(this.applyTypeId === 3 || this.applyTypeId === 6)) {
