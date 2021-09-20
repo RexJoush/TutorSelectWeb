@@ -479,7 +479,10 @@ export default {
   },
 
   created() {
+    //问题
+    this.applyType = this.$route.params.applyType * 1
     const students = this.formFourth.guidingStudents
+    
     switch (this.applyType) {
       case 1: // 首次博导, 协助指导博士生 指导硕士生
         this.formFourth.assistDoctorStudents = students.filter(item => item.studentType === '博士')
@@ -501,6 +504,7 @@ export default {
       case 6: // 学硕免审
         break
       case 7: // 首次专硕, 协助指导硕士生 指导本科生
+      
         this.formFourth.assistMasterStudents = students.filter(item => item.studentType === '硕士')
         this.formFourth.undergraduateStudents = students.filter(item => item.studentType === '本科')
         break

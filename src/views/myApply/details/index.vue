@@ -6,8 +6,8 @@
           <el-col :span="12">
             <h2>申请详情信息</h2>
           </el-col>
-          <el-col :span="12">
-            <el-button style="float: right;" type="primary" @click="exportPdfBtn">导出pdf</el-button>
+          <el-col :span="12">    
+           <el-button style="float: right;" type="primary" @click="exportPdfBtn">导出pdf</el-button>        
           </el-col>
         </el-row>
       </div>
@@ -595,7 +595,8 @@ export default {
       loading: false,
       applyId: this.$route.params.applyId * 1,
       applyTypeId: this.$route.params.applyTypeId * 1,
-      details: {}
+      details: {},
+      pdfHttpPath: ''
     }
   },
   created() {
@@ -606,7 +607,16 @@ export default {
     //导出pdf
     exportPdfBtn :function(){
       exportPdf(this.applyId,this.applyTypeId).then( res =>{
-        this.$message.success("success!")
+        if(res.data.code === 1201){
+          //pdf下载
+          this.pdfHttpPath = res.data.pdfPath;
+          console.log(this.pdfHttpPath)
+          this.$message.success("导出成功!")
+        }
+        else
+        {
+          this.$message.error("导出失败!")
+        }
       })
     },
 
