@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-12 16:36:42
+ * @LastEditTime: 2021-09-21 14:43:23
 -->
 <template>
   <div class="app-container">
@@ -92,6 +92,7 @@
             plain
             icon="el-icon-success"
             size="small"
+            v-if="queryParams.applyStatus == 30"
             @click="passFun()"
             >通过</el-button
           >
@@ -103,6 +104,7 @@
             plain
             icon="el-icon-error"
             size="small"
+            v-if="queryParams.applyStatus == 30"
             :disabled="multiple"
             @click="unPassFun()"
             >驳回</el-button
@@ -117,7 +119,7 @@
         @selection-change="handleSelectionChange"
         :row-class-name="tableRowClassName"
       >
-        <el-table-column type="selection" width="50" align="center" />
+        <el-table-column type="selection" width="50" align="center" v-if="queryParams.applyStatus == 30"/>
         <el-table-column label="序号" type="index" width="50" />
         <el-table-column label="工号" align="center" prop="tutorId" />
         <el-table-column label="姓名" align="center" prop="name" />

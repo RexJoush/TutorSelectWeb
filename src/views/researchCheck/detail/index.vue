@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-13 15:12:01
+ * @LastEditTime: 2021-09-21 14:53:34
 -->
 <template>
   <div id="app-container">
@@ -493,59 +493,25 @@ export default {
     checkSuccess() {
       window.location.reload();
     },
-    //返回主界面
-    submitMaterials:function(){
-      this.updataList = [];
-      if (
-        this.commit_1 == "材料审核通过" &&
-        this.commit_2 == "材料审核通过" &&
-        this.commit_3 == "材料审核通过" &&
-        this.commit_4 == "材料审核通过"
-      ) {
-        this.csDes = "材料审核通过";
-      } else if (
-        this.commit_1 == "有材料待审核" ||
-        this.commit_2 == "有材料待审核" ||
-        this.commit_3 == "有材料待审核" ||
-        this.commit_4 == "有材料待审核"
-      ) {
-        this.csDes = "有材料待审核"
-      } else if (
-        this.commit_1 == "材料审核不通过" ||
-        this.commit_2 == "材料审核不通过" ||
-        this.commit_3 == "材料审核不通过" ||
-        this.commit_4 == "材料审核不通过"
-      ) {
-        this.csDes = "材料审核不通过";
-      } 
-      let obj = { id_1: 0, status_1: 0, commit_1: "" };
-      obj.id_1 = this.applyId
-      obj.status_1 = "31"
-      obj.commit_1 = this.csDes
-      console.log("00000000000000", this.applyId)
-      this.updataList.push(obj);
-      updateStatus(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("材料审核成功");
-        }
-      });
-      this.goBack();
-    },
+    
     // 1.查询学术论文
     getPaperList() {
       console.log(this.id); //可以获取到
       searchPaper(this.id, this.applyId).then((res) => {
         this.paperList = res.data;
+        console.log("res.data",this.paperList)
+        this.commit_1 = ""  //清空上次的综合条件
         //判断论文材料审核是否通过
         for(let item1 of this.paperList){
-          if(item1.col1 == null){
-            this.commit_1 = "有材料待审核"
-          }else if(item1.col1!="通过"){
-            this.commit_1 = "材料审核不通过"
+          if(item1.col1 === null){
+            this.commit_1 = 0
+          }else if(item1.col1 !== "通过"){
+            this.commit_1 = -1
           }
           // console.log("雪花酥技术：",item1.col1)
         }
-        if(!this.commit_1) this.commit_1 = "材料审核通过" 
+        console.log("commit_1",this.commit_1)
+        if(!this.commit_1) this.commit_1 = 1 
         console.log("学术论文:",this.commit_1)  
       });
     },
@@ -555,12 +521,12 @@ export default {
         this.projectList = res.data;
         for(let item of this.projectList){
           if(item.col1 == undefined){
-            this.commit_4 = "有材料待审核"
+            this.commit_4 = 0
           }else if(item.col1!="通过"){
-            this.commit_4 = "材料审核不通过"
+            this.commit_4 = -1
           }
         }
-        if(!this.commit_4) this.commit_4 = "材料审核通过"
+        if(!this.commit_4) this.commit_4 = 1
         console.log("科研项目:",this.commit_4)
       });
     },
@@ -570,12 +536,12 @@ export default {
         this.workList = res.data;
         for(let item of this.workList){
           if(item.col1 == undefined){
-            this.commit_3 = "有材料待审核"
+            this.commit_3 = 0
           }else if(item.col1!="通过"){
-            this.commit_3 = "材料审核不通过"
+            this.commit_3 = -1
           }
         }
-        if(!this.commit_3) this.commit_3 = "材料审核通过"
+        if(!this.commit_3) this.commit_3 = 1
         console.log("教材或学术著作:",this.commit_3)
       });
     },
@@ -585,12 +551,12 @@ export default {
         this.awardList = res.data;
         for(let item2 of this.awardList){
           if(item2.col1 == undefined){
-            this.commit_2 = "有材料待审核"
+            this.commit_2 = 0
           }else if(item2.col1!="通过"){
-            this.commit_2 = "材料审核不通过"
+            this.commit_2 = -1
           }
         }  
-        if(!this.commit_2) this.commit_2 = "材料审核通过"
+        if(!this.commit_2) this.commit_2 = 1
         console.log("科研教学奖励表:",this.commit_2)
       });
     },
@@ -797,6 +763,54 @@ export default {
     cancel4() {
       this.dialogVisible4 = false;
       this.returnCommit4 = null;
+    },
+
+    //返回主界面
+    submitMaterials:function(){
+      this.getPaperList();
+      this.getProjectList();
+      this.getWorkList();
+      this.getAwardList();
+      this.csDes=""
+      this.updataList = [];
+      if (
+        this.commit_1 == 1 &&
+        this.commit_2 == 1 &&
+        this.commit_3 == 1 &&
+        this.commit_4 == 1
+      ) {
+        this.csDes = "材料审核通过";
+      } else if (
+        this.commit_1 == 0 ||
+        this.commit_2 == 0 ||
+        this.commit_3 == 0 ||
+        this.commit_4 == 0
+      ) {
+        this.csDes = "有材料待审核"
+      } else if (        
+        this.commit_1 == -1 ||
+        this.commit_2 == -1 ||
+        this.commit_3 == -1 ||
+        this.commit_4 == -1
+      ) {
+        console.log("commit_1",this.commit_1);
+        this.csDes = "材料审核不通过";
+      } 
+      this.$router.push({path:"/research/researchCheck", query:{applyId:this.applyId, csDes: this.csDes}});
+      // let obj = { id_1: 0, status_1: 0, commit_1: "" };
+      // obj.id_1 = this.applyId
+      // obj.status_1 = "31"
+      // console.log("csdes",this.csDes) 
+      // obj.commit_1 = this.csDes
+      // this.updataList.push(obj);
+      // console.log("======updatelist",this.updataList)
+      // updateStatus(this.updataList).then((res) => {
+      //   if (res.code == 20000) {
+      //     this.$message.success("材料审核成功");
+      //     this.goBack();
+      //   }
+      // });
+      
     },
   },
 };

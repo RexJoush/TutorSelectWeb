@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-12 15:41:05
+ * @LastEditTime: 2021-09-21 15:00:00
 -->
 <template>
   <div class="app-container">
@@ -85,14 +85,15 @@
             </el-form-item>
             
           </el-form>
-
+          <br />
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
             <el-button
               type="success"
               plain
               icon="el-icon-success"
-              size="small"
+              size="small"    
+              v-if="queryParams.applyStatus == 31"          
               @click="passFun()"
               >通过</el-button
             >
@@ -103,14 +104,15 @@
                 type="danger"
                 plain
                 icon="el-icon-error"
-                size="small"
+                size="small"    
+                v-if="queryParams.applyStatus == 31"               
                 :disabled="multiple"
                 @click="unPassFun()"
               >驳回</el-button
             >
             </el-col>           
           </el-row>
-
+          <el-divider/>
           <el-table
             ref="singleTable"
             :data="tutorList"
@@ -118,7 +120,7 @@
             @selection-change="handleSelectionChange"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column type="selection" width="50" align="center"/>
+            <el-table-column type="selection" width="50" align="center"  v-if="queryParams.applyStatus == 31"/>
             <el-table-column label="序号" type="index" width="50" />
             <el-table-column label="工号" align="center" prop="tutorId" />
             <el-table-column label="姓名" align="center" prop="name" />
@@ -216,13 +218,13 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, //工号
-        userName: undefined, //姓名
-        organization: undefined, //院系id
-        applyType: undefined, //申请类别id
-        subjectName: undefined, //学科名称id
-        applyStatus: undefined, //审核状态码id
-        subjectTpe: undefined, //学科属性，文科、理科、交叉
+        userId: '', //工号
+        userName: '', //姓名
+        organization: '', //院系id
+        applyType: '', //申请类别id
+        subjectName: '', //学科名称id
+        applyStatus: '', //审核状态码id
+        subjectTpe: '', //学科属性，文科、理科、交叉
       },
       //当前页
       currentPage: 1,
@@ -259,6 +261,7 @@ export default {
     tableRowClassName() {
       //详情页返回时让该行高亮
       this.applyId = this.$route.query.applyId;
+      // console.log("lllllll",this.$route.query.csDes)
       if (this.applyId !== undefined) {
         // console.log("高亮显示", this.applyId);
         // console.log("hhhhhhhhhhhhh", this.tutorList);
@@ -310,7 +313,7 @@ export default {
     //搜索按钮
     searchQuery() {
       checkDate(this.queryParams).then(res => {
-        this.tutorList = res.data.data;
+        this.tutorList = res.data.data;  
         this.totalData = res.total;
       })
     },
@@ -324,6 +327,7 @@ export default {
     },
     //初审通过
     passFun() {
+      
       this.dialogVisiblePass = true;
     },
     //审核通过确认弹框确认按钮
