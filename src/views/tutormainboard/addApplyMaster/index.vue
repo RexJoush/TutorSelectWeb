@@ -9,10 +9,10 @@
     <el-row>
       <el-col :span="8" :offset="8">
         <el-steps :active="active" finish-status="success">
-          <el-step title="基本信息"/>
-          <el-step title="研究信息"/>
-          <el-step title="学术信息"/>
-          <el-step title="教学信息"/>
+          <el-step title="基本信息" />
+          <el-step title="研究信息" />
+          <el-step title="学术信息" />
+          <el-step title="教学信息" />
         </el-steps>
       </el-col>
     </el-row>
@@ -124,7 +124,7 @@
                   <el-row :gutter="20">
                     <el-col :span="8">
                       <el-form-item label="原单位名称">
-                        <el-input v-model="formSecond.sourceUnitName"/>
+                        <el-input v-model="formSecond.sourceUnitName" />
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
@@ -156,14 +156,14 @@
                   <el-form-item label="何时参加何种学术团体、任何种职务，有何社会兼职">
                     <el-button type="primary" class="addButton" @click="dialogSecond1 = true">添加</el-button>
                     <el-table :data="formSecond.groupsOrPartTimeJobs" border style="width: 100%">
-                      <el-table-column type="index" width="50" label="序号"/>
-                      <el-table-column prop="time" label="参加时间" width="180"/>
-                      <el-table-column prop="groups" label="学术团体或兼职" width="200"/>
-                      <el-table-column prop="job" label="所任职务"/>
-                      <el-table-column label="操作">
+                      <el-table-column type="index" width="50" label="序号" />
+                      <el-table-column prop="time" label="参加时间" width="180" />
+                      <el-table-column prop="groups" label="学术团体或兼职" width="200" />
+                      <el-table-column prop="job" label="所任职务" />
+                      <el-table-column align="center" width="150" label="操作">
                         <template slot-scope="scope">
-                          <el-button size="mini" type="danger" plain @click="delGroupsOrPartTimeJob(scope.$index)">删 除
-                          </el-button>
+                          <el-button type="info" size="mini" plain @click="editGroupsOrPartTimeJob(scope.$index)">编 辑</el-button>
+                          <el-button size="mini" type="danger" plain @click="delGroupsOrPartTimeJob(scope.$index)">删 除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -174,9 +174,9 @@
                   <el-form-item v-model="formSecond.expertTitles" label="获何专家称号及时间">
                     <el-button type="primary" class="addButton" @click="dialogSecond2 = true">添加</el-button>
                     <el-table :data="formSecond.expertTitles" border style="width: 100%">
-                      <el-table-column type="index" width="50" label="序号"/>
-                      <el-table-column label="获得时间" prop="time" width="180"/>
-                      <el-table-column label="称号名称" prop="title"/>
+                      <el-table-column type="index" width="50" label="序号" />
+                      <el-table-column label="获得时间" prop="time" width="180" />
+                      <el-table-column label="称号名称" prop="title" />
                       <el-table-column width="100">
                         <template slot-scope="scope">
                           <el-button size="mini" type="danger" plain @click="delExpertTitle(scope.$index)">删 除
@@ -247,10 +247,10 @@
           />
         </el-form-item>
         <el-form-item label="学术团体、或职务，或兼职名称">
-          <el-input v-model="groupsOrPartTimeJob.groups"/>
+          <el-input v-model="groupsOrPartTimeJob.groups" />
         </el-form-item>
         <el-form-item label="所任职务">
-          <el-input v-model="groupsOrPartTimeJob.job"/>
+          <el-input v-model="groupsOrPartTimeJob.job" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -273,7 +273,7 @@
           />
         </el-form-item>
         <el-form-item label="称号名称">
-          <el-input v-model="expertTitle.title"/>
+          <el-input v-model="expertTitle.title" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import {toDetails} from '@/utils/funcation'
+import {toDetails} from '@/utils/function'
 import {
   getApplyType, // 查询数据
   checkDate,
@@ -292,7 +292,7 @@ export default {
       // const tutorId = row.tutorId
       const applyId = row.applyId
       const applyTypeId = row.applyTypeId
-      toDetails(this, applyId, applyTypeId) 
+      toDetails(this, applyId, applyTypeId)
       // this.$router.push({ path: '/graduate/graduateDetail', query: { applyId: applyId, tutorId: tutorId}})
     },
 
