@@ -610,7 +610,14 @@ export default {
         if(res.data.code === 1201){
           //pdf下载
           this.pdfHttpPath = res.data.pdfPath;
-          console.log(this.pdfHttpPath)
+          const link = document.createElement('a')
+          link.style.display = 'none'
+          link.target = '_blank' 
+          link.href = this.pdfHttpPath
+          link.setAttribute('download', '授权协议书') // 此处注意，要给a标签添加一个download属性，属性值就是文件名称 否则下载出来的文件是没有属性的，空白白
+          document.body.appendChild(link)
+          console.log("执行a标签")
+          link.click() // 执行a标签
           this.$message.success("导出成功!")
         }
         else
