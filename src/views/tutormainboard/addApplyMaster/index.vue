@@ -177,10 +177,10 @@
                       <el-table-column type="index" width="50" label="序号" />
                       <el-table-column label="获得时间" prop="time" width="180" />
                       <el-table-column label="称号名称" prop="title" />
-                      <el-table-column width="100">
+                      <el-table-column align="center" width="150" label="操作">
                         <template slot-scope="scope">
-                          <el-button size="mini" type="danger" plain @click="delExpertTitle(scope.$index)">删 除
-                          </el-button>
+                          <el-button type="info" size="mini" plain @click="editExpertTitle(scope.$index)">编 辑</el-button>
+                          <el-button size="mini" type="danger" plain @click="delExpertTitle(scope.$index)">删 除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -234,7 +234,7 @@
 
     <!-- 第二页 弹框部分 -->
     <!-- 学术团体框 -->
-    <el-dialog title="添加学术团体或职务" :visible.sync="dialogSecond1">
+    <el-dialog :title="isEdit ? '修改学术团体或职务': '添加学术团体或职务'" :visible.sync="dialogSecond1" @closed="cancelFunc(1)">
       <el-form ref="groupsOrPartTimeJobForm" :model="groupsOrPartTimeJob">
         <el-form-item label="参加学术团体、或职务或社会兼职的时间">
           <el-date-picker
@@ -254,13 +254,13 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogSecond1 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(1)">取 消</el-button>
         <el-button type="primary" @click="addGroupsOrPartTimeJob">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 专家称号框 -->
-    <el-dialog title="添加学术团体或职务" :visible.sync="dialogSecond2">
+    <el-dialog :title="isEdit ? '修改专家称号': '添加专家称号'" :visible.sync="dialogSecond2" @closed="cancelFunc(2)">
       <el-form :model="expertTitle">
         <el-form-item label="获得专家称号时间">
           <el-date-picker
@@ -277,7 +277,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogSecond2 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(2)">取 消</el-button>
         <el-button type="primary" @click="addExpertTitle">确 定</el-button>
       </div>
     </el-dialog>
@@ -324,6 +324,8 @@ export default {
       tutorName: '', // 教师姓名, 第 4 页用到
 
       /* =========================  第 2 页  ================================= */
+      isEdit: false, // 是否为编辑选项
+      editIndex: -1, // 编辑项目的索引
       childNodes: [], // 院系的子专业信息
       dialogSecond1: false, // 学术团体或职务的显示框
       dialogSecond2: false, // 专家称号的显示框
@@ -431,7 +433,13 @@ export default {
 
     // 添加学术团体项
     addGroupsOrPartTimeJob: function() {
-      this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
+      if (this.isEdit) {
+        this.formSecond.groupsOrPartTimeJobs[this.editIndex] = this.groupsOrPartTimeJob
+        this.isEdit = false
+        this.editIndex = -1
+      } else {
+        this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
+      }
       this.groupsOrPartTimeJob = {
         time: '',
         groups: '',
@@ -439,7 +447,16 @@ export default {
       }
       this.dialogSecond1 = false
     },
-
+    // 编辑学术团体
+    editGroupsOrPartTimeJob: function(index) {
+      this.groupsOrPartTimeJob = this.formSecond.groupsOrPartTimeJobs[index]
+      // 打开添加框
+      this.dialogSecond1 = true
+      // 标记修改
+      this.isEdit = true
+      // 记录索引
+      this.editIndex = index
+    },
     // 删除学术团体项
     delGroupsOrPartTimeJob: function(index) {
       this.formSecond.groupsOrPartTimeJobs.splice(index, 1)
@@ -447,16 +464,56 @@ export default {
 
     // 添加某项专家称号
     addExpertTitle: function() {
-      this.formSecond.expertTitles.push(this.expertTitle)
+      // 修改
+      if (this.isEdit) {
+        this.formSecond.expertTitles[this.editIndex] = this.expertTitle
+        this.isEdit = false
+        this.editIndex = -1
+      } else {
+        this.formSecond.expertTitles.push(this.expertTitle)
+      }
       this.expertTitle = {
         time: '',
         title: ''
       }
       this.dialogSecond2 = false
     },
+    // 修改某项专家称号
+    editExpertTitle: function(index) {
+      this.expertTitle = this.formSecond.expertTitles[index]
+      // 打开添加框
+      this.dialogSecond2 = true
+      // 标记修改
+      this.isEdit = true
+      // 记录索引
+      this.editIndex = index
+    },
+
     // 删除某项专家称号
     delExpertTitle: function(index) {
       this.formSecond.expertTitles.splice(index, 1)
+    },
+
+    // 取消框
+    cancelFunc: function(type) {
+      // 学术团体
+      if (type === 1) {
+        this.groupsOrPartTimeJob = {
+          time: '',
+          groups: '',
+          job: ''
+        }
+        this.dialogSecond1 = false
+      } else {
+        // 专家称号
+        this.expertTitle = {
+          time: '',
+          title: ''
+        }
+        this.dialogSecond2 = false
+      }
+      this.isEdit = false
+      this.editIndex = -1
     },
 
     /* =========================  第 4 页  ================================= */

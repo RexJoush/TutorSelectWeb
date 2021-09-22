@@ -51,6 +51,7 @@
               clearable
               size="small"
               style="width: 100%"
+              @change="changeApplyStatus"
             >
               <el-option
                 v-for="item in statusOptions"
@@ -64,7 +65,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="2" :offset="20">
-          <el-button type="primary" icon="el-icon-search" size="small" @click="filterDataByStatus()">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
         </el-col>
         <el-col :span="2">
           <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
@@ -89,7 +90,7 @@
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
       <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="applyDepartment" width="150" fixed />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
       <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
       <el-table-column label="申请类别" align="center" prop="applyName" />
       <el-table-column label="职称" align="center" prop="title" width="100" />
@@ -170,7 +171,8 @@ import {
   getApplyType,
   checkDate,
   updateStatus,
-  getInit
+  getInit,
+  search
 } from '@/api/departmentSecretary/secretaryFirst'
 import { exportSFH } from '@/api/departmentSecretary/exportExcel'
 import { toDetails } from '@/utils/function'
@@ -205,13 +207,14 @@ export default {
       pageNumber: 1,
       // 查询参数
       queryParams: {
-        userId: null, // 工号
-        userName: null, // 姓名
-        organization: null, // 院系id
-        applyType: null, // 申请类别id
-        subjectName: null, // 学科名称id
-        applyStatus: null, // 审核状态码id
-        subjectType: null // 学科属性，文科，理科，交叉
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '50030', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
+        applyStatus: '', // 审核状态 id
+        applyStatuss: [], // 审核状态码数组 id
+        subjectType: '' // 学科属性，文科，理科，交叉
       },
       // 查询参数
       queryParamCopy: {},
@@ -280,7 +283,33 @@ export default {
 
     // 查询数据
     search: function() {
+      console.log('queryParams', this.queryParams)
+      if (this.queryParams.applyStatus === '' &&
+          this.queryParams.userName === '' &&
+          this.queryParams.organization === '' &&
+          this.queryParams.applyType === '' &&
+          this.queryParams.subjectName === '' &&
+          this.queryParams.subjectType === ''
+      ) {
+        this.getSecretaryInit()
+      } else {
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = ['10', '15', '16', '17', '18'] // 申请状态码
+        }
+        search(this.queryParams, this.pageNumber).then(res => {
+          this.tutorList = res.data.data
+          this.totalData = res.data.total
+          console.log('res', res)
+          this.loading = false
+        }).catch(error => {
+          throw error
+        })
+      }
+    },
 
+    // 清空选择申请状态
+    changeApplyStatus: function() {
+      this.queryParams.applyStatuss = []
     },
 
     // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
@@ -349,6 +378,7 @@ export default {
       this.queryParams.userName = null // 姓名
       this.queryParams.applyType = null // 申请类别id
       this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.applyStatuss = [] // 申请类别列表
     },
     // 初审符合条件
     passFun() {

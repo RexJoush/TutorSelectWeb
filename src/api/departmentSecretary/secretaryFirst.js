@@ -22,6 +22,15 @@ export function getInit(organizationId, applyStatuss, pageNumber) {
     data: params
   })
 }
+// 获取所有初始信息
+export function search(queryParams, pageNumber) {
+  return request({
+    // url: `${baseUrl}/admin/tutor-inspect/getInit/${organizationId}/${applyStatuss}/${pageNumber}`,
+    url: `${baseUrl}/admin/tutor-inspect/search/${pageNumber}`,
+    method: 'post',
+    data: queryParams
+  })
+}
 // 初始化申请的所有类别（下拉框）
 export function getApplyType() {
   return request({
