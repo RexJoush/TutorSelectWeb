@@ -4,13 +4,13 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-22 10:49:40
+ * @LastEditTime: 2021-09-22 17:05:27
 -->
 <template>
   <div id="app-container">
     <br />
     <el-page-header
-      style="margin-left: 30px"
+      style="margin-left: 30px; color: #409EFF"
       @back="goBack"
       :content="this.name"
     >
@@ -154,7 +154,16 @@
                 <a :href="scope.row.projectProveMaterials"> 下载文件 </a>
               </template>
             </el-table-column>
-            <el-table-column label="成果认定" align="center" prop="col1" />
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
             <el-table-column label="备注" align="center" prop="col2" />
             <el-table-column
               label="操作"
@@ -226,7 +235,16 @@
                 <a :href="scope.row.worksProveMaterials"> 下载文件 </a>
               </template>
             </el-table-column>
-            <el-table-column label="成果认定" align="center" prop="col1" />
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
             <el-table-column label="备注" align="center" prop="col2" />
             <el-table-column
               label="操作"
@@ -303,7 +321,16 @@
                 <a :href="scope.row.awardsProveMaterials"> 下载文件 </a>
               </template>
             </el-table-column>
-            <el-table-column label="成果认定" align="center" prop="col1" />
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
             <el-table-column label="备注" align="center" prop="col2" />
             <el-table-column
               label="操作"
@@ -337,8 +364,7 @@
     <br />
     <br />
     <el-row type="flex" justify="end">
-      <el-col :span="4">
-        <el-button type="success" @click="checkSuccess">审核成功</el-button>
+      <el-col :span="4" :offset="21">
         <el-button type="primary" @click="submitMaterials">确认提交</el-button>
       </el-col>
     </el-row>
@@ -516,23 +542,18 @@ export default {
   created() {
     this.id = this.$route.query.tutorId;
     this.applyId = this.$route.query.applyId;
-    this.name = this.$route.query.name + "老师的学术成果";
+    this.name = this.$route.query.name + "~老师的学术成果";
     this.getPaperList();
     this.getProjectList();
     this.getWorkList();
     this.getAwardList();
   },
   methods: {
-    //审核成功，刷新界面
-    checkSuccess() {
-      window.location.reload();
-    },
-
     // 1.查询学术论文
     async getPaperList() {
       const { data: res } = await searchPaper(this.id, this.applyId);
       this.paperList = res;
-      console.log("paperList", this.paperList);
+      // console.log("paperList", this.paperList);
       this.commit_1 = ""; //清空上次的综合条件
       //判断论文材料审核是否通过
       for (let item1 of this.paperList) {
@@ -543,7 +564,6 @@ export default {
           this.commit_1 = -1; //材料不通过
           break;
         }
-        // console.log("雪花酥技术：",item1.col1)
       }
       if (this.commit_1 == "") this.commit_1 = 1;
       console.log("学术论文:", this.commit_1);
@@ -552,14 +572,13 @@ export default {
     // 2.查询科研项目
     async getProjectList() {
       const { data: res } = await searchProject(this.id, this.applyId);
-
       this.projectList = res;
       this.commit_2 = ""; //清空上次的综合条件
       for (let item of this.projectList) {
         if (item.col1 == undefined) {
           this.commit_2 = 0;
           break;
-        } else if (item.col1 != "通过") {
+        } else if (item.col1 !== "通过") {
           this.commit_2 = -1;
           break;
         }
@@ -576,7 +595,7 @@ export default {
         if (item.col1 == undefined) {
           this.commit_3 = 0;
           break;
-        } else if (item.col1 != "通过") {
+        } else if (item.col1 !== "通过") {
           this.commit_3 = -1;
           break;
         }
@@ -593,7 +612,7 @@ export default {
         if (item2.col1 == undefined) {
           this.commit_4 = 0;
           break;
-        } else if (item2.col1 != "通过") {
+        } else if (item2.col1 !== "通过") {
           this.commit_4 = -1;
           break;
         }
@@ -643,7 +662,6 @@ export default {
         col1: "不通过",
         col2: this.returnCommit1,
       };
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
       updatePaper(updatePaperForm).then((res) => {
         if (res.code == 20000) {
           this.$message.success("审核成功!");
@@ -812,16 +830,11 @@ export default {
     //返回主界面
     async submitMaterials() {
       await this.getPaperList();
-
       await this.getProjectList();
       await this.getWorkList();
       await this.getAwardList();
       this.csDes = "";
       this.updataList = [];
-      // console.log("commit_1=",this.commit_1)
-      // console.log("commit_2=",this.commit_2)
-      // console.log("commit_3=",this.commit_3)
-      // console.log("commit_4=",this.commit_4)
       if (
         this.commit_1 === 1 &&
         this.commit_2 === 1 &&
@@ -830,17 +843,17 @@ export default {
       ) {
         this.csDes = "材料审核通过";
       } else if (
-        this.commit_1 == 0 ||
-        this.commit_2 == 0 ||
-        this.commit_3 == 0 ||
-        this.commit_4 == 0
+        this.commit_1 === 0 ||
+        this.commit_2 === 0 ||
+        this.commit_3 === 0 ||
+        this.commit_4 === 0
       ) {
-        this.csDes = "有材料待审核";
+        this.csDes = "材料待审核";
       } else if (
-        this.commit_1 == -1 ||
-        this.commit_2 == -1 ||
-        this.commit_3 == -1 ||
-        this.commit_4 == -1
+        this.commit_1 === -1 ||
+        this.commit_2 === -1 ||
+        this.commit_3 === -1 ||
+        this.commit_4 === -1
       ) {
         this.csDes = "材料审核不通过";
       }

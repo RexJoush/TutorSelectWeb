@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-22 10:52:50
+ * @LastEditTime: 2021-09-22 17:44:50
 -->
 <template>
   <div class="app-container">
@@ -71,6 +71,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <!-- 搜索、重置按钮 -->
       <el-row :gutter="20">
         <el-col :span="2" :offset="20">
             <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
@@ -80,20 +81,19 @@
         </el-col>
       </el-row>
     </el-form>
-    <br />
 
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-      <el-button type="success" plain icon="el-icon-success" size="small" v-if="queryParams.applyStatus == 31" @click="passFun()">通过
+      <el-button type="success" plain icon="el-icon-success" size="small" v-if="searchFlag" @click="passFun()">通过
       </el-button>
-      <el-button type="danger" plain icon="el-icon-error" size="small" v-if="queryParams.applyStatus == 31" :disabled="multiple" @click="unPassFun()">驳回
+      <el-button type="danger" plain icon="el-icon-error" size="small" v-if="searchFlag" :disabled="multiple" @click="unPassFun()">驳回
       </el-button>
     </div>
 
     <!-- 数据部分 -->
     <el-table ref="singleTable" :data="tutorList" highlight-current-row @selection-change="handleSelectionChange" :row-class-name="tableRowClassName">
-      <el-table-column type="selection" width="50" align="center" v-if="queryParams.applyStatus == 31"/>
-      <el-table-column label="序号" type="index" width="50" />
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="序号" type="index" width="50" fixed />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
       <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
@@ -105,13 +105,25 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 53 || scope.row.status === 64" type="info">
             {{ scope.row.inspectDescribe }}
-            </el-tag>
+          </el-tag>
           <el-tag v-else type="warning">
             {{ scope.row.inspectDescribe }}
           </el-tag>
         </template>
       </el-table-column>   
-      <el-table-column label="备注" align="center" prop="commit" />
+      <el-table-column label="备注" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.commit === '材料审核通过'" type="success">
+            {{ scope.row.commit }}
+          </el-tag>
+          <el-tag v-else-if="scope.row.commit === '材料审核不通过'" type="info">
+            {{ scope.row.commit }}
+          </el-tag>
+          <el-tag v-else-if="scope.row.commit === '材料待审核'" type="warning">
+            {{ scope.row.commit }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="详情" align="center" prop="mr">
         <template slot-scope="scope">
           <el-button size="small" type="text"  @click="handleDetail(scope.row)">查看详情
@@ -122,12 +134,13 @@
 
     <!-- 分页框 -->
     <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page.sync="currentPage"
-      :page-size="10"
+      style="margin: 5px 0"
+      :current-page="queryParams.pageNum"
+      :page-size="queryParams.pageSize"
       layout="total, prev, pager, next"
       :total="totalData"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
     />
 
     <!-- 审批通过的确认弹框 -->
@@ -151,10 +164,7 @@
 </template>
 
 <script>
-//负责院系
-// import getOrganization from "@/api/SocialDepartment/socialFirst"
 import {
-  // getApplyType,//导师申请的所有类别
   checkDate, //查询数据
   updateStatus, //更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
@@ -164,6 +174,7 @@ import { departmentList } from '@/utils/data'
 export default {
   data() {
     return {
+      searchFlag: false,
       //驳回时备注的内容
       returnCommit: "",
       //驳回弹框默认不显示
@@ -218,6 +229,7 @@ export default {
   },
   created() {
     this.getResearchCheckInit(); //初始化待初审的数据
+    this.searchFlag = true
   },
   methods: {
     //高亮当前行
@@ -228,13 +240,9 @@ export default {
     tableRowClassName() {
       //详情页返回时让该行高亮
       this.applyId = this.$route.query.applyId;
-      // console.log("lllllll",this.$route.query.csDes)
       if (this.applyId !== undefined) {
-        // console.log("高亮显示", this.applyId);
-        // console.log("hhhhhhhhhhhhh", this.tutorList);
         this.tutorList.forEach((row) => {
           if (row.applyId === this.applyId) {
-            // console.log("898989",row);
             this.setCurrent(row);
           }
         });
@@ -261,7 +269,8 @@ export default {
       checkDate(this.queryParams).then((res) => {
         if (res.code == 20000) {
           this.tutorList = res.data.data;
-          this.totalData = res.total;
+          this.totalData = res.data.total;
+          console.log("8888888",res.data)
         }
         if (res.code == 20001) {
           this.$message("暂无待初审的教师!");
@@ -272,8 +281,13 @@ export default {
     //搜索按钮
     searchQuery() {
       checkDate(this.queryParams).then((res) => {
+        if(this.queryParams.applyStatus === 31){
+          this.searchFlag = true
+        }else{
+          this.searchFlag = false
+        }
         this.tutorList = res.data.data;
-        this.totalData = res.total;
+        this.totalData = res.data.total;
       });
     },
 
@@ -359,8 +373,8 @@ export default {
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.currentPage.pageNum = val;
-      this.getResearchCheckInit();
+      this.queryParams.pageNum = val;
+      this.getResearchCheckInit()
     },
   },
 };
