@@ -2,10 +2,16 @@ import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
 
 // 获取所有初始信息
-export function getInit(organizationId, applyStatuss) {
+export function getInit(organizationId, applyStatuss, pageNumber) {
+  const params = new URLSearchParams()
+  params.append('organizationId', organizationId)
+  params.append('applyStatuss', applyStatuss)
+  params.append('pageNumber', pageNumber)
   return request({
-    url: `${baseUrl}/admin/tutor-inspect/getInit/${organizationId}/${applyStatuss}`,
-    method: 'get',
+    // url: `${baseUrl}/admin/tutor-inspect/getInit/${organizationId}/${applyStatuss}/${pageNumber}`,
+    url: `${baseUrl}/admin/tutor-inspect/getInit`,
+    method: 'post',
+    data: params
   })
 }
 // 初始化申请的所有类别（下拉框）

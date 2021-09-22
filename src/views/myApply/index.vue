@@ -49,7 +49,7 @@
 
 <script>
 import { changeStatus, getApplyList } from '@/api/tutor/myApply'
-import { toDetails } from '@/utils/funcation'
+import { toDetails } from '@/utils/function'
 
 export default {
   name: 'Index',

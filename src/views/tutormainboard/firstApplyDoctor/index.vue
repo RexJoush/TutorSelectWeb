@@ -128,37 +128,17 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item
-                    label="何时参加何种学术团体、任何种职务，有何社会兼职"
-                  >
-                    <el-button
-                      type="primary"
-                      class="addButton"
-                      @click="dialogSecond1 = true"
-                    >添加</el-button>
-                    <el-table
-                      :data="formSecond.groupsOrPartTimeJobs"
-                      border
-                      style="width: 100%"
-                    >
+                  <el-form-item label="何时参加何种学术团体、任何种职务，有何社会兼职">
+                    <el-button type="primary" class="addButton" @click="dialogSecond1 = true">添加</el-button>
+                    <el-table :data="formSecond.groupsOrPartTimeJobs" border style="width: 100%">
                       <el-table-column type="index" width="50" label="序号" />
-                      <el-table-column
-                        prop="time"
-                        label="参加时间"
-                        width="180"
-                      />
-                      <el-table-column
-                        prop="groups"
-                        label="学术团体或兼职"
-                        width="200"
-                      />
+                      <el-table-column prop="time" label="参加时间" width="180"/>
+                      <el-table-column prop="groups" label="学术团体或兼职" width="200"/>
                       <el-table-column prop="job" label="所任职务" />
-                      <el-table-column label="操作" width="100">
+                      <el-table-column align="center" width="150" label="操作">
                         <template slot-scope="scope">
-                          <el-button
-                            type="danger"
-                            @click="delGroupsOrPartTimeJob(scope.$index)"
-                          >删除</el-button>
+                          <el-button type="info" size="mini" plain @click="editGroupsOrPartTimeJob(scope.$index)">编 辑</el-button>
+                          <el-button type="danger" size="mini" plain @click="delGroupsOrPartTimeJob(scope.$index)">删除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -166,33 +146,16 @@
                 </el-col>
 
                 <el-col :span="24">
-                  <el-form-item
-                    v-model="formSecond.expertTitles"
-                    label="获何专家称号及时间"
-                  >
-                    <el-button
-                      type="primary"
-                      class="addButton"
-                      @click="dialogSecond2 = true"
-                    >添加</el-button>
-                    <el-table
-                      :data="formSecond.expertTitles"
-                      border
-                      style="width: 100%"
-                    >
+                  <el-form-item label="获何专家称号及时间" v-model="formSecond.expertTitles">
+                    <el-button type="primary" class="addButton" @click="dialogSecond2 = true">添加</el-button>
+                    <el-table :data="formSecond.expertTitles" border style="width: 100%">
                       <el-table-column type="index" width="50" label="序号" />
-                      <el-table-column
-                        label="获得时间"
-                        prop="time"
-                        width="180"
-                      />
+                      <el-table-column label="获得时间" prop="time" width="180"/>
                       <el-table-column label="称号名称" prop="title" />
-                      <el-table-column width="100" label="操作">
+                      <el-table-column align="center" width="150" label="操作">
                         <template slot-scope="scope">
-                          <el-button
-                            type="danger"
-                            @click="delExpertTitle(scope.$index)"
-                          >删除</el-button>
+                          <el-button type="info" size="mini" plain @click="editExpertTitle(scope.$index)">编 辑</el-button>
+                          <el-button type="danger" size="mini" plain @click="delExpertTitle(scope.$index)">删 除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -202,7 +165,6 @@
               <el-row>
                 <el-col :offset="8">
                   <el-form-item style="margin-top: 20px">
-                    <!-- <el-button @click="backFirstPage">返回上一页</el-button> -->
                     <el-button
                       type="primary"
                       @click="onSubmitSecondPage"
@@ -236,7 +198,7 @@
 
     <!-- 第二页弹框内容 -->
     <!-- 学术团体框 -->
-    <el-dialog title="添加学术团体或职务" :visible.sync="dialogSecond1">
+    <el-dialog :title="isEdit ? '修改学术团体或职务': '添加学术团体或职务'" :visible.sync="dialogSecond1" @closed="cancelFunc(1)">
       <el-form ref="groupsOrPartTimeJobForm" :model="groupsOrPartTimeJob">
         <el-form-item label="参加学术团体、或职务或社会兼职的时间">
           <el-date-picker
@@ -256,15 +218,12 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogSecond1 = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="addGroupsOrPartTimeJob"
-        >确 定</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(1)">取 消</el-button>
+        <el-button type="primary" @click="addGroupsOrPartTimeJob">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 专家称号框 -->
-    <el-dialog title="添加学术团体或职务" :visible.sync="dialogSecond2">
+    <el-dialog :title="isEdit ? '修改专家称号': '添加专家称号'" :visible.sync="dialogSecond2" @closed="cancelFunc(2)">
       <el-form :model="expertTitle">
         <el-form-item label="获得专家称号时间">
           <el-date-picker
@@ -281,7 +240,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogSecond2 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(2)">取 消</el-button>
         <el-button type="primary" @click="addExpertTitle">确 定</el-button>
       </div>
     </el-dialog>
@@ -325,7 +284,8 @@ export default {
       // 第 2 页表单
 
       // firstDiscipline: [], // 一级学科列表
-
+      isEdit: false, // 是否为编辑选项
+      editIndex: -1, // 编辑项目的索引
       childNodes: [], // 院系的子专业信息
       dialogSecond1: false, // 学术团体或职务的显示框
       dialogSecond2: false, // 专家称号的显示框
@@ -396,7 +356,13 @@ export default {
 
     // 第 2 页添加学术团体项 弹框
     addGroupsOrPartTimeJob: function() {
-      this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
+      if (this.isEdit) {
+        this.formSecond.groupsOrPartTimeJobs[this.editIndex] = this.groupsOrPartTimeJob
+        this.isEdit = false
+        this.editIndex = -1
+      } else {
+        this.formSecond.groupsOrPartTimeJobs.push(this.groupsOrPartTimeJob)
+      }
       this.groupsOrPartTimeJob = {
         time: '',
         groups: '',
@@ -408,9 +374,26 @@ export default {
     delGroupsOrPartTimeJob: function(index) {
       this.formSecond.groupsOrPartTimeJobs.splice(index, 1)
     },
+    // 编辑学术团体
+    editGroupsOrPartTimeJob: function(index) {
+      this.groupsOrPartTimeJob = this.formSecond.groupsOrPartTimeJobs[index]
+      // 打开添加框
+      this.dialogSecond1 = true
+      // 标记修改
+      this.isEdit = true
+      // 记录索引
+      this.editIndex = index
+    },
     // 添加某项专家称号 弹框
     addExpertTitle: function() {
-      this.formSecond.expertTitles.push(this.expertTitle)
+      // 修改
+      if (this.isEdit) {
+        this.formSecond.expertTitles[this.editIndex] = this.expertTitle
+        this.isEdit = false
+        this.editIndex = -1
+      } else {
+        this.formSecond.expertTitles.push(this.expertTitle)
+      }
       this.expertTitle = {
         time: '',
         title: ''
@@ -421,6 +404,39 @@ export default {
     delExpertTitle: function(index) {
       this.formSecond.expertTitles.splice(index, 1)
     },
+    // 修改某项专家称号
+    editExpertTitle: function(index) {
+      this.expertTitle = this.formSecond.expertTitles[index]
+      // 打开添加框
+      this.dialogSecond2 = true
+      // 标记修改
+      this.isEdit = true
+      // 记录索引
+      this.editIndex = index
+    },
+
+    // 取消框
+    cancelFunc: function(type) {
+      // 学术团体
+      if (type === 1) {
+        this.groupsOrPartTimeJob = {
+          time: '',
+          groups: '',
+          job: ''
+        }
+        this.dialogSecond1 = false
+      } else {
+        // 专家称号
+        this.expertTitle = {
+          time: '',
+          title: ''
+        }
+        this.dialogSecond2 = false
+      }
+      this.isEdit = false
+      this.editIndex = -1
+    },
+
     // 设置选择院系的子专业
     setChildNode: function(value) {
       // 将子列表的选择置空
@@ -460,12 +476,8 @@ export default {
           console.log('cancel')
         })
     },
-    /* 第三页 */
-    /* ====================================第三页============================ */
 
-    //* *********************************************** 完成第三页基本信息的填写 表单提交按钮********************************************
-
-    /* 第 4 页 */
+    /* ==================================== 第 4 页 ============================ */
     getFormFourth: function(data) {
       console.log('data', data)
       this.formFourth = data
@@ -481,30 +493,7 @@ export default {
 </script>
 
 <style>
-/**导航栏 */
-.navigation_bar {
-  background: #99a9bf;
-  font-size: 30px;
-  line-height: 50px;
-  height: 50px;
-  margin-bottom: 30px;
-}
-.bg-purple {
-  background: #99a9bf;
-}
-/**控制内容及意义一下的label宽度 */
-.my-label {
-  width: 230px;
-}
-/**申请学科的label宽度 */
-.my-applysubject {
-  width: 230px;
-}
 p {
   font-size: 20px;
-}
-.summary {
-  font-weight: bold;
-  color: #f56c6c;
 }
 </style>

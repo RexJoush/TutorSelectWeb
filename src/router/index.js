@@ -409,7 +409,7 @@ export const asyncRoutes = [
         path: '/applyDetails/:applyId/:applyTypeId',
         component: () => import('@/views/myApply/details/index'),
         name: 'Apply Details',
-        meta: { title: '申请详情', roles: ['admin', 'tutor'] },
+        meta: { title: '申请详情', roles: ['admin', 'tutor', 'departmentSecretary', 'departmentLeader', 'graduateProfessionalManager', 'graduateAcademicManager', 'socialScienceManager', 'scientificResearchManager', 'graduateLeader'] },
         hidden: true
       }
     ]

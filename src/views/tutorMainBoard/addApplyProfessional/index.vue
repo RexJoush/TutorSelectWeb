@@ -62,9 +62,9 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="硕导在岗学科">
+                      <el-form-item label="硕导在岗类别">
                         <el-select
-                          v-model="formSecond.masterDegreeIncreaseTutorOnDuty"
+                          v-model="formSecond.professionalMasterOnDuty"
                           placeholder="请选择"
                           style="width: 100%"
                         >
@@ -80,7 +80,7 @@
                     <el-col :span="8">
                       <el-form-item label="上岗时间">
                         <el-date-picker
-                          v-model="formSecond.masterDegreeIncreaseTutorStartTime"
+                          v-model="formSecond.professionalMasterStartTime"
                           type="month"
                           format="yyyy-MM"
                           value-format="yyyy-MM"
@@ -352,8 +352,8 @@ export default {
         // 外单位调入填写
         sourceUnitName: '', // 原单位地址
         transferInTime: '', // 转入时间
-        masterDegreeIncreaseTutorOnDuty: '', // 硕导在岗类别
-        masterDegreeIncreaseTutorStartTime: '', // 上岗时间
+        professionalMasterOnDuty: '', // 硕导在岗类别
+        professionalMasterStartTime: '', // 上岗时间
         major: '', // 主要研究方向的内容及其意义
         groupsOrPartTimeJobs: [], // 何时参加何种学术团体、任何种职务，有何社会兼职列表
         expertTitles: [] // 获何专家称号及时间列表

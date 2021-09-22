@@ -26,12 +26,12 @@ export function changeStatus(data) {
 /* 获取当前申请的详细信息 */
 export function getApplyDetails(applyId, isInspect) {
   return request({
-    url: `${baseUrl}/tutor/getApplyDetails/${applyId}/${isInspect}`,
+    url: `${baseUrl}/common/tutor/getApplyDetails/${applyId}/${isInspect}`,
     method: 'get'
   })
 }
 
-/*导出pdf */
+/* 导出pdf */
 export function exportPdf(applyId,applyTypeId){
   return request({
     url:`${baseUrl}/tutor/getPdf/${applyId}/${applyTypeId}`,
