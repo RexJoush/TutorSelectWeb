@@ -378,6 +378,7 @@ export default {
       this.queryParams.userName = null // 姓名
       this.queryParams.applyType = null // 申请类别id
       this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.applyStatuss = [] // 申请类别列表
     },
     // 初审符合条件
     passFun() {
