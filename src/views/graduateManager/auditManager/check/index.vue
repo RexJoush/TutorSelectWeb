@@ -1,62 +1,21 @@
 <!--本页为研究生院管理员的初审界面，研究生院管理员可在该页面将院系秘书复审通过的导师信息进行审核-->
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
-      <!--导师表格部分-->
-      <el-col :span="20" :xs="24">
-        <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-          <el-form-item label="工号" prop="userId">
+
+    <el-form ref="queryForm" label-width="70px">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item label="工号">
             <el-input
               v-model="queryParams.userId"
-              placeholder="请输入用户工号"
+              placeholder="请输入工号"
               clearable
               size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
+              style="width: 100%"
             />
           </el-form-item>
-          <el-form-item label="姓名" prop="userName">
-            <el-input
-              v-model="queryParams.userName"
-              placeholder="请输入用户名称"
-              clearable
-              size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="学科属性" prop="subjectType">
-            <el-select
-              v-model="queryParams.subjectType"
-              placeholder="请选择学科属性"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in subjectTypeOptions"
-                :key="dict.code"
-                :label="dict.label"
-                :value="dict.code"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="申请类别" prop="applyType">
-            <el-select
-              v-model="queryParams.applyType"
-              placeholder="请选择申请类别"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in applyTypeOptions"
-                :key="dict.applyTypeId"
-                :label="dict.applyName"
-                :value="dict.applyTypeId"
-              />
-            </el-select>
-          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="负责院系" prop="organization">
             <el-select
               v-model="queryParams.organization"
@@ -73,6 +32,59 @@
               />
             </el-select>
           </el-form-item>
+
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="学科属性" prop="subjectType">
+            <el-select
+              v-model="queryParams.subjectType"
+              placeholder="请选择学科属性"
+              clearable
+              size="small"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in subjectTypeOptions"
+                :key="dict.code"
+                :label="dict.label"
+                :value="dict.code"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="申请类别" prop="applyType">
+            <el-select
+              v-model="queryParams.applyType"
+              placeholder="请选择申请类别"
+              clearable
+              size="small"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in applyTypeOptions"
+                :key="dict.applyTypeId"
+                :label="dict.applyName"
+                :value="dict.applyTypeId"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item label="姓名">
+            <el-input
+              v-model="queryParams.userName"
+              placeholder="请输入姓名"
+              clearable
+              size="small"
+              style="width: 100%"
+            />
+          </el-form-item>
+
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="学科名称" prop="subjectName">
             <el-select
               v-model="queryParams.subjectName"
@@ -89,6 +101,9 @@
               />
             </el-select>
           </el-form-item>
+
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="审核状态" prop="applyStatus">
             <el-select
               v-model="queryParams.applyStatus"
@@ -105,193 +120,98 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="small"
-              :disabled="multiple"
-              @click="unPassFun"
-            >需修改
-            </el-button>
+        </el-col>
+        <el-col :span="6">
+          <el-col :span="8" :offset="5">
+            <el-button type="primary" icon="el-icon-search" size="small" @click="filterDataByStatus()">搜索</el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              plain
-              icon="el-icon-success"
-              size="small"
-              :disabled="single"
-              @click="passFun(3)"
-            >符合条件
-            </el-button>
+          <el-col :span="2">
+            <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-success"
-              size="small"
-              :disabled="single"
-              @click="passFun(4)"
-            >不符合条件
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              plain
-              icon="el-icon-success"
-              size="small"
-              :disabled="single"
-              @click="passFun(1)"
-            >送审社科处
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              plain
-              icon="el-icon-success"
-              size="small"
-              :disabled="single"
-              @click="passFun(2)"
-            >送审科研处
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="small"
-              @click="getList"
-            >导出
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-    <!--        <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">-->
-    <!--          <el-table-column type="selection" width="50" align="center" />-->
-    <!--          <el-table-column label="工号" align="center" prop="number" />-->
-    <!--          <el-table-column label="姓名" align="center" prop="name" />-->
-    <!--          <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />-->
-    <!--          <el-table-column label="申请学科或类别代码" align="center" prop="professionalApplicationSubjectCode" />-->
-    <!--          <el-table-column label="申请学科或类别名称" align="center" prop="professionalApplicationSubjectName" />-->
-    <!--          <el-table-column label="申请类别" align="center" prop="applyName" />-->
-    <!--          <el-table-column label="职称" align="center" prop="professionalTitle" />-->
-    <!--          <el-table-column label="审核状态" align="center" prop="inspectDescribe" />-->
-    <!--          <el-table-column label="详情" align="center" prop="mr" />-->
-    <!--          <el-table-column label="备注" align="center" prop="mr" />-->
-    <!--        </el-table>-->
-    <el-table
-      v-loading="loading"
-      :data="tutorList"
-      @selection-change="handleSelectionChange"
-    >
+        </el-col>
+      </el-row>
+    </el-form>
+
+    <!-- 操作按钮 -->
+    <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
+      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="single" @click="passFun(3)">符合条件
+      </el-button>
+      <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="passFun(4)">不符合条件
+      </el-button>
+      <el-button type="info" plain icon="el-icon-edit" size="small" :disabled="multiple"   @click="passFun(5)">需修改
+      </el-button>
+      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
+      </el-button>
+      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple"  @click="passFun(2)">送审科研处
+      </el-button>
+    </div>
+
+    <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
-      <el-table-column
-        label="工号"
-        align="center"
-        prop="tutorId"
-        width="100"
-        fixed
-      />
-      <el-table-column label="姓名" align="center" prop="name" fixed />
-      <el-table-column
-        label="所在单位（院系）"
-        align="center"
-        prop="organizationName"
-        width="250"
-        fixed
-      />
-      <el-table-column
-        label="申请学科或类别代码"
-        align="center"
-        prop="professionalApplicationSubjectCode"
-        width="180"
-      />
-      <el-table-column
-        label="申请学科或类别名称"
-        align="center"
-        prop="professionalApplicationSubjectName"
-        width="180"
-      />
-      <el-table-column
-        label="申请类别"
-        align="center"
-        prop="applyName"
-        width="180"
-      />
-      <el-table-column
-        label="职称"
-        align="center"
-        prop="title"
-        width="180"
-      />
-      <el-table-column
-        label="审核状态"
-        align="center"
-        prop="inspectDescribe"
-        width="150"
-      />
-      <el-table-column label="详情" align="center" prop="mr" />
-      <el-table-column
-        label="备注"
-        align="center"
-        prop="commit"
-        width="150"
-      >
-        <template #default="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click="commitFun(scope.row)"
-          >添加备注
+      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
+      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
+      <el-table-column label="申请类别" align="center" prop="applyName" />
+      <el-table-column label="职称" align="center" prop="title" width="100" />
+      <el-table-column label="审核状态" align="center" width="130">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+          <el-tag v-else type="warning">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="详情" align="center" width="60">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
         </template>
       </el-table-column>
+      <el-table-column label="备注" align="center" width="80">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
+        </template>
+      </el-table-column>
     </el-table>
+    <!-- 分页框 -->
+    <el-pagination
+      style="margin: 5px 0"
+      :current-page="queryParams.pageNum"
+      :page-size="queryParams.pageSize"
+      layout="total, prev, pager, next"
+      :total="totalData"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+    <!-- 导出提交按钮 -->
+    <el-row>
+      <el-col :span="2">
+        <el-button
+          plain
+          icon="el-icon-download"
+          size="small"
+          :loading="exportLoading"
+          @click="exportFun()"
+        >导出excel
+        </el-button>
+      </el-col>
+      <el-col :span="2" :offset="20">
+        <el-button
+          type="success"
+          plain
+          size="small"
+          icon="el-icon-success"
+          :loading="exportLoading"
+          @click="submitFun()"
+        >提交
+        </el-button>
+      </el-col>
+    </el-row>
+    <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
 
-    <div class="block">
-      <el-pagination
-        v-show="total>0"
-        :current-page.sync="currentPage"
-        :page-size="10"
-        layout="total, prev, pager, next"
-        :total="total"
-        @current-change="handleCurrentChange"
-      />
-      <el-row :gutter="10" class="mb8">
-        <el-col :span="1.5">
-          <el-button
-            type="warning"
-            plain
-            icon="el-icon-download"
-            size="small"
-          >导出excel</el-button>
-        </el-col>
-      </el-row>
-      <span>注意：导出上表所有的数据</span>
-      <el-row :gutter="10" class="mb8" style="left: 1300px">
-        <el-col :span="3">
-          <el-button
-            type="success"
-            plain
-            size="small"
-            @click="submitFun()"
-          >提交</el-button>
-        </el-col>
-      </el-row>
-    </div>
 
     <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
@@ -303,7 +223,7 @@
     </el-dialog>
     <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>请添加提交给主管的备注信息(可以为空)</span>
+      <span>请添加提交给操作的备注信息(可以为空)</span>
       <el-input v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
@@ -323,7 +243,8 @@
 
 <script>
 
-import { updateStatus } from '@/api/departmentSecretary/secretaryFirst'
+import { getInit, updateStatus } from '@/api/departmentSecretary/secretaryFirst'
+import { toDetails } from '@/utils/function'
 
 export default {
   data() {
@@ -336,8 +257,6 @@ export default {
       dialogVisiblePass: false,
       // 提交确认框
       dialogVisibleSubmit: false,
-      // 显示搜索条件
-      showSearch: true,
       currentPage: 1,
       // 分页总条数
       total: 0,
@@ -407,16 +326,20 @@ export default {
     this.getApplyStatus()
   },
   methods: {
+    // 详情页
+    toDetails: function(applyId, applyTypeId) {
+      toDetails(this, applyId, applyTypeId)
+    },
     /** 查询用户列表 */
     async getList() {
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
-      const { data: res } = await this.$http.get(
-        '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
-      )
-      this.tutorList = res.data
-      this.total = res.total
-      this.loading = false
+      getInit(0,  this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
+        this.tutorList = res.data.data
+        this.totalData = res.data.total
+        console.log('res', res)
+        this.loading = false
+      })
     },
     async upDateStatus(code) {
       const updateStatus = []
@@ -543,13 +466,17 @@ export default {
           // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
           this.upDateStatus(399)
         }
+        if(this.choose == 5) {
+          //需修改，送至驳回页面
+          this.upDateStatus(36)
+        }
       } else {
         // 点击了提交按钮的确认，将符合条件以及不符合条件的一起提交给研究生院主管
         this.submitUpdate()
       }
       this.dialogVisiblePass = false
     },
-    // 研究生院管理员提交按钮，一次修改两个状态 将符合条件以及不符合条件的一起提交给研究生院主管
+    // 研究生院管理员提交按钮，一次修改两个状态 将符合条件以及不符合条件的一起提交给研究生院主管，将需修改的推送到驳回页面
     async submitUpdate() {
       // eslint-disable-next-line no-unused-vars
       const { code: res } = await this.$http.post(
