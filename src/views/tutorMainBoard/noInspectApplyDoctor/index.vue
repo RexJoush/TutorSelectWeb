@@ -8,7 +8,7 @@
         </el-steps>
       </el-col>
     </el-row>
-    <br />
+    <br>
     <!-- 第一页内容 -->
     <el-row>
       <el-col :span="18" :offset="3">
@@ -86,13 +86,13 @@
                 </Row>
               </Col>
               <Col :span="8">
-                <br />
-                <br />
-                <br />
+                <br>
+                <br>
+                <br>
                 <el-form-item>
                   <el-image
                     style="width: 150px; height: 210px"
-                    :src="this.formFirst.image"
+                    :src="formFirst.image"
                     fit="fit"
                   >
                     <div slot="placeholder" class="image-slot">
@@ -129,9 +129,10 @@
             <Row>
               <Col :offset="8">
                 <el-form-item style="margin-top: 20px">
-                  <el-button type="primary" @click="onSubmitFirstPage"
-                    >保存此部分，填写下一项</el-button
-                  >
+                  <el-button
+                    type="primary"
+                    @click="onSubmitFirstPage"
+                  >保存此部分，填写下一项</el-button>
                 </el-form-item>
               </Col>
             </Row>
@@ -255,9 +256,11 @@
                       :limit="1"
                       accept=".zip , .rar"
                     >
-                      <el-button slot="trigger" size="small" type="primary"
-                        >上传免审资料</el-button
-                      >
+                      <el-button
+                        slot="trigger"
+                        size="small"
+                        type="primary"
+                      >上传免审资料</el-button>
                       &nbsp;&nbsp;&nbsp; 上传资料仅支持.rar/.zip文件
                     </el-upload>
                     <el-input
@@ -280,8 +283,7 @@
                       style="float: right"
                       type="primary"
                       @click="dialogSecond1 = true"
-                      >添加科研项目</el-button
-                    >
+                    >添加科研项目</el-button>
                   </div>
                   <el-table
                     :data="formSecond.researchProjects"
@@ -312,14 +314,13 @@
                           type="danger"
                           plain
                           @click="delResearchProject(scope.$index)"
-                          >删 除</el-button
-                        >
+                        >删 除</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
                 </el-card>
               </Col>
-              <br />
+              <br>
               <!-- 科研教学情况（近五年） -->
               <Col :span="24">
                 <el-card class="box-card" shadow="always">
@@ -330,8 +331,7 @@
                       class="addButton"
                       type="primary"
                       @click="dialogSecond2 = true"
-                      >添加科研教学奖励</el-button
-                    >
+                    >添加科研教学奖励</el-button>
                   </div>
 
                   <el-table
@@ -356,8 +356,7 @@
                           type="danger"
                           plain
                           @click="delTeachingAward(scope.$index)"
-                          >删 除</el-button
-                        >
+                        >删 除</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -367,9 +366,10 @@
               <Row>
                 <Col :offset="8">
                   <el-form-item style="margin-top: 20px">
-                    <el-button type="primary" @click="onSubmitSecondPage"
-                      >保存此部分，填写下一项</el-button
-                    >
+                    <el-button
+                      type="primary"
+                      @click="onSubmitSecondPage"
+                    >保存此部分，填写下一项</el-button>
                   </el-form-item>
                 </Col>
               </Row>
@@ -516,15 +516,15 @@
 </template>
 
 <script>
-import { doctorPrimaryDiscipline } from "@/utils/data";
+import { doctorPrimaryDiscipline } from '@/utils/data'
 
-import { deleteFile } from "@/api/tutor/mainboard";
+import { deleteFile } from '@/api/tutor/mainboard'
 
 import {
   submitFirstPage,
   submitSecondPage,
-  getFirstPage,
-} from "@/api/tutor/noInspect";
+  getFirstPage
+} from '@/api/tutor/noInspect'
 
 export default {
   data() {
@@ -541,7 +541,7 @@ export default {
       // 页数的隐藏和展示
       formVisible: {
         first: true,
-        second: false,
+        second: false
       },
       // 第二页弹框
       dialogSecond1: false, // 科研项目
@@ -555,72 +555,72 @@ export default {
       formFirst: {},
       // ===========================================================第 2 页表单===================================
       childNodes: [], // 院系的子专业信息
-      currentDepartment: "", // 院系信息
+      currentDepartment: '', // 院系信息
 
       // 申请类型
       applySubjects: [
-        { label: "文史", value: 1 },
-        { label: "理工", value: 2 },
-        { label: "交叉学科", value: 3 },
+        { label: '文史', value: 1 },
+        { label: '理工', value: 2 },
+        { label: '交叉学科', value: 3 }
       ],
 
       formSecond: {
-        applySubject: "", // 申请学科
+        applySubject: '', // 申请学科
         researchProjects: [],
-        teachingAwards: [],
+        teachingAwards: []
       },
 
       // 科研项目
       researchProject: {
-        projectName: "",
-        approvalNumber: "",
-        projectStartTime: "",
-        projectEndTime: "",
-        projectTotalPrice: "",
-        projectLevel: "",
-        projectCategory: "",
-        projectChargeName: "",
+        projectName: '',
+        approvalNumber: '',
+        projectStartTime: '',
+        projectEndTime: '',
+        projectTotalPrice: '',
+        projectLevel: '',
+        projectCategory: '',
+        projectChargeName: ''
       },
       // 教学情况
       teachingAward: {
-        awardsName: "",
-        awardsRank: "",
-        awardsUnit: "",
-        awardsTime: "",
-        awardsAuthorName: "",
-        awardsLevel: "",
-      },
-    };
+        awardsName: '',
+        awardsRank: '',
+        awardsUnit: '',
+        awardsTime: '',
+        awardsAuthorName: '',
+        awardsLevel: ''
+      }
+    }
   },
   created() {
-    this.applyId = this.$route.params.applyId;
-    this.applyCondition = this.$route.params.applyCondition;
-    this.applyTypeId = this.$route.params.applyType;
-    this.GetTutorInfoByClient();
+    this.applyId = this.$route.params.applyId
+    this.applyCondition = this.$route.params.applyCondition
+    this.applyTypeId = this.$route.params.applyType
+    this.GetTutorInfoByClient()
   },
   methods: {
     /* ============================================= 第一页 =====================================*/
     // 获取导师基本信息
-    GetTutorInfoByClient: function () {
+    GetTutorInfoByClient: function() {
       getFirstPage(this.applyId).then((res) => {
-        this.formFirst = res.data;
+        this.formFirst = res.data
 
-        console.log(this.formFirst);
+        console.log(this.formFirst)
         // 未申请过
         if (this.applyCondition === 102) {
           this.formFirst.image =
-            "data:image/png;base64," + this.formFirst.blobImage;
+            'data:image/png;base64,' + this.formFirst.blobImage
         }
-        this.firstLoading = false;
-      });
+        this.firstLoading = false
+      })
     },
     //* *****************************************************第一页 *****************************************
-    onSubmitFirstPage: function () {
-      this.$confirm("提交填写?")
+    onSubmitFirstPage: function() {
+      this.$confirm('提交填写?')
         // 提交保存第一页
         .then(() => {
           // 博士免审提交到后台
-          this.formFirst.image = "";
+          this.formFirst.image = ''
 
           submitFirstPage(
             this.formFirst,
@@ -629,136 +629,136 @@ export default {
             this.applyCondition
           ).then((res) => {
             if (res.code === 20000) {
-              this.$message.success("保存成功！");
-              this.formVisible.first = false; // 关闭第一项
+              this.$message.success('保存成功！')
+              this.formVisible.first = false // 关闭第一项
               // 回显第二页信息
-              console.log(res.data);
-              this.formSecond = res.data;
+              console.log(res.data)
+              this.formSecond = res.data
               if (res.data.applySubject !== null) {
                 // console.log(appl)
-                this.formSecond.applySubject = res.data.applySubject * 1;
+                this.formSecond.applySubject = res.data.applySubject * 1
               } else {
-                this.formSecond.applySubject = "";
+                this.formSecond.applySubject = ''
               }
-              this.fileList.name = "111";
-              this.fileList.url = this.formSecond.exemptionConditionsMaterials;
-              this.formVisible.second = true; // 打开第二项
-              this.active = 1;
+              this.fileList.name = '111'
+              this.fileList.url = this.formSecond.exemptionConditionsMaterials
+              this.formVisible.second = true // 打开第二项
+              this.active = 1
             }
-          });
+          })
         })
         .catch(() => {
-          console.log("cancel");
-        });
+          console.log('cancel')
+        })
     },
     /* ====================================第二页============================ */
 
     // 上传成功
-    uploadSuccessFunc: function (response, file, fileList) {
-      console.log("上传成功", file);
-      this.fileList.name = file.name;
-      this.fileList.url = response.data.path;
-      this.formSecond.exemptionConditionsMaterials = response.data.path;
+    uploadSuccessFunc: function(response, file, fileList) {
+      console.log('上传成功', file)
+      this.fileList.name = file.name
+      this.fileList.url = response.data.path
+      this.formSecond.exemptionConditionsMaterials = response.data.path
     },
     // 上传镜像失败
-    uploadErrorFunc: function (err, file, fileList) {
-      console.log(file);
-      console.log(fileList);
+    uploadErrorFunc: function(err, file, fileList) {
+      console.log(file)
+      console.log(fileList)
     },
     // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
-    checkFileType: function (file) {
-      if (file.name.endsWith(".zip") || file.name.endsWith(".rar")) {
-        return true;
+    checkFileType: function(file) {
+      if (file.name.endsWith('.zip') || file.name.endsWith('.rar')) {
+        return true
       } else {
-        this.$message.error("请上传 zip/rar 文件");
-        return false;
+        this.$message.error('请上传 zip/rar 文件')
+        return false
       }
     },
     // 文件移除之前
-    beforeRemove: function () {
-      return this.$confirm("确定要移除选取的文件吗?").then(() => {
+    beforeRemove: function() {
+      return this.$confirm('确定要移除选取的文件吗?').then(() => {
         deleteFile(this.formSecond.exemptionConditionsMaterials).then(
           (res) => {}
-        );
-      });
+        )
+      })
     },
     // 移除文件的钩子
-    removeFile: function () {
-      this.formSecond.exemptionConditionsMaterials = "";
-      return this.$message.success("删除成功！");
+    removeFile: function() {
+      this.formSecond.exemptionConditionsMaterials = ''
+      return this.$message.success('删除成功！')
     },
     // 第 2 页 添科研项目情况 弹框
-    addResearchProject: function () {
+    addResearchProject: function() {
       this.formSecond.researchProjects.push(this.researchProject);
       // 科研项目
       (this.researchProject = {
-        projectName: "",
-        approvalNumber: "",
-        projectStartTime: "",
-        projectEndTime: "",
-        projectTotalPrice: "",
-        projectLevel: "",
-        projectCategory: "",
-        projectChargeName: "",
+        projectName: '',
+        approvalNumber: '',
+        projectStartTime: '',
+        projectEndTime: '',
+        projectTotalPrice: '',
+        projectLevel: '',
+        projectCategory: '',
+        projectChargeName: ''
       }),
-        (this.dialogSecond1 = false);
+      (this.dialogSecond1 = false)
     },
     // 删除某项科研项目情况
-    delResearchProject: function (index) {
-      this.formSecond.researchProjects.splice(index, 1);
+    delResearchProject: function(index) {
+      this.formSecond.researchProjects.splice(index, 1)
     },
     // 第 2 页添加科研教学奖励
-    addTeachingAward: function () {
+    addTeachingAward: function() {
       this.formSecond.teachingAwards.push(this.teachingAward);
       (this.teachingAward = {
-        awardsName: "",
-        awardsRank: "",
-        awardsUnit: "",
-        awardsTime: "",
-        awardsAuthorName: "",
-        awardsLevel: "",
+        awardsName: '',
+        awardsRank: '',
+        awardsUnit: '',
+        awardsTime: '',
+        awardsAuthorName: '',
+        awardsLevel: ''
       }),
-        (this.dialogSecond2 = false);
+      (this.dialogSecond2 = false)
     },
     // 删除某项科研教学奖励
-    delTeachingAward: function (index) {
-      this.formSecond.teachingAwards.splice(index, 1);
+    delTeachingAward: function(index) {
+      this.formSecond.teachingAwards.splice(index, 1)
     },
     // 设置选择院系的子专业
-    setChildNode: function (value) {
+    setChildNode: function(value) {
       // 将子列表的选择置空
-      this.formSecond.doctoralMasterSubjectCodeName = "";
+      this.formSecond.doctoralMasterSubjectCodeName = ''
       // 将当前选择加入 form 提交中
-      this.formSecond.appliedSubjectUnit = value.department;
+      this.formSecond.appliedSubjectUnit = value.department
       // 设置子项目为当前院系的专业
-      this.childNodes = value.professional;
+      this.childNodes = value.professional
     },
     //* *********************************************** 完成第二页基本信息的填写 表单提交按钮********************************************
-    onSubmitSecondPage: function () {
-      console.log(this.formSecond);
-      this.$confirm("提交填写?")
+    onSubmitSecondPage: function() {
+      console.log(this.formSecond)
+      this.$confirm('提交填写?')
         // 提交保存第二页
         .then(() => {
-          console.log(this.formSecond);
+          console.log(this.formSecond)
           submitSecondPage(this.formSecond, this.applyId).then((res) => {
             if (res.data != null) {
               if (res.data.code === 1201) {
-                this.$message.error(res.data.message);
-                console.log(res.data.errorMessage);
+                this.$message.error(res.data.message)
+                console.log(res.data.errorMessage)
               }
             }
-            this.$message.success("保存成功!");
-            this.formVisible.second = false; // 关闭第二项
-            this.$router.push("/tutorApply/tutorMainBoard");
-            this.active = 2;
-          });
+            this.$message.success('保存成功!')
+            this.formVisible.second = false // 关闭第二项
+            this.$router.push('/tutorApply/tutorMainBoard')
+            this.active = 2
+          })
         })
         .catch(() => {
-          console.log("cancel");
-        });
-    },
-  },
-};
+          console.log('cancel')
+        })
+    }
+  }
+}
 </script>
 
 <style>

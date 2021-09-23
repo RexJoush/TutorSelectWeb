@@ -1,5 +1,5 @@
 <template>
-  <div class="main" v-loading="loading" element-loading-text="提交中...">
+  <div v-loading="loading" class="main" element-loading-text="提交中...">
     <el-row>
       <el-col :span="8" :offset="8">
         <el-steps :active="active" finish-status="success">
@@ -132,13 +132,13 @@
                     <el-button type="primary" class="addButton" @click="dialogSecond1 = true">添加</el-button>
                     <el-table :data="formSecond.groupsOrPartTimeJobs" border style="width: 100%">
                       <el-table-column type="index" width="50" label="序号" />
-                      <el-table-column prop="time" label="参加时间" width="180"/>
-                      <el-table-column prop="groups" label="学术团体或兼职" width="200"/>
+                      <el-table-column prop="time" label="参加时间" width="180" />
+                      <el-table-column prop="groups" label="学术团体或兼职" width="200" />
                       <el-table-column prop="job" label="所任职务" />
                       <el-table-column align="center" width="150" label="操作">
                         <template slot-scope="scope">
                           <el-button type="info" size="mini" plain @click="editGroupsOrPartTimeJob(scope.$index)">编 辑</el-button>
-                          <el-button type="danger" size="mini" plain @click="delGroupsOrPartTimeJob(scope.$index)">删除</el-button>
+                          <el-button type="danger" size="mini" plain @click="delGroupsOrPartTimeJob(scope.$index)">删 除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -146,11 +146,11 @@
                 </el-col>
 
                 <el-col :span="24">
-                  <el-form-item label="获何专家称号及时间" v-model="formSecond.expertTitles">
+                  <el-form-item v-model="formSecond.expertTitles" label="获何专家称号及时间">
                     <el-button type="primary" class="addButton" @click="dialogSecond2 = true">添加</el-button>
                     <el-table :data="formSecond.expertTitles" border style="width: 100%">
                       <el-table-column type="index" width="50" label="序号" />
-                      <el-table-column label="获得时间" prop="time" width="180"/>
+                      <el-table-column label="获得时间" prop="time" width="180" />
                       <el-table-column label="称号名称" prop="title" />
                       <el-table-column align="center" width="150" label="操作">
                         <template slot-scope="scope">
@@ -181,7 +181,7 @@
     <el-row v-if="formVisible.third">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <Third :apply-id="applyId" :loading="loading" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" @load="loading = true"/>
+          <Third :apply-id="applyId" :loading="loading" :apply-condition="applyCondition" :form-third="formThird" @func="getFormFourth" @load="loading = true" />
         </transition>
       </el-col>
     </el-row>
@@ -190,7 +190,7 @@
     <el-row v-if="formVisible.fourth">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <Fourth :apply-id="applyId" :apply-type="applyType" :apply-condition="applyCondition" :form-fourth="formFourth" :tutor-name="tutorName" @load="loading = true"/>
+          <Fourth :apply-id="applyId" :apply-type="applyType" :apply-condition="applyCondition" :form-fourth="formFourth" :tutor-name="tutorName" @load="loading = true" />
         </transition>
       </el-col>
     </el-row>
