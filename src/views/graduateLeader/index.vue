@@ -4,8 +4,8 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-13 16:14:56
--->
+ * @LastEditTime: 2021-09-21 14:47:04
+--> 
 <template>
   <div class="app-container">
     <el-row :gutter="20">
@@ -123,6 +123,7 @@
             plain
             icon="el-icon-success"
             size="small"
+            v-if="queryParams.applyStatus == 34"
             @click="passFun()"
           >同意上校会</el-button>
         </el-col>
@@ -133,6 +134,7 @@
             plain
             icon="el-icon-error"
             size="small"
+            v-if="queryParams.applyStatus == 34"
             :disabled="multiple"
             @click="unPassFun()"
           >不同意上校会</el-button>
@@ -142,7 +144,7 @@
         :data="tutorList"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="50" align="center" />
+        <el-table-column type="selection" width="50" align="center" v-if="queryParams.applyStatus == 34"/>
         <el-table-column label="工号" align="center" prop="tutorId" />
         <el-table-column label="姓名" align="center" prop="name" />
         <el-table-column
