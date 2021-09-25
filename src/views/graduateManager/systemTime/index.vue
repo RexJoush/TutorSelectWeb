@@ -51,7 +51,7 @@ export default {
       if (this.time === '') {
         return this.$message('请选择设置的开始时间与结束时间')
       }
-      const { data: res } = await this.$http.get(
+      const { code: res } = await this.$http.get(
         '/admin/system-time/save/' + this.time + '/' + orgId
       )
       if (res == '20000') {
@@ -68,6 +68,7 @@ export default {
       const { data: res } = await this.$http.get(
         '/admin/system-time/get/' + orgId
       )
+      console.info(res)
       this.time = []
       this.time.push(res[0])
       this.time.push(res[1])
