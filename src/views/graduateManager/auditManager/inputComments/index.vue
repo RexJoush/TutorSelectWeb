@@ -1,46 +1,20 @@
 <!--本页为研究生院管理员的录入校会意见界面，研究生院管理员可在该页面将线下校会开会后的意见进行操作-->
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
-      <!--导师表格部分-->
-      <el-col :span="20" :xs="24">
-        <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-          <el-form-item label="工号" prop="userId">
+    <el-form ref="queryForm" label-width="70px">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item label="工号">
             <el-input
               v-model="queryParams.userId"
-              placeholder="请输入用户工号"
+              placeholder="请输入工号"
               clearable
               size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
+              style="width: 100%"
             />
           </el-form-item>
-          <el-form-item label="姓名" prop="userName">
-            <el-input
-              v-model="queryParams.userName"
-              placeholder="请输入用户名称"
-              clearable
-              size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
-            />
-          </el-form-item>
-          <el-form-item label="申请类别" prop="applyType">
-            <el-select
-              v-model="queryParams.applyType"
-              placeholder="请选择申请类别"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in applyTypeOptions"
-                :key="dict.applyTypeId"
-                :label="dict.applyName"
-                :value="dict.applyTypeId"
-              />
-            </el-select>
-          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="负责院系" prop="organization">
             <el-select
               v-model="queryParams.organization"
@@ -57,6 +31,41 @@
               />
             </el-select>
           </el-form-item>
+
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="申请类别" prop="applyType">
+            <el-select
+              v-model="queryParams.applyType"
+              placeholder="请选择申请类别"
+              clearable
+              size="small"
+              style="width: 240px"
+            >
+              <el-option
+                v-for="dict in applyTypeOptions"
+                :key="dict.applyTypeId"
+                :label="dict.applyName"
+                :value="dict.applyTypeId"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item label="姓名">
+            <el-input
+              v-model="queryParams.userName"
+              placeholder="请输入姓名"
+              clearable
+              size="small"
+              style="width: 100%"
+            />
+          </el-form-item>
+
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="学科名称" prop="subjectName">
             <el-select
               v-model="queryParams.subjectName"
@@ -73,6 +82,9 @@
               />
             </el-select>
           </el-form-item>
+
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="审核状态" prop="applyStatus">
             <el-select
               v-model="queryParams.applyStatus"
@@ -89,111 +101,67 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="success"
-              plain
-              icon="el-icon-success"
-              size="small"
-              :disabled="single"
-              @click="passFun"
-            >校会通过</el-button>
+        </el-col>
+        <el-col :span="6">
+          <el-col :span="8" :offset="5">
+            <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="small"
-              :disabled="single"
-              @click="unPassFun"
-            >校会不通过</el-button>
-          </el-col> <el-col :span="1.5" />
-        </el-row>
-        <el-table
-          v-loading="loading"
-          :data="tutorList"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column type="selection" width="50" align="center" />
-          <el-table-column
-            label="工号"
-            align="center"
-            prop="tutorId"
-            width="100"
-            fixed
-          />
-          <el-table-column label="姓名" align="center" prop="name" fixed />
-          <el-table-column
-            label="所在单位（院系）"
-            align="center"
-            prop="organizationName"
-            width="250"
-            fixed
-          />
-          <el-table-column
-            label="申请学科或类别代码"
-            align="center"
-            prop="professionalApplicationSubjectCode"
-            width="180"
-          />
-          <el-table-column
-            label="申请学科或类别名称"
-            align="center"
-            prop="professionalApplicationSubjectName"
-            width="180"
-          />
-          <el-table-column
-            label="申请类别"
-            align="center"
-            prop="applyName"
-            width="180"
-          />
-          <el-table-column
-            label="职称"
-            align="center"
-            prop="title"
-            width="180"
-          />
-          <el-table-column
-            label="审核状态"
-            align="center"
-            prop="inspectDescribe"
-            width="150"
-          />
-          <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column
-            label="备注"
-            align="center"
-            prop="commit"
-            width="150"
-          >
-            <template #default="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="commitFun(scope.row)"
-              >添加备注
-              </el-button>
-            </template></el-table-column></el-table>
-        <div class="block">
-          <el-pagination
-            v-show="total>0"
-            :current-page.sync="currentPage"
-            :page-size="10"
-            layout="total, prev, pager, next"
-            :total="total"
-            @current-change="handleCurrentChange"
-          />
-        </div>
-      </el-col>
-    </el-row>
+          <el-col :span="2">
+            <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
+          </el-col>
+        </el-col>
+      </el-row>
+    </el-form>
+    <!-- 操作按钮 -->
+    <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
+      <el-button
+        type="success"
+        plain
+        icon="el-icon-success"
+        size="small"
+        :disabled="single"
+        @click="passFun"
+      >校会通过</el-button>
+      <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="single" @click="unPassFun">校会不通过</el-button>
+    </div>
+    <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
+      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
+      <el-table-column label="申请类别" align="center" prop="applyName" />
+      <el-table-column label="职称" align="center" prop="title" width="100" />
+      <el-table-column label="审核状态" align="center" width="130">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+          <el-tag v-else type="warning">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="详情" align="center" width="60">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center" width="80">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      style="margin: 5px 0"
+      :current-page="queryParams.pageNum"
+      :page-size="queryParams.pageSize"
+      layout="total, prev, pager, next"
+      :total="total"
+      @current-change="handleCurrentChange"
+    />
     <!-- 校会通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
       <span>您确定所选记录均为校会通过吗？</span>
@@ -225,6 +193,9 @@
 </template>
 
 <script>
+
+import { toDetails } from '@/utils/function'
+import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 
 export default {
   data() {
@@ -288,7 +259,9 @@ export default {
         organization: undefined, // 院系id
         applyType: undefined, // 申请类别id
         subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
+        applyStatus: '', // 审核状态码id
+        applyStatuss: [], // 审核状态码数组 id
+
         subjectType: undefined // 学科属性，文科，理科，交叉
       },
       commit: undefined
@@ -303,18 +276,45 @@ export default {
     this.getApplyStatus()
   },
   methods: {
+    // 详情页
+    toDetails: function(applyId, applyTypeId) {
+      toDetails(this, applyId, applyTypeId)
+    },
+    // 查询数据
+    search: function() {
+      if (this.queryParams.applyStatus === '' &&
+        this.queryParams.userName === '' &&
+        this.queryParams.organization === '' &&
+        this.queryParams.applyType === '' &&
+        this.queryParams.subjectName === '' &&
+        this.queryParams.subjectType === ''
+      ) {
+        this.getList()
+      } else {
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = ['61'] // 申请状态码
+        }
+        search(this.queryParams, 1).then(res => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          console.log('res', res)
+          this.loading = false
+        }).catch(error => {
+          throw error
+        })
+      }
+    },
     /** 查询用户列表 */
     async getList() {
       this.loading = true
+      const applyStatuss = ['61']
       this.queryParams.pageNum = this.currentPage || 1
-
-      const { data: res } = await this.$http.get(
-        '/admin/tutor-inspect/admin/getAll', { params: this.queryParams }
-      )
-      this.tutorList = res.data
-      console.info(res.data)
-      this.total = res.total
-      this.loading = false
+      getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
+        this.tutorList = res.data.data
+        this.total = res.data.total
+        console.log('res', res)
+        this.loading = false
+      })
     },
     async upDateStatus(code) {
       const updateStatus = []
@@ -391,7 +391,11 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
+      this.queryParams.userId = null // 工号
+      this.queryParams.userName = null // 姓名
+      this.queryParams.applyType = null // 申请类别id
+      this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.applyStatuss = [] // 申请类别列表
       this.handleQuery()
     },
     // 校会通过

@@ -1,7 +1,6 @@
 <!--本页为研究生院管理员的初审界面，研究生院管理员可在该页面将院系秘书复审通过的导师信息进行审核-->
 <template>
   <div class="app-container">
-
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -123,7 +122,7 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="8" :offset="5">
-            <el-button type="primary" icon="el-icon-search" size="small" @click="filterDataByStatus()">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
           </el-col>
           <el-col :span="2">
             <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
@@ -131,21 +130,19 @@
         </el-col>
       </el-row>
     </el-form>
-
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
       <el-button type="success" plain icon="el-icon-success" size="small" :disabled="single" @click="passFun(3)">符合条件
       </el-button>
       <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="passFun(4)">不符合条件
       </el-button>
-      <el-button type="info" plain icon="el-icon-edit" size="small" :disabled="multiple"   @click="passFun(5)">需修改
+      <el-button type="info" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
       </el-button>
       <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
       </el-button>
-      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple"  @click="passFun(2)">送审科研处
+      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(2)">送审科研处
       </el-button>
     </div>
-
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
@@ -182,8 +179,7 @@
       :current-page="queryParams.pageNum"
       :page-size="queryParams.pageSize"
       layout="total, prev, pager, next"
-      :total="totalData"
-      @size-change="handleSizeChange"
+      :total="total"
       @current-change="handleCurrentChange"
     />
     <!-- 导出提交按钮 -->
@@ -193,7 +189,6 @@
           plain
           icon="el-icon-download"
           size="small"
-          :loading="exportLoading"
           @click="exportFun()"
         >导出excel
         </el-button>
@@ -204,14 +199,12 @@
           plain
           size="small"
           icon="el-icon-success"
-          :loading="exportLoading"
           @click="submitFun()"
         >提交
         </el-button>
       </el-col>
     </el-row>
     <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
-
 
     <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
@@ -243,7 +236,7 @@
 
 <script>
 
-import { getInit, updateStatus } from '@/api/departmentSecretary/secretaryFirst'
+import { getInit, search, updateStatus } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
 
 export default {
@@ -308,7 +301,9 @@ export default {
         organization: undefined, // 院系id
         applyType: undefined, // 申请类别id
         subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
+        applyStatus: '', // 审核状态码id
+        applyStatuss: [], // 审核状态码数组 id
+
         subjectType: undefined // 学科属性，文科，理科，交叉
       },
       choose: 0,
@@ -319,7 +314,6 @@ export default {
   },
   created() {
     // 院系秘书复审通过的状态即研究生院管理员初审状态
-    this.queryParams.applyStatus = 25
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -330,13 +324,39 @@ export default {
     toDetails: function(applyId, applyTypeId) {
       toDetails(this, applyId, applyTypeId)
     },
+    // 查询数据
+    search: function() {
+      if (this.queryParams.applyStatus === '' &&
+        this.queryParams.userName === '' &&
+        this.queryParams.organization === '' &&
+        this.queryParams.applyType === '' &&
+        this.queryParams.subjectName === '' &&
+        this.queryParams.subjectType === ''
+      ) {
+        this.getList()
+      } else {
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = ['25'] // 申请状态码
+        }
+        search(this.queryParams, 1).then(res => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          console.log('res', res)
+          this.loading = false
+        }).catch(error => {
+          throw error
+        })
+      }
+    },
+
     /** 查询用户列表 */
     async getList() {
+      const applyStatuss = ['25']
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
-      getInit(0,  this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
+      getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
-        this.totalData = res.data.total
+        this.total = res.data.total
         console.log('res', res)
         this.loading = false
       })
@@ -351,7 +371,6 @@ export default {
         }
         updateStatus[i] = json
       }
-      console.info(updateStatus)
       const { code: res } = await this.$http.post(
         '/admin/update-status/update', updateStatus
       )
@@ -400,7 +419,6 @@ export default {
         '/admin/organization/getAll'
       )
       this.organizationOptions = res
-      console.info(this.organizationOptions)
     },
     async getSubject() {
       // const { data: res } = await this.$http.get(
@@ -421,14 +439,13 @@ export default {
         roleIds: []
       }
     },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
-    },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
+      this.queryParams.userId = null // 工号
+      this.queryParams.userName = null // 姓名
+      this.queryParams.applyType = null // 申请类别id
+      this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.applyStatuss = [] // 申请类别列表
       this.handleQuery()
     },
     // 初审通过
@@ -466,8 +483,8 @@ export default {
           // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
           this.upDateStatus(399)
         }
-        if(this.choose == 5) {
-          //需修改，送至驳回页面
+        if (this.choose == 5) {
+          // 需修改，送至驳回页面
           this.upDateStatus(36)
         }
       } else {
@@ -523,7 +540,7 @@ export default {
     // 当前页数
     handleCurrentChange(val) {
       this.currentPage = val
-      this.getSecretaryInit()
+      this.getList()
     },
     // 点击备注按钮，添加备注
     commitFun(row) {

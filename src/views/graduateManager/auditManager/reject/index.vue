@@ -103,7 +103,7 @@
         </el-col>
         <el-col :span="6">
           <el-col :span="8" :offset="5">
-            <el-button type="primary" icon="el-icon-search" size="small" @click="filterDataByStatus()">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
           </el-col>
           <el-col :span="2">
             <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
@@ -157,8 +157,7 @@
       :current-page="queryParams.pageNum"
       :page-size="queryParams.pageSize"
       layout="total, prev, pager, next"
-      :total="totalData"
-      @size-change="handleSizeChange"
+      :total="total"
       @current-change="handleCurrentChange"
     />
   </div>
@@ -166,7 +165,7 @@
 
 <script>
 
-import { getInit } from '@/api/departmentSecretary/secretaryFirst'
+import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
 
 export default {
@@ -189,6 +188,8 @@ export default {
       title: '',
       // 是否显示弹出层
       open: false,
+      // 页码
+      pageNumber: 1,
       // 日期范围
       dateRange: [],
       // 申请类别选项
@@ -222,19 +223,19 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
+        applyStatus: '', // 审核状态码id
+        applyStatuss: [], // 审核状态码数组 id
+        subjectType: '' // 学科属性，文科，理科，交叉
       }
     }
   },
   created() {
     // 研究生院管理员标记为待修改，需要驳回给秘书的数据
-    this.queryParams.applyStatus = [36,42,53]
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -245,11 +246,35 @@ export default {
     toDetails: function(applyId, applyTypeId) {
       toDetails(this, applyId, applyTypeId)
     },
+    // 查询数据
+    search: function() {
+      if (this.queryParams.applyStatus === '' &&
+        this.queryParams.userName === '' &&
+        this.queryParams.organization === '' &&
+        this.queryParams.applyType === '' &&
+        this.queryParams.subjectName === '' &&
+        this.queryParams.subjectType === ''
+      ) {
+        this.getList()
+      } else {
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = [36, 42, 53] // 申请状态码
+        }
+        search(this.queryParams, this.queryParams.pageNum).then(res => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          this.loading = false
+        }).catch(error => {
+          throw error
+        })
+      }
+    },
     /** 查询用户列表 */
     async getList() {
       this.loading = true
+      const applyStatuss = ['36', '42', '53']
       this.queryParams.pageNum = this.currentPage || 1
-      getInit(0,  this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
+      getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
         console.log('res', res)
@@ -282,7 +307,7 @@ export default {
     async getApplyStatus() {
       this.applyStatusOptions = [
         {
-          'codeId': '36-42-53',
+          'codeId': '',
           'inspectDescribe': '全部待驳回'
         },
         {
@@ -337,7 +362,11 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
+      this.queryParams.userId = null // 工号
+      this.queryParams.userName = null // 姓名
+      this.queryParams.applyType = null // 申请类别id
+      this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.applyStatuss = [] // 申请类别列表
       this.handleQuery()
     },
     // 多选框选中数据
