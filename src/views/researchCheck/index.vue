@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-22 17:44:50
+ * @LastEditTime: 2021-09-26 17:31:36
 -->
 <template>
   <div class="app-container">
@@ -54,7 +54,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="审核状态">
+          <el-form-item label="审核状态" prop="applyStatus">
             <el-select
               v-model="queryParams.applyStatus"
               placeholder="请选择"
@@ -138,8 +138,7 @@
       :current-page="queryParams.pageNum"
       :page-size="queryParams.pageSize"
       layout="total, prev, pager, next"
-      :total="totalData"
-      @size-change="handleSizeChange"
+      :total="total"
       @current-change="handleCurrentChange"
     />
 
@@ -165,10 +164,13 @@
 
 <script>
 import {
+  getInit,//初始化数据
+  search,
   checkDate, //查询数据
   updateStatus, //更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
 
+//负责院系
 import { departmentList } from '@/utils/data'
 
 export default {
@@ -186,7 +188,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 分页总条数
-      totalData: 0,
+      total: 0,
       //待科研处初审列表
       researchInitList: [],
       //所有负责院系列表
@@ -195,18 +197,19 @@ export default {
       multipleSelection: [],
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
+        pageNum: 1,//当前页
+        pageSize: 10,//每页最大条数
         userId: "", //工号
         userName: "", //姓名
         organization: "", //院系id
         applyType: "", //申请类别id
         subjectName: "", //学科名称id
         applyStatus: "", //审核状态码id
+        applyStatuss: [], // 审核状态码数组 id
         subjectTpe: "", //学科属性，文科、理科、交叉
       },
       //当前页
-      currentPage: 1,
+      // currentPage: 1,
       //科研处审核状态
       statuOptions: [
         {
@@ -266,29 +269,41 @@ export default {
     //通过状态码查询
     getResearchCheckInit() {
       this.queryParams.applyStatus = 31;
-      checkDate(this.queryParams).then((res) => {
-        if (res.code == 20000) {
+      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
           this.tutorList = res.data.data;
-          this.totalData = res.data.total;
+          this.total = res.data.total;
           console.log("8888888",res.data)
-        }
-        if (res.code == 20001) {
-          this.$message("暂无待初审的教师!");
-        }
       });
     },
 
     //搜索按钮
     searchQuery() {
-      checkDate(this.queryParams).then((res) => {
-        if(this.queryParams.applyStatus === 31){
-          this.searchFlag = true
-        }else{
-          this.searchFlag = false
+      if (this.queryParams.applyStatus === '' &&
+          this.queryParams.userName === '' &&
+          this.queryParams.organization === '' &&
+          this.queryParams.applyType === '' &&
+          this.queryParams.subjectName === '' &&
+          this.queryParams.subjectType === ''
+      ) {
+        this.getResearchCheckInit();
+      } else {
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = ['31'] // 申请状态码
         }
-        this.tutorList = res.data.data;
-        this.totalData = res.data.total;
-      });
+        search(this.queryParams, 1).then((res) => {
+          if(this.queryParams.applyStatus === 31 || ' '){
+            this.searchFlag = true
+          }else{
+            this.searchFlag = false
+          }
+          this.tutorList = res.data.data;
+          this.total = res.data.total;
+      }).catch(error => {
+        throw error
+      })
+      }
+
+      
     },
 
     //重置按钮
@@ -297,6 +312,7 @@ export default {
       this.queryParams.userName = null;
       this.queryParams.organization = null;
       this.queryParams.applyStatus = 31;
+      this.queryParams.applyStatuss = [] // 申请类别列表
     },
     //初审通过
     passFun() {
@@ -369,12 +385,10 @@ export default {
       }
     },
 
-    //每页显示条数
-    handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
       this.queryParams.pageNum = val;
-      this.getResearchCheckInit()
+      this.getResearchCheckInit();
     },
   },
 };

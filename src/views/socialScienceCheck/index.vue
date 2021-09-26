@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-22 17:45:15
+ * @LastEditTime: 2021-09-26 16:58:01
 -->
 <template>
   <div class="app-container">
@@ -140,7 +140,6 @@
         :page-size="10"
         layout="total, prev, pager, next"
         :total="totalData"
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       >
       </el-pagination>
@@ -167,6 +166,8 @@
 
 <script>
 import {
+  getInit,//初始化
+  search,//搜索
   checkDate, //查询数据
   updateStatus, //更新操作
 } from "@/api/departmentSecretary/secretaryFirst";
@@ -212,6 +213,7 @@ export default {
         commit: "", //备注
         subjectName: "", //学科名称id
         applyStatus: "", //审核状态码id
+        applyStatuss: [], // 审核状态码数组 id
         subjectTpe: "", //学科属性，文科、理科、交叉
       },
       //当前页
@@ -275,21 +277,16 @@ export default {
     //通过状态码查询
     getSocialCheckInit() {
       this.queryParams.applyStatus = 30;
-      checkDate(this.queryParams).then((res) => {
-        console.log(res.data.data);
-        if (res.code == 20000) {
+      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
+          console.log(res.data.data);
           this.tutorList = res.data.data;
           this.totalData = res.data.total;
-        }
-        if (res.code == 20001) {
-          this.$message("暂无待初审的教师!");
-        }
       });
     },
 
     //搜索按钮
     searchQuery() {
-      checkDate(this.queryParams).then((res) => {
+      search(this.queryParams, 1).then((res) => {
         if(this.queryParams.applyStatus === 30){
           this.searchFlag = true
         }else{
@@ -305,6 +302,7 @@ export default {
       this.queryParams.userId = null;
       this.queryParams.userName = null;
       this.queryParams.organization = null;
+      this.queryParams.applyStatuss = [] // 申请类别列表
       this.queryParams.applyStatus = 30;
     },
     //初审通过
