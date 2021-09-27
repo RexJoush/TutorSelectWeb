@@ -1,15 +1,7 @@
 <template>
   <div class="app-container">
 
-    <el-row :gutter="20">
-      <!--用户数据-->
-      <el-col :span="20" :xs="24">
-        <el-form
-          v-show="showSearch"
-          ref="queryForm"
-          :inline="true"
-          label-width="68px"
-        >
+    
     <!-- 搜索部分 -->
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
