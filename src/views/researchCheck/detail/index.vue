@@ -4,375 +4,435 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-13 15:12:01
+ * @LastEditTime: 2021-09-22 17:05:27
 -->
 <template>
   <div id="app-container">
-      <br> 
-      <el-page-header style="margin-left: 30px;" @back="goBack" :content=this.name>
-      </el-page-header>
-      <br />
-      <!-- 学术论文 -->
-      <el-row type="flex" justify="center">
-        <el-col :span="21">
-          <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span>学术论文</span>
-        </div>              
-        <el-table
-          :data="paperList"
-          style="width: 100%; margin: 20px auto"
-          border
-        >
-        <el-table-column label="序号" type="index" width="50" />
-        <el-table-column label="名称" align="center" prop="paperName" />
-        <el-table-column label="第一作者" align="center" prop="firstAuthorName" />
-        <el-table-column
-          label="发表时间"
-          align="center"
-          prop="paperPublicationTime"
-        />
-        <el-table-column
-          label="期刊名称"
-          align="center"
-          prop="journalName"
-        />
-        <el-table-column
-          label="期刊等级"
-          align="center"
-          prop="journalLevel"
-        />
-        <el-table-column 
-          label="证明材料"
-          align="center" 
-          prop="paperProveMaterials">
-          <template slot-scope="scope">
-            <a :href="scope.row.paperProveMaterials">
-              <el-button type="primary" size="mini" plain>下载文件</el-button>
-            </a>
-          </template>
-        </el-table-column>
-        <el-table-column label="成果认定" align="center" prop="col1" />
-        <el-table-column label="备注" align="center" prop="col2" />
-        <el-table-column
-          label="操作"
-          align="center"
-          width="160"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
-            <el-button
-              type="success"             
-              icon="el-icon-success"
-              size="mini"
-              plain
-              @click="passPaperFun(scope.row)"
-            >通过</el-button>
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="mini"
-              @click="unPassPaperFun(scope.row)"
-              >驳回</el-button>
-          </template>
-
-        </el-table-column>
-        </el-table> 
-          </el-card>   
-        </el-col>
-      </el-row> 
-      <br />
-      
-      <!-- 科研项目表 -->
-      <el-row type="flex" justify="center">
-        <el-col :span="21">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>科研项目</span>
-            </div> 
-        <el-table    
-          :data="projectList"
-          style="width: 100%; margin: 20px auto"
-          border
-        >
-        <el-table-column label="序号" type="index" width="50" />
-        <el-table-column label="名称" align="center" prop="projectName" />
-        <el-table-column label="批准号" align="center" prop="approvalNumber" />
-        <el-table-column
-          label="负责人"
-          align="center"
-          prop="projectChargeName"
-        />
-        <el-table-column
-          label="开始时间"
-          align="center"
-          prop="projectStartTime"
-        />
-        <el-table-column
-          label="结束时间"
-          align="center"
-          prop="projectEndTime"
-        />
-        <el-table-column
-          label="项目级别"
-          align="center"
-          prop="projectLevel"
-        />
-        <el-table-column
-          label="总经费"
-          align="center"
-          prop="projectTotalPrice"
-        />
-        <el-table-column 
-          label="证明材料"
-          align="center" 
-          prop="projectProveMaterials">
-          <template slot-scope="scope">
-            <a :href="scope.row.projectProveMaterials">
-              <el-button type="primary" size="mini" plain>下载文件</el-button>
-            </a>
-          </template>
-        </el-table-column>
-        <el-table-column label="成果认定" align="center" prop="col1" />
-        <el-table-column label="备注" align="center" prop="col2" />
-        <el-table-column
-          label="操作"
-          align="center"
-          width="160"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
-            <el-button
-              type="success"             
-              icon="el-icon-success"
-              size="mini"
-              plain
-              @click="passProjectFun(scope.row)"
-            >通过</el-button>
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="mini"
-              @click="unPassProjectFun(scope.row)"
-              >驳回</el-button>
-          </template>
-
-        </el-table-column>
-      </el-table> 
-        </el-card>   
-        </el-col>
-      </el-row>
-      <br />
-
-      <!-- 教材或学术著作表 -->
-      <el-row type="flex" justify="center">
-        <el-col :span="21">
-          <el-card class="box-card">
+    <br />
+    <el-page-header
+      style="margin-left: 30px; color: #409EFF"
+      @back="goBack"
+      :content="this.name"
+    >
+    </el-page-header>
+    <br />
+    <!-- 学术论文 -->
+    <el-row type="flex" justify="center">
+      <el-col :span="21">
+        <el-card class="box-card">
           <div slot="header" class="clearfix">
-          <span>教材或学术著作</span>
-          </div>     
-        <el-table
-          :data="workList"
-          style="width: 100%; margin: 20px auto"
-          border
-        >
-        <el-table-column label="序号" type="index" width="50" />
-        <el-table-column label="名称" align="center" prop="worksName" />
-        <el-table-column label="排名" align="center" prop="worksRank" />
-        <el-table-column
-          label="出版时间"
-          align="center"
-          prop="worksPublicationTime"
-        />
-        <el-table-column
-          label="出版单位"
-          align="center"
-          prop="worksPublicationUnit"
-        />
-        <el-table-column
-          label="完成字数(万字)"
-          align="center"
-          prop="totalWords"
-        />
-        <el-table-column 
-          label="证明材料"
-          align="center" 
-          prop="worksProveMaterials">
-          <template slot-scope="scope">
-            <a :href="scope.row.worksProveMaterials">
-              <el-button type="primary" size="mini" plain>下载文件</el-button>
-            </a>
-          </template>
-        </el-table-column>
-        <el-table-column label="成果认定" align="center" prop="col1" />
-        <el-table-column label="备注" align="center" prop="col2" />
-        <el-table-column
-          label="操作"
-          align="center"
-          width="160"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
-            <el-button
-              type="success"             
-              icon="el-icon-success"
-              size="mini"
-              plain
-              @click="passWorkFun(scope.row)"
-            >通过</el-button>
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="mini"
-              @click="unPassWorkFun(scope.row)"
-              >驳回</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-        </el-card>   
-        </el-col>
-      </el-row>
-      <br />
+            <span>学术论文</span>
+          </div>
+          <el-table
+            :data="paperList"
+            style="width: 100%; margin: 20px auto"
+            border
+          >
+            <el-table-column label="序号" type="index" width="50" />
+            <el-table-column label="名称" align="center" prop="paperName" />
+            <el-table-column
+              label="第一作者"
+              align="center"
+              prop="firstAuthorName"
+            />
+            <el-table-column
+              label="发表时间"
+              align="center"
+              prop="paperPublicationTime"
+            />
+            <el-table-column
+              label="期刊名称"
+              align="center"
+              prop="journalName"
+            />
+            <el-table-column
+              label="期刊等级"
+              align="center"
+              prop="journalLevel"
+            />
+            <el-table-column
+              label="证明材料"
+              align="center"
+              prop="paperProveMaterials"
+            >
+              <template slot-scope="scope">
+                <a :href="scope.row.paperProveMaterials"> 下载文件 </a>
+              </template>
+            </el-table-column>
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" align="center" prop="col2" />
+            <el-table-column
+              label="操作"
+              align="center"
+              width="160"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+                <el-button
+                  type="success"
+                  icon="el-icon-success"
+                  size="mini"
+                  plain
+                  @click="passPaperFun(scope.row)"
+                  >通过</el-button
+                >
+                <el-button
+                  type="danger"
+                  plain
+                  icon="el-icon-error"
+                  size="mini"
+                  @click="unPassPaperFun(scope.row)"
+                  >驳回</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
+    <br />
 
-      <!-- 科研教学奖励表 -->
-      <el-row type="flex" justify="center">
-        <el-col :span="21">
-          <el-card class="box-card">
+    <!-- 科研项目表 -->
+    <el-row type="flex" justify="center">
+      <el-col :span="21">
+        <el-card class="box-card">
           <div slot="header" class="clearfix">
-          <span>科研教学奖励</span>
-          </div>           
-        <el-table        
-          :data="awardList"
-          style="width: 100%; margin: 20px auto"
-          border
-        >
-        <el-table-column label="序号" type="index" width="50" />
-        <el-table-column label="名称" align="center" prop="awardsName" />
-        <el-table-column label="排名" align="center" prop="awardsRank" />
-        <el-table-column
-          label="颁奖单位"
-          align="center"
-          prop="awardsUnit"
-        />
-        <el-table-column
-          label="获奖级别"
-          align="center"
-          prop="awardsLevel"
-        />
-        <el-table-column
-          label="获奖等级"
-          align="center"
-          prop="awardsClass"
-        />
-        <el-table-column
-          label="获奖时间"
-          align="center"
-          prop="awardsTime"
-        />
-        <el-table-column 
-          label="证明材料"
-          align="center" 
-          prop="awardsProveMaterials">
-          <template slot-scope="scope">
-            <a :href="scope.row.awardsProveMaterials">
-              <el-button type="primary" size="mini" plain>下载文件</el-button>
-            </a>
-          </template>
-        </el-table-column>
-        <el-table-column label="成果认定" align="center" prop="col1" />
-        <el-table-column label="备注" align="center" prop="col2" />
-        <el-table-column
-          label="操作"
-          align="center"
-          width="160"
-          class-name="small-padding fixed-width"
-        >
-          <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
-            <el-button
-              type="success"             
-              icon="el-icon-success"
-              size="mini"
-              plain
-              @click="passAwardFun(scope.row)"
-            >通过</el-button>
-            <el-button
-              type="danger"
-              plain
-              icon="el-icon-error"
-              size="mini"
-              @click="unPassAwardFun(scope.row)"
-              >驳回</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-        </el-card>   
-        </el-col>
-      </el-row>
-      <br />
-      <br />
-      <el-row type="flex" justify="end">
-        <el-col :span="4">
-            <el-button type="success" @click="checkSuccess">审核成功</el-button>
-            <el-button type="primary" @click="submitMaterials">确认提交</el-button>
-        </el-col>
-      </el-row>
-      <br/><br/>
+            <span>科研项目</span>
+          </div>
+          <el-table
+            :data="projectList"
+            style="width: 100%; margin: 20px auto"
+            border
+          >
+            <el-table-column label="序号" type="index" width="50" />
+            <el-table-column label="名称" align="center" prop="projectName" />
+            <el-table-column
+              label="批准号"
+              align="center"
+              prop="approvalNumber"
+            />
+            <el-table-column
+              label="负责人"
+              align="center"
+              prop="projectChargeName"
+            />
+            <el-table-column
+              label="开始时间"
+              align="center"
+              prop="projectStartTime"
+            />
+            <el-table-column
+              label="结束时间"
+              align="center"
+              prop="projectEndTime"
+            />
+            <el-table-column
+              label="项目级别"
+              align="center"
+              prop="projectLevel"
+            />
+            <el-table-column
+              label="总经费"
+              align="center"
+              prop="projectTotalPrice"
+            />
+            <el-table-column
+              label="证明材料"
+              align="center"
+              prop="projectProveMaterials"
+            >
+              <template slot-scope="scope">
+                <a :href="scope.row.projectProveMaterials"> 下载文件 </a>
+              </template>
+            </el-table-column>
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" align="center" prop="col2" />
+            <el-table-column
+              label="操作"
+              align="center"
+              width="160"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+                <el-button
+                  type="success"
+                  icon="el-icon-success"
+                  size="mini"
+                  plain
+                  @click="passProjectFun(scope.row)"
+                  >通过</el-button
+                >
+                <el-button
+                  type="danger"
+                  plain
+                  icon="el-icon-error"
+                  size="mini"
+                  @click="unPassProjectFun(scope.row)"
+                  >驳回</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
+    <br />
 
-      <!-- 1.论文驳回时的备注弹框 -->
-      <el-dialog title="备注" :visible.sync="dialogVisible1" width="30%">
-        <el-form ref="paperRejectform" :model="paperRejectform" label-width="80px">
-          <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit1" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="cancel1()">取 消</el-button>
-          <el-button type="primary" @click="returnFun1()">确 定</el-button>
-        </span>
-      </el-dialog>
+    <!-- 教材或学术著作表 -->
+    <el-row type="flex" justify="center">
+      <el-col :span="21">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>教材或学术著作</span>
+          </div>
+          <el-table
+            :data="workList"
+            style="width: 100%; margin: 20px auto"
+            border
+          >
+            <el-table-column label="序号" type="index" width="50" />
+            <el-table-column label="名称" align="center" prop="worksName" />
+            <el-table-column label="排名" align="center" prop="worksRank" />
+            <el-table-column
+              label="出版时间"
+              align="center"
+              prop="worksPublicationTime"
+            />
+            <el-table-column
+              label="出版单位"
+              align="center"
+              prop="worksPublicationUnit"
+            />
+            <el-table-column
+              label="完成字数(万字)"
+              align="center"
+              prop="totalWords"
+            />
+            <el-table-column
+              label="证明材料"
+              align="center"
+              prop="worksProveMaterials"
+            >
+              <template slot-scope="scope">
+                <a :href="scope.row.worksProveMaterials"> 下载文件 </a>
+              </template>
+            </el-table-column>
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" align="center" prop="col2" />
+            <el-table-column
+              label="操作"
+              align="center"
+              width="160"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+                <el-button
+                  type="success"
+                  icon="el-icon-success"
+                  size="mini"
+                  plain
+                  @click="passWorkFun(scope.row)"
+                  >通过</el-button
+                >
+                <el-button
+                  type="danger"
+                  plain
+                  icon="el-icon-error"
+                  size="mini"
+                  @click="unPassWorkFun(scope.row)"
+                  >驳回</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
+    <br />
 
-      <!-- 2.科研项目驳回时的备注弹框 -->
-      <el-dialog title="备注" :visible.sync="dialogVisible2" width="30%">
-        <el-form ref="projectRejectform" :model="projectRejectform" label-width="80px">
-          <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit2" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="cancel2()">取 消</el-button>
-          <el-button type="primary" @click="returnFun2()">确 定</el-button>
-        </span>
-      </el-dialog>
+    <!-- 科研教学奖励表 -->
+    <el-row type="flex" justify="center">
+      <el-col :span="21">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>科研教学奖励</span>
+          </div>
+          <el-table
+            :data="awardList"
+            style="width: 100%; margin: 20px auto"
+            border
+          >
+            <el-table-column label="序号" type="index" width="50" />
+            <el-table-column label="名称" align="center" prop="awardsName" />
+            <el-table-column label="排名" align="center" prop="awardsRank" />
+            <el-table-column
+              label="颁奖单位"
+              align="center"
+              prop="awardsUnit"
+            />
+            <el-table-column
+              label="获奖级别"
+              align="center"
+              prop="awardsLevel"
+            />
+            <el-table-column
+              label="获奖等级"
+              align="center"
+              prop="awardsClass"
+            />
+            <el-table-column
+              label="获奖时间"
+              align="center"
+              prop="awardsTime"
+            />
+            <el-table-column
+              label="证明材料"
+              align="center"
+              prop="awardsProveMaterials"
+            >
+              <template slot-scope="scope">
+                <a :href="scope.row.awardsProveMaterials"> 下载文件 </a>
+              </template>
+            </el-table-column>
+            <el-table-column label="成果认定" align="center">
+              <template slot-scope="scope">
+                <el-tag
+                  v-if="scope.row.col1 !== ''"
+                  :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                >
+                  {{ scope.row.col1 }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column label="备注" align="center" prop="col2" />
+            <el-table-column
+              label="操作"
+              align="center"
+              width="160"
+              class-name="small-padding fixed-width"
+            >
+              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+                <el-button
+                  type="success"
+                  icon="el-icon-success"
+                  size="mini"
+                  plain
+                  @click="passAwardFun(scope.row)"
+                  >通过</el-button
+                >
+                <el-button
+                  type="danger"
+                  plain
+                  icon="el-icon-error"
+                  size="mini"
+                  @click="unPassAwardFun(scope.row)"
+                  >驳回</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
+    <br />
+    <br />
+    <el-row type="flex" justify="end">
+      <el-col :span="4" :offset="21">
+        <el-button type="primary" @click="submitMaterials">确认提交</el-button>
+      </el-col>
+    </el-row>
+    <br /><br />
 
-      <!-- 3.教材或学术著作驳回时的备注弹框 -->
-      <el-dialog title="备注" :visible.sync="dialogVisible3" width="30%">
-        <el-form ref="workRejectform" :model="workRejectform" label-width="80px">
-          <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit3" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="cancel3()">取 消</el-button>
-          <el-button type="primary" @click="returnFun3()">确 定</el-button>
-        </span>
-      </el-dialog>
+    <!-- 1.论文驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible1" width="30%">
+      <el-form
+        ref="paperRejectform"
+        :model="paperRejectform"
+        label-width="80px"
+      >
+        <el-form-item label="请输入驳回理由(可以为空)">
+          <el-input v-model="returnCommit1" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel1()">取 消</el-button>
+        <el-button type="primary" @click="returnFun1()">确 定</el-button>
+      </span>
+    </el-dialog>
 
-      <!-- 4.科研教学将来驳回时的备注弹框 -->
-      <el-dialog title="备注" :visible.sync="dialogVisible4" width="30%">
-        <el-form ref="awardRejectform" :model="awardRejectform" label-width="80px">
-          <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit4" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="cancel4()">取 消</el-button>
-          <el-button type="primary" @click="returnFun4()">确 定</el-button>
-        </span>
-      </el-dialog>
+    <!-- 2.科研项目驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible2" width="30%">
+      <el-form
+        ref="projectRejectform"
+        :model="projectRejectform"
+        label-width="80px"
+      >
+        <el-form-item label="请输入驳回理由(可以为空)">
+          <el-input v-model="returnCommit2" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel2()">取 消</el-button>
+        <el-button type="primary" @click="returnFun2()">确 定</el-button>
+      </span>
+    </el-dialog>
 
+    <!-- 3.教材或学术著作驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible3" width="30%">
+      <el-form ref="workRejectform" :model="workRejectform" label-width="80px">
+        <el-form-item label="请输入驳回理由(可以为空)">
+          <el-input v-model="returnCommit3" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel3()">取 消</el-button>
+        <el-button type="primary" @click="returnFun3()">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 4.科研教学将来驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogVisible4" width="30%">
+      <el-form
+        ref="awardRejectform"
+        :model="awardRejectform"
+        label-width="80px"
+      >
+        <el-form-item label="请输入驳回理由(可以为空)">
+          <el-input v-model="returnCommit4" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel4()">取 消</el-button>
+        <el-button type="primary" @click="returnFun4()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -482,128 +542,97 @@ export default {
   created() {
     this.id = this.$route.query.tutorId;
     this.applyId = this.$route.query.applyId;
-    this.name = this.$route.query.name + "老师的学术成果";
+    this.name = this.$route.query.name + "~老师的学术成果";
     this.getPaperList();
     this.getProjectList();
     this.getWorkList();
     this.getAwardList();
   },
   methods: {
-    //审核成功，刷新界面
-    checkSuccess() {
-      window.location.reload();
-    },
-    //返回主界面
-    submitMaterials:function(){
-      this.updataList = [];
-      if (
-        this.commit_1 == "材料审核通过" &&
-        this.commit_2 == "材料审核通过" &&
-        this.commit_3 == "材料审核通过" &&
-        this.commit_4 == "材料审核通过"
-      ) {
-        this.csDes = "材料审核通过";
-      } else if (
-        this.commit_1 == "有材料待审核" ||
-        this.commit_2 == "有材料待审核" ||
-        this.commit_3 == "有材料待审核" ||
-        this.commit_4 == "有材料待审核"
-      ) {
-        this.csDes = "有材料待审核"
-      } else if (
-        this.commit_1 == "材料审核不通过" ||
-        this.commit_2 == "材料审核不通过" ||
-        this.commit_3 == "材料审核不通过" ||
-        this.commit_4 == "材料审核不通过"
-      ) {
-        this.csDes = "材料审核不通过";
-      } 
-      let obj = { id_1: 0, status_1: 0, commit_1: "" };
-      obj.id_1 = this.applyId
-      obj.status_1 = "31"
-      obj.commit_1 = this.csDes
-      console.log("00000000000000", this.applyId)
-      this.updataList.push(obj);
-      updateStatus(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("材料审核成功");
-        }
-      });
-      this.goBack();
-    },
     // 1.查询学术论文
-    getPaperList() {
-      console.log(this.id); //可以获取到
-      searchPaper(this.id, this.applyId).then((res) => {
-        this.paperList = res.data;
-        //判断论文材料审核是否通过
-        for(let item1 of this.paperList){
-          if(item1.col1 == null){
-            this.commit_1 = "有材料待审核"
-          }else if(item1.col1!="通过"){
-            this.commit_1 = "材料审核不通过"
-          }
-          // console.log("雪花酥技术：",item1.col1)
+    async getPaperList() {
+      const { data: res } = await searchPaper(this.id, this.applyId);
+      this.paperList = res;
+      // console.log("paperList", this.paperList);
+      this.commit_1 = ""; //清空上次的综合条件
+      //判断论文材料审核是否通过
+      for (let item1 of this.paperList) {
+        if (item1.col1 === null) {
+          this.commit_1 = 0; //材料待审核
+          break;
+        } else if (item1.col1 !== "通过") {
+          this.commit_1 = -1; //材料不通过
+          break;
         }
-        if(!this.commit_1) this.commit_1 = "材料审核通过" 
-        console.log("学术论文:",this.commit_1)  
-      });
+      }
+      if (this.commit_1 == "") this.commit_1 = 1;
+      console.log("学术论文:", this.commit_1);
+
     },
     // 2.查询科研项目
-    getProjectList() {
-      searchProject(this.id, this.applyId).then((res) => {
-        this.projectList = res.data;
-        for(let item of this.projectList){
-          if(item.col1 == undefined){
-            this.commit_4 = "有材料待审核"
-          }else if(item.col1!="通过"){
-            this.commit_4 = "材料审核不通过"
-          }
+    async getProjectList() {
+      const { data: res } = await searchProject(this.id, this.applyId);
+      this.projectList = res;
+      this.commit_2 = ""; //清空上次的综合条件
+      for (let item of this.projectList) {
+        if (item.col1 == undefined) {
+          this.commit_2 = 0;
+          break;
+        } else if (item.col1 !== "通过") {
+          this.commit_2 = -1;
+          break;
         }
-        if(!this.commit_4) this.commit_4 = "材料审核通过"
-        console.log("科研项目:",this.commit_4)
-      });
+      }
+      if (!this.commit_2) this.commit_2 = 1;
+      console.log("科研项目:", this.commit_2);
     },
     // 3.查询教材或学术著作
-    getWorkList() {
-      searchWorks(this.id, this.applyId).then((res) => {
-        this.workList = res.data;
-        for(let item of this.workList){
-          if(item.col1 == undefined){
-            this.commit_3 = "有材料待审核"
-          }else if(item.col1!="通过"){
-            this.commit_3 = "材料审核不通过"
-          }
+    async getWorkList() {
+      const { data: res } = await searchWorks(this.id, this.applyId);
+      this.workList = res;
+      this.commit_3 = ""; //清空上次的综合条件
+      for (let item of this.workList) {
+        if (item.col1 == undefined) {
+          this.commit_3 = 0;
+          break;
+        } else if (item.col1 !== "通过") {
+          this.commit_3 = -1;
+          break;
         }
-        if(!this.commit_3) this.commit_3 = "材料审核通过"
-        console.log("教材或学术著作:",this.commit_3)
-      });
+      }
+      if (!this.commit_3) this.commit_3 = 1;
+      console.log("教材或学术著作:", this.commit_3);
     },
     // 4.查询科研教学奖励
-    getAwardList() {
-      searchAwards(this.id, this.applyId).then((res) => {
-        this.awardList = res.data;
-        for(let item2 of this.awardList){
-          if(item2.col1 == undefined){
-            this.commit_2 = "有材料待审核"
-          }else if(item2.col1!="通过"){
-            this.commit_2 = "材料审核不通过"
-          }
-        }  
-        if(!this.commit_2) this.commit_2 = "材料审核通过"
-        console.log("科研教学奖励表:",this.commit_2)
-      });
+    async getAwardList() {
+      const { data: res } = await searchAwards(this.id, this.applyId);
+      this.awardList = res;
+      this.commit_4 = ""; //清空上次的综合条件
+      for (let item2 of this.awardList) {
+        if (item2.col1 == undefined) {
+          this.commit_4 = 0;
+          break;
+        } else if (item2.col1 !== "通过") {
+          this.commit_4 = -1;
+          break;
+        }
+      }
+      if (!this.commit_4) this.commit_4 = 1;
+      console.log("科研教学奖励表:", this.commit_4);
     },
     //返回
     goBack() {
-      this.$router.push({path:"/research/researchCheck", query:{applyId:this.applyId}});
+      this.$router.push({
+        path: "/research/researchCheck",
+        query: { applyId: this.applyId },
+      });
     },
 
     //---------------------1.学术论文表------------------
     //论文审核通过(不需要弹框)
     passPaperFun(row) {
-      row.col1 = "通过"
-      row.col2= ""
+      row.col1 = "通过";
+      row.col2 = "";
       console.log(row);
       const infoId1 = row.paperId;
       console.log(infoId1);
@@ -633,13 +662,12 @@ export default {
         col1: "不通过",
         col2: this.returnCommit1,
       };
-      // axios.post("http://localhost:8081/academic_paper/update", editPaperForm)
       updatePaper(updatePaperForm).then((res) => {
         if (res.code == 20000) {
           this.$message.success("审核成功!");
-          this.paperRejectform.col1 = "不通过"
+          this.paperRejectform.col1 = "不通过";
           this.paperRejectform.col2 = this.returnCommit1;
-          this.dialogVisible1 = false;  
+          this.dialogVisible1 = false;
         }
       });
     },
@@ -652,8 +680,8 @@ export default {
     //------------------------2.科研项目表----------------
     //科研项目审核通过(不需要弹框)
     passProjectFun(row) {
-      row.col1 = "通过"
-      row.col2= ""
+      row.col1 = "通过";
+      row.col2 = "";
       // console.log(row);
       const infoId2 = row.projectId;
       console.log(infoId2);
@@ -674,7 +702,7 @@ export default {
       this.id2 = unInfoId2;
       this.projectRejectform = row;
       this.dialogVisible2 = true;
-      this.returnCommit2 = ""
+      this.returnCommit2 = "";
     },
     //弹框确定按钮驳回操作
     returnFun2() {
@@ -687,7 +715,7 @@ export default {
       updateProject(updatePaperForm).then((res) => {
         if (res.code == 20000) {
           this.$message.success("审核成功!");
-          this.projectRejectform.col1 = "不通过"
+          this.projectRejectform.col1 = "不通过";
           this.projectRejectform.col2 = this.returnCommit2;
           this.dialogVisible2 = false;
         }
@@ -702,8 +730,8 @@ export default {
     // //-------------------3.教材或学术著作表----------------
     //教材或学术著作审核通过(不需要弹框)
     passWorkFun(row) {
-      row.col1 = "通过"
-      row.col2= ""
+      row.col1 = "通过";
+      row.col2 = "";
       // console.log(row);
       const infoId3 = row.worksId;
       console.log(infoId3);
@@ -724,7 +752,7 @@ export default {
       this.id3 = unInfoId3;
       this.dialogVisible3 = true;
       this.workRejectform = row;
-      this.returnCommit3 = "" 
+      this.returnCommit3 = "";
     },
     //弹框确定按钮驳回操作
     returnFun3() {
@@ -737,7 +765,7 @@ export default {
       updateWorks(updateWorkForm).then((res) => {
         if (res.code == 20000) {
           this.$message.success("审核成功!");
-          this.workRejectform.col1 = "不通过"
+          this.workRejectform.col1 = "不通过";
           this.workRejectform.col2 = this.returnCommit3;
           this.dialogVisible3 = false;
         }
@@ -752,8 +780,8 @@ export default {
     // //----------------------4.科研教学奖励表----------------
     //科研教学奖励审核通过(不需要弹框)
     passAwardFun(row) {
-      row.col1 = "通过"
-      row.col2= ""
+      row.col1 = "通过";
+      row.col2 = "";
       //console.log(row);
       const infoId4 = row.awardsId;
       console.log(infoId4);
@@ -774,7 +802,7 @@ export default {
       this.id4 = unInfoId4;
       this.dialogVisible4 = true;
       this.awardRejectform = row;
-      this.returnCommit4 = ""
+      this.returnCommit4 = "";
     },
     //弹框确定按钮驳回操作
     returnFun4() {
@@ -787,7 +815,7 @@ export default {
       updateAwards(updateAwardForm).then((res) => {
         if (res.code == 20000) {
           this.$message.success("审核成功!");
-          this.awardRejectform.col1 = "不通过"
+          this.awardRejectform.col1 = "不通过";
           this.awardRejectform.col2 = this.returnCommit4;
           this.dialogVisible4 = false;
         }
@@ -798,6 +826,59 @@ export default {
       this.dialogVisible4 = false;
       this.returnCommit4 = null;
     },
+
+    //返回主界面
+    async submitMaterials() {
+      await this.getPaperList();
+      await this.getProjectList();
+      await this.getWorkList();
+      await this.getAwardList();
+      this.csDes = "";
+      this.updataList = [];
+      if (
+        this.commit_1 === 1 &&
+        this.commit_2 === 1 &&
+        this.commit_3 === 1 &&
+        this.commit_4 === 1
+      ) {
+        this.csDes = "材料审核通过";
+      } else if (
+        this.commit_1 === 0 ||
+        this.commit_2 === 0 ||
+        this.commit_3 === 0 ||
+        this.commit_4 === 0
+      ) {
+        this.csDes = "材料待审核";
+      } else if (
+        this.commit_1 === -1 ||
+        this.commit_2 === -1 ||
+        this.commit_3 === -1 ||
+        this.commit_4 === -1
+      ) {
+        this.csDes = "材料审核不通过";
+      }
+      // this.$router.push({path:"/research/researchCheck", query:{applyId:this.applyId, csDes: this.csDes}});
+      let obj = { id_1: 0, status_1: 0, commit_1: "" };
+      obj.id_1 = this.applyId;
+      obj.status_1 = "31";
+      console.log("csdes", this.csDes);
+      obj.commit_1 = this.csDes;
+      this.updataList.push(obj);
+      console.log("======updatelist", this.updataList);
+      console.log("学术论文1111", this.commit_1);
+      updateStatus(this.updataList).then((res) => {
+        if (res.code == 20000) {
+          this.$message.success("材料审核成功");
+          this.goBack();
+        }
+      });
+    },
   },
 };
 </script>
+<style lang="scss" scoped>
+a {
+  text-decoration: underline;
+  color: #409eff;
+}
+</style>

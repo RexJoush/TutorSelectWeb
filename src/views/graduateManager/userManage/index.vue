@@ -4,7 +4,7 @@
       <!--用户表格部分-->
       <el-col :span="20" :xs="24">
         <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item label="姓名" prop="userName">
             <el-input
               v-model="queryParams.userName"
               placeholder="请输入用户名称"
@@ -14,7 +14,7 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="用户工号" prop="userId">
+          <el-form-item label="工号" prop="userId">
             <el-input
               v-model="queryParams.userId"
               placeholder="请输入用户工号"
@@ -46,10 +46,8 @@
               size="small"
               style="width: 240px"
               value-format="yyyy-MM-dd"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              type="date"
+              placeholder="选择日期"
             />
           </el-form-item>
           <el-form-item>
@@ -142,6 +140,7 @@
             :page-size="queryParams.pageSize"
             layout="total, prev, pager, next"
             :total="total"
+            @current-change="handleCurrentChange"
           />
         </div>
       </el-col>
@@ -235,6 +234,7 @@ export default {
       choose: 0,
       // 是否显示弹出层
       open: false,
+      currentPage: 1,
       // 日期范围
       dateRange: [],
       // 状态数据字典
@@ -283,6 +283,7 @@ export default {
     /** 查询用户列表 */
     async getList() {
       this.loading = true
+      this.queryParams.pageNum = this.currentPage || 1
       const { data: res } = await this.$http.get(
         '/admin/system-user/getAll', { params: this.queryParams }
       )
@@ -292,14 +293,14 @@ export default {
     },
     async getOrginization() {
       const { data: res } = await this.$http.get(
-        '/organization/getAll'
+        '/admin/organization/getAll'
       )
-      this.organizationOptions = res.data
+      this.organizationOptions = res
       console.info(this.organizationOptions)
     },
     async getRole() {
       const { data: res } = await this.$http.get(
-        '/role/getAll'
+        '/admin/role/getAll'
       )
       this.roleOptions = res
     },
@@ -475,6 +476,11 @@ export default {
           message: '已取消修改'
         })
       })
+    },
+    // 当前页数
+    handleCurrentChange(val) {
+      this.currentPage = val
+      this.getList()
     }
   }
 }

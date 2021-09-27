@@ -1,5 +1,36 @@
+/*
+ * @Description: your project
+ * @version: 1.0
+ * @Author: Anna
+ * @Date: 2021-09-21 15:04:25
+ * @LastEditors: Anna
+ * @LastEditTime: 2021-09-22 09:36:45
+ */
 import request from '@/utils/request'
+import { baseUrl } from '@/api/url'
 
+// 获取所有初始信息
+export function getInit(organizationId, applyStatuss, pageNumber) {
+  const params = new URLSearchParams()
+  params.append('organizationId', organizationId)
+  params.append('applyStatuss', applyStatuss)
+  params.append('pageNumber', pageNumber)
+  return request({
+    // url: `${baseUrl}/admin/tutor-inspect/getInit/${organizationId}/${applyStatuss}/${pageNumber}`,
+    url: `${baseUrl}/admin/tutor-inspect/getInit`,
+    method: 'post',
+    data: params
+  })
+}
+// 获取所有初始信息
+export function search(queryParams, pageNumber) {
+  return request({
+    // url: `${baseUrl}/admin/tutor-inspect/getInit/${organizationId}/${applyStatuss}/${pageNumber}`,
+    url: `${baseUrl}/admin/tutor-inspect/search/${pageNumber}`,
+    method: 'post',
+    data: queryParams
+  })
+}
 // 初始化申请的所有类别（下拉框）
 export function getApplyType() {
   return request({

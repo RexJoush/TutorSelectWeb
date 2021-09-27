@@ -75,7 +75,7 @@
           </div>
         </el-col>
         <el-col :span="7">
-          <div><el-button type="success" @click="getpdf">pdf</el-button></div>
+          <div></div>
         </el-col>
       </el-row>
     </el-card>
@@ -85,7 +85,7 @@
 <script>
 
 
-import { checkApply, addNoInspectApply,getPdf } from '@/api/tutor/mainboard'
+import { checkApply } from '@/api/tutor/mainboard'
 
 export default {
   data() {
@@ -93,12 +93,7 @@ export default {
   },
 
   methods: {
-
-    getpdf: function(){
-      getPdf(138,1).then((res)=>{
-        console.log("success")
-      })
-    },
+  
     /*
       101：已经申请过此岗位，但信息未填写完成
       100：已经申请过此岗位，且信息已提交完成

@@ -52,15 +52,10 @@
                 </a>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="90">
+            <el-table-column align="center" width="150" label="操作">
               <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  plain
-                  type="danger"
-                  @click="deleteFunc(scope.$index, scope.row, 1)"
-                >删 除
-                </el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 1)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -98,10 +93,10 @@
                 </a>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="90">
+            <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除
-                </el-button>
+                <el-button size="mini" type="info" plain @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -137,10 +132,10 @@
                 </a>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="90">
+            <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除
-                </el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -176,10 +171,10 @@
                 </a>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="90">
+            <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 4)">删 除
-                </el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 4)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -214,10 +209,10 @@
                 </a>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="90">
+            <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 5)">删 除
-                </el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 5)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>

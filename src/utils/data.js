@@ -1,8 +1,8 @@
 /*
  * @Author: Rex Joush
  * @Date: 2021-08-16 09:59:56
- * @LastEditors: Rex Joush
- * @LastEditTime: 2021-09-09 19:34:54
+ * @LastEditors: Anna
+ * @LastEditTime: 2021-09-22 10:33:27
  */
 
 // 学术硕士一级学科
@@ -868,4 +868,35 @@ export const doctorFirstDiscipline = [
     degreeAuthorizationPoint: '戏剧与影视学',
     disciplineCategory: '艺术学'
   }
+]
+
+// 院系代码表
+export const departmentList = [
+  // { departmentId: '30040', organizationName: 'MBA 中心' },
+  // { departmentId: '30050', organizationName: 'MPA 中心' },
+  { departmentId: '30180', organizationName: '城市与环境学院' },
+  { departmentId: '30170', organizationName: '地质学系' },
+  { departmentId: '30070', organizationName: '法学院' },
+  { departmentId: '30050', organizationName: '公共管理学院' },
+  { departmentId: '30110', organizationName: '化工学院' },
+  { departmentId: '30160', organizationName: '化学与材料科学学院' },
+  { departmentId: '30040', organizationName: '经济管理学院' },
+  { departmentId: '80070', organizationName: '科学史高等研究院' },
+  { departmentId: '30030', organizationName: '历史学院' },
+  { departmentId: '30080', organizationName: '马克思主义学院' },
+  { departmentId: '30120', organizationName: '生命科学学院' },
+  { departmentId: '30111', organizationName: '食品科学与工程学院' },
+  { departmentId: '30140', organizationName: '数学学院' },
+  { departmentId: '30060', organizationName: '外国语学院' },
+  { departmentId: '30020', organizationName: '文化遗产学院' },
+  { departmentId: '30010', organizationName: '文学院' },
+  { departmentId: '30150', organizationName: '物理学院' },
+  { departmentId: '40020', organizationName: '现代物理研究所' },
+  { departmentId: '40050', organizationName: '光子学与光子技术研究所' },
+  { departmentId: '30090', organizationName: '新闻传播学院' },
+  { departmentId: '30130', organizationName: '信息科学与技术学院' },
+  { departmentId: '50030', organizationName: '网络和数据中心' },
+  { departmentId: '30100', organizationName: '艺术学院' },
+  { departmentId: '40030', organizationName: '中东研究所' },
+  { departmentId: '30081', organizationName: '哲学学院' },
 ]
