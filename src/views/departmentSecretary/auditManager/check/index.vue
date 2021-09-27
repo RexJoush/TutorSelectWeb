@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    applytest
+
     <el-row :gutter="20">
       <!--用户数据-->
       <el-col :span="20" :xs="24">
