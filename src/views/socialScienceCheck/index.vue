@@ -9,101 +9,101 @@
 <template>
   <div class="app-container">
     <!-- 搜索部分 -->
-      <el-form ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-        <el-row :gutter="20">
-          <el-col :span="6">
-            <el-form-item label="工号">
-              <el-input
-                v-model="queryParams.userId"
-                placeholder="请输入工号"
-                clearable
-                size="small"
-                style="width: 240px"
-                @keyup.enter.native="handleQuery"
+    <el-form v-show="showSearch" ref="queryForm" label-width="68px">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item label="工号">
+            <el-input
+              v-model="queryParams.userId"
+              placeholder="请输入工号"
+              clearable
+              size="small"
+              style="width: 100%"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="姓名">
+            <el-input
+              v-model="queryParams.userName"
+              placeholder="请输入姓名"
+              clearable
+              size="small"
+              style="width: 100%"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="负责院系" prop="organization">
+            <el-select
+              v-model="queryParams.organization"
+              placeholder="请选择"
+              clearable
+              size="small"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in organizationList"
+                :key="item.departmentId"
+                :label="item.organizationName"
+                :value="item.departmentId"
               />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="姓名">
-              <el-input
-                v-model="queryParams.userName"
-                placeholder="请输入姓名"
-                clearable
-                size="small"
-                style="width: 240px"
-                @keyup.enter.native="handleQuery"
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="审核状态">
+            <el-select
+              v-model="queryParams.applyStatus"
+              placeholder="请选择"
+              size="small"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in statuOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="负责院系" prop="organization">
-              <el-select
-                v-model="queryParams.organization"
-                placeholder="请选择"
-                clearable
-                size="small"
-                style="width: 240px"
-              >
-                <el-option
-                  v-for="item in organizationList"
-                  :key="item.organizationId"
-                  :label="item.organizationName"
-                  :value="item.organizationId"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="审核状态">
-              <el-select
-                v-model="queryParams.applyStatus"
-                placeholder="请选择"
-                size="small"
-                style="width: 240px"
-              >
-                <el-option
-                  v-for="item in statuOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
-        <!-- 搜索、重置按钮 -->
-        <el-row :gutter="20">
-          <el-col :span="2" :offset="20">
-            <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
-          </el-col>
-        </el-row>
-      </el-form>
+      <!-- 搜索、重置按钮 -->
+      <el-row :gutter="20">
+        <el-col :span="2" :offset="20">
+          <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
+        </el-col>
+        <el-col :span="2">
+          <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
 
-      <!-- 操作按钮 -->
-      <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-          <el-button type="success" plain icon="el-icon-success" size="small" v-if="searchFlag" @click="passFun()">通过
-          </el-button>
-          <el-button type="danger" plain icon="el-icon-error" size="small" v-if="searchFlag" :disabled="multiple" @click="unPassFun()">驳回
-          </el-button>
-      </div>
+    <!-- 操作按钮 -->
+    <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
+      <el-button v-if="searchFlag" type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
+      </el-button>
+      <el-button v-if="searchFlag" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
+      </el-button>
+    </div>
 
-      <!-- 数据部分 -->
-      <el-table ref="singleTable" :data="tutorList" highlight-current-row @selection-change="handleSelectionChange" :row-class-name="tableRowClassName">
-        <el-table-column type="selection" width="50" align="center" />
-        <el-table-column label="序号" type="index" width="50" fixed />
-        <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-        <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-        <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
-        <el-table-column label="申请类别" align="center" prop="applyName" />
-        <el-table-column label="职称" align="center" prop="title" width="100" />
-        <!-- 数据库中查询最后学位字段 -->
-        <el-table-column label="最后学位" align="center" prop="finalDegree" />
-        <el-table-column label="审核状态" align="center" prop="inspectDescribe">
-          <template slot-scope="scope">
+    <!-- 数据部分 -->
+    <el-table ref="singleTable" :data="tutorList" highlight-current-row :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="序号" type="index" width="50" fixed />
+      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
+      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column label="申请类别" align="center" prop="applyName" />
+      <el-table-column label="职称" align="center" prop="title" width="100" />
+      <!-- 数据库中查询最后学位字段 -->
+      <el-table-column label="最后学位" align="center" prop="finalDegree" />
+      <el-table-column label="审核状态" align="center" prop="inspectDescribe">
+        <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 42 || scope.row.status === 63" type="info">
             {{ scope.row.inspectDescribe }}
           </el-tag>
@@ -111,9 +111,9 @@
             {{ scope.row.inspectDescribe }}
           </el-tag>
         </template>
-        </el-table-column>
-        <el-table-column label="备注" align="center">
-          <template slot-scope="scope">
+      </el-table-column>
+      <el-table-column label="备注" align="center">
+        <template slot-scope="scope">
           <el-tag v-if="scope.row.commit === '材料审核通过'" type="success">
             {{ scope.row.commit }}
           </el-tag>
@@ -124,25 +124,26 @@
             {{ scope.row.commit }}
           </el-tag>
         </template>
-        </el-table-column>
-        <el-table-column label="详情" align="center" prop="mr">
-          <template slot-scope="scope">
-            <el-button size="small" type="text" @click="handleDetail(scope.row)">查看详情
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      </el-table-column>
+      <el-table-column label="详情" align="center" prop="mr">
+        <template slot-scope="scope">
+          <el-button size="small" type="text" @click="handleDetail(scope.row)">查看详情
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-      <!-- 分页框 -->
+    <!-- 分页框 -->
+    <el-row type="flex" justify="center">
       <el-pagination
-        style="margin: 5px 0"
+        style="margin: 10px 0"
         :current-page="queryParams.pageNum"
         :page-size="10"
         layout="total, prev, pager, next"
         :total="totalData"
         @current-change="handleCurrentChange"
-      >
-      </el-pagination>
+      />
+    </el-row>
 
     <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
@@ -155,7 +156,7 @@
     <!-- 驳回时的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
-      <el-input v-model="returnCommit" autocomplete="off"></el-input>
+      <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
@@ -166,11 +167,10 @@
 
 <script>
 import {
-  getInit,//初始化
-  search,//搜索
-  checkDate, //查询数据
-  updateStatus, //更新操作
-} from "@/api/departmentSecretary/secretaryFirst";
+  getInit, // 初始化
+  search, // 搜索
+  updateStatus // 更新操作
+} from '@/api/departmentSecretary/secretaryFirst'
 
 import { departmentList } from '@/utils/data'
 
@@ -178,11 +178,11 @@ export default {
   data() {
     return {
       searchFlag: false,
-      //驳回时备注的内容
-      returnCommit: "",
-      //驳回弹框默认不显示
+      // 驳回时备注的内容
+      returnCommit: '',
+      // 驳回弹框默认不显示
       dialogVisible: false,
-      //通过确认框
+      // 通过确认框
       dialogVisiblePass: false,
       // 非多个禁用
       multiple: true,
@@ -190,203 +190,204 @@ export default {
       showSearch: true,
       // 分页总条数
       totalData: 0,
-      //材料最终审核结果
-      csDes: "",
-      //待社科处初审列表
+      // 材料最终审核结果
+      csDes: '',
+      // 待社科处初审列表
       socialInitList: [],
-      //所有负责院系列表
+      // 所有负责院系列表
       organizationList: departmentList,
-      //所有申请类别列表
+      // 所有申请类别列表
       applyTypeList: [],
-      //选定的列表
+      // 选定的列表
       multipleSelection: [],
-      //申请id
+      // 申请id
       applyId: 0,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: "", //工号
-        userName: "", //姓名
-        organization: "", //院系id
-        applyType: "", //申请类别id
-        commit: "", //备注
-        subjectName: "", //学科名称id
-        applyStatus: "", //审核状态码id
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        commit: '', // 备注
+        subjectName: '', // 学科名称id
+        applyStatus: '', // 审核状态码id
         applyStatuss: [], // 审核状态码数组 id
-        subjectTpe: "", //学科属性，文科、理科、交叉
+        subjectTpe: '' // 学科属性，文科、理科、交叉
       },
-      //当前页
+      // 当前页
       currentPage: 1,
-      //科研处审核状态
+      // 科研处审核状态
       statuOptions: [
         {
           value: 30,
-          label: "社科处待审核",
+          label: '社科处待审核'
         },
         {
-          value: 63, //文科社科处审核通过
-          label: "社科处审核通过",
+          value: 63, // 文科社科处审核通过
+          label: '社科处审核通过'
         },
         {
-          value: 42, //文科社科处审核不通过
-          label: "社科处审核不通过",
-        },
+          value: 42, // 文科社科处审核不通过
+          label: '社科处审核不通过'
+        }
       ],
-      //审核后需要下发的List数据
+      // 审核后需要下发的List数据
       updataList: [],
       tutorList: [],
-      hightList: [],
-    };
+      hightList: []
+    }
   },
   created() {
-    this.getSocialCheckInit(); //初始化待初审的数据
+    this.getSocialCheckInit() // 初始化待初审的数据
     this.searchFlag = true
   },
   methods: {
-    //高亮当前行
+    // 高亮当前行
     setCurrent(row) {
-      this.$refs.singleTable.setCurrentRow(row);
+      this.$refs.singleTable.setCurrentRow(row)
     },
-    //高亮表格
+    // 高亮表格
     tableRowClassName() {
-      //详情页返回时让该行高亮
-      this.applyId = this.$route.query.applyId;
-      if (this.applyId !== undefined) {       
+      // 详情页返回时让该行高亮
+      this.applyId = this.$route.query.applyId
+      if (this.applyId !== undefined) {
         this.tutorList.forEach((row) => {
           if (row.applyId === this.applyId) {
             this.setCurrent(row)
           }
-        });
+        })
       } else {
-        console.log("无状态");
+        console.log('无状态')
       }
     },
-    //查看详情
+    // 查看详情
     handleDetail(row) {
-      const tutorId = row.tutorId;
-      const applyId = row.applyId;
-      const name = row.name;
+      const tutorId = row.tutorId
+      const applyId = row.applyId
+      const name = row.name
       this.$router.push({
-        path: "/social/socialDetail",
-        query: { tutorId: tutorId, applyId: applyId, name: name },
-      });
+        path: '/social/socialDetail',
+        query: { tutorId: tutorId, applyId: applyId, name: name }
+      })
     },
 
-    //查询社科处待初审的数据
-    //通过状态码查询
+    // 查询社科处待初审的数据
+    // 通过状态码查询
     getSocialCheckInit() {
-      this.queryParams.applyStatus = 30;
+      this.queryParams.applyStatus = 30
       getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
-          console.log(res.data.data);
-          this.tutorList = res.data.data;
-          this.totalData = res.data.total;
-      });
+        console.log(res.data.data)
+        this.tutorList = res.data.data
+        this.totalData = res.data.total
+      })
     },
 
-    //搜索按钮
+    // 搜索按钮
     searchQuery() {
       search(this.queryParams, 1).then((res) => {
-        if(this.queryParams.applyStatus === 30){
+        if (this.queryParams.applyStatus === 30) {
           this.searchFlag = true
-        }else{
+        } else {
           this.searchFlag = false
         }
-        this.tutorList = res.data.data;
-        this.totalData = res.data.total;
-      });
+        this.tutorList = res.data.data
+        this.totalData = res.data.total
+      })
     },
 
-    //重置按钮
+    // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null;
-      this.queryParams.userName = null;
-      this.queryParams.organization = null;
+      this.queryParams.userId = null
+      this.queryParams.userName = null
+      this.queryParams.organization = null
       this.queryParams.applyStatuss = [] // 申请类别列表
-      this.queryParams.applyStatus = 30;
+      this.queryParams.applyStatus = 30
     },
-    //初审通过
+    // 初审通过
     passFun() {
-      this.dialogVisiblePass = true;
+      this.dialogVisiblePass = true
     },
-    //审核通过确认弹框按钮
+    // 审核通过确认弹框按钮
     rePassFun() {
-      this.check(63);
+      this.check(63)
       // console.log("000000",this.updataList)
-      this.dialogVisiblePass = false;
-      window.location.reload(); //重新加载页面
+      this.dialogVisiblePass = false
+      window.location.reload() // 重新加载页面
     },
 
-    //初审不通过
+    // 初审不通过
     unPassFun() {
-      //驳回之前判断是否只选择了一条
+      // 驳回之前判断是否只选择了一条
       if (this.multipleSelection.length > 1) {
-        this.$message.warning("注意:只能选择一条数据审核！");
+        this.$message.warning('注意:只能选择一条数据审核！')
       } else {
-        this.dialogVisible = true;
+        this.dialogVisible = true
       }
     },
 
-    //弹框确定按钮驳回操作
+    // 弹框确定按钮驳回操作
     returnFun() {
-      //添加备注
-      this.updataList[0].commit_1 = this.returnCommit;
-      this.check(42);
-      this.dialogVisible = false;
-      this.returnCommit = null;
-      window.location.reload(); //重新加载页面
+      // 添加备注
+      this.updataList[0].commit_1 = this.returnCommit
+      this.check(42)
+      this.dialogVisible = false
+      this.returnCommit = null
+      window.location.reload() // 重新加载页面
     },
 
-    //弹框取消按钮
+    // 弹框取消按钮
     cancel() {
-      this.dialogVisible = false;
-      this.returnCommit = null;
+      this.dialogVisible = false
+      this.returnCommit = null
     },
 
-    //更新操作
+    // 更新操作
     check(status) {
       for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
+        this.updataList[index].status_1 = status
       }
       updateStatus(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功");
+        if (res.code === 20000) {
+          this.$message.success('审核成功')
         }
-        this.updataList.length = 0;
-        this.resetQuery();
-        this.getSocialCheckInit();
-      });
+        this.updataList.length = 0
+        this.resetQuery()
+        this.getSocialCheckInit()
+      })
     },
 
-    //当前选中
+    // 当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {
-        this.multiple = false;
+        this.multiple = false
       } else {
-        this.multiple = true;
+        this.multiple = true
       }
-      this.multipleSelection = val;
-      //每次选择都要将之前的清空
-      this.updataList = [];
+      this.multipleSelection = val
+      // 每次选择都要将之前的清空
+      this.updataList = []
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
-        let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        //记得传applyId,很重要！！！！！！！
-        obj.id_1 = this.multipleSelection[index].applyId;
-        obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1 = "";
-        console.log(obj);
-        this.updataList.push(obj);
+        const obj = { id_1: 0, status_1: 0, commit_1: '' }
+        // 记得传applyId,很重要！！！！！！！
+        obj.id_1 = this.multipleSelection[index].applyId
+        obj.status_1 = this.multipleSelection[index].status
+        obj.commit_1 = ''
+        console.log(obj)
+        this.updataList.push(obj)
       }
     },
 
-    //每页显示条数
-    handleSizeChange(val) {},
-    //当前页数
-    handleCurrentChange(val) {
-      this.queryParams.pageNum = val;
-      this.getSocialCheckInit();
+    // 每页显示条数
+    handleSizeChange(val) {
     },
-  },
-};
+    // 当前页数
+    handleCurrentChange(val) {
+      this.queryParams.pageNum = val
+      this.getSocialCheckInit()
+    }
+  }
+}
 </script>

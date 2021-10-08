@@ -11,8 +11,8 @@
     <br />
     <el-page-header
       style="margin-left: 30px; color: #409EFF"
+      :content="name"
       @back="goBack"
-      :content="this.name"
     >
     </el-page-header>
     <br />
@@ -76,7 +76,7 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
@@ -171,7 +171,7 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
@@ -542,7 +542,7 @@ export default {
   created() {
     this.id = this.$route.query.tutorId;
     this.applyId = this.$route.query.applyId;
-    this.name = this.$route.query.name + "~老师的学术成果";
+    this.name = this.$route.query.name + " 老师的学术成果";
     this.getPaperList();
     this.getProjectList();
     this.getWorkList();

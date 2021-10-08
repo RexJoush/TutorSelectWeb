@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
 
-    
     <!-- 搜索部分 -->
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
@@ -98,12 +97,11 @@
       <el-table-column label="职称" align="center" prop="title" width="100" />
       <el-table-column label="审核状态" align="center" width="130">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
-            {{ scope.row.inspectDescribe }}
-          </el-tag>
-          <el-tag v-else type="warning">
-            {{ scope.row.inspectDescribe }}
-          </el-tag>
+          <el-tag v-if="scope.row.status === 15" type="success">{{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 16" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 18" type="info"> {{ scope.row.inspectDescribe }}</el-tag>
+          <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center" width="60">
@@ -120,15 +118,17 @@
     </el-table>
 
     <!-- 分页框 -->
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="totalData"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
+    <el-row type="flex" justify="center">
+      <el-pagination
+        style="margin: 10px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="totalData"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </el-row>
 
     <!-- 导出提交按钮 -->
     <el-row>
@@ -157,8 +157,7 @@
     <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
 
     <!-- 备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <p style="margin: 10px 0">(可以为空)</p>
+    <el-dialog title="备注(可以为空)" :visible.sync="dialogVisible" width="30%">
       <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
@@ -287,11 +286,11 @@ export default {
     search: function() {
       console.log('queryParams', this.queryParams)
       if (this.queryParams.applyStatus === '' &&
-          this.queryParams.userName === '' &&
-          this.queryParams.organization === '' &&
-          this.queryParams.applyType === '' &&
-          this.queryParams.subjectName === '' &&
-          this.queryParams.subjectType === ''
+        this.queryParams.userName === '' &&
+        this.queryParams.organization === '' &&
+        this.queryParams.applyType === '' &&
+        this.queryParams.subjectName === '' &&
+        this.queryParams.subjectType === ''
       ) {
         this.getSecretaryInit()
       } else {
