@@ -211,7 +211,7 @@ export default {
       queryParams: {
         userId: '', // 工号
         userName: '', // 姓名
-        organization: '50030', // 院系id
+        organization: '30130', // 院系id
         applyType: '', // 申请类别id
         subjectName: '', // 学科名称id
         applyStatus: '', // 审核状态 id
@@ -256,8 +256,8 @@ export default {
       tutorList: []
     }
   },
-  created() {
-    this.getSecretaryInit() // 初始化待初审的数据
+  created(){
+    this.getSecretaryInit(); // 初始化待初审的数据
     this.getApplyTypeList() // 初始化申请的所有类别（下拉框）
   },
   methods: {
@@ -267,7 +267,7 @@ export default {
       // this.filterDataByStatus()
       console.log('getInit')
       this.loading = true
-      const organizationId = 50030 // 院系
+      const organizationId = 30130// 院系
       const applyStatuss = ['10', '15', '16', '17', '18'] // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
@@ -331,29 +331,29 @@ export default {
       }
     },
 
-    // excel导出，包含状态10 15 16 17 18
-    exportFun() {
-      this.dataOption(this.exportExcel)
-    },
-    // 导出excel实现
-    exportExcel(queryParams) {
-      const date = new Date()
-      const year = date.getFullYear() // 获取当前年份
-      exportSFH(queryParams).then((res) => {
-        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.download =
-          '西北大学' +
-          year +
-          '年' +
-          '网络和数据中心' +
-          '学位评定分委员会推荐汇总表.xlsx' // excel名称
-        link.href = url
-        link.click()
-      })
-      this.loading = false
-    },
+    // // excel导出，包含状态10 15 16 17 18
+    // exportFun() {
+    //   this.dataOption(this.exportExcel)
+    // },
+    // // 导出excel实现
+    // exportExcel(queryParams) {
+    //   const date = new Date()
+    //   const year = date.getFullYear() // 获取当前年份
+    //   exportSFH(queryParams).then((res) => {
+    //     const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+    //     const url = window.URL.createObjectURL(blob)
+    //     const link = document.createElement('a')
+    //     link.download =
+    //       '西北大学' +
+    //       year +
+    //       '年' +
+    //       '网络和数据中心' +
+    //       '学位评定分委员会推荐汇总表.xlsx' // excel名称
+    //     link.href = url
+    //     link.click()
+    //   })
+    //   this.loading = false
+    // },
     // 初始化申请的所有类别（下拉框）
     async getApplyTypeList() {
       getApplyType().then((res) => {
@@ -361,25 +361,25 @@ export default {
       })
     },
 
-    // 根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
-    // 所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
-    filterDataByStatus() {
-      this.dataOption(this.searchByOptions)
-    },
-    // 按条件搜索
-    searchByOptions(queryParams) {
-      checkDate(queryParams).then((res) => {
-        this.tutorList = res.data.data
-        this.totalData = res.data.total
-        this.loading = false
-      })
-    },
+    // // 根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
+    // // 所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
+    // filterDataByStatus() {
+    //   this.dataOption(this.searchByOptions)
+    // },
+    // // 按条件搜索
+    // searchByOptions(queryParams) {
+    //   checkDate(queryParams).then((res) => {
+    //     this.tutorList = res.data.data
+    //     this.totalData = res.data.total
+    //     this.loading = false
+    //   })
+    // },
     // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null // 工号
-      this.queryParams.userName = null // 姓名
-      this.queryParams.applyType = null // 申请类别id
-      this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.userId = '' // 工号
+      this.queryParams.userName = '' // 姓名
+      this.queryParams.applyType = '' // 申请类别id
+      this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
     },
     // 初审符合条件
