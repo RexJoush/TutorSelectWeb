@@ -609,7 +609,7 @@ export default {
       exportPdf(this.applyId,this.applyTypeId).then( res =>{
         if(res.data.code === 1201){
           //pdf下载
-          this.pdfHttpPath = res.data.pdfPath;   
+          this.pdfHttpPath = res.data.pdfPath;  
           window.open(this.pdfHttpPath);      
           this.$message.success("导出成功!")
         }
