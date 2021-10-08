@@ -92,8 +92,8 @@
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
       <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
-      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
-      <el-table-column label="申请类别" align="center" prop="applyName" />
+      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject"/>
+      <el-table-column label="申请类别" align="center" prop="applyName"/>
       <el-table-column label="职称" align="center" prop="title" width="100" />
       <el-table-column label="审核状态" align="center" width="130">
         <template slot-scope="scope">
@@ -170,12 +170,10 @@
 <script>
 import {
   getApplyType,
-  checkDate,
   updateStatus,
   getInit,
   search
 } from '@/api/departmentSecretary/secretaryFirst'
-import { exportSFH } from '@/api/departmentSecretary/exportExcel'
 import { toDetails } from '@/utils/function'
 
 export default {
@@ -210,7 +208,7 @@ export default {
       queryParams: {
         userId: '', // 工号
         userName: '', // 姓名
-        organization: '30130', // 院系id
+        organization: '50030', // 院系id
         applyType: '', // 申请类别id
         subjectName: '', // 学科名称id
         applyStatus: '', // 审核状态 id
@@ -255,8 +253,8 @@ export default {
       tutorList: []
     }
   },
-  created(){
-    this.getSecretaryInit(); // 初始化待初审的数据
+  created() {
+    this.getSecretaryInit() // 初始化待初审的数据
     this.getApplyTypeList() // 初始化申请的所有类别（下拉框）
   },
   methods: {
@@ -266,7 +264,7 @@ export default {
       // this.filterDataByStatus()
       console.log('getInit')
       this.loading = true
-      const organizationId = 30130// 院系
+      const organizationId = 30130 // 院系
       const applyStatuss = ['10', '15', '16', '17', '18'] // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
