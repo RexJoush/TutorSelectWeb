@@ -1,6 +1,8 @@
 <!--本页为研究生院管理员的初审界面，研究生院管理员可在该页面将院系秘书复审通过的导师信息进行审核-->
 <template>
   <div class="app-container">
+
+    <!-- 搜索部分 -->
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -18,20 +20,19 @@
           <el-form-item label="负责院系" prop="organization">
             <el-select
               v-model="queryParams.organization"
-              placeholder="请选择院系"
+              placeholder="请选择"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
-                v-for="dict in organizationOptions"
-                :key="dict.organizationId"
-                :label="dict.organizationName"
-                :value="dict.organizationId"
+                v-for="item in organizationList"
+                :key="item.departmentId"
+                :label="item.organizationName"
+                :value="item.departmentId"
               />
             </el-select>
           </el-form-item>
-
         </el-col>
         <el-col :span="6">
           <el-form-item label="学科属性" prop="subjectType">
@@ -40,7 +41,7 @@
               placeholder="请选择学科属性"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in subjectTypeOptions"
@@ -58,7 +59,7 @@
               placeholder="请选择申请类别"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in applyTypeOptions"
@@ -69,8 +70,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="姓名">
             <el-input
@@ -90,7 +89,7 @@
               placeholder="请选择学科"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in subjectNameOptions"
@@ -109,7 +108,7 @@
               placeholder="请选择审核状态"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in applyStatusOptions"
@@ -121,15 +120,18 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-col :span="8" :offset="5">
-            <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
-          </el-col>
+          <el-row>
+            <el-col :span="6" :offset="6">
+              <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
+            </el-col>
+            <el-col :span="6" :offset="2">
+              <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
     </el-form>
+
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
       <el-button type="success" plain icon="el-icon-success" size="small" :disabled="single" @click="passFun(3)">符合条件
@@ -138,11 +140,13 @@
       </el-button>
       <el-button type="info" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
       </el-button>
-      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
+      <el-button type="warning" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
       </el-button>
-      <el-button type="success" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(2)">送审科研处
+      <el-button type="warning" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(2)">送审科研处
       </el-button>
     </div>
+
+    <!-- 数据部分 -->
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
@@ -153,12 +157,18 @@
       <el-table-column label="职称" align="center" prop="title" width="100" />
       <el-table-column label="审核状态" align="center" width="130">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
-            {{ scope.row.inspectDescribe }}
-          </el-tag>
-          <el-tag v-else type="warning">
-            {{ scope.row.inspectDescribe }}
-          </el-tag>
+          <!-- todo 此处修改为自己的状态码，dynamic -->
+          <!-- 符合条件 -->
+          <el-tag v-if="scope.row.status === 15" type="success">{{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 不符合条件 -->
+          <el-tag v-else-if="scope.row.status === 16" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 初审待定 -->
+          <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 需修改 -->
+          <el-tag v-else-if="scope.row.status === 18" type="info"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 送审社科处或科研处 -->
+          <el-tag v-else-if="scope.row.status === 18" type="info"> {{ scope.row.inspectDescribe }}</el-tag>
+          <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center" width="60">
@@ -174,14 +184,16 @@
       </el-table-column>
     </el-table>
     <!-- 分页框 -->
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="total"
-      @current-change="handleCurrentChange"
-    />
+    <el-row type="flex" justify="center">
+      <el-pagination
+        style="margin: 5px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="total"
+        @current-change="handleCurrentChange"
+      />
+    </el-row>
     <!-- 导出提交按钮 -->
     <el-row>
       <el-col :span="2">
@@ -236,8 +248,11 @@
 
 <script>
 
-import { getInit, search, updateStatus } from '@/api/departmentSecretary/secretaryFirst'
+import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
+
+// 负责院系
+import { departmentList } from '@/utils/data'
 
 export default {
   data() {
@@ -253,6 +268,9 @@ export default {
       currentPage: 1,
       // 分页总条数
       total: 0,
+
+      // 所有负责院系列表
+      organizationList: departmentList,
       // 用户表格数据
       tutorList: [],
       // 弹出层标题
@@ -296,18 +314,18 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
         applyStatus: '', // 审核状态码id
         applyStatuss: [], // 审核状态码数组 id
 
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        subjectType: '' // 学科属性，文科，理科，交叉
       },
       choose: 0,
-      commit: undefined,
+      commit: '',
       row: {},
       currentSelection: []
     }
@@ -430,23 +448,24 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
+        userId: '',
+        deptId: '',
+        userName: '',
         status: '0',
-        remark: undefined,
+        remark: '',
         postIds: [],
         roleIds: []
       }
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.queryParams.userId = null // 工号
-      this.queryParams.userName = null // 姓名
-      this.queryParams.applyType = null // 申请类别id
-      this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.userId = '' // 工号
+      this.queryParams.userName = '' // 姓名
+      this.queryParams.applyType = '' // 申请类别id
+      this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
-      this.handleQuery()
+      this.queryParams.organization = '' // 院系
+      // this.handleQuery()
     },
     // 初审通过
     passFun(num) {
@@ -483,7 +502,7 @@ export default {
           // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
           this.upDateStatus(399)
         }
-        if (this.choose == 5) {
+        if (this.choose === 5) {
           // 需修改，送至驳回页面
           this.upDateStatus(36)
         }

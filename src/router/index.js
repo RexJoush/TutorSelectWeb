@@ -161,7 +161,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/graduateManager/basicManagement/user',
     name: 'BasicManagement',
-    meta: { title: '研究生管理员基础管理', icon: 'el-icon-s-help', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
+    meta: { title: '研究生院基础管理', icon: 'el-icon-s-help', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
     children: [
       {
         path: 'user',
@@ -183,7 +183,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/graduateManager/auditManager/check',
     name: 'AuditManagement',
-    meta: { title: '研究生管理员申报流程', icon: 'el-icon-s-help', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
+    meta: { title: '研究生院申报流程', icon: 'el-icon-s-help', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
     children: [
       {
         path: 'check',

@@ -9,7 +9,7 @@
 <template>
   <div class="app-container">
     <!-- 搜索部分 -->
-    <el-form ref="queryForm" :inline="true" v-show="showSearch" label-width="70px">
+    <el-form v-show="showSearch" ref="queryForm" label-width="70px">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="工号">
@@ -18,7 +18,7 @@
               placeholder="请输入工号"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
@@ -30,7 +30,7 @@
               placeholder="请输入姓名"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
@@ -38,17 +38,17 @@
         <el-col :span="6">
           <el-form-item label="负责院系" prop="organization">
             <el-select
-              v-model="queryParams.organization" 
+              v-model="queryParams.organization"
               placeholder="请选择"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="item in organizationList"
-                :key="item.organizationId"
+                :key="item.departmentId"
                 :label="item.organizationName"
-                :value="item.organizationId"
+                :value="item.departmentId"
               />
             </el-select>
           </el-form-item>
@@ -59,10 +59,10 @@
               v-model="queryParams.applyStatus"
               placeholder="请选择"
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
-                v-for="item in statuOptions"
+                v-for="item in statusOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -74,24 +74,24 @@
       <!-- 搜索、重置按钮 -->
       <el-row :gutter="20">
         <el-col :span="2" :offset="20">
-            <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
         </el-col>
         <el-col :span="2">
-          <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)" >重置</el-button>
+          <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
         </el-col>
       </el-row>
     </el-form>
 
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-      <el-button type="success" plain icon="el-icon-success" size="small" v-if="searchFlag" @click="passFun()">通过
+      <el-button v-if="searchFlag" type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
       </el-button>
-      <el-button type="danger" plain icon="el-icon-error" size="small" v-if="searchFlag" :disabled="multiple" @click="unPassFun()">驳回
+      <el-button v-if="searchFlag" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
       </el-button>
     </div>
 
     <!-- 数据部分 -->
-    <el-table ref="singleTable" :data="tutorList" highlight-current-row @selection-change="handleSelectionChange" :row-class-name="tableRowClassName">
+    <el-table ref="singleTable" :data="tutorList" highlight-current-row :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="序号" type="index" width="50" fixed />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
@@ -110,7 +110,7 @@
             {{ scope.row.inspectDescribe }}
           </el-tag>
         </template>
-      </el-table-column>   
+      </el-table-column>
       <el-table-column label="备注" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.commit === '材料审核通过'" type="success">
@@ -126,21 +126,23 @@
       </el-table-column>
       <el-table-column label="详情" align="center" prop="mr">
         <template slot-scope="scope">
-          <el-button size="small" type="text"  @click="handleDetail(scope.row)">查看详情
+          <el-button size="small" type="text" @click="handleDetail(scope.row)">查看详情
           </el-button>
-        </template>       
-      </el-table-column>                     
+        </template>
+      </el-table-column>
     </el-table>
 
     <!-- 分页框 -->
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="total"
-      @current-change="handleCurrentChange"
-    />
+    <el-row type="flex" justify="center">
+      <el-pagination
+        style="margin: 10px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="total"
+        @current-change="handleCurrentChange"
+      />
+    </el-row>
 
     <!-- 审批通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
@@ -153,7 +155,7 @@
     <!-- 驳回时的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
-      <el-input v-model="returnCommit" autocomplete="off"></el-input>
+      <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
@@ -164,24 +166,23 @@
 
 <script>
 import {
-  getInit,//初始化数据
+  getInit, // 初始化数据
   search,
-  checkDate, //查询数据
-  updateStatus, //更新操作
-} from "@/api/departmentSecretary/secretaryFirst";
+  updateStatus // 更新操作
+} from '@/api/departmentSecretary/secretaryFirst'
 
-//负责院系
+// 负责院系
 import { departmentList } from '@/utils/data'
 
 export default {
   data() {
     return {
       searchFlag: false,
-      //驳回时备注的内容
-      returnCommit: "",
-      //驳回弹框默认不显示
+      // 驳回时备注的内容
+      returnCommit: '',
+      // 驳回弹框默认不显示
       dialogVisible: false,
-      //通过确认框
+      // 通过确认框
       dialogVisiblePass: false,
       // 非多个禁用
       multiple: true,
@@ -189,94 +190,94 @@ export default {
       showSearch: true,
       // 分页总条数
       total: 0,
-      //待科研处初审列表
+      // 待科研处初审列表
       researchInitList: [],
-      //所有负责院系列表
+      // 所有负责院系列表
       organizationList: departmentList,
-      //选定的列表
+      // 选定的列表
       multipleSelection: [],
       // 查询参数
       queryParams: {
-        pageNum: 1,//当前页
-        pageSize: 10,//每页最大条数
-        userId: "", //工号
-        userName: "", //姓名
-        organization: "", //院系id
-        applyType: "", //申请类别id
-        subjectName: "", //学科名称id
-        applyStatus: "", //审核状态码id
+        pageNum: 1, // 当前页
+        pageSize: 10, // 每页最大条数
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
+        applyStatus: '', // 审核状态码id
         applyStatuss: [], // 审核状态码数组 id
-        subjectTpe: "", //学科属性，文科、理科、交叉
+        subjectTpe: '' // 学科属性，文科、理科、交叉
       },
-      //当前页
+      // 当前页
       // currentPage: 1,
-      //科研处审核状态
-      statuOptions: [
+      // 科研处审核状态
+      statusOptions: [
         {
           value: 31,
-          label: "科研处待审核",
+          label: '科研处待审核'
         },
         {
-          value: 64, //理科科研处审核通过
-          label: "科研处审核通过",
+          value: 64, // 理科科研处审核通过
+          label: '科研处审核通过'
         },
         {
-          value: 53, //理科科研处审核不通过
-          label: "科研处审核不通过",
-        },
+          value: 53, // 理科科研处审核不通过
+          label: '科研处审核不通过'
+        }
       ],
-      //审核后需要下发的List数据
+      // 审核后需要下发的List数据
       updataList: [],
-      tutorList: [],
-    };
+      tutorList: []
+    }
   },
   created() {
-    this.getResearchCheckInit(); //初始化待初审的数据
+    this.getResearchCheckInit() // 初始化待初审的数据
     this.searchFlag = true
   },
   methods: {
-    //高亮当前行
+    // 高亮当前行
     setCurrent(row) {
-      this.$refs.singleTable.setCurrentRow(row);
+      this.$refs.singleTable.setCurrentRow(row)
     },
-    //高亮表格
+    // 高亮表格
     tableRowClassName() {
-      //详情页返回时让该行高亮
-      this.applyId = this.$route.query.applyId;
+      // 详情页返回时让该行高亮
+      this.applyId = this.$route.query.applyId
       if (this.applyId !== undefined) {
         this.tutorList.forEach((row) => {
           if (row.applyId === this.applyId) {
-            this.setCurrent(row);
+            this.setCurrent(row)
           }
-        });
+        })
       } else {
-        console.log("无状态");
+        console.log('无状态')
       }
     },
-    //查看详情
+    // 查看详情
     handleDetail(row) {
-      const tutorId = row.tutorId;
-      const applyId = row.applyId;
-      const name = row.name;
+      const tutorId = row.tutorId
+      const applyId = row.applyId
+      const name = row.name
       // console.log(row);
       this.$router.push({
-        path: "/research/researchDetail",
-        query: { tutorId: tutorId, applyId: applyId, name: name },
-      });
+        path: '/research/researchDetail',
+        query: { tutorId: tutorId, applyId: applyId, name: name }
+      })
     },
 
-    //查询科研处待初审的数据
-    //通过状态码查询
+    // 查询科研处待初审的数据
+    // 通过状态码查询
     getResearchCheckInit() {
-      this.queryParams.applyStatus = 31;
+      this.queryParams.applyStatus = 31
       getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
-          this.tutorList = res.data.data;
-          this.total = res.data.total;
-          console.log("8888888",res.data)
-      });
+        this.tutorList = res.data.data
+        this.total = res.data.total
+        console.log('8888888', res.data)
+      })
     },
 
-    //搜索按钮
+    // 搜索按钮
     searchQuery() {
       if (this.queryParams.applyStatus === '' &&
           this.queryParams.userName === '' &&
@@ -285,111 +286,109 @@ export default {
           this.queryParams.subjectName === '' &&
           this.queryParams.subjectType === ''
       ) {
-        this.getResearchCheckInit();
+        this.getResearchCheckInit()
       } else {
         if (this.queryParams.applyStatus === '') {
           this.queryParams.applyStatuss = ['31'] // 申请状态码
         }
         search(this.queryParams, 1).then((res) => {
-          if(this.queryParams.applyStatus === 31 || ' '){
+          if (this.queryParams.applyStatus === 31 || '') {
             this.searchFlag = true
-          }else{
+          } else {
             this.searchFlag = false
           }
-          this.tutorList = res.data.data;
-          this.total = res.data.total;
-      }).catch(error => {
-        throw error
-      })
+          this.tutorList = res.data.data
+          this.total = res.data.total
+        }).catch(error => {
+          throw error
+        })
       }
-
-      
     },
 
-    //重置按钮
+    // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null;
-      this.queryParams.userName = null;
-      this.queryParams.organization = null;
-      this.queryParams.applyStatus = 31;
+      this.queryParams.userId = ''
+      this.queryParams.userName = ''
+      this.queryParams.organization = ''
+      this.queryParams.applyStatus = 31
       this.queryParams.applyStatuss = [] // 申请类别列表
     },
-    //初审通过
+    // 初审通过
     passFun() {
-      this.dialogVisiblePass = true;
+      this.dialogVisiblePass = true
     },
-    //审核通过确认弹框确认按钮
+    // 审核通过确认弹框确认按钮
     rePassFun() {
-      this.check(64);
-      this.dialogVisiblePass = false;
-      window.location.reload(); //重新加载页面
+      this.check(64)
+      this.dialogVisiblePass = false
+      window.location.reload() // 重新加载页面
     },
-    //初审不通过
+    // 初审不通过
     unPassFun() {
-      //驳回之前判断是否只选择了一条
+      // 驳回之前判断是否只选择了一条
       if (this.multipleSelection.length > 1) {
-        this.$message.warning("注意:只能选择一条数据审核！");
+        this.$message.warning('注意:只能选择一条数据审核！')
       } else {
-        this.dialogVisible = true;
+        this.dialogVisible = true
       }
     },
-    //弹框确定按钮驳回操作
+    // 弹框确定按钮驳回操作
     returnFun() {
-      //备注
-      this.updataList[0].commit_1 = this.returnCommit;
-      this.check(53);
-      this.dialogVisible = false;
-      this.returnCommit = null;
-      window.location.reload(); //重新加载页面
+      // 备注
+      this.updataList[0].commit_1 = this.returnCommit
+      this.check(53)
+      this.dialogVisible = false
+      this.returnCommit = null
+      window.location.reload() // 重新加载页面
     },
 
-    //弹框取消按钮
+    // 弹框取消按钮
     cancel() {
-      this.dialogVisible = false;
-      this.returnCommit = null;
+      this.dialogVisible = false
+      this.returnCommit = null
     },
 
-    //更新操作
+    // 更新操作
     check(status) {
       for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
+        this.updataList[index].status_1 = status
       }
       updateStatus(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("审核成功");
+        if (res.code === 20000) {
+          this.$message.success('审核成功')
         }
-        this.updataList.length = 0;
-        this.resetQuery();
-        this.getSecretaryInit();
-      });
+        this.updataList.length = 0
+        this.resetQuery()
+        this.getSecretaryInit()
+      })
     },
 
-    //当前选中
+    // 当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {
-        this.multiple = false;
+        this.multiple = false
       } else {
-        this.multiple = true;
+        this.multiple = true
       }
-      this.multipleSelection = val;
-      //每次选择都要将之前的清空
-      this.updataList = [];
+      this.multipleSelection = val
+      // 每次选择都要将之前的清空
+      this.updataList = []
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
-        let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = this.multipleSelection[index].applyId;
-        obj.status_1 = this.multipleSelection[index].status;
-        obj.commit_1 = "";
-        console.log(obj);
-        this.updataList.push(obj);
+        const obj = { id_1: 0, status_1: 0, commit_1: '' }
+        obj.id_1 = this.multipleSelection[index].applyId
+        obj.status_1 = this.multipleSelection[index].status
+        obj.commit_1 = ''
+        console.log(obj)
+        this.updataList.push(obj)
       }
     },
 
-    //当前页数
+    // 当前页数
     handleCurrentChange(val) {
-      this.queryParams.pageNum = val;
-      this.getResearchCheckInit();
-    },
-  },
-};
+      this.queryParams.pageNum = val
+      this.getResearchCheckInit()
+    }
+  }
+}
 </script>
