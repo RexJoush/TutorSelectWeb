@@ -121,8 +121,8 @@
     <el-row type="flex" justify="center">
       <el-pagination
         style="margin: 10px 0"
-        :current-page="queryParams.pageNum"
-        :page-size="queryParams.pageSize"
+        :current-page="pageNumber"
+        :page-size="10"
         layout="total, prev, pager, next"
         :total="totalData"
         @size-change="handleSizeChange"
@@ -175,6 +175,7 @@ import {
   search
 } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
+import Cookies from 'js-cookie'
 
 export default {
   data() {
@@ -208,7 +209,7 @@ export default {
       queryParams: {
         userId: '', // 工号
         userName: '', // 姓名
-        organization: '50030', // 院系id
+        organization: '50030', // 院系id 30130 50030
         applyType: '', // 申请类别id
         subjectName: '', // 学科名称id
         applyStatus: '', // 审核状态 id
@@ -253,23 +254,38 @@ export default {
       tutorList: []
     }
   },
-  created() {
+  created() {    
     this.getSecretaryInit() // 初始化待初审的数据
     this.getApplyTypeList() // 初始化申请的所有类别（下拉框）
   },
   methods: {
-
+    //获取cookie中的院系zjz
+    getOrganizationId: function() {
+      if(Cookies.get('organizationId' )!== null){
+        return Cookies.get('organizationId')
+      }
+      else
+      {
+        console.log("error-organizationId is null")
+      }
+    },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function() {
+      this.getOrganizationId()
       // this.filterDataByStatus()
       console.log('getInit')
       this.loading = true
-      const organizationId = 50030 // 院系
+
+      //const organizationId = 50030 // 院系
+
+      const organizationId = this.getOrganizationId() // 院系zjz
+
       const applyStatuss = ['10', '15', '16', '17', '18'] // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data
-        this.totalData = res.data.total
+        // this.totalData = res.data.total
+        this.totalData = 11
         console.log('res', res)
         this.loading = false
       })
@@ -506,9 +522,10 @@ export default {
     // 每页显示条数
     handleSizeChange(val) {
     },
-    // 当前页数
+    // 当前页数 回调参数当前页
     handleCurrentChange(val) {
       this.pageNumber = val
+
       this.getSecretaryInit()
     }
   }
