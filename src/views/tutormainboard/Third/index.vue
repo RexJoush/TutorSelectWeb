@@ -18,20 +18,10 @@
           </div>
           <el-row :gutter="100">
             <el-col :span="4">
-              <el-button
-                class="addButton"
-                type="primary"
-                @click="addFunc(1)"
-              >添加社科类论文
-              </el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(1)">添加社科类论文</el-button>
             </el-col>
             <el-col :span="4">
-              <el-button
-                class="addButton"
-                type="primary"
-                @click="addFunc(2)"
-              >添加理工类论文
-              </el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(2)">添加理工类论文</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.academicPapers" border style="width: 100%">
@@ -68,12 +58,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button
-                class="addButton"
-                type="primary"
-                @click="addFunc(3)"
-              >添加科研项目
-              </el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(3)">添加科研项目</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.researchProjects" border style="width: 100%">
@@ -95,8 +80,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" type="info" plain @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
-                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除</el-button>
+                <el-button size="mini" type="info" plain @click="editFunc(scope.$index, scope.row, 3)">编 辑</el-button>
+                <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -134,8 +119,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
-                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 3)">删 除</el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 4)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 4)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -148,12 +133,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button
-                class="addButton"
-                type="primary"
-                @click="addFunc(5)"
-              >添加科研教学奖励
-              </el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(5)">添加科研教学奖励</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.teachingAwards" border style="width: 100%">
@@ -173,8 +153,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
-                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 4)">删 除</el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 5)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 5)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -187,12 +167,7 @@
           </div>
           <el-row>
             <el-col :span="4">
-              <el-button
-                class="addButton"
-                type="primary"
-                @click="addFunc(6)"
-              >添加发明专利
-              </el-button>
+              <el-button class="addButton" type="primary" @click="addFunc(6)">添加发明专利</el-button>
             </el-col>
           </el-row>
           <el-table :data="formThird.inventionPatents" border style="width: 100%">
@@ -211,8 +186,8 @@
             </el-table-column>
             <el-table-column label="操作" align="center" width="150">
               <template slot-scope="scope">
-                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
-                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 5)">删 除</el-button>
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 6)">编 辑</el-button>
+                <el-button size="mini" plain type="danger" @click="deleteFunc(scope.$index, scope.row, 6)">删 除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -292,7 +267,7 @@
     </el-card>
 
     <!-- 添加社科类论文 -->
-    <el-dialog title="添加社科类论文" width="40%" :visible.sync="dialogThird1">
+    <el-dialog :title="isEdit ? '修改社科类论文': '添加社科类论文'" width="40%" :visible.sync="dialogThird1" @closed="cancelFunc(1)">
       <el-form :model="academicPaper">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -360,13 +335,13 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogThird1 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(1)">取 消</el-button>
         <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 添加理工类论文 -->
-    <el-dialog title="添加理工类论文" width="40%" :visible.sync="dialogThird2">
+    <el-dialog :title="isEdit ? '修改理工类论文': '添加理工类论文'" width="40%" :visible.sync="dialogThird2" @closed="cancelFunc(2)">
       <el-form :model="academicPaper">
         <el-row :gutter="20">
           <el-col :span="24">
@@ -470,13 +445,13 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogThird2 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(2)">取 消</el-button>
         <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 添加科研项目 -->
-    <el-dialog title="添加科研项目" width="40%" :visible.sync="dialogThird3">
+    <el-dialog :title="isEdit ? '修改科研项目': '添加科研项目'" width="40%" :visible.sync="dialogThird3" @closed="cancelFunc(3)">
       <el-form :model="researchProject">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -568,13 +543,13 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogThird3 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(3)">取 消</el-button>
         <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 添加教材或学术著作 -->
-    <el-dialog title="添加教材或学术著作" width="40%" :visible.sync="dialogThird4">
+    <el-dialog :title="isEdit ? '修改教材或学术著作': '添加教材或学术著作'" width="40%" :visible.sync="dialogThird4" @closed="cancelFunc(4)">
       <el-form :model="academicWork">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -638,13 +613,13 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogThird4 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(4)">取 消</el-button>
         <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 添加科研教学奖励 -->
-    <el-dialog title="科研教学奖励" width="40%" :visible.sync="dialogThird5">
+    <el-dialog :title="isEdit ? '修改科研教学奖励': '添加科研教学奖励'" width="40%" :visible.sync="dialogThird5" @closed="cancelFunc(5)">
       <el-form :model="teachingAward">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -716,13 +691,13 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogThird5 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(5)">取 消</el-button>
         <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
 
     <!-- 添加发明专利 -->
-    <el-dialog title="添加教材或学术著作" width="40%" :visible.sync="dialogThird6">
+    <el-dialog :title="isEdit ? '修改发明专利': '添加发明专利'" width="40%" :visible.sync="dialogThird6" @closed="cancelFunc(6)">
       <el-form :model="inventionPatent">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -788,7 +763,7 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogThird6 = false">取 消</el-button>
+        <el-button v-if="!isEdit" @click="cancelFunc(6)">取 消</el-button>
         <el-button type="primary" @click="addFile">确 定</el-button>
       </div>
     </el-dialog>
@@ -810,6 +785,10 @@ export default {
       // 申请状态
       applyCondition: this.$route.params.applyCondition,
       applyType: this.$route.params.applyType * 1,
+
+      isEdit: false, // 是否为编辑选项
+      editIndex: -1, // 编辑项目的索引
+
       isSummary: false, // 是否已经点击汇总按钮
 
       dialogThird1: false, // 社科学术论文添加按钮
@@ -1018,6 +997,142 @@ export default {
       this.formThird.deleteItems.push(deleteItem)
     },
 
+    editFunc: function(index, scope, type) {
+      // 添加或修改就将汇总信息变为 false
+      this.isSummary = false
+      // 标记修改
+      this.isEdit = true
+      // 记录索引
+      this.editIndex = index
+      switch (type) {
+        case 1:
+          this.academicPaper = this.formThird.academicPapers[index]
+          if (scope.journalLevel !== '') {
+            // 社科
+            this.dialogThird1 = true
+          } else {
+            // 理工
+            this.dialogThird2 = true
+          }
+          break
+        case 3:
+          this.researchProject = this.formThird.researchProjects[index]
+          this.dialogThird3 = true
+          break
+        case 4:
+          this.academicWork = this.formThird.academicWorks[index]
+          this.dialogThird4 = true
+          break
+        case 5:
+          this.teachingAward = this.formThird.teachingAwards[index]
+          this.dialogThird5 = true
+          break
+        case 6:
+          this.inventionPatent = this.formThird.inventionPatents[index]
+          this.dialogThird6 = true
+          break
+      }
+    },
+
+    // 取消框
+    cancelFunc: function(type) {
+      // 学术团体
+      switch (type) {
+        case 1:
+          this.academicPaper = {
+            // 学术论文
+            paperId: '', // 论文 id
+            paperName: '', // 论文名称
+            paperPublicationTime: '', // 发表时间
+            journalName: '', // 期刊名称
+            journalLevel: '', // 期刊等级
+            journalCategory: '', // 期刊类别
+            sciPart: '', // sci 分区
+            impactFactors: '', // 影响因子
+            firstAuthorName: '', // 第一作者
+            communicationAuthorName: '', // 通讯作者
+            paperSubject: '', // 论文分科，文，理，交叉学科按文科算
+            paperProveMaterials: '' // 论文证明材料
+          }
+          this.dialogThird1 = false
+          break
+        case 2:
+          this.academicPaper = {
+            // 学术论文
+            paperId: '', // 论文 id
+            paperName: '', // 论文名称
+            paperPublicationTime: '', // 发表时间
+            journalName: '', // 期刊名称
+            journalLevel: '', // 期刊等级
+            journalCategory: '', // 期刊类别
+            sciPart: '', // sci 分区
+            impactFactors: '', // 影响因子
+            firstAuthorName: '', // 第一作者
+            communicationAuthorName: '', // 通讯作者
+            paperSubject: '', // 论文分科，文，理，交叉学科按文科算
+            paperProveMaterials: '' // 论文证明材料
+          }
+          this.dialogThird2 = false
+          break
+        case 3:
+          this.researchProject = {
+            projectId: '', // 项目 id
+            projectName: '', // 项目名称
+            projectNumber: '', // 项目编号
+            approvalNumber: '', // 批准号
+            projectChargeName: '', // 负责人姓名
+            projectStartTime: '', // 开始日期
+            projectEndTime: '', // 结束日期
+            projectCategory: '', // 项目分类
+            projectTotalPrice: '', // 总经费
+            projectLevel: '', // 项目级别，国家级，省部级，厅局级
+            projectProveMaterials: '' // 证明材料，图片，pdf等
+          }
+          this.dialogThird3 = false
+          break
+        case 4:
+          this.academicWork = {
+            worksId: '', // 著作 id
+            worksName: '', // 著作名称
+            worksNumber: '', // 著作编号
+            worksPublicationTime: '', // 出版日期
+            worksPublicationUnit: '', // 出版单位
+            totalWords: '', // 完成字数
+            authorName: '', // 作者姓名
+            worksProveMaterials: '' // 证明材料，图片，pdf等
+          }
+          this.dialogThird4 = false
+          break
+
+        case 5:
+          this.teachingAward = {
+            awardsId: '', // 奖励 id
+            awardsName: '', // 奖励名称
+            awardsRank: '', // 排名
+            awardsUnit: '', // 颁奖单位
+            awardsLevel: '', // 获奖级别
+            awardsTime: '', // 获奖日期
+            awardsAuthorName: '', // 获奖人姓名
+            awardsProveMaterials: '' // 证明材料，图片，pdf等
+          }
+          this.dialogThird5 = false
+          break
+        case 6:
+          this.inventionPatent = {
+            patentId: '', // 专利 id
+            patentName: '', // 专利名称
+            patentAuthorName: '', // 第一作者
+            patentGrantTime: '', // 专利授权日期
+            patentGrantNumber: '', // 专利授权号
+            patentType: '', // 专利类型
+            patentProveMaterials: '' // 证明材料，图片，pdf等
+          }
+          this.dialogThird6 = false
+      }
+      this.isEdit = false
+      this.editIndex = -1
+    },
+
     // 删除文件 参数 文件的路径
     delFile: function(filePath) {
       const path = encodeURI(filePath)
@@ -1092,7 +1207,13 @@ export default {
         case 1:
         case 2:
           this.academicPaper.paperProveMaterials = response.data.path // 论文的存储地址
-          this.formThird.academicPapers.push(this.academicPaper) // 加入列表
+          if (this.isEdit) {
+            this.formThird.academicPapers[this.editIndex] = this.academicPaper // 修改
+            this.isEdit = false
+            this.editIndex = -1
+          } else {
+            this.formThird.academicPapers.push(this.academicPaper) // 加入列表
+          }
           // 置空论文
           this.academicPaper = {
             paperName: '',
@@ -1116,7 +1237,13 @@ export default {
         // 科研项目
         case 3:
           this.researchProject.projectProveMaterials = response.data.path // 论文的存储地址
-          this.formThird.researchProjects.push(this.researchProject) // 加入列表
+          if (this.isEdit) {
+            this.formThird.researchProjects[this.editIndex] = this.researchProject // 修改
+            this.isEdit = false
+            this.editIndex = -1
+          } else {
+            this.formThird.researchProjects.push(this.researchProject) // 加入列表
+          }
           // 置空科研项目
           this.researchProject = {
             projectId: '',
@@ -1136,7 +1263,13 @@ export default {
         // 教材或学术著作
         case 4:
           this.academicWork.worksProveMaterials = response.data.path // 论文的存储地址
-          this.formThird.academicWorks.push(this.academicWork) // 加入列表
+          if (this.isEdit) {
+            this.formThird.academicWorks[this.editIndex] = this.academicWork // 修改
+            this.isEdit = false
+            this.editIndex = -1
+          } else {
+            this.formThird.academicWorks.push(this.academicWork) // 加入列表
+          }
           // 置空科研项目
           this.academicWork = {
             worksId: '',
@@ -1153,8 +1286,14 @@ export default {
         // 科研或教学奖励
         case 5:
           this.teachingAward.awardsProveMaterials = response.data.path // 论文的存储地址
-          this.formThird.teachingAwards.push(this.teachingAward) // 加入列表
-          // 置空科研项目
+          if (this.isEdit) {
+            this.formThird.teachingAwards[this.editIndex] = this.teachingAward // 修改
+            this.isEdit = false
+            this.editIndex = -1
+          } else {
+            this.formThird.teachingAwards.push(this.teachingAward) // 加入列表
+          }
+          // 置空科研或教学奖励
           this.teachingAward = {
             awardsId: '',
             awardsName: '',
@@ -1170,7 +1309,13 @@ export default {
         // 发明专利
         case 6:
           this.inventionPatent.patentProveMaterials = response.data.path // 论文的存储地址
-          this.formThird.inventionPatents.push(this.inventionPatent) // 加入列表
+          if (this.isEdit) {
+            this.formThird.inventionPatents[this.editIndex] = this.inventionPatent // 修改
+            this.isEdit = false
+            this.editIndex = -1
+          } else {
+            this.formThird.inventionPatents.push(this.inventionPatent) // 加入列表
+          }
           // 置空科研项目
           this.inventionPatent = {
             patentId: '',

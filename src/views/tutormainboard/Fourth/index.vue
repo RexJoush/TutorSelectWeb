@@ -22,13 +22,14 @@
             </el-col>
           </el-row>
           <el-table :data="formFourth.courseTeachings" border style="width: 100%">
-            <el-table-column type="index" label="序号" width="50px"/>
-            <el-table-column prop="courseName" label="课程名称"/>
-            <el-table-column prop="courseTime" label="课程时间" width="120"/>
-            <el-table-column prop="courseDuration" label="授课总课时" width="120"/>
-            <el-table-column prop="courseObject" label="授课对象" width="180"/>
-            <el-table-column label="操作" align="center" width="90">
+            <el-table-column align="center" type="index" label="序号" width="50px"/>
+            <el-table-column align="center" prop="courseName" label="课程名称"/>
+            <el-table-column align="center" prop="courseTime" label="课程时间" width="120"/>
+            <el-table-column align="center" prop="courseDuration" label="授课总课时" width="120"/>
+            <el-table-column align="center" prop="courseObject" label="授课对象" width="100"/>
+            <el-table-column label="操作" align="center" width="180">
               <template slot-scope="scope">
+                <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 1)">编 辑</el-button>
                 <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 1)">删 除
                 </el-button>
               </template>
@@ -49,13 +50,14 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.doctorStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px"/>
-              <el-table-column prop="studentName" label="学生姓名" width="120"/>
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
-              <el-table-column label="操作" align="center" width="90">
+              <el-table-column align="center" type="index" label="序号" width="50px"/>
+              <el-table-column align="center" prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column align="center" prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column align="center" prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column align="center" prop="isGainDegree" label="是否获得学位" width="120"/>
+              <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
+                  <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 2)">编 辑</el-button>
                   <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 2)">删 除
                   </el-button>
                 </template>
@@ -77,13 +79,14 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.assistDoctorStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px"/>
-              <el-table-column prop="studentName" label="学生姓名" width="120"/>
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
-              <el-table-column label="操作" align="center" width="90">
+              <el-table-column align="center" type="index" label="序号" width="50px"/>
+              <el-table-column align="center" prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column align="center" prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column align="center" prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column align="center" prop="isGainDegree" label="是否获得学位" width="120"/>
+              <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
+                  <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 3)">编 辑</el-button>
                   <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 3)">删 除
                   </el-button>
                 </template>
@@ -105,13 +108,14 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.masterStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px"/>
-              <el-table-column prop="studentName" label="学生姓名" width="120"/>
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
-              <el-table-column label="操作" align="center" width="90">
+              <el-table-column align="center" type="index" label="序号" width="50px"/>
+              <el-table-column align="center" prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column align="center" prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column align="center" prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column align="center" prop="isGainDegree" label="是否获得学位" width="120"/>
+              <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
+                  <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 4)">编 辑</el-button>
                   <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 4)">删 除
                   </el-button>
                 </template>
@@ -133,13 +137,14 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.assistMasterStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px"/>
-              <el-table-column prop="studentName" label="学生姓名" width="120"/>
-              <el-table-column prop="degreePaperTitle" label="硕士学位论文题目"/>
-              <el-table-column prop="studentEntryTime" label="学生入学时间" width="120"/>
-              <el-table-column prop="isGainDegree" label="是否获得学位" width="120"/>
-              <el-table-column label="操作" align="center" width="90">
+              <el-table-column align="center" type="index" label="序号" width="50px"/>
+              <el-table-column align="center" prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column align="center" prop="degreePaperTitle" label="硕士学位论文题目"/>
+              <el-table-column align="center" prop="studentEntryTime" label="学生入学时间" width="120"/>
+              <el-table-column align="center" prop="isGainDegree" label="是否获得学位" width="120"/>
+              <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
+                  <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 5)">编 辑</el-button>
                   <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 5)">删 除
                   </el-button>
                 </template>
@@ -161,12 +166,13 @@
               </el-col>
             </el-row>
             <el-table :data="formFourth.undergraduateStudents" border style="width: 100%">
-              <el-table-column type="index" label="序号" width="50px"/>
-              <el-table-column prop="studentName" label="学生姓名" width="120"/>
-              <el-table-column prop="degreePaperTitle" label="学位论文题目"/>
-              <el-table-column prop="graduateTime" label="毕业时间" width="120"/>
-              <el-table-column label="操作" align="center" width="90">
+              <el-table-column align="center" type="index" label="序号" width="50px"/>
+              <el-table-column align="center" prop="studentName" label="学生姓名" width="120"/>
+              <el-table-column align="center" prop="degreePaperTitle" label="学位论文题目"/>
+              <el-table-column align="center" prop="graduateTime" label="毕业时间" width="120"/>
+              <el-table-column label="操作" align="center" width="180">
                 <template slot-scope="scope">
+                  <el-button size="mini" plain type="info" @click="editFunc(scope.$index, scope.row, 6)">编 辑</el-button>
                   <el-button size="mini" type="danger" plain @click="deleteFunc(scope.$index, scope.row, 6)">删 除
                   </el-button>
                 </template>
@@ -189,7 +195,7 @@
     <!-- 第四页 弹框部分 -->
 
     <!-- 添加研究生课程教学情况 -->
-    <el-dialog title="添加研究生课程教学情况" width="40%" :visible.sync="dialogFourth1">
+    <el-dialog :title="isEdit ? '修改研究生课程教学情况' : '添加研究生课程教学情况'" width="40%" :visible.sync="dialogFourth1">
       <el-form :model="courseTeaching">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -228,7 +234,7 @@
     </el-dialog>
 
     <!-- 添加指导博士生 -->
-    <el-dialog title="添加指导博士生" width="40%" :visible.sync="dialogFourth2">
+    <el-dialog :title="isEdit ?'修改指导博士生':'添加指导博士生'" width="40%" :visible.sync="dialogFourth2">
       <el-form :model="guidingStudent">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -270,7 +276,7 @@
     </el-dialog>
 
     <!-- 添加指导协助博士生 -->
-    <el-dialog title="添加指导协助博士生" width="40%" :visible.sync="dialogFourth3">
+    <el-dialog :title="isEdit ? '修改指导协助博士生':'添加指导协助博士生'" width="40%" :visible.sync="dialogFourth3">
       <el-form :model="guidingStudent">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -312,7 +318,7 @@
     </el-dialog>
 
     <!-- 添加指导硕士生 -->
-    <el-dialog title="添加指导硕士生" width="40%" :visible.sync="dialogFourth4">
+    <el-dialog :title="isEdit ? '修改指导硕士生':'添加指导硕士生'" width="40%" :visible.sync="dialogFourth4">
       <el-form :model="guidingStudent">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -354,7 +360,7 @@
     </el-dialog>
 
     <!-- 添加协助指导硕士生 -->
-    <el-dialog title="添加协助指导硕士生" width="40%" :visible.sync="dialogFourth5">
+    <el-dialog :title="isEdit ? '修改协助指导硕士生':'添加协助指导硕士生' " width="40%" :visible.sync="dialogFourth5">
       <el-form :model="guidingStudent">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -396,7 +402,7 @@
     </el-dialog>
 
     <!-- 添加本科生 -->
-    <el-dialog title="添加指导本科生" width="40%" :visible.sync="dialogFourth6">
+    <el-dialog :title="isEdit ? '修改指导本科生':'添加指导本科生' " width="40%" :visible.sync="dialogFourth6">
       <el-form :model="guidingStudent">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -448,7 +454,8 @@ export default {
   },
   data() {
     return {
-
+      isEdit: false,        //是否为编辑选项
+      editIndex : -1,       //编辑项目索引
       dialogFourth1: false, // 添加研究生课程教学情况
       dialogFourth2: false, // 添加指导博士生
       dialogFourth3: false, // 添加指导协助博士生
@@ -536,11 +543,49 @@ export default {
           console.log('cancel')
         })
     },
-
-    // 添加研究生教学情况
+    //编辑
+    editFunc: function(index,row,type){      
+      this.isEdit = true;
+      //记录编辑值
+      this.editIndex = index      
+      switch(type){
+        case 1: //研究生课程教学情况
+          this.courseTeaching = this.formFourth.courseTeachings[index]
+          this.dialogFourth1 = true   
+        break;
+        case 2: //添加指导博士学生
+          this.guidingStudent = this.formFourth.doctorStudents[index]
+          this.dialogFourth2 = true
+        break;
+        case 3: //协助指导博士生情况
+          this.guidingStudent = this.formFourth.assistDoctorStudents[index]
+          this.dialogFourth3 = true
+        break;
+        case 4: //指导硕士生情况
+          this.guidingStudent = this.formFourth.masterStudents[index]
+          this.dialogFourth4 = true
+          break;
+        case 5: 
+          this.guidingStudent = this.formFourth.assistMasterStudents[index]
+          this.dialogFourth5 = true
+          break;
+        case 6: 
+          this.guidingStudent = this.formFourth.undergraduateStudents[index]
+          this.dialogFourth6 = true
+          break;
+      }
+    },
+    // 添加修改研究生教学情况
     addCourseTeaching: function() {
-      console.log(this.courseTeaching)
-      this.formFourth.courseTeachings.push(this.courseTeaching)
+      if (this.isEdit){
+        //编辑
+        this.formFourth.courseTeachings[this.editIndex] = this.courseTeaching
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+        this.formFourth.courseTeachings.push(this.courseTeaching)
+      }
       this.dialogFourth1 = false
       this.courseTeaching = {
         courseName: '', // 课程名称
@@ -551,23 +596,35 @@ export default {
     },
 
     // 添加指导博士学生
-    addDoctorStudents: function() {
-      console.log(this.guidingStudent)
+    addDoctorStudents: function() {      
       this.guidingStudent.studentType = '博士'
       this.guidingStudent.directType = '指导'
       this.guidingStudent.tutorName = this.tutorName
-      this.formFourth.doctorStudents.push(this.guidingStudent)
+      if(this.isEdit){
+        this.formFourth.doctorStudents[this.editIndex] = this.guidingStudent
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+         this.formFourth.doctorStudents.push(this.guidingStudent)
+      }     
       this.dialogFourth2 = false
       this.initStudent()
     },
 
     // 添加协助指导博士学生
     addAssistDoctorStudents: function() {
-      console.log(this.guidingStudent)
       this.guidingStudent.studentType = '博士'
       this.guidingStudent.directType = '协助指导'
       this.guidingStudent.tutorName = this.tutorName
-      this.formFourth.assistDoctorStudents.push(this.guidingStudent)
+      if(this.isEdit){
+        this.formFourth.assistDoctorStudents[this.editIndex] = this.guidingStudent
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+         this.formFourth.assistDoctorStudents.push(this.guidingStudent)
+      }     
       this.dialogFourth3 = false
       this.initStudent()
     },
@@ -578,7 +635,14 @@ export default {
       this.guidingStudent.studentType = '硕士'
       this.guidingStudent.directType = '指导'
       this.guidingStudent.tutorName = this.tutorName
-      this.formFourth.masterStudents.push(this.guidingStudent)
+      if(this.isEdit){
+        this.formFourth.masterStudents[this.editIndex] = this.guidingStudent
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+         this.formFourth.masterStudents.push(this.guidingStudent)
+      }
       this.dialogFourth4 = false
       this.initStudent()
     },
@@ -589,7 +653,14 @@ export default {
       this.guidingStudent.studentType = '硕士'
       this.guidingStudent.directType = '协助指导'
       this.guidingStudent.tutorName = this.tutorName
-      this.formFourth.assistMasterStudents.push(this.guidingStudent)
+      if(this.isEdit){
+        this.formFourth.assistMasterStudents[this.editIndex] = this.guidingStudent
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+         this.formFourth.assistMasterStudents.push(this.guidingStudent)
+      }
       this.dialogFourth5 = false
       this.initStudent()
     },
@@ -601,7 +672,14 @@ export default {
       this.guidingStudent.isGainDegree = '是'
       this.guidingStudent.tutorName = this.tutorName
       this.guidingStudent.directType = '指导'
-      this.formFourth.undergraduateStudents.push(this.guidingStudent)
+      if(this.isEdit){
+        this.formFourth.undergraduateStudents[this.editIndex] = this.guidingStudent
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+         this.formFourth.undergraduateStudents.push(this.guidingStudent)
+      }
       this.dialogFourth6 = false
       this.initStudent()
     },
