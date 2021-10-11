@@ -85,60 +85,48 @@
 
     <!-- 数据部分 -->
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column type="selection"  align="center" />
+      <el-table-column label="工号" align="center" prop="tutorId"/>
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName"  />
       <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title" width="100" />
-      <el-table-column label="审核状态" align="center" width="130">
+      <el-table-column label="职称" align="center" prop="title" />
+      <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 11 || scope.row.status === 12 || scope.row.status === 13" type="warning">
+          <el-tag v-if="scope.row.status === 19 " type="success">
             {{ scope.row.inspectDescribe }}
           </el-tag>
-          <el-tag v-else type="info">
+          <el-tag v-else-if="scope.row.status === 20 " type="danger">
             {{ scope.row.inspectDescribe }}
           </el-tag>
+          <p v-else>{{ scope.row.inspectDescribe }}</p> 
         </template>
       </el-table-column>
-      <el-table-column label="详情" align="center" width="60">
+      <el-table-column label="详情" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" width="80">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column label="备注" align="center" prop="commit"/>
     </el-table>
 
-    <!-- 分页框 -->
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="totalData"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    />
-
+     <!-- 分页框 -->
+    <el-row type="flex" justify="center">
+      <el-pagination
+        style="margin: 10px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="totalData"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </el-row>
     <!-- 导出提交按钮 -->
     <el-row>
-      <el-col :span="2">
-        <el-button
-          plain
-          icon="el-icon-download"
-          size="small"
-          :loading="exportLoading"
-          @click="exportFun()"
-        >导出excel
-        </el-button>
-      </el-col>
-      <el-col :span="2" :offset="20">
+      <el-col :span="2" :offset="22">
         <el-button
           type="success"
           plain
@@ -150,28 +138,15 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
-
-    <!-- 备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <p style="margin: 10px 0">(可以为空)</p>
-      <el-input v-model="returnCommit" autocomplete="off" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="cancel()">取 消</el-button>
-        <el-button type="primary" @click="returnFun()">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
 import {
   getApplyType,
-  checkDate,
   updateStatus,
   getInit,
   search
 } from '@/api/departmentSecretary/secretaryFirst'
-import { exportSFH } from '@/api/departmentSecretary/exportExcel'
 import { toDetails } from '@/utils/function'
 export default {
   data() {
@@ -236,7 +211,7 @@ export default {
         },
       ],
       //审核后需要下发的List数据
-      updataList: [],
+      updateList: [],
       tutorList: [],
     };
   },
@@ -247,8 +222,6 @@ export default {
   methods: {
    // 查询院系秘书待初审的数据
     getSecretaryInit: function() {
-      // this.filterDataByStatus()
-      console.log('getInit')
       this.loading = true
       const organizationId = 30130// 院系
       const applyStatuss = ['11', '12', '13', '19', '20'] // 申请状态码
@@ -321,7 +294,6 @@ export default {
    // 更新操作
     check(status) {
       if (status === 'submit') {
-        console.log('submit')
         // 如果status是submit，则执行提交按钮
         for (let index = 0; index < this.updateList.length; index++) {
           this.updateList[index].status_1 = this.updateList[index].status_1 + 2 // +2是因为数据库绑定状态的原因，勿动
@@ -387,7 +359,7 @@ export default {
     //封装更新数据
     updateObiect(originArray) {
       //每次选择都要将之前的清空
-      this.updataList = [];
+      this.updateList = [];
 
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < originArray.length; index++) {
@@ -396,7 +368,7 @@ export default {
         obj.id_1 = originArray[index].applyId;
         obj.status_1 = originArray[index].status;
         obj.commit_1 = originArray[index].commit;
-        this.updataList.push(obj);
+        this.updateList.push(obj);
       }
     },
 

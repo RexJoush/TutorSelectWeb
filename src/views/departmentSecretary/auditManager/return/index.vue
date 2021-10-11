@@ -57,22 +57,20 @@
 
     <!-- 数据部分 -->
     <el-table v-loading="loading" :data="tutorList">
-      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column label="工号" align="center" prop="tutorId"  />
+      <el-table-column label="姓名" align="center" prop="name"/>
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName"/>
       <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title" width="100" />
-      <el-table-column label="审核状态" align="center" width="130">
-        <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 15" type="success">{{ scope.row.inspectDescribe }}</el-tag>
-          <el-tag v-else-if="scope.row.status === 16" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
-          <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
-          <el-tag v-else-if="scope.row.status === 18" type="info"> {{ scope.row.inspectDescribe }}</el-tag>
-          <p v-else>{{ scope.row.inspectDescribe }}</p>
+      <el-table-column label="职称" align="center" prop="title"/>
+      <el-table-column label="审核状态" align="center" prop="inspectDescribe">
+         <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 14" type="info">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="详情" align="center" width="60">
+      <el-table-column label="详情" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
@@ -97,12 +95,9 @@
 <script>
 import {
   getApplyType,
-  checkDate,
-  updateStatus,
   getInit,
   search
 } from '@/api/departmentSecretary/secretaryFirst'
-import { exportSFH } from '@/api/departmentSecretary/exportExcel'
 import { toDetails } from '@/utils/function'
 export default {
   data() {

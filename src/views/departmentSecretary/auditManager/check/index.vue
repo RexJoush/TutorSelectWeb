@@ -176,6 +176,7 @@ import {
 } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
 import Cookies from 'js-cookie'
+import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 
 export default {
   data() {
@@ -271,15 +272,10 @@ export default {
     },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function() {
-      this.getOrganizationId()
-      // this.filterDataByStatus()
       console.log('getInit')
       this.loading = true
-
       //const organizationId = 50030 // 院系
-
       const organizationId = this.getOrganizationId() // 院系zjz
-
       const applyStatuss = ['10', '15', '16', '17', '18'] // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
@@ -442,7 +438,6 @@ export default {
     // 更新操作
     check(status) {
       if (status === 'submit') {
-        console.log('submit')
         // 如果status是submit，则执行提交按钮
         for (let index = 0; index < this.updateList.length; index++) {
           this.updateList[index].status_1 = this.updateList[index].status_1 - 4 // -4是因为数据库绑定状态的原因，勿动
