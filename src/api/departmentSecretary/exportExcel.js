@@ -4,8 +4,8 @@ import request from '@/utils/request'
 export function exportSFH(data) {
   return request({
     url: '/admin/export/sfh',
-    method: 'get',
-    params: data,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }
@@ -14,8 +14,8 @@ export function exportSFH(data) {
 export function exportSXYFH(data) {
   return request({
     url: '/admin/export/sxyfh',
-    method: 'get',
-    params: data,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }
@@ -23,8 +23,8 @@ export function exportSXYFH(data) {
 export function exportQualification(data) {
   return request({
     url: '/admin/export/qualification',
-    method: 'get',
-    params: data,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }

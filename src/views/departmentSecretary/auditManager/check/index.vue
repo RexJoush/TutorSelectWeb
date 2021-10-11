@@ -88,14 +88,14 @@
 
     <!-- 数据部分 -->
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
-      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
+      <el-table-column type="selection" align="center" />
+      <el-table-column label="工号" align="center" prop="tutorId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName"  />
+      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject"/>
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title" width="100" />
-      <el-table-column label="审核状态" align="center" width="130">
+      <el-table-column label="职称" align="center" prop="title" />
+      <el-table-column label="审核状态" align="center" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 15" type="success">{{ scope.row.inspectDescribe }}</el-tag>
           <el-tag v-else-if="scope.row.status === 16" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
@@ -104,13 +104,13 @@
           <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
-      <el-table-column label="详情" align="center" width="60">
+      <el-table-column label="详情" align="center" >
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" width="80">
+      <el-table-column label="备注" align="center" >
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
         </template>
@@ -157,8 +157,8 @@
     <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
 
     <!-- 备注弹框 -->
-    <el-dialog title="备注(可以为空)" :visible.sync="dialogVisible" width="30%">
-      <el-input v-model="returnCommit" autocomplete="off" />
+    <el-dialog title="初审备注(可以为空)" :visible.sync="dialogVisible" width="20%">
+      <el-input type="textarea" v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="returnFun()">确 定</el-button>
@@ -317,62 +317,49 @@ export default {
     dataOption(func) {
       this.loading = true
       //   this.queryParams.organization = 30130;//院系
-      const defaultStatus = 10 + '-' + 15 + '-' + 16 + '-' + 17 + '-' + 18
+      const defaultStatus = ['10', '15', '16', '17', '18']
       if (
         this.queryParams.applyStatus == null ||
         this.queryParams.applyStatus === ''
       ) {
         this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams))
-        this.queryParamCopy.applyStatus = defaultStatus
+        this.queryParamCopy.applyStatuss = defaultStatus
         func(this.queryParamCopy)
       } else {
         func(this.queryParams)
       }
     },
 
-    // // excel导出，包含状态10 15 16 17 18
-    // exportFun() {
-    //   this.dataOption(this.exportExcel)
-    // },
-    // // 导出excel实现
-    // exportExcel(queryParams) {
-    //   const date = new Date()
-    //   const year = date.getFullYear() // 获取当前年份
-    //   exportSFH(queryParams).then((res) => {
-    //     const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
-    //     const url = window.URL.createObjectURL(blob)
-    //     const link = document.createElement('a')
-    //     link.download =
-    //       '西北大学' +
-    //       year +
-    //       '年' +
-    //       '网络和数据中心' +
-    //       '学位评定分委员会推荐汇总表.xlsx' // excel名称
-    //     link.href = url
-    //     link.click()
-    //   })
-    //   this.loading = false
-    // },
+    // excel导出，包含状态10 15 16 17 18
+    exportFun() {
+      this.dataOption(this.exportExcel)
+    },
+    // 导出excel实现
+    exportExcel(queryParams) {
+      const date = new Date()
+      const year = date.getFullYear() // 获取当前年份
+      console.log(queryParams)
+      exportSFH(queryParams).then((res) => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download =
+          '西北大学' +
+          year +
+          '年' +
+          '网络和数据中心' +
+          '学位评定分委员会推荐汇总表.xlsx' // excel名称
+        link.href = url
+        link.click()
+      })
+      this.loading = false
+    },
     // 初始化申请的所有类别（下拉框）
     async getApplyTypeList() {
       getApplyType().then((res) => {
         this.applyTypeList = res.data
       })
     },
-
-    // // 根据审核状态，选择查询对象。因为该页面只查状态值为10、15、16、17、18的数据，而后端只有一个获取数据接口。
-    // // 所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
-    // filterDataByStatus() {
-    //   this.dataOption(this.searchByOptions)
-    // },
-    // // 按条件搜索
-    // searchByOptions(queryParams) {
-    //   checkDate(queryParams).then((res) => {
-    //     this.tutorList = res.data.data
-    //     this.totalData = res.data.total
-    //     this.loading = false
-    //   })
-    // },
     // 重置按钮
     resetQuery() {
       this.queryParams.userId = '' // 工号
@@ -415,11 +402,18 @@ export default {
       console.log('备注确定按钮', this.commitArrays)
       this.dialogVisible = false
     },
-    // 更新tutorList中的commit
+    // 更新tutorList和updateList中的commit
     updateTutorListDataCommit(currentId) {
       for (let i = 0; i < this.tutorList.length; i++) {
         if (currentId === this.tutorList[i].applyId) {
           this.tutorList[i].commit = this.returnCommit
+          break
+        }
+      }
+      for (let i = 0; i < this.updateList.length; i++) {
+        if (currentId === this.updateList[i].id_1) {
+          this.updateList[i].commit_1 = this.returnCommit
+          console.log(this.updateList[i])
           break
         }
       }
