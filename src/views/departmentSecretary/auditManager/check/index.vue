@@ -264,7 +264,7 @@ export default {
       // this.filterDataByStatus()
       console.log('getInit')
       this.loading = true
-      const organizationId = 30130 // 院系
+      const organizationId = 50030 // 院系
       const applyStatuss = ['10', '15', '16', '17', '18'] // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
@@ -283,6 +283,7 @@ export default {
     // 查询数据
     search: function() {
       console.log('queryParams', this.queryParams)
+      this.pageNumber = 1
       if (this.queryParams.applyStatus === '' &&
         this.queryParams.userName === '' &&
         this.queryParams.organization === '' &&
@@ -365,6 +366,7 @@ export default {
       this.queryParams.applyType = '' // 申请类别id
       this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
+      this.pageNumber = 1
     },
     // 初审符合条件
     passFun() {
@@ -506,7 +508,7 @@ export default {
     },
     // 当前页数
     handleCurrentChange(val) {
-      this.queryParams.pageNum = val
+      this.pageNumber = val
       this.getSecretaryInit()
     }
   }
