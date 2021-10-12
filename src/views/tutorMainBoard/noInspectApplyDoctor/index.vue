@@ -361,7 +361,7 @@
                           size="mini"
                           type="info"
                           plain
-                          @click="delTeachingAward(scope.$index)"
+                          @click="editTeachingAward(scope.$index,scope.row)"
                         >编 辑</el-button>
                         <el-button
                           size="mini"
@@ -392,7 +392,7 @@
     </Row>
     <!-- 第二页弹框内容 -->
     <!-- 添加科研项目 -->
-    <el-dialog :title="isEdit ?'编辑科研项目' :'添加科研项目'" width="40%" :visible.sync="dialogSecond1">
+    <el-dialog :title="this.isEdit ?'编辑科研项目' :'添加科研项目'" width="40%" :visible.sync="dialogSecond1">
       <el-form :model="researchProject">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -706,14 +706,16 @@ export default {
     addResearchProject: function() {
       if(this.isEdit){
         //修改
-        this.formSecond.researchProjects[this.editIndex] = this.researchProjects
+        this.formSecond.researchProjects[this.editIndex] = this.researchProject
         this.editIndex = -1
         this.isEdit = false
       }
       else{
         //添加
+        console.log("添加")
         this.formSecond.researchProjects.push(this.researchProject);
       }
+      this.dialogSecond1 = false
       // 科研项目
       this.researchProject = {
         projectName: '',
@@ -724,8 +726,8 @@ export default {
         projectLevel: '',
         projectCategory: '',
         projectChargeName: ''
-      },
-      this.dialogSecond1 = false
+      }
+      
     },
     //编辑科研项目
     editResearchProject: function(index,row){
@@ -742,16 +744,32 @@ export default {
     },
     // 第 2 页添加科研教学奖励
     addTeachingAward: function() {
-      this.formSecond.teachingAwards.push(this.teachingAward);
-      (this.teachingAward = {
+      if(this.isEdit){
+        //编辑
+        this.formSecond.teachingAwards[this.editIndex] = this.teachingAward
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+        this.formSecond.teachingAwards.push(this.teachingAward);
+      }
+      
+      this.teachingAward = {
         awardsName: '',
         awardsRank: '',
         awardsUnit: '',
         awardsTime: '',
         awardsAuthorName: '',
         awardsLevel: ''
-      }),
-      (this.dialogSecond2 = false)
+      },
+      this.dialogSecond2 = false
+    },
+    //编辑科研教学奖励
+    editTeachingAward: function(index,row){
+      this.isEdit = true 
+      this.editIndex = index
+      this.teachingAward = this.formSecond.teachingAwards[index]
+      this.dialogSecond2 = true
     },
     // 删除某项科研教学奖励
     delTeachingAward: function(index) {
