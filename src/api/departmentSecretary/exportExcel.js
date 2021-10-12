@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+// 院系秘书 初审导出表中的所有数据
+export function exportCS(data) {
+  return request({
+    url: '/admin/export/cs',
+    method: 'post',
+    data: data,
+    responseType: 'blob'
+  })
+}
 // 院系秘书  查看院系主管审核已审核 导出同意上分会的所有数据
 export function exportSFH(data) {
   return request({

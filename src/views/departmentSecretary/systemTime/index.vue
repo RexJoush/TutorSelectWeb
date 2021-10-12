@@ -1,16 +1,16 @@
 <template>
   <div class="app-container">
     <el-row>
-      <el-col :span="8">
+      <el-col :span="4" :offset="4">
         <div class="grid-content bg-purple">
-          <span class="demonstration"/>
+          <span class="demonstration">导师提交申请时间范围 </span>
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple-light">
           <div class="block">
-          <span class="demonstration">申请时间范围
-          </span>
+            <!-- <span class="demonstration">导师提交申请时间范围 -->
+            <!-- </span> -->
             <el-date-picker
               v-model="time"
               type="daterange"
@@ -34,48 +34,72 @@
 </template>
 
 <script>
-
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
-      time: ''
-    }
+      time: "",
+    };
   },
   created() {
-    this.getTime()
+    this.getTime();
   },
   methods: {
-    async save() {
-      // 设置院系id,0代表超级管理员设置的系统时间，
-      const orgId = 0
-      if (this.time === '') {
-        return this.$message('请选择设置的开始时间与结束时间')
-      }
-      const { data: res } = await this.$http.get(
-        '/admin/system-time/save/' + this.time + '/' + orgId
-      )
-      if (res == '20000') {
-        return this.$message.success('时间更新成功')
-      } else if (res == '20002') {
-        return this.$message.success('时间设置成功')
+    //获取cookie中的院系zjz
+    getOrganizationId: function () {
+      if (Cookies.get("organizationId") !== null) {
+        return Cookies.get("organizationId");
       } else {
-        return this.$message.error('时间修改失败')
+        console.log("error-organizationId is null");
+      }
+    },
+    getOrganizationName: function () {
+      if (Cookies.get("organizationName") !== null) {
+        return Cookies.get("organizationName");
+      } else {
+        console.log("error-organizationName is null");
+      }
+    },
+    async save() {
+      // 设置院系id
+      const orgId = this.getOrganizationId();
+      if (this.time === "") {
+        return this.$message("请选择设置的开始时间与结束时间");
+      }
+      const { code: res } = await this.$http.get(
+        "/admin/system-time/save/" + this.time + "/" + orgId
+      );
+      if (res == "20000") {
+        return this.$message.success("时间更新成功");
+      } else if (res == "20002") {
+        return this.$message.success("时间设置成功");
+      } else {
+        return this.$message.error("时间修改失败");
       }
     },
     async getTime() {
-      // 设置院系id,0代表超级管理员设置的系统时间，
-      const orgId = 0
+      // 设置院系id
+      const orgId = this.getOrganizationId();
       const { data: res } = await this.$http.get(
-        '/admin/system-time/get/' + orgId
-      )
-      this.time = []
-      this.time.push(res[0])
-      this.time.push(res[1])
-    }
-  }
-}
+        "/admin/system-time/get/" + orgId
+      );
+      this.time = [];
+      this.time.push(res[0]);
+      this.time.push(res[1]);
+    },
+  },
+};
 </script>
 <style>
+.app-container {
+  margin-top: 10%;
+}
+.el-row {
+  margin-bottom: 60px;
+}
+.demonstration {
+  font-size: 16px;
+}
 .bg-purple {
   background: #ffffff;
 }

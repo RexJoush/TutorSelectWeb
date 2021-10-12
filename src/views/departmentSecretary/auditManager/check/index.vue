@@ -250,7 +250,7 @@ import {
 } from "@/api/departmentSecretary/secretaryFirst";
 import { toDetails } from "@/utils/function";
 import Cookies from "js-cookie";
-import { exportSFH } from "@/api/departmentSecretary/exportExcel";
+import { exportCS } from "@/api/departmentSecretary/exportExcel";
 
 export default {
   data() {
@@ -277,7 +277,6 @@ export default {
       multipleSelection: [],
       // 备注列表
       commitArrays: [],
-
       // 页码
       pageNumber: 1,
       // 查询参数
@@ -352,12 +351,9 @@ export default {
     },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
-      console.log("getInit");
       this.loading = true;
-      //const organizationId = 50030 // 院系
       const organizationId = this.getOrganizationId(); // 院系zjz
       const applyStatuss = ["10", "15", "16", "17", "18"]; // 申请状态码
-
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
@@ -409,8 +405,8 @@ export default {
     // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
     dataOption(func) {
       this.loading = true;
-      //   this.queryParams.organization = 30130;//院系
       const defaultStatus = ["10", "15", "16", "17", "18"];
+      this.queryParams.organization = this.getOrganizationId();
       this.queryParams.organizationName = this.getOrganizationName();
       if (
         this.queryParams.applyStatus == null ||
@@ -432,7 +428,7 @@ export default {
     exportExcel(queryParams) {
       const date = new Date();
       const year = date.getFullYear(); // 获取当前年份
-      exportSFH(queryParams).then((res) => {
+      exportCS(queryParams).then((res) => {
         const blob = new Blob([res], { type: "application/vnd.ms-excel" });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -441,7 +437,7 @@ export default {
           year +
           "年" +
           this.getOrganizationName() +
-          "学位评定分委员会推荐汇总表.xlsx"; // excel名称
+          "学位评定汇总表.xlsx"; // excel名称
         link.href = url;
         link.click();
       });
@@ -608,7 +604,6 @@ export default {
     // 当前页数 回调参数当前页
     handleCurrentChange(val) {
       this.pageNumber = val;
-
       this.getSecretaryInit();
     },
   },

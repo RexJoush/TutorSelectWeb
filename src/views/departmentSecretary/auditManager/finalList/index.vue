@@ -1,41 +1,38 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
-      <!--用户数据-->
-      <el-col :span="20" :xs="24">
-        <el-form
-          ref="queryForm"
-          :inline="true"
-          v-show="showSearch"
-          label-width="68px"
-        >
+    <!-- 搜索部分 -->
+    <el-form ref="queryForm" label-width="70px">
+      <el-row :gutter="20">
+        <el-col :span="6">
           <el-form-item label="工号">
             <el-input
               v-model="queryParams.userId"
               placeholder="请输入工号"
               clearable
               size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
+              style="width: 100%"
             />
           </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="姓名">
             <el-input
               v-model="queryParams.userName"
               placeholder="请输入姓名"
               clearable
               size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
+              style="width: 100%"
             />
           </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="申请类别">
             <el-select
               v-model="queryParams.applyType"
               placeholder="请选择"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="item in applyTypeList"
@@ -45,92 +42,75 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item class="btnSearch">
-            <el-button
-              type="primary"
-              icon="el-icon-search"
-              size="small"
-              @click="searchByOptions()"
-              >搜索</el-button
-            >
-            <el-button
-              icon="el-icon-refresh"
-              size="small"
-              @click="resetQuery(queryParams)"
-              >重置</el-button
-            >
-          </el-form-item>
-        </el-form>
-        <br />
-        <br />
-        <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
-        <el-table v-loading="loading" :data="tutorList">
-          <el-table-column
-            label="工号"
-            align="center"
-            prop="tutorId"
-            width="100"
-            width:180
-            fixed
-          />
-          <el-table-column label="姓名" align="center" prop="name" fixed />
-          <el-table-column
-            label="所在单位（院系）"
-            align="center"
-            prop="organizationName"
-            width="250"
-            fixed
-          />
-          <el-table-column
-            label="申请学科或类别代码"
-            align="center"
-            prop="professionalApplicationSubjectCode"
-            width="180"
-          />
-          <el-table-column
-            label="申请学科或类别名称"
-            align="center"
-            prop="professionalApplicationSubjectName"
-            width="180"
-          />
-          <el-table-column
-            label="申请类别"
-            align="center"
-            prop="applyName"
-            width="200"
-          />
-          <el-table-column
-            label="职称"
-            align="center"
-            prop="title"
-            width="180"
-          />
-          <el-table-column
-            label="审核状态"
-            align="center"
-            prop="inspectDescribe"
-            width="150"
-            fixed="right"
-          />
-          <el-table-column
-            label="详情"
-            align="center"
-            prop="mr"
-            fixed="right"
-          />
-        </el-table>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="2" :offset="20">
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            size="small"
+            @click="search"
+            >搜索</el-button
+          >
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            icon="el-icon-refresh"
+            size="small"
+            @click="resetQuery(queryParams)"
+            >重置</el-button
+          >
+        </el-col>
+      </el-row>
+    </el-form>
 
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="queryParams.pageNum"
-          :page-size="queryParams.pageSize"
-          layout="total, prev, pager, next"
-          :total="totalData"
-        >
-        </el-pagination>
-        <br />
-      </el-col>
+    <!-- 数据部分 -->
+    <el-table v-loading="loading" :data="tutorList">
+      <el-table-column label="工号" align="center" prop="tutorId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column
+        label="所在单位（院系）"
+        align="center"
+        prop="organizationName"
+      />
+      <el-table-column
+        label="申请学科或类别代码"
+        align="center"
+        prop="applySubject"
+      />
+      <el-table-column label="申请类别" align="center" prop="applyName" />
+      <el-table-column label="职称" align="center" prop="title" />
+      <el-table-column label="审核状态" align="center" prop="inspectDescribe">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 81" type="success">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="详情" align="center">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="toDetails(scope.row.applyId, scope.row.applyTypeId)"
+            >查 看
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页框 -->
+    <el-row type="flex" justify="center">
+      <el-pagination
+        style="margin: 10px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="totalData"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </el-row>
   </div>
 </template>
@@ -138,8 +118,11 @@
 <script>
 import {
   getApplyType,
-  checkDate,
+  getInit,
+  search,
 } from "@/api/departmentSecretary/secretaryFirst";
+import { toDetails } from "@/utils/function";
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -161,17 +144,19 @@ export default {
       applyTypeList: [],
       //选定的列表
       multipleSelection: [],
+      // 页码
+      pageNumber: 1,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        userId: null, // 工号
-        userName: null, // 姓名
-        organization: null, // 院系id
-        applyType: null, // 申请类别id
-        subjectName: null, // 学科名称id
-        applyStatus: null, // 审核状态码id
-        subjectType: null, // 学科属性，文科，理科，交叉
+        userId: "", // 工号
+        userName: "", // 姓名
+        organization: "", // 院系id 30130 50030
+        organizationName: "", // 院系名称
+        applyType: "", // 申请类别id
+        subjectName: "", // 学科名称id
+        applyStatus: "", // 审核状态 id
+        applyStatuss: [], // 审核状态码数组 id
+        subjectType: "", // 学科属性，文科，理科，交叉
       },
       tutorList: [],
     };
@@ -187,36 +172,81 @@ export default {
         this.applyTypeList = res.data;
       });
     },
-    // 查询最终通过的数据,只查状态值为81的数据
-    getSecretaryInit() {
+    //获取cookie中的院系zjz
+    getOrganizationId: function () {
+      if (Cookies.get("organizationId") !== null) {
+        return Cookies.get("organizationId");
+      } else {
+        console.log("error-organizationId is null");
+      }
+    },
+    // 查询院系秘书待初审的数据
+    getSecretaryInit: function () {
       this.loading = true;
-      this.queryParams.applyStatus = 81;
-      checkDate(this.queryParams).then((res) => {
+      const organizationId = this.getOrganizationId(); // 院系zjz
+      const applyStatuss = ["81"]; // 申请状态码
+      getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
+        console.log("res", res);
         this.loading = false;
       });
     },
-    //按条件搜索
-    searchByOptions() {
-      checkDate(this.queryParams).then((res) => {
-        this.tutorList = res.data;
-        this.totalData = res.total;
-        this.loading = false;
-      });
+
+    // 详情页
+    toDetails: function (applyId, applyTypeId) {
+      toDetails(this, applyId, applyTypeId);
     },
-    //重置按钮
+
+    // 查询数据
+    search: function () {
+      this.pageNumber = 1;
+      if (
+        this.queryParams.applyStatus === "" &&
+        this.queryParams.userName === "" &&
+        this.queryParams.organization === "" &&
+        this.queryParams.applyType === "" &&
+        this.queryParams.subjectName === "" &&
+        this.queryParams.subjectType === ""
+      ) {
+        this.getSecretaryInit();
+      } else {
+        if (this.queryParams.applyStatus === "") {
+          this.queryParams.applyStatuss = ["81"]; // 申请状态码
+        }
+        this.queryParams.organization = this.getOrganizationId();
+        search(this.queryParams, this.pageNumber)
+          .then((res) => {
+            this.tutorList = res.data.data;
+            this.totalData = res.data.total;
+            console.log("res", res);
+            this.loading = false;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+    },
+
+    // 清空选择申请状态
+    changeApplyStatus: function () {
+      this.queryParams.applyStatuss = [];
+    },
+    // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null; // 工号
-      this.queryParams.userName = null; // 姓名
-      this.queryParams.applyType = null; // 申请类别id
+      this.queryParams.userId = ""; // 工号
+      this.queryParams.userName = ""; // 姓名
+      this.queryParams.applyType = ""; // 申请类别id
+      this.queryParams.applyStatus = ""; // 审核状态码id
+      this.queryParams.applyStatuss = []; // 申请类别列表
+      this.pageNumber = 1;
     },
 
     //每页显示条数
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.queryParams.pageNum = val;
+      this.pageNumber = val;
       this.getSecretaryInit();
     },
   },
