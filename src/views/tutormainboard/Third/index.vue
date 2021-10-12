@@ -15,15 +15,10 @@
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">学术论文(近五年) </span>
+            <el-button class="addButton" style="float:right; margin-left:15px " type="primary" @click="addFunc(1)">添加社科类论文</el-button>
+            <el-button class="addButton" style="float:right" type="primary" @click="addFunc(2)">添加理工类论文</el-button>
           </div>
-          <el-row :gutter="100">
-            <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="addFunc(1)">添加社科类论文</el-button>
-            </el-col>
-            <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="addFunc(2)">添加理工类论文</el-button>
-            </el-col>
-          </el-row>
+          
           <el-table :data="formThird.academicPapers" border style="width: 100%">
             <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="paperName" label="论文名称" />
@@ -55,12 +50,9 @@
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">科研项目（近五年）</span>
+            <el-button class="addButton" style="float:right" type="primary" @click="addFunc(3)">添加科研项目</el-button>
           </div>
-          <el-row>
-            <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="addFunc(3)">添加科研项目</el-button>
-            </el-col>
-          </el-row>
+        
           <el-table :data="formThird.researchProjects" border style="width: 100%">
             <el-table-column type="index" label="序号" width="50" />
             <el-table-column prop="projectName" label="项目名称" />
@@ -91,17 +83,14 @@
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">教材或学术著作（近五年）</span>
-          </div>
-          <el-row>
-            <el-col :span="4">
-              <el-button
+            <el-button
+                style="float:right"
                 class="addButton"
                 type="primary"
                 @click="addFunc(4)"
               >添加教材或学术著作
               </el-button>
-            </el-col>
-          </el-row>
+          </div>  
           <el-table :data="formThird.academicWorks" border style="width: 100%">
             <el-table-column type="index" label="序号" width="50px" />
             <el-table-column prop="worksName" label="著作名称" />
@@ -130,12 +119,9 @@
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">科研教学奖励（近五年）</span>
+            <el-button class="addButton" style="float:right" type="primary" @click="addFunc(5)">添加科研教学奖励</el-button>
           </div>
-          <el-row>
-            <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="addFunc(5)">添加科研教学奖励</el-button>
-            </el-col>
-          </el-row>
+         
           <el-table :data="formThird.teachingAwards" border style="width: 100%">
             <el-table-column type="index" label="序号" width="50px" />
             <el-table-column prop="awardsName" label="奖励名称" />
@@ -164,12 +150,9 @@
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">发明专利（近五年）</span>
+            <el-button class="addButton" style="float:right" type="primary" @click="addFunc(6)">添加发明专利</el-button>
           </div>
-          <el-row>
-            <el-col :span="4">
-              <el-button class="addButton" type="primary" @click="addFunc(6)">添加发明专利</el-button>
-            </el-col>
-          </el-row>
+          
           <el-table :data="formThird.inventionPatents" border style="width: 100%">
             <el-table-column type="index" label="序号" width="50px" />
             <el-table-column prop="patentName" label="专利名称" />
@@ -322,6 +305,8 @@
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
                 :auto-upload="false"
+                :file-list="fileList"
+                :limit="1"
                 accept=".zip, .rar"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -998,6 +983,7 @@ export default {
     },
 
     editFunc: function(index, scope, type) {
+      console.log("scope",scope)
       // 添加或修改就将汇总信息变为 false
       this.isSummary = false
       // 标记修改
