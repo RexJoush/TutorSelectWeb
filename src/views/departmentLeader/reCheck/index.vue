@@ -148,6 +148,7 @@ import {
   search
 } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -180,7 +181,8 @@ export default {
       queryParams: {
         userId: '', // 工号
         userName: '', // 姓名
-        organization: '30130', // 院系id
+        organization: "", // 院系id 30130 50030
+        organizationName: "", // 院系名称
         applyType: '', // 申请类别id
         subjectName: '', // 学科名称id
         applyStatus: '', // 审核状态 id
@@ -220,10 +222,25 @@ export default {
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
+    //获取cookie中的院系zjz
+    getOrganizationId: function () {
+      if (Cookies.get("organizationId") !== null) {
+        return Cookies.get("organizationId");
+      } else {
+        console.log("error-organizationId is null");
+      }
+    },
+    getOrganizationName: function () {
+      if (Cookies.get("organizationName") !== null) {
+        return Cookies.get("organizationName");
+      } else {
+        console.log("error-organizationName is null");
+      }
+    },
    // 查询院系秘书待初审的数据
     getSecretaryInit: function() {
       this.loading = true
-      const organizationId = 30130// 院系
+      const organizationId = this.getOrganizationId(); // 院系
       const applyStatuss = ['11', '12', '13', '19', '20'] // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
@@ -242,6 +259,7 @@ export default {
     // 查询数据
     search: function() {
       console.log('queryParams', this.queryParams)
+      this.pageNumber = 1;
       if (this.queryParams.applyStatus === '' &&
           this.queryParams.userName === '' &&
           this.queryParams.organization === '' &&
@@ -254,6 +272,7 @@ export default {
         if (this.queryParams.applyStatus === '') {
           this.queryParams.applyStatuss = ['11', '12', '13', '19', '20'] // 申请状态码
         }
+        this.queryParams.organization = this.getOrganizationId();
         search(this.queryParams, this.pageNumber).then(res => {
           this.tutorList = res.data.data
           this.totalData = res.data.total
@@ -282,6 +301,7 @@ export default {
       this.queryParams.applyType = '' // 申请类别id
       this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
+      this.pageNumber = 1;
     },
     //同意上分会
     passFun() {
@@ -332,13 +352,17 @@ export default {
             flag = false
           }
         }
-        if (flag) {
-          this.check('submit')
-          this.getSecretaryInit()
-        } else {
-          this.$message.warning('有待初审的数据，请先进行审核！')
-        }
-        this.dialogVisiblePass = false
+         //判断若没有勾选数据，提示
+          if (this.updateList.length === 0) {
+            this.$message.warning("未选择数据，请先进行选择！");
+          } else {
+            if (flag) {
+              this.check("submit");
+              this.getSecretaryInit();
+            } else {
+              this.$message.warning("有待审核的数据，请先进行审核！");
+            }
+          }
       }).catch(() => {
         console.log('cancel')
       })

@@ -82,7 +82,7 @@
           </el-form-item>
 
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-form-item label="学科名称" prop="subjectName">
             <el-select
               v-model="queryParams.subjectName"
@@ -100,7 +100,7 @@
             </el-select>
           </el-form-item>
 
-        </el-col>
+        </el-col> -->
         <el-col :span="6">
           <el-form-item label="审核状态" prop="applyStatus">
             <el-select
@@ -119,7 +119,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="6" :offset="6">
           <el-row>
             <el-col :span="6" :offset="6">
               <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
@@ -344,6 +344,7 @@ export default {
     },
     // 查询数据
     search: function() {
+      this.queryParams.pageNum = 1
       if (this.queryParams.applyStatus === '' &&
         this.queryParams.userName === '' &&
         this.queryParams.organization === '' &&

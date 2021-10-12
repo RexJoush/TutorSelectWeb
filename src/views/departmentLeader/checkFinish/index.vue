@@ -103,8 +103,8 @@ import {
   getInit,
   search,
 } from "@/api/departmentSecretary/secretaryFirst";
-import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 import { toDetails } from "@/utils/function";
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -137,7 +137,8 @@ export default {
       queryParams: {
         userId: "", // 工号
         userName: "", // 姓名
-        organization: "30130", // 院系id
+        organization: "", // 院系id 30130 50030
+        organizationName: "", // 院系名称
         applyType: "", // 申请类别id
         subjectName: "", // 学科名称id
         applyStatus: "", // 审核状态 id
@@ -167,11 +168,26 @@ export default {
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
+    //获取cookie中的院系zjz
+    getOrganizationId: function () {
+      if (Cookies.get("organizationId") !== null) {
+        return Cookies.get("organizationId");
+      } else {
+        console.log("error-organizationId is null");
+      }
+    },
+    getOrganizationName: function () {
+      if (Cookies.get("organizationName") !== null) {
+        return Cookies.get("organizationName");
+      } else {
+        console.log("error-organizationName is null");
+      }
+    },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
       console.log("getInit");
       this.loading = true;
-      const organizationId = 30130; // 院系
+      const organizationId = this.getOrganizationId();  // 院系
       const applyStatuss = ["21", "22"]; // 申请状态码
 
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
@@ -189,7 +205,7 @@ export default {
 
     // 查询数据
     search: function () {
-      console.log("queryParams", this.queryParams);
+      this.pageNumber = 1;
       if (
         this.queryParams.applyStatus === "" &&
         this.queryParams.userName === "" &&
@@ -203,6 +219,7 @@ export default {
         if (this.queryParams.applyStatus === "") {
           this.queryParams.applyStatuss = ["21", "22"]; // 申请状态码
         }
+        this.queryParams.organization = this.getOrganizationId();
         search(this.queryParams, this.pageNumber)
           .then((res) => {
             this.tutorList = res.data.data;
@@ -234,6 +251,7 @@ export default {
       this.queryParams.applyType = ""; // 申请类别id
       this.queryParams.applyStatus = ""; // 审核状态码id
       this.queryParams.applyStatuss = []; // 申请类别列表
+      this.pageNumber = 1;
     },
 
     //每页显示条数
