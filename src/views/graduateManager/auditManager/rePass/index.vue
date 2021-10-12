@@ -21,7 +21,7 @@
               placeholder="请选择院系"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in organizationOptions"
@@ -40,7 +40,7 @@
               placeholder="请选择学科属性"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in subjectTypeOptions"
@@ -58,7 +58,7 @@
               placeholder="请选择申请类别"
               clearable
               size="small"
-              style="width: 240px"
+              style="width:100%"
             >
               <el-option
                 v-for="dict in applyTypeOptions"
@@ -83,25 +83,25 @@
           </el-form-item>
 
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="学科名称" prop="subjectName">
-            <el-select
-              v-model="queryParams.subjectName"
-              placeholder="请选择学科"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in subjectNameOptions"
-                :key="dict.dictValue"
-                :label="dict.dictLabel"
-                :value="dict.dictValue"
-              />
-            </el-select>
-          </el-form-item>
+        <!--        <el-col :span="6">-->
+        <!--          <el-form-item label="学科名称" prop="subjectName">-->
+        <!--            <el-select-->
+        <!--              v-model="queryParams.subjectName"-->
+        <!--              placeholder="请选择学科"-->
+        <!--              clearable-->
+        <!--              size="small"-->
+        <!--              style="width: 240px"-->
+        <!--            >-->
+        <!--              <el-option-->
+        <!--                v-for="dict in subjectNameOptions"-->
+        <!--                :key="dict.dictValue"-->
+        <!--                :label="dict.dictLabel"-->
+        <!--                :value="dict.dictValue"-->
+        <!--              />-->
+        <!--            </el-select>-->
+        <!--          </el-form-item>-->
 
-        </el-col>
+        <!--        </el-col>-->
         <el-col :span="6">
           <el-form-item label="审核状态" prop="applyStatus">
             <el-select
@@ -109,7 +109,7 @@
               placeholder="请选择审核状态"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in applyStatusOptions"
@@ -120,11 +120,11 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-col :span="8" :offset="5">
+        <el-col :span="6" :offset="6">
+          <el-col :span="6" :offset="6">
             <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="6" :offset="2">
             <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
           </el-col>
         </el-col>

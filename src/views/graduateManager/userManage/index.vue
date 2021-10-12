@@ -306,7 +306,7 @@ export default {
     },
     // 用户状态修改
     handleStatusChange(row) {
-      const text = row.status == '1' ? '停用' : '启用'
+      const text = row.status === '1' ? '停用' : '启用'
       this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
