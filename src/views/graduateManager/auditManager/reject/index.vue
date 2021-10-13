@@ -24,10 +24,10 @@
               style="width: 100%"
             >
               <el-option
-                v-for="dict in organizationOptions"
-                :key="dict.organizationId"
-                :label="dict.organizationName"
-                :value="dict.organizationId"
+                v-for="item in organizationList"
+                :key="item.departmentId"
+                :label="item.organizationName"
+                :value="item.departmentId"
               />
             </el-select>
           </el-form-item>
@@ -164,6 +164,7 @@
 </template>
 
 <script>
+import { departmentList } from '@/utils/data'
 
 import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
@@ -194,6 +195,8 @@ export default {
       dateRange: [],
       // 申请类别选项
       applyTypeOptions: [],
+      // 所有负责院系列表
+      organizationList: departmentList,
       // 院系选项
       organizationOptions: [],
       // 学科名称选项
