@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-26 16:58:01
+ * @LastEditTime: 2021-10-13 20:07:16
 -->
 <template>
   <div class="app-container">
@@ -292,6 +292,8 @@ export default {
         } else {
           this.searchFlag = false
         }
+        // console.log(this.queryParams.organization)
+        console.log(this.queryParams.applyStatus)
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })

@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-26 16:40:35
+ * @LastEditTime: 2021-10-13 20:06:21
 -->
 <template>
   <div class="app-container">
@@ -122,9 +122,9 @@
     </el-form>
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-      <el-button v-if="searchFlag" type="success" plain icon="el-icon-success" size="small" @click="passFun()">同意上校会
+      <el-button v-if="searchFlag === true" type="success" plain icon="el-icon-success" size="small" @click="passFun()">同意上校会
       </el-button>
-      <el-button v-if="searchFlag" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">不同意上校会
+      <el-button v-if="searchFlag === true" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">不同意上校会
       </el-button>
     </div>
 
@@ -316,7 +316,10 @@ export default {
     // 搜索按钮
     searchQuery() {
       search(this.queryParams, 1).then(res => {
-        this.searchFlag = this.queryParams.applyStatus === 34
+        this.searchFlag = this.queryParams.applyStatus === 34 || 
+                          this.queryParams.applyStatus === 38 || 
+                          this.queryParams.applyStatus === 39
+        // console.log(this.queryParams.organization)
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })
