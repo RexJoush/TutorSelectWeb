@@ -179,15 +179,15 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        // subjectName: undefined, // 学科名称id
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
         applyStatus: '', // 审核状态码id
         applyStatuss: [], // 审核状态码数组 id
 
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        subjectType: '' // 学科属性，文科，理科，交叉
       },
       commit: undefined
 
@@ -356,6 +356,7 @@ export default {
       this.loading = true
       this.queryParams.applyStatus = 61 // 同意上校分会通过
       this.queryParams.applyStatuss = ['61']
+      this.queryParams.userId = ''
       exportQualification(this.queryParams).then((res) => {
         const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
         const url = window.URL.createObjectURL(blob)

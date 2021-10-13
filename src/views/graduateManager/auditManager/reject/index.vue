@@ -117,7 +117,7 @@
         plain
         icon="el-icon-error"
         size="small"
-        @click="upDateStatus(10)"
+        @click="upDateStatus(37)"
       >驳回至研究生秘书
       </el-button>
 
