@@ -1,11 +1,20 @@
 import request from '@/utils/request'
 
+// 院系秘书 初审导出表中的所有数据
+export function exportCS(data) {
+  return request({
+    url: '/admin/export/cs',
+    method: 'post',
+    data: data,
+    responseType: 'blob'
+  })
+}
 // 院系秘书  查看院系主管审核已审核 导出同意上分会的所有数据
 export function exportSFH(data) {
   return request({
     url: '/admin/export/sfh',
-    method: 'get',
-    params: data,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }
@@ -14,8 +23,8 @@ export function exportSFH(data) {
 export function exportSXYFH(data) {
   return request({
     url: '/admin/export/sxyfh',
-    method: 'get',
-    params: data,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }
@@ -23,8 +32,8 @@ export function exportSXYFH(data) {
 export function exportQualification(data) {
   return request({
     url: '/admin/export/qualification',
-    method: 'get',
-    params: data,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }

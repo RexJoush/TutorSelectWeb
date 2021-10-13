@@ -1,41 +1,38 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
-      <!--用户数据-->
-      <el-col :span="20" :xs="24">
-        <el-form
-          ref="queryForm"
-          :inline="true"
-          v-show="showSearch"
-          label-width="68px"
-        >
+    <!-- 搜索部分 -->
+    <el-form ref="queryForm" label-width="70px">
+      <el-row :gutter="20">
+        <el-col :span="6">
           <el-form-item label="工号">
             <el-input
               v-model="queryParams.userId"
               placeholder="请输入工号"
               clearable
               size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
+              style="width: 100%"
             />
           </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="姓名">
             <el-input
               v-model="queryParams.userName"
               placeholder="请输入姓名"
               clearable
               size="small"
-              style="width: 240px"
-              @keyup.enter.native="handleQuery"
+              style="width: 100%"
             />
           </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="申请类别">
             <el-select
               v-model="queryParams.applyType"
               placeholder="请选择"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="item in applyTypeList"
@@ -45,127 +42,130 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button
-              type="primary"
-              icon="el-icon-search"
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="审核状态">
+            <el-select
+              v-model="queryParams.applyStatus"
+              placeholder="请选择"
+              clearable
               size="small"
-              @click="filterDataByStatus()"
-              >搜索</el-button
+              style="width: 100%"
+              @change="changeApplyStatus"
             >
-            <el-button
-              icon="el-icon-refresh"
-              size="small"
-              @click="resetQuery(queryParams)"
-              >重置</el-button
-            >
+              <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
-        </el-form>
-        <br />
-        <br />
-
-        <!-- v-loading="loading" 当没加载到数据时显示正在加载状态 -->
-        <el-table
-          v-loading="loading"
-          :data="tutorList"
-          @selection-change="handleSelectionChange"
-        >
-          <!-- <el-table-column type="selection" width="50" align="center" /> -->
-          <el-table-column
-            label="工号"
-            align="center"
-            prop="tutorId"
-            width="100"
-            width:180
-            fixed
-          />
-          <el-table-column label="姓名" align="center" prop="name" fixed />
-          <el-table-column
-            label="所在单位（院系）"
-            align="center"
-            prop="organizationName"
-            width="250"
-            fixed
-          />
-          <el-table-column
-            label="申请学科或类别代码"
-            align="center"
-            prop="professionalApplicationSubjectCode"
-            width="180"
-          />
-          <el-table-column
-            label="申请学科或类别名称"
-            align="center"
-            prop="professionalApplicationSubjectName"
-            width="180"
-          />
-          <el-table-column
-            label="申请类别"
-            align="center"
-            prop="applyName"
-            width="180"
-          />
-          <el-table-column
-            label="职称"
-            align="center"
-            prop="title"
-            width="180"
-          />
-          <el-table-column
-            label="审核状态"
-            align="center"
-            prop="inspectDescribe"
-            width="150"
-            fixed="right"
-          />
-          <el-table-column label="详情" align="center" prop="mr" />
-          <el-table-column
-            label="备注"
-            align="center"
-            width="150"
-            fixed="right"
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="2" :offset="20">
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            size="small"
+            @click="search"
+            >搜索</el-button
           >
-            <template #default="scope">
-              <el-button @click="commitFun(scope.row)" type="text" size="small"
-                >添加备注</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            icon="el-icon-refresh"
+            size="small"
+            @click="resetQuery(queryParams)"
+            >重置</el-button
+          >
+        </el-col>
+      </el-row>
+    </el-form>
+    <!-- 数据部分 -->
+    <el-table v-loading="loading" :data="tutorList">
+      <el-table-column label="工号" align="center" prop="tutorId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column
+        label="所在单位（院系）"
+        align="center"
+        prop="organizationName"
+      />
+      <el-table-column
+        label="申请学科或类别代码"
+        align="center"
+        prop="applySubject"
+      />
+      <el-table-column label="申请类别" align="center" prop="applyName" />
+      <el-table-column label="职称" align="center" prop="title" />
+      <el-table-column label="审核状态" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.status === 21" type="success">{{
+            scope.row.inspectDescribe
+          }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 22" type="danger">
+            {{ scope.row.inspectDescribe }}</el-tag
+          >
+        </template>
+      </el-table-column>
+      <el-table-column label="详情" align="center">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="toDetails(scope.row.applyId, scope.row.applyTypeId)"
+            >查 看
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="commitFun(scope.row)"
+            >添加备注</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
 
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="queryParams.pageNum"
-          :page-size="queryParams.pageSize"
-          layout="total, prev, pager, next"
-          :total="totalData"
-        >
-        </el-pagination>
-        <br />
-        <el-row :gutter="10" class="mb8">
-          <el-col :span="1.5">
-            <el-button
-              type="warning"
-              plain
-              icon="el-icon-download"
-              size="small"
-              :loading="exportLoading"
-              @click="exportFun()"
-              >导出excel</el-button
-            >
-          </el-col>
-        </el-row>
-        <span
-          >注意：导出上表中<span style="color: red">同意上分会</span
-          >的数据</span
-        >
+    <!-- 分页框 -->
+    <el-row type="flex" justify="center">
+      <el-pagination
+        style="margin: 10px 0"
+        :current-page="pageNumber"
+        :page-size="10"
+        layout="total, prev, pager, next"
+        :total="totalData"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </el-row>
+
+    <!-- 导出提交按钮 -->
+    <el-row>
+      <el-col :span="2">
+        <el-button
+          plain
+          icon="el-icon-download"
+          size="small"
+          :loading="exportLoading"
+          @click="exportFun()"
+          >导出excel
+        </el-button>
       </el-col>
     </el-row>
+    <p style="margin: 10px 0">
+      注意：导出上表所有审核状态为<span style="color: #f56c6c">同意上分会</span
+      >的记录
+    </p>
+
     <!-- 备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>(可以为空)</span>
-      <el-input v-model="returnCommit" autocomplete="off"></el-input>
+    <el-dialog
+      title="院系提交分会备注(可以为空)"
+      :visible.sync="dialogVisible"
+      width="20%"
+    >
+      <el-input type="textarea" v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="returnFun()">确 定</el-button>
@@ -177,9 +177,12 @@
 <script>
 import {
   getApplyType,
-  checkDate,
-  updateStatusSfh
+  updateStatusSfh,
+  getInit,
+  search,
 } from "@/api/departmentSecretary/secretaryFirst";
+import { toDetails } from "@/utils/function";
+import Cookies from "js-cookie";
 import { exportSFH } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
@@ -210,22 +213,34 @@ export default {
       multipleSelection: [],
       //当前操作的行
       currentSelection: [],
+      // 备注列表
+      commitArrays: [],
+      // 页码
+      pageNumber: 1,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        userId: null, // 工号
-        userName: null, // 姓名
-        organization: null, // 院系id
-        applyType: null, // 申请类别id
-        subjectName: null, // 学科名称id
-        applyStatus: null, // 审核状态码id
-        subjectType: null, // 学科属性，文科，理科，交叉
+        userId: "", // 工号
+        userName: "", // 姓名
+        organization: "", // 院系id 30130 50030
+        organizationName: "", // 院系名称
+        applyType: "", // 申请类别id
+        subjectName: "", // 学科名称id
+        applyStatus: "", // 审核状态 id
+        applyStatuss: [], // 审核状态码数组 id
+        subjectType: "", // 学科属性，文科，理科，交叉
       },
+      statusOptions: [
+        {
+          value: 21,
+          label: "同意上分会",
+        },
+        {
+          value: 22,
+          label: "不同意分会",
+        },
+      ],
       // 查询参数
       queryParamCopy: {},
-      //当前页
-      currentPage: 1,
       updataList: [],
       tutorList: [],
     };
@@ -235,128 +250,187 @@ export default {
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
+    //获取cookie中的院系zjz
+    getOrganizationId: function () {
+      if (Cookies.get("organizationId") !== null) {
+        return Cookies.get("organizationId");
+      } else {
+        console.log("error-organizationId is null");
+      }
+    },
+    getOrganizationName: function () {
+      if (Cookies.get("organizationName") !== null) {
+        return Cookies.get("organizationName");
+      } else {
+        console.log("error-organizationName is null");
+      }
+    },
+    // 查询院系秘书待初审的数据
+    getSecretaryInit: function () {
+      this.loading = true;
+      const applyStatuss = ["21", "22"]; // 申请状态码
+      const organizationId = this.getOrganizationId();
+      getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
+        this.tutorList = res.data.data;
+        this.totalData = res.data.total;
+        console.log("res", res);
+        this.loading = false;
+      });
+    },
+
+    // 详情页
+    toDetails: function (applyId, applyTypeId) {
+      toDetails(this, applyId, applyTypeId);
+    },
+
+    // 查询数据
+    search: function () {
+      this.pageNumber = 1;
+      if (
+        this.queryParams.applyStatus === "" &&
+        this.queryParams.userName === "" &&
+        this.queryParams.organization === "" &&
+        this.queryParams.applyType === "" &&
+        this.queryParams.subjectName === "" &&
+        this.queryParams.subjectType === ""
+      ) {
+        this.getSecretaryInit();
+      } else {
+        if (this.queryParams.applyStatus === "") {
+          this.queryParams.applyStatuss = ["21", "22"]; // 申请状态码
+        }
+        this.queryParams.organization = this.getOrganizationId();
+        search(this.queryParams, this.pageNumber)
+          .then((res) => {
+            this.tutorList = res.data.data;
+            this.totalData = res.data.total;
+            console.log("res", res);
+            this.loading = false;
+          })
+          .catch((error) => {
+            throw error;
+          });
+      }
+    },
+
+    // 清空选择申请状态
+    changeApplyStatus: function () {
+      this.queryParams.applyStatuss = [];
+    },
+
+    // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
+    dataOption(func) {
+      this.loading = true;
+      const defaultStatus = ["21"];
+      this.queryParams.organization = this.getOrganizationId();
+      this.queryParams.organizationName = this.getOrganizationName();
+      if (
+        this.queryParams.applyStatus == null ||
+        this.queryParams.applyStatus === ""
+      ) {
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+        this.queryParamCopy.applyStatuss = defaultStatus;
+        func(this.queryParamCopy);
+      } else {
+        func(this.queryParams);
+      }
+    },
+
+    // excel导出
+    exportFun() {
+      this.dataOption(this.exportExcel);
+    },
+    // 导出excel实现
+    exportExcel(queryParams) {
+      console.log(queryParams)
+      const date = new Date();
+      const year = date.getFullYear(); // 获取当前年份
+      exportSFH(queryParams).then((res) => {
+        const blob = new Blob([res], { type: "application/vnd.ms-excel" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download =
+          "西北大学" +
+          year +
+          "年" +
+          this.getOrganizationName() +
+          "学位评定分委员会推荐汇总表.xlsx"; // excel名称
+        link.href = url;
+        link.click();
+      });
+      this.loading = false;
+    },
+
     // 初始化申请的所有类别（下拉框）
     async getApplyTypeList() {
       getApplyType().then((res) => {
         this.applyTypeList = res.data;
       });
     },
- 
-    //excel导出同意上分会的数据 状态为21
-    exportFun() {
-      let date = new Date();
-      let year = date.getFullYear(); // 获取当前年份
-      this.queryParams.applyStatus = 21;
-      //   this.queryParams.organization = 30130;//院系
-      exportSFH(this.queryParams).then((res) => {
-        let blob = new Blob([res], { type: "application/vnd.ms-excel" });
-        let url = window.URL.createObjectURL(blob);
-        let link = document.createElement("a");
-        link.download =
-          "西北大学" +
-          year +
-          "年" +
-          "网络和数据中心" +
-          "学位评定分委员会推荐汇总表.xlsx"; //excel名称
-        link.href = url;
-        link.click();
-      });
-      this.loading = false;
-    },
-    //导出excel实现
-    exportExcel(queryParams) {},
-
-    // 查询院系主管已审核的数据(初始化)
-    getSecretaryInit() {
-      this.filterDataByStatus();
-    },
-
-    //根据审核状态，选择查询对象。因为该页面只查状态值为21 22的数据，而后端只有一个获取数据接口。
-    //所以使用defaultStatus定义当前页面的默认审核状态,深拷贝queryParams对象作为默认查询条件。
-    filterDataByStatus() {
-      this.queryParams.applyStatus = 21 + "-" + 22;
-       checkDate(this.queryParams).then((res) => {
-         console.log(res)
-        this.tutorList = res.data.data;
-        this.totalData = res.data.total;
-        this.loading = false;
-      });
-    },
-
-    //重置按钮
+    // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null; // 工号
-      this.queryParams.userName = null; // 姓名
-      this.queryParams.applyType = null; // 申请类别id
+      this.queryParams.userId = ""; // 工号
+      this.queryParams.userName = ""; // 姓名
+      this.queryParams.applyType = ""; // 申请类别id
+      this.queryParams.applyStatus = ""; // 审核状态码id
+      this.queryParams.applyStatuss = []; // 申请类别列表
+      this.pageNumber = 1;
     },
 
-    //点击备注按钮，添加备注
+    // 点击备注按钮，添加备注
     commitFun(row) {
+      this.commitArrays.length = 0;
       this.dialogVisible = true;
-      this.returnCommit = row.commitYxSfh;
-      this.currentSelection.length = 0;
-      this.currentSelection.push(row);
+      this.returnCommit = row.commitYxSfh; // 回显数据
+      const obj = { id_1: 0, status_1: 0, commit_1: "" };
+      obj.id_1 = row.applyId;
+      obj.status_1 = row.status;
+      obj.commit_1 = row.commitYxSfh;
+      this.commitArrays.push(obj);
     },
-
-    //备注弹框的确定按钮
+    // 备注弹框的确定按钮
     returnFun() {
-      this.currentSelection[0].commitYxSfh = this.returnCommit;
-      this.updateObiect(this.currentSelection);
-      console.log(this.updataList)
-      this.check(this.currentSelection[0].status); //commit备注 ，不刷新页面，所以需要单独区分，勿动，动了出事你负责
+      this.commitArrays[0].commit_1 = this.returnCommit;
+      this.updateStatusFun(this.commitArrays, false);
+      console.log("备注确定按钮", this.commitArrays);
       this.dialogVisible = false;
+    },
+    // 更新状态
+    updateStatusFun(updateList, isInit) {
+      updateStatusSfh(updateList).then((res) => {
+        if (res.code === 20000) {
+          this.$message.success("操作成功!");
+        }
+        if (isInit) {
+          // 走四个按钮＋提交，刷新页面
+          this.getSecretaryInit();
+        } else {
+          // 走备注，不刷新页面，
+          // 更新tutorList中的commit
+          this.updateTutorListDataCommit(this.commitArrays[0].id_1);
+        }
+      });
+    },
+    // 更新tutorList和updateList中的commit
+    updateTutorListDataCommit(currentId) {
+      for (let i = 0; i < this.tutorList.length; i++) {
+        if (currentId === this.tutorList[i].applyId) {
+          this.tutorList[i].commitYxSfh = this.returnCommit;
+          break;
+        }
+      }
     },
     //弹框取消按钮
     cancel() {
       this.dialogVisible = false;
       this.returnCommit = null;
     },
-    //更新操作
-    check(status) {
-      for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status;
-      }
-      updateStatusSfh(this.updataList).then((res) => {
-        if (res.code == 20000) {
-          this.$message.success("操作成功!");
-        }
-        this.updataList.length = 0;
-      });
-    },
 
-    //封装更新数据
-    updateObiect(originArray) {
-      //每次选择都要将之前的清空
-      this.updataList = [];
-      // 将需要审核后下发的数据对应起来
-      for (let index = 0; index < originArray.length; index++) {
-        // let obj = {id_1:0, number_1: "", applyId_1: 0, status_1: 0, commit_1: "" };
-        let obj = { id_1: 0, status_1: 0, commit_1: "" };
-        obj.id_1 = originArray[index].applyId;
-        obj.status_1 = originArray[index].status;
-        obj.commit_1 = originArray[index].commitYxSfh;
-        this.updataList.push(obj);
-      }
-    },
-
-    //当前选中
-    handleSelectionChange(val) {
-      if (val.length > 0) {
-        this.single = false;
-        this.multiple = false;
-      } else {
-        this.single = true;
-        this.multiple = true;
-      }
-      this.multipleSelection = val;
-      //每次选择都要将之前的清空
-      this.updataList = [];
-    },
     //每页显示条数
     handleSizeChange(val) {},
     //当前页数
     handleCurrentChange(val) {
-      this.queryParams.pageNum = val;
+      this.pageNumber = val;
       this.getSecretaryInit();
     },
   },

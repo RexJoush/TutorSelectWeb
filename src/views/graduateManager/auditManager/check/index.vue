@@ -82,7 +82,7 @@
           </el-form-item>
 
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <el-form-item label="学科名称" prop="subjectName">
             <el-select
               v-model="queryParams.subjectName"
@@ -100,7 +100,7 @@
             </el-select>
           </el-form-item>
 
-        </el-col>
+        </el-col> -->
         <el-col :span="6">
           <el-form-item label="审核状态" prop="applyStatus">
             <el-select
@@ -119,7 +119,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="6" :offset="6">
           <el-row>
             <el-col :span="6" :offset="6">
               <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
@@ -148,36 +148,36 @@
 
     <!-- 数据部分 -->
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column type="selection" align="center" />
+      <el-table-column label="工号" align="center" prop="tutorId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
       <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title" width="100" />
-      <el-table-column label="审核状态" align="center" width="130">
+      <el-table-column label="职称" align="center" prop="title" />
+      <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
           <!-- todo 此处修改为自己的状态码，dynamic -->
           <!-- 符合条件 -->
-          <el-tag v-if="scope.row.status === 15" type="success">{{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-if="scope.row.status === 388" type="success">{{ scope.row.inspectDescribe }}</el-tag>
           <!-- 不符合条件 -->
-          <el-tag v-else-if="scope.row.status === 16" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 399" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 初审待定 -->
           <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
-          <!-- 需修改 -->
-          <el-tag v-else-if="scope.row.status === 18" type="info"> {{ scope.row.inspectDescribe }}</el-tag>
-          <!-- 送审社科处或科研处 -->
-          <el-tag v-else-if="scope.row.status === 18" type="info"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!--          &lt;!&ndash; 送审科研处 &ndash;&gt;-->
+          <!--          <el-tag v-else-if="scope.row.status === 31" type="info"> {{ scope.row.inspectDescribe }}</el-tag>-->
+          <!--          &lt;!&ndash; 送审社科处 &ndash;&gt;-->
+          <!--          <el-tag v-else-if="scope.row.status === 30" type="info"> {{ scope.row.inspectDescribe }}</el-tag>-->
           <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
-      <el-table-column label="详情" align="center" width="60">
+      <el-table-column label="详情" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" width="80">
+      <el-table-column label="备注" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
         </template>
@@ -344,6 +344,7 @@ export default {
     },
     // 查询数据
     search: function() {
+      this.queryParams.pageNum = 1
       if (this.queryParams.applyStatus === '' &&
         this.queryParams.userName === '' &&
         this.queryParams.organization === '' &&
@@ -354,7 +355,7 @@ export default {
         this.getList()
       } else {
         if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['25'] // 申请状态码
+          this.queryParams.applyStatuss = ['25', '388', '399'] // 申请状态码
         }
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
@@ -369,7 +370,7 @@ export default {
 
     /** 查询用户列表 */
     async getList() {
-      const applyStatuss = ['25']
+      const applyStatuss = ['25', '388', '399'] // 申请状态码
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {

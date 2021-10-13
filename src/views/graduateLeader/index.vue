@@ -255,6 +255,14 @@ export default {
         {
           value: 62, // 研究生院领导审核不通过，不同意上校会
           label: '不同意上校会'
+        },
+        {
+          value: 38, // 研究生院管理员点击符合条件
+          label: '符合条件'
+        },
+        {
+          value: 39, // 研究生院管理员点击不符合条件
+          label: '不符合条件'
         }
       ],
       // 审核后需要下发的List数据
@@ -298,8 +306,8 @@ export default {
     // 通过状态码查询
     getSocialCheckInit() {
       // 34 社科处科研处审核通过返回给研究生院管理后，研究生院管理员复审通过  38 符合条件 39 不符合条件 （dynamic添加）
-      this.queryParams.applyStatus = 34
-      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then(res => {
+      this.queryParams.applyStatuss = ['34', '38', '39']
+      getInit(0, this.queryParams.applyStatuss, this.queryParams.pageNum).then(res => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })

@@ -21,17 +21,17 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(1)">首次申请博士导师岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(1)">博士导师首次申请</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(2)">博士导师增列学科岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(2)">博士导师增列岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(3)">博士研究生导师免审上岗</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(3)">博士导师免审申请</el-button>
           </div>
         </el-col>
       </el-row>
@@ -44,17 +44,17 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(4)">首次申请学硕导师岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(4)">学硕导师首次申请</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(5)">学硕导师增列学科岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(5)">学硕导师增列岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(6)">硕士研究生导师免审上岗</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(6)">学硕导师免审申请</el-button>
           </div>
         </el-col>
       </el-row>
@@ -66,12 +66,12 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(7)">首次申请专硕导师岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(7)">专硕导师首次申请</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(8)">专硕导师增列学科岗位</el-button>
+            <el-button class="grid-content" type="primary" @click="checkApply(8)">专硕导师增列岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
@@ -84,7 +84,6 @@
 
 <script>
 
-
 import { checkApply } from '@/api/tutor/mainboard'
 
 export default {
@@ -93,7 +92,7 @@ export default {
   },
 
   methods: {
-  
+
     /*
       101：已经申请过此岗位，但信息未填写完成
       100：已经申请过此岗位，且信息已提交完成

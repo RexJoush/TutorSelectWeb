@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import Cookies from 'js-cookie'
 
 const state = {
   token: getToken(),
@@ -49,8 +50,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
-        if (!data) {
+        
+        // debugger
+        if (!data && !response.organizationId) {
           reject('Verification failed, please Login again.')
         }
 
@@ -65,6 +67,8 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
+        Cookies.set('organizationId',response.organizationId)
+        Cookies.set('organizationName',response.organizationName)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -78,6 +82,8 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        Cookies.remove('organizationId')
+        Cookies.remove('organizationName')
         removeToken()
         resetRouter()
 

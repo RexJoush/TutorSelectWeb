@@ -283,7 +283,7 @@
                       style="float: right"
                       type="primary"
                       @click="dialogSecond1 = true"
-                    >添加科研项目</el-button>
+                    >添加</el-button>
                   </div>
                   <el-table
                     :data="formSecond.researchProjects"
@@ -307,8 +307,14 @@
                       width="120"
                     />
                     <el-table-column prop="projectLevel" label="项目级别" />
-                    <el-table-column label="操作" align="center" width="90">
+                    <el-table-column label="操作" align="center" width="180">
                       <template slot-scope="scope">
+                         <el-button
+                          size="mini"
+                          type="info"
+                          plain
+                          @click="editResearchProject(scope.$index,scope.row)"
+                        >编 辑</el-button>
                         <el-button
                           size="mini"
                           type="danger"
@@ -331,7 +337,7 @@
                       class="addButton"
                       type="primary"
                       @click="dialogSecond2 = true"
-                    >添加科研教学奖励</el-button>
+                    >添加</el-button>
                   </div>
 
                   <el-table
@@ -349,8 +355,14 @@
                       prop="awardsAuthorName"
                       label="获奖人姓名"
                     />
-                    <el-table-column label="操作" align="center" width="90">
+                    <el-table-column label="操作" align="center" width="180">
                       <template slot-scope="scope">
+                         <el-button
+                          size="mini"
+                          type="info"
+                          plain
+                          @click="editTeachingAward(scope.$index,scope.row)"
+                        >编 辑</el-button>
                         <el-button
                           size="mini"
                           type="danger"
@@ -380,7 +392,7 @@
     </Row>
     <!-- 第二页弹框内容 -->
     <!-- 添加科研项目 -->
-    <el-dialog title="添加科研项目" width="40%" :visible.sync="dialogSecond1">
+    <el-dialog :title="this.isEdit ?'编辑科研项目' :'添加科研项目'" width="40%" :visible.sync="dialogSecond1">
       <el-form :model="researchProject">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -457,7 +469,7 @@
     </el-dialog>
 
     <!-- 添加科研教学奖励 -->
-    <el-dialog title="科研教学奖励" width="40%" :visible.sync="dialogSecond2">
+    <el-dialog :title="isEdit ?'编辑科研教学奖励' :'添加科研教学奖励'" width="40%" :visible.sync="dialogSecond2">
       <el-form :model="teachingAward">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -538,6 +550,9 @@ export default {
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       // 步骤条
       active: 0,
+      //编辑或添加
+      isEdit: false,
+      editIndex : -1,
       // 页数的隐藏和展示
       formVisible: {
         first: true,
@@ -689,9 +704,20 @@ export default {
     },
     // 第 2 页 添科研项目情况 弹框
     addResearchProject: function() {
-      this.formSecond.researchProjects.push(this.researchProject);
+      if(this.isEdit){
+        //修改
+        this.formSecond.researchProjects[this.editIndex] = this.researchProject
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+        //添加
+        console.log("添加")
+        this.formSecond.researchProjects.push(this.researchProject);
+      }
+      this.dialogSecond1 = false
       // 科研项目
-      (this.researchProject = {
+      this.researchProject = {
         projectName: '',
         approvalNumber: '',
         projectStartTime: '',
@@ -700,8 +726,17 @@ export default {
         projectLevel: '',
         projectCategory: '',
         projectChargeName: ''
-      }),
-      (this.dialogSecond1 = false)
+      }
+      
+    },
+    //编辑科研项目
+    editResearchProject: function(index,row){
+      this.isEdit = true
+      this.editIndex = index
+      //打开
+      this.dialogSecond1 = true
+      //将数据回显
+      this.researchProject = this.formSecond.researchProjects[index]
     },
     // 删除某项科研项目情况
     delResearchProject: function(index) {
@@ -709,16 +744,32 @@ export default {
     },
     // 第 2 页添加科研教学奖励
     addTeachingAward: function() {
-      this.formSecond.teachingAwards.push(this.teachingAward);
-      (this.teachingAward = {
+      if(this.isEdit){
+        //编辑
+        this.formSecond.teachingAwards[this.editIndex] = this.teachingAward
+        this.editIndex = -1
+        this.isEdit = false
+      }
+      else{
+        this.formSecond.teachingAwards.push(this.teachingAward);
+      }
+      
+      this.teachingAward = {
         awardsName: '',
         awardsRank: '',
         awardsUnit: '',
         awardsTime: '',
         awardsAuthorName: '',
         awardsLevel: ''
-      }),
-      (this.dialogSecond2 = false)
+      },
+      this.dialogSecond2 = false
+    },
+    //编辑科研教学奖励
+    editTeachingAward: function(index,row){
+      this.isEdit = true 
+      this.editIndex = index
+      this.teachingAward = this.formSecond.teachingAwards[index]
+      this.dialogSecond2 = true
     },
     // 删除某项科研教学奖励
     delTeachingAward: function(index) {
