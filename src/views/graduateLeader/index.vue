@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-13 20:06:21
+ * @LastEditTime: 2021-10-13 20:22:10
 -->
 <template>
   <div class="app-container">
@@ -201,6 +201,8 @@ import {
   updateStatus// 更新操作
 } from '@/api/departmentSecretary/secretaryFirst'
 
+import { departmentList } from '@/utils/data'
+
 export default {
   data() {
     return {
@@ -220,7 +222,7 @@ export default {
       // 待社科处初审列表
       socialInitList: [],
       // 所有负责院系列表
-      organizationList: [],
+      organizationList: departmentList,
       // 选定的列表
       multipleSelection: [],
       // 申请类别选项
@@ -272,7 +274,6 @@ export default {
   },
   created() {
     this.getSocialCheckInit() // 初始化待初审的数据
-    this.getOrganizationList() // 初始化所有的负责院系
     this.getApplyTypeList()// 初始化申请的所有类别
     this.searchFlag = true // 初始化负责院系
   },
@@ -287,13 +288,13 @@ export default {
     },
 
     // 初始化负责院系(下拉框)
-    async getOrganizationList() {
-      const { data: res } = await this.$http.get(
-        '/admin/organization/getAll'
-      )
-      this.organizationList = res
-      console.info(this.organizationList)
-    },
+    // async getOrganizationList() {
+    //   const { data: res } = await this.$http.get(
+    //     '/admin/organization/getAll'
+    //   )
+    //   this.organizationList = res
+    //   console.info(this.organizationList)
+    // },
 
     // 初始化申请类别
     async getApplyTypeList() {
