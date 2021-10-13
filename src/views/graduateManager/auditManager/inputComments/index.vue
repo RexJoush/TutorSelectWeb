@@ -21,7 +21,7 @@
               placeholder="请选择院系"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in organizationOptions"
@@ -34,13 +34,31 @@
 
         </el-col>
         <el-col :span="6">
+          <el-form-item label="审核状态" prop="applyStatus">
+            <el-select
+              v-model="queryParams.applyStatus"
+              placeholder="请选择审核状态"
+              clearable
+              size="small"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="dict in applyStatusOptions"
+                :key="dict.codeId"
+                :label="dict.inspectDescribe"
+                :value="dict.codeId"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <el-form-item label="申请类别" prop="applyType">
             <el-select
               v-model="queryParams.applyType"
               placeholder="请选择申请类别"
               clearable
               size="small"
-              style="width: 240px"
+              style="width: 100%"
             >
               <el-option
                 v-for="dict in applyTypeOptions"
@@ -65,48 +83,31 @@
           </el-form-item>
 
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="学科名称" prop="subjectName">
-            <el-select
-              v-model="queryParams.subjectName"
-              placeholder="请选择学科"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in subjectNameOptions"
-                :key="dict.dictValue"
-                :label="dict.dictLabel"
-                :value="dict.dictValue"
-              />
-            </el-select>
-          </el-form-item>
+        <!--        <el-col :span="6">-->
+        <!--          <el-form-item label="学科名称" prop="subjectName">-->
+        <!--            <el-select-->
+        <!--              v-model="queryParams.subjectName"-->
+        <!--              placeholder="请选择学科"-->
+        <!--              clearable-->
+        <!--              size="small"-->
+        <!--              style="width: 100%"-->
+        <!--            >-->
+        <!--              <el-option-->
+        <!--                v-for="dict in subjectNameOptions"-->
+        <!--                :key="dict.dictValue"-->
+        <!--                :label="dict.dictLabel"-->
+        <!--                :value="dict.dictValue"-->
+        <!--              />-->
+        <!--            </el-select>-->
+        <!--          </el-form-item>-->
 
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="审核状态" prop="applyStatus">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择审核状态"
-              clearable
-              size="small"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="dict in applyStatusOptions"
-                :key="dict.codeId"
-                :label="dict.inspectDescribe"
-                :value="dict.codeId"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-col :span="8" :offset="5">
+        <!--        </el-col>-->
+
+        <el-col :span="6" :offset="12">
+          <el-col :span="6" :offset="6">
             <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="6" :offset="2">
             <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
           </el-col>
         </el-col>
@@ -125,14 +126,14 @@
       <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="single" @click="unPassFun">校会不通过</el-button>
     </div>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column type="selection" align="center" />
+      <el-table-column label="工号" align="center" prop="tutorId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
       <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title" width="100" />
-      <el-table-column label="审核状态" align="center" width="130">
+      <el-table-column label="职称" align="center" prop="title" />
+      <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
             {{ scope.row.inspectDescribe }}
@@ -142,13 +143,13 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="详情" align="center" width="60">
+      <el-table-column label="详情" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" width="80">
+      <el-table-column label="备注" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
         </template>
@@ -294,6 +295,7 @@ export default {
         if (this.queryParams.applyStatus === '') {
           this.queryParams.applyStatuss = ['61'] // 申请状态码
         }
+        this.queryParams.pageNum = 1
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total

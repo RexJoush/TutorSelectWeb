@@ -284,7 +284,7 @@ export const asyncRoutes = [
         path: 'systemTimeDepartment',
         name: 'SystemTimeDepartment',
         component: () => import('@/views/departmentSecretary/systemTime/index'),
-        meta: { title: '设置院系时间', icon: 'dashboard', roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '设置导师申请时间', icon: 'dashboard', roles: ['admin', 'departmentSecretary'] }
       }
     ]
   },
