@@ -391,6 +391,7 @@
       :title="isEdit ? '修改社科类论文' : '添加社科类论文'"
       width="40%"
       :visible.sync="dialogThird1"
+      :show-close = false
       @closed="cancelFunc(1)"
     >
       <el-form :model="academicPaper">
@@ -448,6 +449,7 @@
                 :before-upload="checkFileType"
                 :on-remove="removeFile"       
                 :file-list="fileList"
+                :on-exceed="oversizeFile"
                 :limit="1"
                 accept=".zip, .rar"
               >
@@ -472,6 +474,7 @@
       :title="isEdit ? '修改理工类论文' : '添加理工类论文'"
       width="40%"
       :visible.sync="dialogThird2"
+      :show-close = false
       @closed="cancelFunc(2)"
     >
       <el-form :model="academicPaper">
@@ -564,7 +567,7 @@
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
                 :on-remove="removeFile"
-                :auto-upload="false"
+                :on-exceed="oversizeFile"
                 :file-list="fileList"
                 :limit="1"
                 accept=".zip, .rar"
@@ -589,6 +592,7 @@
     <el-dialog
       :title="isEdit ? '修改科研项目' : '添加科研项目'"
       width="40%"
+      :show-close = false
       :visible.sync="dialogThird3"
       @closed="cancelFunc(3)"
     >
@@ -669,7 +673,10 @@
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
-                :auto-upload="false"
+                :on-remove="removeFile"  
+                :file-list="fileList"
+                :on-exceed="oversizeFile"
+                :limit="1"
                 accept=".zip, .rar"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -692,6 +699,7 @@
     <el-dialog
       :title="isEdit ? '修改教材或学术著作' : '添加教材或学术著作'"
       width="40%"
+      :show-close = false
       :visible.sync="dialogThird4"
       @closed="cancelFunc(4)"
     >
@@ -744,7 +752,10 @@
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
-                :auto-upload="false"
+                :on-remove="removeFile"  
+                :file-list="fileList"
+                :on-exceed="oversizeFile"
+                :limit="1"
                 accept=".zip, .rar"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -767,6 +778,7 @@
     <el-dialog
       :title="isEdit ? '修改科研教学奖励' : '添加科研教学奖励'"
       width="40%"
+      :show-close = false
       :visible.sync="dialogThird5"
       @closed="cancelFunc(5)"
     >
@@ -826,8 +838,11 @@
                 action="http://localhost:8081/user/upload/5"
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
+                :on-remove="removeFile"  
                 :before-upload="checkFileType"
-                :auto-upload="false"
+                :file-list="fileList"
+                :on-exceed="oversizeFile"
+                :limit="1"
                 accept=".zip, .rar"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -850,6 +865,7 @@
     <el-dialog
       :title="isEdit ? '修改发明专利' : '添加发明专利'"
       width="40%"
+      :show-close = false
       :visible.sync="dialogThird6"
       @closed="cancelFunc(6)"
     >
@@ -904,7 +920,10 @@
                 :on-success="uploadSuccessFunc"
                 :on-error="uploadErrorFunc"
                 :before-upload="checkFileType"
-                :auto-upload="false"
+                :on-remove="removeFile"  
+                :on-exceed="oversizeFile"
+                :file-list="fileList"
+                :limit="1"
                 accept=".zip, .rar"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -927,6 +946,7 @@
 
 <script>
 import { submitThirdPage, deleteFile } from "@/api/tutor/inspect";
+import { objectMerge } from '@/utils';
 
 export default {
   name: "Index",
@@ -1115,7 +1135,7 @@ export default {
         deletePath: "", // 删除的路径
         deleteType: "", // 删除的项类型，论文，项目等
       };
-
+      console.log("deltype",type)
       switch (type) {
         case 1:
           deleteItem.deleteId =
@@ -1126,7 +1146,7 @@ export default {
           // 删除记录
           this.formThird.academicPapers.splice(index, 1);
           break;
-        case 2:
+        case 3:
           deleteItem.deleteId =
             this.applyCondition === "102" ? -1 : scope.projectId;
           deleteItem.deleteType = 2;
@@ -1137,7 +1157,7 @@ export default {
           // 删除记录
           this.formThird.researchProjects.splice(index, 1);
           break;
-        case 3:
+        case 4:
           deleteItem.deleteId =
             this.applyCondition === "102" ? -1 : scope.worksId;
           deleteItem.deleteType = 3;
@@ -1146,7 +1166,7 @@ export default {
           // 删除记录
           this.formThird.academicWorks.splice(index, 1);
           break;
-        case 4:
+        case 5:
           deleteItem.deleteId =
             this.applyCondition === "102" ? -1 : scope.awardsId;
           deleteItem.deleteType = 4;
@@ -1156,7 +1176,7 @@ export default {
           this.formThird.teachingAwards.splice(index, 1);
           break;
 
-        case 5:
+        case 6:
           deleteItem.deleteId =
             this.applyCondition === "102" ? -1 : scope.patentId;
           deleteItem.deleteType = 5;
@@ -1180,11 +1200,10 @@ export default {
       switch (type) {
         case 1:  
           this.academicPaper = this.formThird.academicPapers[index];
-          if (this.fileList.length == 0) {
+          if (this.fileList.length == 0) {  //展示文件名
             var obj = new Object();
             obj.name = this.formThird.academicPapers[index].paperProveMaterialsName; //获取文件名称
             obj.url = this.formThird.academicPapers[index].paperProveMaterials; //获取路径
-            console.log('url',obj.url)
             this.fileList.push(obj);
           }
           if (scope.journalLevel !== "") {
@@ -1197,18 +1216,42 @@ export default {
           break;
         case 3:
           this.researchProject = this.formThird.researchProjects[index];
+          if(this.fileList.length == 0){
+            var obj = new Object();
+            obj.name = this.formThird.researchProjects[index].projectProveMaterialsName; //获取文件名称
+            obj.url = this.formThird.researchProjects[index].projectProveMaterials; //获取路径
+            this.fileList.push(obj);
+          }
           this.dialogThird3 = true;
           break;
         case 4:
           this.academicWork = this.formThird.academicWorks[index];
+          if(this.fileList.length == 0){
+            var obj = new Object();
+            obj.name = this.formThird.academicWorks[index].worksProveMaterialsName; //获取文件名称
+            obj.url = this.formThird.academicWorks[index].worksProveMaterials; //获取路径
+            this.fileList.push(obj);
+          }
           this.dialogThird4 = true;
           break;
         case 5:
           this.teachingAward = this.formThird.teachingAwards[index];
+          if(this.fileList.length == 0){
+            var obj = new Object();
+            obj.name = this.formThird.teachingAwards[index].awardsProveMaterialsName; //获取文件名称
+            obj.url = this.formThird.teachingAwards[index].awardsProveMaterials; //获取路径
+            this.fileList.push(obj);
+          }
           this.dialogThird5 = true;
           break;
         case 6:
           this.inventionPatent = this.formThird.inventionPatents[index];
+          if(this.fileList.length == 0){
+            var obj = new Object();
+            obj.name = this.formThird.inventionPatents[index].patentProveMaterialsName; //获取文件名称
+            obj.url = this.formThird.inventionPatents[index].patentProveMaterials; //获取路径
+            this.fileList.push(obj);
+          }
           this.dialogThird6 = true;
           break;
       }
@@ -1233,9 +1276,9 @@ export default {
             communicationAuthorName: "", // 通讯作者
             paperSubject: "", // 论文分科，文，理，交叉学科按文科算
             paperProveMaterials: "", // 论文证明材料
+            paperProveMaterialsName : ''
           };
           this.dialogThird1 = false;
-          console.log("dia1  false")
           break;
         case 2:
           this.academicPaper = {
@@ -1252,6 +1295,7 @@ export default {
             communicationAuthorName: "", // 通讯作者
             paperSubject: "", // 论文分科，文，理，交叉学科按文科算
             paperProveMaterials: "", // 论文证明材料
+            paperProveMaterialsName : ''
           };
           this.dialogThird2 = false;
           break;
@@ -1268,6 +1312,7 @@ export default {
             projectTotalPrice: "", // 总经费
             projectLevel: "", // 项目级别，国家级，省部级，厅局级
             projectProveMaterials: "", // 证明材料，图片，pdf等
+            projectProveMaterialsName: ""
           };
           this.dialogThird3 = false;
           break;
@@ -1281,6 +1326,7 @@ export default {
             totalWords: "", // 完成字数
             authorName: "", // 作者姓名
             worksProveMaterials: "", // 证明材料，图片，pdf等
+            worksProveMaterialsName: ""
           };
           this.dialogThird4 = false;
           break;
@@ -1295,6 +1341,7 @@ export default {
             awardsTime: "", // 获奖日期
             awardsAuthorName: "", // 获奖人姓名
             awardsProveMaterials: "", // 证明材料，图片，pdf等
+            awardsProveMaterialsName : ""
           };
           this.dialogThird5 = false;
           break;
@@ -1307,15 +1354,18 @@ export default {
             patentGrantNumber: "", // 专利授权号
             patentType: "", // 专利类型
             patentProveMaterials: "", // 证明材料，图片，pdf等
+            patentProveMaterialsName:""
           };
           this.dialogThird6 = false;
       }
+      this.fileList = []
       this.isEdit = false;
       this.editIndex = -1;
     },
 
     // 删除文件 参数 文件的路径
     delFile(filePath) {
+      console.log(filePath)
       const path = encodeURI(filePath);
       deleteFile(path)
         .then((res) => {
@@ -1411,21 +1461,33 @@ export default {
         return false;
       }
     },
-
+    //文件超出限制
+    oversizeFile: function(){
+      this.$message.warning("上传文件超出限制!")
+      return
+    },
     // 各项内容的提交文件上传 确定按钮
     addFile: function (type) {
       console.log("type",type)
       switch(type){
         case 1: //社科
-           if(this.isEdit){
-            //编辑
-            
+        console.log("filelist===",this.fileList)
+          if(this.fileList.length === 1){
+            if(this.isEdit){
+              //编辑
+              this.formThird.academicPapers[this.editIndex] = this.academicPaper
+              this.editIndex = -1 
+              this.isEdit = false
+            }
+            else{
+             this.formThird.academicPapers.push(this.academicPaper); // 加入列表
+            }
+            this.dialogThird1 = false ; 
           }
           else{
-            //添加
-             this.formThird.academicPapers.push(this.academicPaper); // 加入列表
-          }
-          
+            this.$message.info('请先上传文件')
+            return
+          }        
           // 置空论文
           this.academicPaper = {
             paperName: "",
@@ -1441,17 +1503,25 @@ export default {
             paperProveMaterials: "",
             paperProveMaterialsName: "",
           };
-          this.dialogThird1 = false ; 
         break
         case 2: //理工
+        if(this.fileList.length === 1 ){
           if(this.isEdit){
             //编辑
-
+            this.formThird.academicPapers[this.editIndex] = this.academicPaper
+            this.editIndex = -1 
+            this.isEdit = false
           }
           else{
             //添加
              this.formThird.academicPapers.push(this.academicPaper); // 加入列表
           }
+          this.dialogThird2 = false ; 
+        }
+        else{
+          this.$message.info('请先上传文件')
+          return
+        }          
           // 置空论文
           this.academicPaper = {
             paperName: "",
@@ -1467,16 +1537,24 @@ export default {
             paperProveMaterials: "",
             paperProveMaterialsName: "",
           };
-          this.dialogThird2 = false ; 
+          
         break;
         case 3:
-          if (this.isEdit) {
-            // this.formThird.researchProjects[this.editIndex] = this.researchProject; // 修改
-            // this.isEdit = false;
-            // this.editIndex = -1;
+          if (this.fileList.length === 1){
+            if (this.isEdit) {
+            this.formThird.researchProjects[this.editIndex] = this.researchProject; // 修改
+            this.isEdit = false;
+            this.editIndex = -1;
           } else {
             this.formThird.researchProjects.push(this.researchProject); // 加入列表
           }
+            this.dialogThird3 = false;
+          }
+          else{
+            this.$message.info('请先上传文件')
+            return
+          }
+          
           // 置空科研项目
           this.researchProject = {
             projectId: "",
@@ -1492,17 +1570,26 @@ export default {
             projectProveMaterials: "",
             projectProveMaterialsName: ""
           };
-          this.dialogThird3 = false;
+          
         break;
         case 4:
-          if (this.isEdit) {
-            // this.formThird.academicWorks[this.editIndex] = this.academicWork; // 修改
-            // this.isEdit = false;
-            // this.editIndex = -1;
+          console.log("type4",this.fileList.length)
+          // console.log("url4",this.fileList[0].url)
+          if (this.fileList.length === 1){
+            if (this.isEdit) {
+            this.formThird.academicWorks[this.editIndex] = this.academicWork; // 修改
+            this.isEdit = false;
+            this.editIndex = -1;
           } else {
             this.formThird.academicWorks.push(this.academicWork); // 加入列表
           }
-        
+            this.dialogThird4 = false;
+          }
+          else{
+            this.$message.info('请先上传文件')
+            return
+          }
+         
           this.academicWork = {
             worksId: "",
             worksName: "",
@@ -1514,16 +1601,24 @@ export default {
             worksProveMaterials: "",
             worksProveMaterialsName: "",
           };
-          this.dialogThird4 = false;
+          
         break;
         case 5:
-          if (this.isEdit) {
-            // this.formThird.teachingAwards[this.editIndex] = this.teachingAward; // 修改
-            // this.isEdit = false;
-            // this.editIndex = -1;
+          if (this.fileList.length === 1){
+            if (this.isEdit) {
+            this.formThird.teachingAwards[this.editIndex] = this.teachingAward; // 修改
+            this.isEdit = false;
+            this.editIndex = -1;
           } else {
             this.formThird.teachingAwards.push(this.teachingAward); // 加入列表
           }
+            this.dialogThird5 = false;
+          }
+          else{
+            this.$message.info('请先上传文件')
+            return
+          }
+          
           // 置空科研或教学奖励
           this.teachingAward = {
             awardsId: "",
@@ -1535,18 +1630,25 @@ export default {
             awardsAuthorName: "",
             awardsProveMaterials: "",
             awardsProveMaterialsName: ""
-          };
-          this.dialogThird5 = false;
+          }
+          
         break;
         case 6:
-         if (this.isEdit) {
-            // this.formThird.inventionPatents[this.editIndex] = this.inventionPatent; // 修改
-            // this.isEdit = false;
-            // this.editIndex = -1;
+          if (this.fileList.length === 1){
+            if (this.isEdit) {
+            this.formThird.inventionPatents[this.editIndex] = this.inventionPatent; // 修改
+            this.isEdit = false;
+            this.editIndex = -1;
           } else {
             this.formThird.inventionPatents.push(this.inventionPatent); // 加入列表
           }
-          // 置空科研项目
+            this.dialogThird6 = false;
+          }
+          else{
+            this.$message.info('请先上传文件')
+            return
+          }         
+          // 
           this.inventionPatent = {
             patentId: "",
             patentName: "",
@@ -1557,16 +1659,20 @@ export default {
             patentProveMaterials: "",
             patentProveMaterialsName: ""
           };
-          this.dialogThird6 = false;
         break;
       }    
-
+      this.fileList = []
     },
 
     // 上传成功
     uploadSuccessFunc: function (response, file, fileList) {
       console.log("上传成功！");
       console.log("response",response)
+      //记录到 用于删除
+      var obj= new Object()
+      obj.name = file.name
+      obj.url = response.data.path
+      this.fileList.push(obj)
       switch(response.data.fileType){
         //论文
         case 1:
@@ -1588,11 +1694,9 @@ export default {
         break
         case 6:
           this.inventionPatent.patentProveMaterials = response.data.path;
-          this.inventionPatent.paperProveMaterialsName = file.name
+          this.inventionPatent.patentProveMaterialsName = file.name
         break
       }
-
-
 
       //
       // switch (response.data.fileType) {
@@ -1729,25 +1833,39 @@ export default {
     },
     //移除文件
     removeFile(file, fileList) {
-      console.log("list",this.fileList)
-      if (this.fileList[0].url !==null) {
-        this.$confirm("确认删除已上传的文件？", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        })
-          .then(async () => {
-            await this.delFile(this.fileList[0].url);
-            this.fileList = [];
-            
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除",
-            });
-          });
+      if (this.fileList[0].url !== null) {
+        console.log("list",this.fileList)
+      this.delFile(this.fileList[0].url);
+      this.fileList = [];
       }
+      
+      // if (this.fileList[0].url !== null) {
+      //   this.$confirm("确认删除已上传的文件？", "提示", {
+      //     confirmButtonText: "确定",
+      //     cancelButtonText: "取消",
+      //     type: "warning",
+      //   })
+      //     .then(action => {
+      //       console.log(action)
+      //       if (action === 'confirm'){
+      //         this.delFile(this.fileList[0].url);
+      //         this.fileList = [];
+      //       }          
+      //     })
+      //     .catch( err => {
+      //       console.log(err)
+      //       if(err == 'cancel'){
+      //         this.$message({
+      //         type: "info",
+      //         message: "已取消删除",
+      //       });
+      //       // var obj = new Object()
+      //       // obj.name = '赵军壮'
+      //       // obj.url = 'hhh'
+      //       // this.fileList.push(obj)
+      //       }            
+      //     });
+      // }
     },
     // 上传失败
     uploadErrorFunc: function (err, file, fileList) {
