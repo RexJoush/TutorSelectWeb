@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-26 17:31:36
+ * @LastEditTime: 2021-10-14 09:41:11
 -->
 <template>
   <div class="app-container">
@@ -107,7 +107,7 @@
             {{ scope.row.inspectDescribe }}
           </el-tag>
           <el-tag v-else type="warning">
-            {{ scope.row.inspectDescribe }}
+            科研处待审核
           </el-tag>
         </template>
       </el-table-column>

@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-13 20:07:16
+ * @LastEditTime: 2021-10-14 10:04:52
 -->
 <template>
   <div class="app-container">
@@ -108,7 +108,7 @@
             {{ scope.row.inspectDescribe }}
           </el-tag>
           <el-tag v-else type="warning">
-            {{ scope.row.inspectDescribe }}
+            社科处待审核 
           </el-tag>
         </template>
       </el-table-column>
@@ -287,15 +287,10 @@ export default {
     // 搜索按钮
     searchQuery() {
       search(this.queryParams, 1).then((res) => {
-        if (this.queryParams.applyStatus === 30) {
-          this.searchFlag = true
-        } else {
-          this.searchFlag = false
-        }
-        // console.log(this.queryParams.organization)
-        console.log(this.queryParams.applyStatus)
+        // this.searchFlag = this.queryParams.applyStatus === 30
         this.tutorList = res.data.data
         this.totalData = res.data.total
+        console.log("查询数据："+ this.tutorList)
       })
     },
 
