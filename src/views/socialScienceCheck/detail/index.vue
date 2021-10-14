@@ -4,12 +4,12 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-22 17:05:29
+ * @LastEditTime: 2021-10-08 15:34:39
 -->
 <template>
   <div id="app-container"> 
       <br>
-      <el-page-header style="margin-left: 30px;" @back="goBack" :content="this.name">
+      <el-page-header style="margin-left: 30px;" @back="goBack" :content="name">
       </el-page-header>
       <br />
       <!-- 学术论文 -->
@@ -512,7 +512,7 @@
     created() {
       this.id = this.$route.query.tutorId
       this.applyId = this.$route.query.applyId
-      this.name = this.$route.query.name + "~老师的学术成果"
+      this.name = this.$route.query.name + " 老师的学术成果"
       this.getPaperList();
       this.getProjectList();
       this.getWorkList();
