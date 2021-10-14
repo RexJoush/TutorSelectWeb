@@ -99,6 +99,7 @@
 
 import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
+import { departmentList } from '@/utils/data'
 
 export default {
   data() {
@@ -126,6 +127,8 @@ export default {
       applyTypeOptions: [],
       // 院系选项
       organizationOptions: [],
+      // 所有负责院系列表
+      organizationList: departmentList,
       // 学科名称选项
       subjectNameOptions: [],
       // 审核状态选项
