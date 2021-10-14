@@ -1,16 +1,14 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="margin-top:8%;">
     <el-row>
       <el-col :span="4" :offset="4">
         <div class="grid-content bg-purple">
-          <span class="demonstration">导师提交申请时间范围 </span>
+          <span class="demonstration" style="font-size:16px;">设置导师提交申请的时间范围 </span>
         </div>
       </el-col>
       <el-col :span="8">
         <div class="grid-content bg-purple-light">
           <div class="block">
-            <!-- <span class="demonstration">导师提交申请时间范围 -->
-            <!-- </span> -->
             <el-date-picker
               v-model="time"
               type="daterange"
@@ -91,15 +89,6 @@ export default {
 };
 </script>
 <style>
-.app-container {
-  margin-top: 10%;
-}
-.el-row {
-  margin-bottom: 60px;
-}
-.demonstration {
-  font-size: 16px;
-}
 .bg-purple {
   background: #ffffff;
 }

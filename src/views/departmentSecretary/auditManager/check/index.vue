@@ -330,6 +330,7 @@ export default {
     };
   },
   created() {
+    this.getSystemTime(); //获取研究生院管理员设置的系统时间
     this.getSecretaryInit(); // 初始化待初审的数据
     this.getApplyTypeList(); // 初始化申请的所有类别（下拉框）
   },
@@ -348,6 +349,20 @@ export default {
       } else {
         console.log("error-organizationName is null");
       }
+    },
+    //获取系统时间
+    async getSystemTime(){
+      //1.获取当前系统时间
+      const date = new Date();
+      const ss = date.toLocaleDateString();     //获取当前日期; 
+      console.log(ss)
+      // 设置院系id
+      const orgId = this.getOrganizationId();
+      const { data: res } = await this.$http.get(
+        "/admin/system-time/get/" + orgId
+      );
+      console.log(res)
+
     },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
