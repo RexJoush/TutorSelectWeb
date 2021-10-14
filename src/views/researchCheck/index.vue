@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-14 09:41:11
+ * @LastEditTime: 2021-10-14 10:14:10
 -->
 <template>
   <div class="app-container">
@@ -292,11 +292,12 @@ export default {
           this.queryParams.applyStatuss = ['31'] // 申请状态码
         }
         search(this.queryParams, 1).then((res) => {
-          if (this.queryParams.applyStatus === 31 || '') {
-            this.searchFlag = true
-          } else {
-            this.searchFlag = false
-          }
+          // if (this.queryParams.applyStatus === 31 || '') {
+          //   this.searchFlag = true
+          // } else {
+          //   this.searchFlag = false
+          // }
+          this.searchFlag = this.queryParams.applyStatus === 31
           this.tutorList = res.data.data
           this.total = res.data.total
         }).catch(error => {

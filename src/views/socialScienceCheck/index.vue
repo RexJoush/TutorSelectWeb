@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-14 10:04:52
+ * @LastEditTime: 2021-10-14 10:18:11
 -->
 <template>
   <div class="app-container">
@@ -287,7 +287,7 @@ export default {
     // 搜索按钮
     searchQuery() {
       search(this.queryParams, 1).then((res) => {
-        // this.searchFlag = this.queryParams.applyStatus === 30
+        this.searchFlag = this.queryParams.applyStatus === 30
         this.tutorList = res.data.data
         this.totalData = res.data.total
         console.log("查询数据："+ this.tutorList)
