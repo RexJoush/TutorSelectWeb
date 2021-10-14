@@ -249,7 +249,7 @@ import {
   getInit,
   search,
 } from "@/api/departmentSecretary/secretaryFirst";
-import { toDetails } from "@/utils/function";
+import { toDetails, getStartTime, getEndTime } from "@/utils/function";
 import Cookies from "js-cookie";
 import { exportCS } from "@/api/departmentSecretary/exportExcel";
 
@@ -296,18 +296,9 @@ export default {
       queryParamCopy: {},
       // 和秘书初审有关的审核状态
       statusOptions: [
-        {
-          value: 10,
-          label: "待初审",
-        },
-        {
-          value: 15,
-          label: "符合条件",
-        },
-        {
-          value: 16,
-          label: "不符合条件",
-        },
+        { value: 10, label: "待初审" },
+        { value: 15, label: "符合条件" },
+        { value: 16, label: "不符合条件" },
         {
           value: 17,
           label: "待定",
@@ -329,7 +320,7 @@ export default {
       updateList: [],
       tutorList: [],
       //提交按钮是否禁用
-      disable:false
+      disable: false,
     };
   },
   created() {
@@ -363,19 +354,22 @@ export default {
         "/admin/system-time/get/" + orgId
       );
       //3.将后端返回的string类型的日期转换为Date,进行范围判断
-      const begin = new Date(res[0]);
-      const end = new Date(res[1]);
+      // const begin = this.getZoneTime(new Date(res[0]), 0);
+      const begin = getStartTime(res[0]); // 北京时间八点
+      const end = getEndTime(res[1]);
+      console.log(currentDate, begin, end);
       if (currentDate > end || currentDate < begin) {
         //若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
         console.log(false);
         //提交按钮置灰
-        this.disable = true
-         this.$alert('当前时间不在系统时间范围内，提交操作禁用！！！', '注意', {
-          confirmButtonText: '确定'});
+        this.disable = true;
+        this.$alert("当前时间不在系统时间范围内，提交操作禁用！！！", "注意", {
+          confirmButtonText: "确定",
+        });
       } else {
         //反之，可以操作
         console.log(true);
-       this.disable = true
+        this.disable = true;
       }
     },
     // 查询院系秘书待初审的数据
