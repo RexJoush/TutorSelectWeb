@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-08 15:34:39
+ * @LastEditTime: 2021-10-14 09:45:31
 -->
 <template>
   <div id="app-container"> 
@@ -53,8 +53,8 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
               <el-tag
-                v-if="scope.row.col1 !== ''"
-                :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+                v-if=" scope.row.col1 !== null || scope.row.col1 !== ''"
+                :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
               >
                 {{ scope.row.col1 }}
             </el-tag>
@@ -142,8 +142,8 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.col1 !== ''"
-              :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+              v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+              :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
             >
               {{ scope.row.col1 }}
             </el-tag>
@@ -194,7 +194,6 @@
         >
         <el-table-column label="序号" type="index" width="50" />
         <el-table-column label="名称" align="center" prop="worksName" />
-        <el-table-column label="排名" align="center" prop="worksRank" />
         <el-table-column
           label="出版时间"
           align="center"
@@ -221,8 +220,8 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.col1 !== ''"
-              :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+              v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+              :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
             >
               {{ scope.row.col1 }}
             </el-tag>
@@ -285,11 +284,6 @@
           prop="awardsLevel"
         />
         <el-table-column
-          label="获奖等级"
-          align="center"
-          prop="awardsClass"
-        />
-        <el-table-column
           label="获奖时间"
           align="center"
           prop="awardsTime"
@@ -305,8 +299,8 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.col1 !== ''"
-              :type="scope.row.col1 === '通过' ? 'primary' : 'info'"
+              v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+              :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
             >
               {{ scope.row.col1 }}
             </el-tag>
@@ -834,7 +828,7 @@
         this.updataList.push(obj);
         updateStatus(this.updataList).then((res) => {
           if (res.code == 20000) {
-            this.$message.success("材料审核成功");
+            this.$message.success("材料审核完成");
             this.goBack();
           }
         });

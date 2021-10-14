@@ -360,7 +360,7 @@ export default {
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('res', res)
+          console.log('queryParams', this.queryParams)
           this.loading = false
         }).catch(error => {
           throw error

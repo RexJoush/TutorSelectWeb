@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-13 20:22:10
+ * @LastEditTime: 2021-10-14 10:34:14
 -->
 <template>
   <div class="app-container">
@@ -251,20 +251,20 @@ export default {
           label: '待审核'
         },
         {
-          value: 61, // 研究生院领导审核通过,同意上校会
-          label: '同意上校会'
-        },
-        {
-          value: 62, // 研究生院领导审核不通过，不同意上校会
-          label: '不同意上校会'
-        },
-        {
           value: 38, // 研究生院管理员点击符合条件
           label: '符合条件'
         },
         {
           value: 39, // 研究生院管理员点击不符合条件
           label: '不符合条件'
+        },
+        {
+          value: 61, // 研究生院领导审核通过,同意上校会
+          label: '同意上校会'
+        },
+        {
+          value: 62, // 研究生院领导审核不通过，不同意上校会
+          label: '不同意上校会'
         }
       ],
       // 审核后需要下发的List数据
@@ -287,15 +287,6 @@ export default {
       // this.$router.push({ path: '/graduate/graduateDetail', query: { applyId: applyId, tutorId: tutorId}})
     },
 
-    // 初始化负责院系(下拉框)
-    // async getOrganizationList() {
-    //   const { data: res } = await this.$http.get(
-    //     '/admin/organization/getAll'
-    //   )
-    //   this.organizationList = res
-    //   console.info(this.organizationList)
-    // },
-
     // 初始化申请类别
     async getApplyTypeList() {
       getApplyType().then(res => {
@@ -303,12 +294,13 @@ export default {
       })
     },
 
-    // 查询社科处待初审的数据
+    // 查询研究生院管理员待初审的数据
     // 通过状态码查询
     getSocialCheckInit() {
       // 34 社科处科研处审核通过返回给研究生院管理后，研究生院管理员复审通过  38 符合条件 39 不符合条件 （dynamic添加）
-      this.queryParams.applyStatuss = ['34', '38', '39']
-      getInit(0, this.queryParams.applyStatuss, this.queryParams.pageNum).then(res => {
+      // this.queryParams.applyStatuss = ['34', '38', '39']
+      this.queryParams.applyStatus = 34
+      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then(res => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })
@@ -320,9 +312,9 @@ export default {
         this.searchFlag = this.queryParams.applyStatus === 34 || 
                           this.queryParams.applyStatus === 38 || 
                           this.queryParams.applyStatus === 39
-        // console.log(this.queryParams.organization)
         this.tutorList = res.data.data
         this.totalData = res.data.total
+        console.log("查询数据："+ this.tutorList)
       })
     },
 

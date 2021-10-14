@@ -219,6 +219,7 @@
           size="small"
           icon="el-icon-success"
           :loading="exportLoading"
+          :disabled="disable"
           @click="submitFun()"
           >提交
         </el-button>
@@ -248,7 +249,7 @@ import {
   getInit,
   search,
 } from "@/api/departmentSecretary/secretaryFirst";
-import { toDetails } from "@/utils/function";
+import { toDetails, getStartTime, getEndTime } from "@/utils/function";
 import Cookies from "js-cookie";
 import { exportCS } from "@/api/departmentSecretary/exportExcel";
 
@@ -295,18 +296,9 @@ export default {
       queryParamCopy: {},
       // 和秘书初审有关的审核状态
       statusOptions: [
-        {
-          value: 10,
-          label: "待初审",
-        },
-        {
-          value: 15,
-          label: "符合条件",
-        },
-        {
-          value: 16,
-          label: "不符合条件",
-        },
+        { value: 10, label: "待初审" },
+        { value: 15, label: "符合条件" },
+        { value: 16, label: "不符合条件" },
         {
           value: 17,
           label: "待定",
@@ -327,9 +319,12 @@ export default {
       // 审核后需要下发的List数据
       updateList: [],
       tutorList: [],
+      //提交按钮是否禁用
+      disable: false,
     };
   },
   created() {
+    this.getSystemTime(); //获取研究生院管理员设置的系统时间
     this.getSecretaryInit(); // 初始化待初审的数据
     this.getApplyTypeList(); // 初始化申请的所有类别（下拉框）
   },
@@ -347,6 +342,34 @@ export default {
         return Cookies.get("organizationName");
       } else {
         console.log("error-organizationName is null");
+      }
+    },
+    //获取系统时间
+    async getSystemTime() {
+      //1.获取当前系统时间
+      const currentDate = new Date(); //获取当前时间;
+      // 2.该处应获取研究生院为所有院系设置的系统时间
+      const orgId = 0;
+      const { data: res } = await this.$http.get(
+        "/admin/system-time/get/" + orgId
+      );
+      //3.将后端返回的string类型的日期转换为Date,进行范围判断
+      // const begin = this.getZoneTime(new Date(res[0]), 0);
+      const begin = getStartTime(res[0]); // 北京时间八点
+      const end = getEndTime(res[1]);
+      console.log(currentDate, begin, end);
+      if (currentDate > end || currentDate < begin) {
+        //若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
+        console.log(false);
+        //提交按钮置灰
+        this.disable = true;
+        this.$alert("当前时间不在系统时间范围内，提交操作禁用！！！", "注意", {
+          confirmButtonText: "确定",
+        });
+      } else {
+        //反之，可以操作
+        console.log(true);
+        this.disable = true;
       }
     },
     // 查询院系秘书待初审的数据
