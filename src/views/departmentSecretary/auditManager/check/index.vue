@@ -360,15 +360,13 @@ export default {
       console.log(currentDate, begin, end);
       if (currentDate > end || currentDate < begin) {
         //若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
-        console.log(false);
         //提交按钮置灰
         this.disable = true;
-        this.$alert("当前时间不在系统时间范围内，提交操作禁用！！！", "注意", {
+        this.$alert("当前时间不在系统时间范围内，提交操作禁用！！！", "提示", {
           confirmButtonText: "确定",
         });
       } else {
         //反之，可以操作
-        console.log(true);
         this.disable = true;
       }
     },
