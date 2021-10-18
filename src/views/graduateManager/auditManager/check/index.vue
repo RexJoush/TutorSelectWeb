@@ -629,7 +629,7 @@ export default {
     // 提交按钮的方法
     submitFun() {
       // this.dialogVisibleSubmit = true
-         this.$confirm("确认提交吗？")
+         this.$confirm("确认提交所有符合以及不符合条件的信息至研究生院领导吗？")
         .then((res) => {
           this.submitUpdate()
         })
