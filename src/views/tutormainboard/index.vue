@@ -21,17 +21,17 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(1)">博士导师首次申请</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(1)">博士导师首次申请</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(2)">博士导师增列岗位</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(2)">博士导师增列岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(3)">博士导师免审申请</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(3)">博士导师免审申请</el-button>
           </div>
         </el-col>
       </el-row>
@@ -44,17 +44,17 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(4)">学硕导师首次申请</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(4)">学硕导师首次申请</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(5)">学硕导师增列岗位</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(5)">学硕导师增列岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(6)">学硕导师免审申请</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(6)">学硕导师免审申请</el-button>
           </div>
         </el-col>
       </el-row>
@@ -66,16 +66,16 @@
       <el-row :gutter="20">
         <el-col :span="7" :offset="3">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(7)">专硕导师首次申请</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(7)">专硕导师首次申请</el-button>
           </div>
         </el-col>
         <el-col :span="7">
           <div>
-            <el-button class="grid-content" type="primary" @click="checkApply(8)">专硕导师增列岗位</el-button>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(8)">专硕导师增列岗位</el-button>
           </div>
         </el-col>
         <el-col :span="7">
-          <div></div>
+          <div />
         </el-col>
       </el-row>
     </el-card>
@@ -84,14 +84,42 @@
 
 <script>
 
-import { checkApply } from '@/api/tutor/mainboard'
+import { checkApply, getOrganizationTime } from '@/api/tutor/mainboard'
+import { getEndTime, getOrganizationId, getStartTime } from '@/utils/function'
 
 export default {
   data() {
-    return {}
+    return {
+      isOk: true // 时间控制
+    }
   },
-
+  created() {
+    this.getOrganizationTime()
+  },
   methods: {
+
+    // 获取当前院系的时间，是否在时间有效期内
+    getOrganizationTime: function() {
+      const organizationId = getOrganizationId()
+      getOrganizationTime(organizationId)
+        .then((res) => {
+          console.log('res', res)
+          const currentDate = new Date() // 获取当前时间;
+          const begin = getStartTime(res.data.startTime) // 北京时间八点
+          const end = getEndTime(res.data.endTime)
+          console.log(begin, end)
+          if (currentDate > end || currentDate < begin) {
+            // 若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
+            // 提交按钮置灰
+            this.isOk = true
+            this.$alert('当前时间不在系统时间范围内，无法申请', '注意')
+          } else {
+            this.isOk = false
+          }
+        }).catch(error => {
+          throw error
+        })
+    },
 
     /*
       101：已经申请过此岗位，但信息未填写完成
@@ -105,14 +133,30 @@ export default {
         console.log(res.data)
         let url = ''
         switch (type) {
-          case 1: url += `firstApplyDoctor/1`; break
-          case 2: url += `addApplyDoctor/2`; break
-          case 3: url += `noInspectApplyDoctor/3`; break
-          case 4: url += `firstApplyMaster/4`; break
-          case 5: url += `addApplyMaster/5`; break
-          case 6: url += `noInspectApplyMaster/6`; break
-          case 7: url += `firstApplyProfessional/7`; break
-          case 8: url += `addApplyProfessional/8`; break
+          case 1:
+            url += `firstApplyDoctor/1`
+            break
+          case 2:
+            url += `addApplyDoctor/2`
+            break
+          case 3:
+            url += `noInspectApplyDoctor/3`
+            break
+          case 4:
+            url += `firstApplyMaster/4`
+            break
+          case 5:
+            url += `addApplyMaster/5`
+            break
+          case 6:
+            url += `noInspectApplyMaster/6`
+            break
+          case 7:
+            url += `firstApplyProfessional/7`
+            break
+          case 8:
+            url += `addApplyProfessional/8`
+            break
         }
 
         // 查询出来的状态为 0 ，老师可以进去修改

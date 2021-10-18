@@ -41,3 +41,10 @@ export function deleteFile(httpPath) {
   })
 }
 
+// 获取当前院系的申请时间范围
+export function getOrganizationTime(organizationId) {
+  return request({
+    url: `${baseUrl}/tutor/getOrganizationTime/${organizationId}`,
+    method: 'get'
+  })
+}

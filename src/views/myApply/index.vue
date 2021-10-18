@@ -36,9 +36,9 @@
             @click="toApplyDetails(scope.row)"
           >查 看
           </el-button>
-          <el-button v-if="scope.row.status === 14" size="mini" type="danger" plain @click="editApply(scope.row)">修 改
+          <el-button v-if="scope.row.status === 14" :disabled="isOk" size="mini" type="danger" plain @click="editApply(scope.row)">修 改
           </el-button>
-          <el-button v-else-if="scope.row.status === 0" size="mini" type="warning" plain @click="editApply(scope.row)">
+          <el-button v-else-if="scope.row.status === 0" :disabled="isOk" size="mini" type="warning" plain @click="editApply(scope.row)">
             填 写
           </el-button>
         </template>
@@ -46,15 +46,17 @@
     </el-table>
   </div>
 </template>
-
 <script>
 import { changeStatus, getApplyList } from '@/api/tutor/myApply'
-import { toDetails } from '@/utils/function'
+
+import { getEndTime, getOrganizationId, getStartTime, toDetails } from '@/utils/function'
+import { getOrganizationTime } from '@/api/tutor/mainboard'
 
 export default {
   name: 'Index',
   data() {
     return {
+      isOk: true, // 时间控制
       loading: false, // 申请的加载态
       applyList: [] // 我的申请列表
     }
@@ -62,17 +64,44 @@ export default {
   created() {
     this.getApplyList()
     this.loading = true
+    this.getOrganizationTime()
   },
   methods: {
+
+    // 获取当前院系的时间，是否在时间有效期内
+    getOrganizationTime: function() {
+      const organizationId = getOrganizationId()
+      getOrganizationTime(organizationId)
+        .then((res) => {
+          console.log('res', res)
+          const currentDate = new Date() // 获取当前时间;
+          const begin = getStartTime(res.data.startTime) // 北京时间八点
+          const end = getEndTime(res.data.endTime)
+          console.log(begin, end)
+          if (currentDate > end || currentDate < begin) {
+          // 若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
+          // 提交按钮置灰
+            this.isOk = true
+            this.$alert('当前时间不在系统时间范围内，无法修改或填写', '注意')
+          } else {
+            this.isOk = false
+          }
+        }).catch(error => {
+          throw error
+        })
+    },
+
     // 获取我的申请
     getApplyList: function() {
-      getApplyList().then(res => {
-        console.log(res)
-        this.applyList = res.data
-        this.loading = false
-      }).catch(error => {
-        throw error
-      })
+      getApplyList()
+        .then(res => {
+          console.log(res)
+          this.applyList = res.data
+          this.loading = false
+        })
+        .catch(error => {
+          throw error
+        })
     },
 
     // 修改信息
@@ -107,7 +136,6 @@ export default {
 
 }
 </script>
-
 <style scoped>
 
 </style>
