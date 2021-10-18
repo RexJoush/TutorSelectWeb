@@ -77,13 +77,15 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+
+      <!-- <el-table-column label="备注" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <!-- 分页框 -->
+    <el-row type="flex" justify="center">
     <el-pagination
       style="margin: 5px 0"
       :current-page="queryParams.pageNum"
@@ -92,6 +94,7 @@
       :total="total"
       @current-change="handleCurrentChange"
     />
+    </el-row>
   </div>
 </template>
 
@@ -152,14 +155,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
+        userId: "", // 工号
+        userName: "", // 姓名
+        organization: "", // 院系id
+        applyType: "", // 申请类别id
+        subjectName: "", // 学科名称id
+        applyStatus: "", // 审核状态码id
         applyStatuss: [],
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        subjectType: "" // 学科属性，文科，理科，交叉
       }
     }
   },

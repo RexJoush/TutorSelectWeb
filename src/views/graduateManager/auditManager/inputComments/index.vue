@@ -135,10 +135,13 @@
       <el-table-column label="职称" align="center" prop="title" />
       <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
+          <el-tag v-if="scope.row.status === 81 " type="success">
             {{ scope.row.inspectDescribe }}
           </el-tag>
-          <el-tag v-else type="warning">
+           <el-tag v-else-if="scope.row.status === 61 " type="info">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+          <el-tag v-else type="danger">
             {{ scope.row.inspectDescribe }}
           </el-tag>
         </template>
@@ -155,6 +158,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-row type="flex" justify="center">
     <el-pagination
       style="margin: 5px 0"
       :current-page="queryParams.pageNum"
@@ -163,6 +167,7 @@
       :total="total"
       @current-change="handleCurrentChange"
     />
+    </el-row>
     <!-- 校会通过的确认弹框 -->
     <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
       <span>您确定所选记录均为校会通过吗？</span>
@@ -172,9 +177,9 @@
       </span>
     </el-dialog>
     <!-- 提交校分会的备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加学位委员会的备注信息(可以为空)</span>
-      <el-input v-model="commit" autocomplete="off" />
+      <el-input type="textarea" v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
@@ -258,22 +263,22 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
+        userId: "", // 工号
+        userName: "", // 姓名
+        organization: "", // 院系id
+        applyType: "", // 申请类别id
+        subjectName: "", // 学科名称id
         applyStatus: '', // 审核状态码id
         applyStatuss: [], // 审核状态码数组 id
 
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        subjectType: "" // 学科属性，文科，理科，交叉
       },
-      commit: undefined
+      commit: ""
     }
   },
   created() {
     // 研究生院领导通过的状态即同意上分会，即研究生院管理员需要录入校分会意见的名单
-    this.queryParams.applyStatus = 61
+    this.queryParams.applyStatus =''
     this.getList()
     this.getApplyType()
     this.getOrginization()
@@ -286,17 +291,17 @@ export default {
     },
     // 查询数据
     search: function() {
-      if (this.queryParams.applyStatus === '' &&
-        this.queryParams.userName === '' &&
-        this.queryParams.organization === '' &&
-        this.queryParams.applyType === '' &&
-        this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === ''
+      if (this.queryParams.applyStatus === "" &&
+        this.queryParams.userName === "" &&
+        this.queryParams.organization === "" &&
+        this.queryParams.applyType ==="" &&
+        this.queryParams.subjectName === "" &&
+        this.queryParams.subjectType === ""
       ) {
         this.getList()
       } else {
         if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['61'] // 申请状态码
+          this.queryParams.applyStatuss = ['61','81','82'] // 申请状态码
         }
         this.queryParams.pageNum = 1
         search(this.queryParams, 1).then(res => {
@@ -312,7 +317,7 @@ export default {
     /** 查询用户列表 */
     async getList() {
       this.loading = true
-      const applyStatuss = ['61']
+      const applyStatuss = ['61','81','82']
       this.queryParams.pageNum = this.currentPage || 1
       getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
@@ -349,6 +354,10 @@ export default {
     },
     async getApplyStatus() {
       this.applyStatusOptions = [
+        {
+          'codeId': '' ,
+          'inspectDescribe':'全部状态'
+        },
         {
           'codeId': 61,
           'inspectDescribe': '同意上校分会'
@@ -405,7 +414,13 @@ export default {
     },
     // 校会通过
     passFun(num) {
-      this.dialogVisiblePass = true
+       this.$confirm("确认操作为学位委员会通过吗？")
+        .then((res) => {
+           this.upDateStatus(81)
+        })
+        .catch(() => {
+          console.log("cancel");
+        }); 
       this.commit = '校会通过，学位委员会通过'
     },
     // 审核通过确认弹框确认按钮
@@ -415,8 +430,13 @@ export default {
     },
     // 初审不通过
     unPassFun() {
-      // 驳回之前判断是否只选择了一条
-      this.dialogVisible = true
+         this.$confirm("确认操作为学位委员会不通过吗？")
+        .then((res) => {
+           this.upDateStatus(82)
+        })
+        .catch(() => {
+          console.log("cancel");
+        }); 
       this.commit = '校会不通过，学位委员会不通过'
     },
     // 弹框确定按钮驳回操作
