@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-14 10:34:14
+ * @LastEditTime: 2021-10-18 20:58:40
 -->
 <template>
   <div class="app-container">
@@ -97,8 +97,10 @@
             <el-select
               v-model="queryParams.applyStatus"
               placeholder="请选择"
+              clearable
               size="small"
               style="width: 100%"
+              @change="changeApplyStatus"
             >
               <el-option
                 v-for="item in statusOptions"
@@ -126,6 +128,8 @@
       </el-button>
       <el-button v-if="searchFlag === true" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">不同意上校会
       </el-button>
+      <el-button v-if="searchFlag === true" type="info" plain icon="el-icon-top" size="small" :disabled="multiple" @click="rejectFun()">驳回
+      </el-button>
     </div>
 
     <!-- 数据部分 -->
@@ -142,14 +146,18 @@
       <el-table-column label="职称" align="center" prop="title" width="100" />
       <!-- 数据库中查询最后学位字段 -->
       <el-table-column label="最后学位" align="center" prop="finalDegree" />
-      <el-table-column label="审核状态" align="center" width="130">
+      <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 61 || scope.row.status === 62" type="info">
-            {{ scope.row.inspectDescribe }}
+          <el-tag v-if="scope.row.status === 65 || scope.row.status === 61" type="success">
+            同意上校会
           </el-tag>
-          <el-tag v-else type="warning">
-            {{ scope.row.inspectDescribe }}
+          <el-tag v-else-if="scope.row.status === 66 || scope.row.status === 62" type="danger">
+            不同意上校会
           </el-tag>
+          <el-tag v-else-if="scope.row.status === 29 || scope.row.status === 25" type="info">
+            驳回
+          </el-tag>
+          <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center" prop="mr">
@@ -157,7 +165,11 @@
           <el-button size="small" type="text" @click="handleDetail(scope.row)">查看详情</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="commit" width="150" />
+      <el-table-column label="备注" align="center" prop="commit" width="150">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <!-- 分页框 -->
@@ -172,23 +184,54 @@
       />
     </el-row>
 
+    <!-- 提交按钮 -->
+    <el-col :span="2" :offset="22">
+      <el-button
+        type="success"
+        plain
+        size="small"
+        icon="el-icon-success"
+        @click="submitFun()"
+      >提交
+      </el-button>
+    </el-col>
+
+    <!-- 备注弹框 -->
+    <el-dialog title="初审备注(可以为空)" :visible.sync="dialogVisible" width="20%">
+      <el-input type="textarea" v-model="returnCommit" autocomplete="off" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel()">取 消</el-button>
+        <el-button type="primary" @click="returnFun()">确 定</el-button>
+      </span>
+    </el-dialog>
     <!-- 审批通过的确认弹框 -->
-    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+    <!-- <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
       <span>确认提交吗？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisiblePass = false">取 消</el-button>
         <el-button type="primary" @click="rePassFun()">确 定</el-button>
       </span>
-    </el-dialog>
-    <!-- 驳回时的备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+    </el-dialog> -->
+    <!-- 不同意时的备注弹框 -->
+    <!-- <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
+    <!-- 驳回时的备注弹框 -->
+    <!-- <el-dialog title="备注" :visible.sync="dialogVisibleRej" width="30%">
+      <span>请输入驳回理由(可以为空)</span>
+      <el-input v-model="returnCommit" autocomplete="off" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel2()">取消</el-button>
+        <el-button type="primary" @click="rejFun()">确定</el-button>
+      </span>
+    </el-dialog> -->
+
+
   </div>
 </template>
 
@@ -209,8 +252,10 @@ export default {
       searchFlag: false,
       // 驳回时备注的内容
       returnCommit: '',
-      // 驳回弹框默认不显示
+      // 不同意弹框默认不显示
       dialogVisible: false,
+      // 驳回弹框
+      dialogVisibleRej: false,
       // 通过确认框
       dialogVisiblePass: false,
       // 非多个禁用
@@ -225,6 +270,8 @@ export default {
       organizationList: departmentList,
       // 选定的列表
       multipleSelection: [],
+      // 备注列表
+      commitArrays: [],
       // 申请类别选项
       applyTypeList: [],
       // 学科名称选项
@@ -244,7 +291,7 @@ export default {
       },
       // 当前页
       currentPage: 1,
-      // 科研处审核状态
+      // 研究生院领导审核状态
       statusOptions: [
         {
           value: 34,
@@ -265,11 +312,17 @@ export default {
         {
           value: 62, // 研究生院领导审核不通过，不同意上校会
           label: '不同意上校会'
+        },
+        {
+          value: 25, // 研究生院领导审核不通过，驳回
+          label: '驳回'
         }
       ],
       // 审核后需要下发的List数据
-      updataList: [],
-      tutorList: []
+      updateList: [],
+      tutorList: [],
+      //提交按钮是否禁用
+      disable: false,
     }
   },
   created() {
@@ -296,11 +349,12 @@ export default {
 
     // 查询研究生院管理员待初审的数据
     // 通过状态码查询
-    getSocialCheckInit() {
+    getSocialCheckInit: function() {
       // 34 社科处科研处审核通过返回给研究生院管理后，研究生院管理员复审通过  38 符合条件 39 不符合条件 （dynamic添加）
       // this.queryParams.applyStatuss = ['34', '38', '39']
-      this.queryParams.applyStatus = 34
-      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then(res => {
+      const applyStatuss = ["34", "38", "39", "65", "66", "29"]; // 申请状态码
+      // this.queryParams.applyStatus = 34
+      getInit(0, applyStatuss, this.queryParams.pageNum).then(res => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })
@@ -308,75 +362,172 @@ export default {
 
     // 搜索按钮
     searchQuery() {
-      search(this.queryParams, 1).then(res => {
-        this.searchFlag = this.queryParams.applyStatus === 34 || 
-                          this.queryParams.applyStatus === 38 || 
-                          this.queryParams.applyStatus === 39
-        this.tutorList = res.data.data
-        this.totalData = res.data.total
-        console.log("查询数据："+ this.tutorList)
-      })
+      if (
+        this.queryParams.applyStatus === "" &&
+        this.queryParams.userName === "" &&
+        this.queryParams.organization === "" &&
+        this.queryParams.applyType === "" &&
+        this.queryParams.subjectName === "" &&
+        this.queryParams.subjectType === ""
+      ) {
+        this.getSocialCheckInit();
+      } else {  
+        if (this.queryParams.applyStatus === "") {
+          this.queryParams.applyStatuss = ["34", "38", "39","65", "66", "29"]; // 申请状态码
+        }
+        search(this.queryParams, 1).then(res => {
+          this.searchFlag = this.queryParams.applyStatus === 34 || 
+                            this.queryParams.applyStatus === 38 || 
+                            this.queryParams.applyStatus === 39 ||
+                            this.queryParams.applyStatus === ''
+          this.tutorList = res.data.data
+          this.totalData = res.data.total
+          console.log("查询数据："+ this.tutorList)
+        })
+      }
+    },
+
+    // 清空选择申请状态
+    changeApplyStatus: function () {
+      this.queryParams.applyStatuss = [];
     },
 
     // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null
-      this.queryParams.userName = null
-      this.queryParams.organization = null
-      this.queryParams.applyStatus = 34
+      this.queryParams.userId = ''
+      this.queryParams.userName = ''
+      this.queryParams.organization = ''
+      this.queryParams.applyStatus = ''
     },
     // 初审通过
     passFun() {
-      this.dialogVisiblePass = true
+      this.check(65)
     },
-    // 审核通过确认弹框按钮
-    rePassFun() {
-      this.check(61)
-      this.dialogVisiblePass = false
-      window.location.reload()// 重新加载页面
+    // 初审不通过
+    unPassFun() {      
+      this.check(66)
+    },
+    //驳回操作
+    rejectFun() {
+      this.check(29)
+    },
+    // 点击备注按钮，添加备注
+    commitFun(row) {
+      this.commitArrays.length = 0;
+      this.dialogVisible = true;
+      this.returnCommit = row.commit; // 回显数据
+      const obj = { id_1: 0, status_1: 0, commit_1: "" };
+      obj.id_1 = row.applyId;
+      obj.status_1 = row.status;
+      obj.commit_1 = row.commit;
+      this.commitArrays.push(obj);
     },
 
-    // 初审不通过
-    unPassFun() {
-      // 驳回之前判断是否只选择了一条
-      if (this.multipleSelection.length > 1) {
-        this.$message.warning('注意:只能选择一条数据审核！')
-      } else {
-        this.dialogVisible = true
+    // 备注弹框的确定按钮
+    returnFun() {
+      this.commitArrays[0].commit_1 = this.returnCommit;
+      this.updateStatusFun(this.commitArrays, false);
+      console.log("备注确定按钮", this.commitArrays);
+      this.dialogVisible = false
+    },
+    // 更新tutorList和updateList中的commit
+    updateTutorListDataCommit(currentId) {
+      for (let i = 0; i < this.tutorList.length; i++) {
+        if (currentId === this.tutorList[i].applyId) {
+          this.tutorList[i].commit = this.returnCommit;
+          break;
+        }
+      }
+      for (let i = 0; i < this.updateList.length; i++) {
+        if (currentId === this.updateList[i].id_1) {
+          this.updateList[i].commit_1 = this.returnCommit;
+          console.log(this.updateList[i]);
+          break;
+        }
       }
     },
-
-    // 弹框确定按钮驳回操作
-    returnFun() {
-      // 添加备注
-      this.updataList[0].commit_1 = this.returnCommit
-      this.check(62)
-      this.dialogVisible = false
-      this.returnCommit = null
-      window.location.reload()// 重新加载页面
-    },
-
     // 弹框取消按钮
     cancel() {
       this.dialogVisible = false
       this.returnCommit = null
     },
 
+    // 弹框确定按钮驳回操作
+    // rejFun() {
+    //   // 添加备注
+    //   this.updateList[0].commit_1 = this.returnCommit
+    //   this.check(25)
+    //   this.dialogVisibleRej = false
+    //   this.returnCommit = null
+    //   window.location.reload()// 重新加载页面
+    // },
+
+    // 弹框取消按钮
+    // cancel2() {
+    //   this.dialogVisibleRej = false
+    //   this.returnCommit = null
+    // },
+
     // 更新操作
     check(status) {
-      for (let index = 0; index < this.updataList.length; index++) {
-        this.updataList[index].status_1 = status
-      }
-      updateStatus(this.updataList).then(res => {
-        if (res.code === 20000) {
-          this.$message.success('审核成功')
+      if (status === "submit") {
+        // 如果status是submit，则执行提交按钮
+        for (let index = 0; index < this.updateList.length; index++) {
+          this.updateList[index].status_1 = this.updateList[index].status_1 - 4; // -4是因为数据库绑定状态的原因，勿动
+          console.log("提交按钮",this.updateList)
         }
-        this.updataList.length = 0
-        this.resetQuery()
-        this.getSocialCheckInit()
-      })
+      } else {
+        console.log(status);
+        for (let index = 0; index < this.updateList.length; index++) {
+          this.updateList[index].status_1 = status;
+        }
+      }
+      this.updateStatusFun(this.updateList, true);
+      console.log("更新状态", this.updateList);
     },
-
+    // 更新状态
+    updateStatusFun(updateList, isInit) {
+      updateStatus(updateList).then((res) => {
+        if (res.code === 20000) {
+          this.$message.success("操作成功!");
+        }
+        if (isInit) {
+          // 走四个按钮＋提交，刷新页面
+          this.getSocialCheckInit();
+        } else {
+          // 走备注，不刷新页面，
+          // 更新tutorList中的commit
+          this.updateTutorListDataCommit(this.commitArrays[0].id_1);
+        }
+      });
+    },
+    // 提交按鈕
+    submitFun() {
+      this.$confirm("确认提交吗？")
+        .then((res) => {
+          let flag = true;
+          for (let index = 0; index < this.updateList.length; index++) {
+            if (this.updateList[index].status_1 === 34 || this.updateList[index].status_1 === 38 || this.updateList[index].status_1 === 39) {
+              flag = false;
+            }
+          }
+          //判断若没有勾选数据，提示
+          if (this.updateList.length === 0) {
+            this.$message.warning("未选择数据，请先进行选择！");
+          } else {
+            if (flag) {
+              this.check("submit");
+              this.getSocialCheckInit();
+            } else {
+              this.$message.warning("有待审核的数据，请先进行审核！");
+            }
+          }
+          this.dialogVisiblePass = false;
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
+    },
     // 当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {
@@ -386,7 +537,7 @@ export default {
       }
       this.multipleSelection = val
       // 每次选择都要将之前的清空
-      this.updataList = []
+      this.updateList = []
       // 将需要审核后下发的数据对应起来
       for (let index = 0; index < this.multipleSelection.length; index++) {
         const obj = { id_1: 0, status_1: 0, commit_1: '' }
@@ -394,7 +545,7 @@ export default {
         obj.status_1 = this.multipleSelection[index].status
         obj.commit_1 = ''
         console.log(obj)
-        this.updataList.push(obj)
+        this.updateList.push(obj)
       }
     },
 
@@ -404,7 +555,7 @@ export default {
     handleCurrentChange(val) {
       this.queryParams.pageNum = val
       this.getSocialCheckInit()
-    }
+    },
 
   }
 
