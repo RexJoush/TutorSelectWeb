@@ -553,7 +553,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="影响因子">
-              <el-input v-model="academicPaper.impactFactors" />
+              <el-input type="number" v-model="academicPaper.impactFactors" :percesion="2" :step="0.01" placeholder="0.00"/>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -647,7 +647,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="总经费（万元）">
-              <el-input v-model="researchProject.projectTotalPrice" />
+              <el-input type="number" v-model="researchProject.projectTotalPrice" :percesion="2" :step="1" placeholder="0.00"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -734,7 +734,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="完成字数（万字）">
-              <el-input v-model="academicWork.totalWords" />
+              <el-input type="number" v-model="academicWork.totalWords" :percesion="2" :step="0.1" placeholder="0.00"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -791,7 +791,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="排名">
-              <el-input v-model="teachingAward.awardsRank" />
+              <el-input type="number" v-model="teachingAward.awardsRank" placeholder="请输入数字" :step="1" :min="1"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
