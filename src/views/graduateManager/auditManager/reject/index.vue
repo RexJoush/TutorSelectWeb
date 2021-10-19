@@ -123,7 +123,7 @@
 
     </div>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column type="selection"  align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" />
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
@@ -146,12 +146,13 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+      <!-- <el-table-column label="备注" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
+    <el-row type="flex" justify="center">
     <el-pagination
       style="margin: 5px 0"
       :current-page="queryParams.pageNum"
@@ -160,6 +161,7 @@
       :total="total"
       @current-change="handleCurrentChange"
     />
+    </el-row>
   </div>
 </template>
 

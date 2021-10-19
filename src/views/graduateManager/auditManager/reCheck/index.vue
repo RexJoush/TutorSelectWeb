@@ -54,7 +54,7 @@
       </el-row>
     </el-form>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column type="selection" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" />
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
@@ -84,6 +84,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页框 -->
+    <el-row type="flex" justify="center">
     <el-pagination
       style="margin: 5px 0"
       :current-page="queryParams.pageNum"
@@ -92,6 +93,7 @@
       :total="total"
       @current-change="handleCurrentChange"
     />
+    </el-row>
     <!-- 导出提交按钮 -->
     <el-row>
       <el-col :span="2">
@@ -104,11 +106,11 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
+    <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">同意上分会</span>的所有数据</p>
     <!-- 提交校分会的备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加需要提交给校会的备注信息(可以为空)</span>
-      <el-input v-model="commit" autocomplete="off" />
+      <el-input  type="textarea" v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
@@ -116,7 +118,6 @@
     </el-dialog>
   </div>
 </template>
-
 <script>
 
 // eslint-disable-next-line no-unused-vars

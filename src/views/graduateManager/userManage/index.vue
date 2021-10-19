@@ -1,9 +1,73 @@
 <template>
   <div class="app-container">
+
+    <!-- 搜索部分 -->
+    <el-form ref="queryForm" label-width="70px">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <el-form-item label="姓名" prop="userName">
+            <el-input
+              v-model="queryParams.userName"
+              placeholder="请输入用户名称"
+              clearable
+              size="small"
+              style="width: 240px"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+             <el-form-item label="工号" prop="userId">
+            <el-input
+              v-model="queryParams.userId"
+              placeholder="请输入用户工号"
+              clearable
+              size="small"
+              style="width: 240px"
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+              <el-form-item label="角色" prop="userRole">
+            <el-select
+              v-model="queryParams.userRole"
+              placeholder="用户角色"
+              clearable
+              size="small"
+              style="width: 240px"
+            >
+            </el-select>
+              </el-form-item>
+        </el-col>
+        <el-col :span="6">
+               <el-form-item label="创建时间">
+            <el-date-picker
+              v-model="queryParams.createTime"
+              size="small"
+              style="width: 240px"
+              value-format="yyyy-MM-dd"
+              type="date"
+              placeholder="选择日期"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="6" :offset="18">
+          <el-row>
+            <el-col :span="6" :offset="6">
+              <el-button type="primary" icon="el-icon-search" size="small"  @click="handleQuery">搜索</el-button>
+            </el-col>
+            <el-col :span="6" :offset="2">
+              <el-button icon="el-icon-refresh" size="small"  @click="resetQuery">重置</el-button>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+    </el-form>
     <el-row :gutter="20">
       <!--用户表格部分-->
-      <el-col :span="20" :xs="24">
-        <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
+      <el-col >
+        <!-- <el-form v-show="showSearch" ref="queryForm" :model="queryParams" :inline="true" label-width="68px">
           <el-form-item label="姓名" prop="userName">
             <el-input
               v-model="queryParams.userName"
@@ -54,8 +118,7 @@
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
-        </el-form>
-
+        </el-form> -->
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button
@@ -88,7 +151,7 @@
         </el-row>
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="50" align="center" />
+          <el-table-column type="selection" align="center" />
           <el-table-column label="学工号" align="center" prop="userId" />
           <el-table-column label="姓名" align="center" prop="userName" />
           <el-table-column label="院系" align="center" prop="organization" />
@@ -104,7 +167,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+          <el-table-column label="创建时间" align="center" prop="createTime">
             <template slot-scope="scope">
               <!--              <span>{{ parseTime(scope.row.createTime) }}</span>-->
               <span>{{ scope.row.createTime }}</span>
@@ -114,7 +177,7 @@
           <el-table-column
             label="操作"
             align="center"
-            width="160"
+      
             class-name="small-padding fixed-width"
           >
             <template v-if="scope.row.userId !== 1" slot-scope="scope">
@@ -133,16 +196,17 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="block">
-          <el-pagination
+         <el-row type="flex" justify="center">
+      <el-pagination
             v-show="total>0"
+             style="margin: 5px 0"
             :current-page="queryParams.pageNum"
             :page-size="queryParams.pageSize"
             layout="total, prev, pager, next"
             :total="total"
             @current-change="handleCurrentChange"
           />
-        </div>
+    </el-row>
       </el-col>
     </el-row>
 
