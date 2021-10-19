@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-18 20:58:40
+ * @LastEditTime: 2021-10-18 21:02:19
 -->
 <template>
   <div class="app-container">
@@ -387,7 +387,7 @@ export default {
       }
     },
 
-    // 清空选择申请状态
+    // 清空选择申请状态!!!!!!!很重要  fouze 搜索清空后失效
     changeApplyStatus: function () {
       this.queryParams.applyStatuss = [];
     },
