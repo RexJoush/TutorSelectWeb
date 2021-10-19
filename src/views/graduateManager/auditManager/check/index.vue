@@ -1,7 +1,6 @@
 <!--本页为研究生院管理员的初审界面，研究生院管理员可在该页面将院系秘书复审通过的导师信息进行审核-->
 <template>
   <div class="app-container">
-
     <!-- 搜索部分 -->
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
@@ -194,9 +193,8 @@
         @current-change="handleCurrentChange"
       />
     </el-row>
-    <!-- 导出提交按钮 -->
     <el-row>
-      <el-col :span="2">
+      <!-- <el-col :span="2">
         <el-button
           plain
           icon="el-icon-download"
@@ -204,8 +202,8 @@
           @click="exportFun()"
         >导出excel
         </el-button>
-      </el-col>
-      <el-col :span="2" :offset="20">
+      </el-col> -->
+      <el-col :span="2" :offset="22">
         <el-button
           type="success"
           plain
@@ -216,31 +214,13 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0; color: #F56C6C">注意：导出上表所有的数据</p>
-
-    <!-- 审批通过的确认弹框 -->
-    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
-      <span>确认提交吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisiblePass = false">取 消</el-button>
-        <el-button type="primary" @click="rePassFun(1)">确 定</el-button>
-      </span>
-    </el-dialog>
     <!-- 备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加提交给操作的备注信息(可以为空)</span>
-      <el-input v-model="commit" autocomplete="off" />
+      <el-input  type="textarea" v-model="commit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!-- 点击提交按钮时显示 -->
-    <el-dialog title="提示" :visible.sync="dialogVisibleSubmit" width="30%">
-      <span>确认将符合条件以及不符合条件的导师信息提交给研究生院主管吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleSubmit = false">取 消</el-button>
-        <el-button type="primary" @click="rePassFun(2)">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -470,8 +450,56 @@ export default {
     },
     // 初审通过
     passFun(num) {
-      this.dialogVisiblePass = true
-      this.choose = num
+      if (num === 1) {
+          // 送审社科处
+         this.$confirm("确认送审社科处吗？")
+        .then((res) => {
+          this.upDateStatus(30)
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
+        }
+        if (num === 2) {
+        // 送审社科处
+         this.$confirm("确认送审科研处吗？")
+        .then((res) => {
+            this.upDateStatus(31)
+        })
+        .catch(() => {
+          console.log("cancel");
+        });       
+        }
+        if (num === 3) {
+          // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给研究院主管
+         this.$confirm("确认修改为符合条件吗？")
+        .then((res) => {
+            this.upDateStatus(388)
+        })
+        .catch(() => {
+          console.log("cancel");
+        });  
+        }
+        if (num === 4) {
+          // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
+        this.$confirm("确认修改为不符合条件吗？")
+        .then((res) => {
+            this.upDateStatus(399)
+        })
+        .catch(() => {
+          console.log("cancel");
+        }); 
+        }
+        if (num === 5) {
+          // 需修改，送至驳回页面
+           this.$confirm("确认提交至驳回页面吗？")
+        .then((res) => {
+            this.upDateStatus(36)
+        })
+        .catch(() => {
+          console.log("cancel");
+        }); 
+        }
     },
     async submitCommit() {
       this.row.commitYjsyCs = this.commit
@@ -489,27 +517,57 @@ export default {
       if (num === 1) {
         if (this.choose === 1) {
           // 送审社科处
+         this.$confirm("确认送审社科处吗？")
+        .then((res) => {
           this.upDateStatus(30)
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
         }
         if (this.choose === 2) {
-          // 送审社科处
-          this.upDateStatus(31)
+        // 送审社科处
+         this.$confirm("确认送审科研处吗？")
+        .then((res) => {
+            this.upDateStatus(31)
+        })
+        .catch(() => {
+          console.log("cancel");
+        });       
         }
         if (this.choose === 3) {
           // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给研究院主管
-          this.upDateStatus(388)
+         this.$confirm("确认修改为符合条件吗？")
+        .then((res) => {
+            this.upDateStatus(388)
+        })
+        .catch(() => {
+          console.log("cancel");
+        });  
         }
         if (this.choose === 4) {
           // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
-          this.upDateStatus(399)
+        this.$confirm("确认修改为不符合条件吗？")
+        .then((res) => {
+            this.upDateStatus(399)
+        })
+        .catch(() => {
+          console.log("cancel");
+        }); 
         }
         if (this.choose === 5) {
           // 需修改，送至驳回页面
-          this.upDateStatus(36)
+           this.$confirm("确认修改为不符合条件吗？")
+        .then((res) => {
+            this.upDateStatus(36)
+        })
+        .catch(() => {
+          console.log("cancel");
+        }); 
         }
       } else {
         // 点击了提交按钮的确认，将符合条件以及不符合条件的一起提交给研究生院主管
-        this.submitUpdate()
+        // this.submitUpdate()
       }
       this.dialogVisiblePass = false
     },
@@ -522,7 +580,7 @@ export default {
       if (res === 20000) {
         this.$message.success('操作成功!')
       }
-      this.dialogVisibleSubmit = false
+      // this.dialogVisibleSubmit = false
       this.getList()
     },
     // 初审不通过
@@ -570,7 +628,14 @@ export default {
     },
     // 提交按钮的方法
     submitFun() {
-      this.dialogVisibleSubmit = true
+      // this.dialogVisibleSubmit = true
+         this.$confirm("确认提交所有符合以及不符合条件的信息至研究生院领导吗？")
+        .then((res) => {
+          this.submitUpdate()
+        })
+        .catch(() => {
+          console.log("cancel");
+        });
     }
 
   }

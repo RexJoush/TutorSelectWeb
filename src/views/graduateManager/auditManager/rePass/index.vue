@@ -143,14 +143,14 @@
       </el-button>
     </div>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
-      <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" width="150" fixed />
+      <el-table-column type="selection" align="center" />
+      <el-table-column label="工号" align="center" prop="tutorId"  />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
       <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title" width="100" />
-      <el-table-column label="审核状态" align="center" width="130">
+      <el-table-column label="职称" align="center" prop="title"  />
+      <el-table-column label="审核状态" align="center" >
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
             {{ scope.row.inspectDescribe }}
@@ -160,19 +160,20 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="详情" align="center" width="60">
+      <el-table-column label="详情" align="center" >
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" width="80">
+      <el-table-column label="备注" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- 分页框 -->
+    <el-row type="flex" justify="center">
     <el-pagination
       style="margin: 5px 0"
       :current-page="queryParams.pageNum"
@@ -181,10 +182,11 @@
       :total="total"
       @current-change="handleCurrentChange"
     />
+    </el-row>
     <!-- 审批通过的确认弹框 -->
-    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="20%">
       <span>确认提交给研究生院主管吗？</span>
-      <span slot="footer" class="dialog-footer">
+      <span  type="textarea" slot="footer" class="dialog-footer">
         <el-button @click="dialogVisiblePass = false">取 消</el-button>
         <el-button type="primary" @click="rePassFun()">确 定</el-button>
       </span>
@@ -254,18 +256,18 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
-        applyStatus: undefined, // 审核状态码id
+        userId: "", // 工号
+        userName: "", // 姓名
+        organization: "", // 院系id
+        applyType: "", // 申请类别id
+        subjectName: "", // 学科名称id
+        applyStatus: "", // 审核状态码id
         applyStatuss: [], // 审核状态码数组 id
 
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        subjectType: "" // 学科属性，文科，理科，交叉
       },
       choose: 0,
-      commit: undefined
+      commit: ""
     }
   },
   created() {
@@ -387,13 +389,18 @@ export default {
     },
     // 通过
     passFun(num) {
-      this.dialogVisiblePass = true
+       this.$confirm("确认提交给研究生院领导吗？")
+        .then((res) => {
+      this.upDateStatus(34)
+       })
+        .catch(() => {
+          console.log("cancel");
+        }); 
       this.choose = num
     },
     // 审核通过确认弹框确认按钮
     rePassFun() {
       // eslint-disable-next-line eqeqeq
-      this.upDateStatus(34)
       this.dialogVisiblePass = false
     },
     // 弹框取消按钮

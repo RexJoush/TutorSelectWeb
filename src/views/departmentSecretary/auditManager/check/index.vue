@@ -367,7 +367,7 @@ export default {
         });
       } else {
         //反之，可以操作
-        this.disable = true;
+        this.disable = false;
       }
     },
     // 查询院系秘书待初审的数据
