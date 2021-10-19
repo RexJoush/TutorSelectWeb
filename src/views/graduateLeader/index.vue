@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-01 09:56:35
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-18 21:02:19
+ * @LastEditTime: 2021-10-19 11:32:27
 -->
 <template>
   <div class="app-container">
@@ -165,11 +165,7 @@
           <el-button size="small" type="text" @click="handleDetail(scope.row)">查看详情</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="commit" width="150">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column label="备注" align="center" prop="commit" width="150" />
     </el-table>
 
     <!-- 分页框 -->
@@ -187,6 +183,7 @@
     <!-- 提交按钮 -->
     <el-col :span="2" :offset="22">
       <el-button
+        v-if="searchFlag"
         type="success"
         plain
         size="small"
@@ -412,16 +409,16 @@ export default {
       this.check(29)
     },
     // 点击备注按钮，添加备注
-    commitFun(row) {
-      this.commitArrays.length = 0;
-      this.dialogVisible = true;
-      this.returnCommit = row.commit; // 回显数据
-      const obj = { id_1: 0, status_1: 0, commit_1: "" };
-      obj.id_1 = row.applyId;
-      obj.status_1 = row.status;
-      obj.commit_1 = row.commit;
-      this.commitArrays.push(obj);
-    },
+    // commitFun(row) {
+    //   this.commitArrays.length = 0;
+    //   this.dialogVisible = true;
+    //   this.returnCommit = row.commit; // 回显数据
+    //   const obj = { id_1: 0, status_1: 0, commit_1: "" };
+    //   obj.id_1 = row.applyId;
+    //   obj.status_1 = row.status;
+    //   obj.commit_1 = row.commit;
+    //   this.commitArrays.push(obj);
+    // },
 
     // 备注弹框的确定按钮
     returnFun() {
