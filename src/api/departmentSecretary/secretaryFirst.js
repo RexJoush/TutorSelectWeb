@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-09-21 15:04:25
  * @LastEditors: Anna
- * @LastEditTime: 2021-09-22 09:36:45
+ * @LastEditTime: 2021-10-20 17:47:24
  */
 import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
@@ -48,7 +48,7 @@ export function checkDate(data) {
   })
 }
 // 更新操作
-export function updateStatus(data) {
+export function updateStatus(data) {  
   return request({
     url: '/admin/update-status/update',
     method: 'post',
@@ -74,5 +74,12 @@ export function updateStatusXy(data) {
   })
 }
 
-
+//社科处更新操作
+export function updateSocial(data) {  
+  return request({
+    url: '/admin/update-status/updateSocial',
+    method: 'post',
+    data: data
+  })
+}
 

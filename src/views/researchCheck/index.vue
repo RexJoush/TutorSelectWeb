@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-14 10:14:10
+ * @LastEditTime: 2021-10-20 20:28:17
 -->
 <template>
   <div class="app-container">
@@ -113,15 +113,16 @@
       </el-table-column>
       <el-table-column label="备注" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.commit === '材料审核通过'" type="success">
-            {{ scope.row.commit }}
+          <el-tag v-if="scope.row.commitSocial === '材料审核通过'" type="success">
+            {{ scope.row.commitSocial }}
           </el-tag>
-          <el-tag v-else-if="scope.row.commit === '材料审核不通过'" type="info">
-            {{ scope.row.commit }}
+          <el-tag v-else-if="scope.row.commitSocial === '材料审核不通过'" type="info">
+            {{ scope.row.commitSocial }}
           </el-tag>
-          <el-tag v-else-if="scope.row.commit === '材料待审核'" type="warning">
-            {{ scope.row.commit }}
+          <el-tag v-else-if="scope.row.commitSocial === '材料待审核'" type="warning">
+            {{ scope.row.commitSocial }}
           </el-tag>
+          <el-tag v-else-if="scope.row.commitSocial !== null" type="info">{{scope.row.commitSocial}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center" prop="mr">
@@ -168,7 +169,7 @@
 import {
   getInit, // 初始化数据
   search,
-  updateStatus // 更新操作
+  updateSocial // 更新操作
 } from '@/api/departmentSecretary/secretaryFirst'
 
 // 负责院系
@@ -354,7 +355,7 @@ export default {
       for (let index = 0; index < this.updataList.length; index++) {
         this.updataList[index].status_1 = status
       }
-      updateStatus(this.updataList).then((res) => {
+      updateSocial(this.updataList).then((res) => {
         if (res.code === 20000) {
           this.$message.success('审核成功')
         }
