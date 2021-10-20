@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-20 20:27:25
+ * @LastEditTime: 2021-10-20 20:53:33
 -->
 <template>
   <div class="app-container">
@@ -287,6 +287,7 @@ export default {
 
     // 搜索按钮
     searchQuery() {
+      console.log("55555555",this.queryParams)
       search(this.queryParams, 1).then((res) => {
         this.searchFlag = this.queryParams.applyStatus === 30
         this.tutorList = res.data.data
@@ -297,9 +298,9 @@ export default {
 
     // 重置按钮
     resetQuery() {
-      this.queryParams.userId = null
-      this.queryParams.userName = null
-      this.queryParams.organization = null
+      this.queryParams.userId = ''
+      this.queryParams.userName = ''
+      this.queryParams.organization = ''
       this.queryParams.applyStatuss = [] // 申请类别列表
       this.queryParams.applyStatus = 30
     },
