@@ -137,7 +137,7 @@
       </el-button>
       <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="passFun(4)">不符合条件
       </el-button>
-      <el-button type="info" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
+      <el-button type="warning" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
       </el-button>
       <el-button type="warning" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
       </el-button>

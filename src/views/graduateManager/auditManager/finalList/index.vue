@@ -94,6 +94,18 @@
       @current-change="handleCurrentChange"
     />
     </el-row>
+     <!-- 导出提交按钮 -->
+    <el-row>
+      <el-col :span="2">
+        <el-button
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="exportFun()"
+        >导出excel
+        </el-button>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -102,7 +114,7 @@
 import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
 import { departmentList } from '@/utils/data'
-
+import { exportFinalistGraduate } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
@@ -173,6 +185,29 @@ export default {
     this.getApplyStatus()
   },
   methods: {
+     exportFun() {
+       console.log("eeeeeee","i am running")
+      const date = new Date()
+      const year = date.getFullYear() // 获取当前年份
+      console.log(year)
+      this.loading = true
+      this.queryParams.applyStatus = 81 // 同意上校会通过
+      this.queryParams.applyStatuss = ['81']
+      this.queryParams.userId = ''
+       exportFinalistGraduate(this.queryParams).then((res) => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download =
+          '西北大学' +
+          year +
+          '年' +
+          '导师遴选最终通过名单.xlsx' // excel名称
+        link.href = url
+        link.click()
+      })
+      this.loading = false
+    },
     // 详情页
     toDetails: function(applyId, applyTypeId, tutorId) {
       toDetails(this, applyId, applyTypeId, tutorId)

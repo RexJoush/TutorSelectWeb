@@ -201,7 +201,7 @@ export const asyncRoutes = [
         path: 'reCheck',
         name: 'ReCheck',
         component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
-        meta: { title: '同意上校分会名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '同意上校会名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
       {
         path: 'inputComments',

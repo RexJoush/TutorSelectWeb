@@ -111,7 +111,7 @@
         >不符合条件
       </el-button>
       <el-button
-        type="info"
+        type="warning"
         plain
         icon="el-icon-edit"
         size="small"
@@ -150,10 +150,7 @@
           <el-tag v-else-if="scope.row.status === 16" type="danger">
             {{ scope.row.inspectDescribe }}</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 17" type="warning">
-            {{ scope.row.inspectDescribe }}</el-tag
-          >
-          <el-tag v-else-if="scope.row.status === 18  || scope.row.status === 13 " type="info">
+          <el-tag v-else-if="scope.row.status === 18 " type="warning">
             {{ scope.row.inspectDescribe }}</el-tag
           >
           <p v-else>{{ scope.row.inspectDescribe }}</p>

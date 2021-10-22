@@ -28,10 +28,19 @@ export function exportSXYFH(data) {
     responseType: 'blob'
   })
 }
-// 研究生院管理员   导出学同意上校分会的的所有名单
+// 研究生院管理员   导出同意上校会的的所有名单
 export function exportQualification(data) {
   return request({
     url: '/admin/export/qualification',
+    method: 'post',
+    data: data,
+    responseType: 'blob'
+  })
+}
+// 研究生院管理员   导出学位委员会通过的所有名单
+export function exportFinalistGraduate(data) {
+  return request({
+    url: '/admin/export/finalListGraduate',
     method: 'post',
     data: data,
     responseType: 'blob'
