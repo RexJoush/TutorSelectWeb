@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-14 09:50:44
+ * @LastEditTime: 2021-10-20 20:25:16
 -->
 <template>
   <div id="app-container">
@@ -62,7 +62,7 @@
             <el-table-column label="成果认定" align="center">
               <template slot-scope="scope">
                 <el-tag
-                  v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+                  v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
                   :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
                 >
                   {{ scope.row.col1 }}
@@ -157,7 +157,7 @@
             <el-table-column label="成果认定" align="center">
               <template slot-scope="scope">
                 <el-tag
-                  v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+                  v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
                   :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
                 >
                   {{ scope.row.col1 }}
@@ -237,7 +237,7 @@
             <el-table-column label="成果认定" align="center">
               <template slot-scope="scope">
                 <el-tag
-                  v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+                  v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
                   :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
                 >
                   {{ scope.row.col1 }}
@@ -323,7 +323,7 @@
             <el-table-column label="成果认定" align="center">
               <template slot-scope="scope">
                 <el-tag
-                  v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+                  v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
                   :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
                 >
                   {{ scope.row.col1 }}
@@ -436,7 +436,7 @@
 </template>
 
 <script>
-import { updateStatus } from "@/api/departmentSecretary/secretaryFirst";
+import { updateSocial } from "@/api/departmentSecretary/secretaryFirst";
 import {
   searchPaper,
   updatePaper,
@@ -865,7 +865,7 @@ export default {
       this.updataList.push(obj);
       console.log("======updatelist", this.updataList);
       console.log("学术论文1111", this.commit_1);
-      updateStatus(this.updataList).then((res) => {
+      updateSocial(this.updataList).then((res) => {
         if (res.code == 20000) {
           this.$message.success("材料审核完成");
           this.goBack();

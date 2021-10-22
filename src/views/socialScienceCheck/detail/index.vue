@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-14 09:45:31
+ * @LastEditTime: 2021-10-20 20:22:01
 -->
 <template>
   <div id="app-container"> 
@@ -53,7 +53,7 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
               <el-tag
-                v-if=" scope.row.col1 !== null || scope.row.col1 !== ''"
+                v-if=" scope.row.col1 !== null && scope.row.col1 !== ''"
                 :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
               >
                 {{ scope.row.col1 }}
@@ -142,7 +142,7 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+              v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
               :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
             >
               {{ scope.row.col1 }}
@@ -220,7 +220,7 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+              v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
               :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
             >
               {{ scope.row.col1 }}
@@ -299,7 +299,7 @@
         <el-table-column label="成果认定" align="center">
           <template slot-scope="scope">
             <el-tag
-              v-if="scope.row.col1 !== null || scope.row.col1 === ''"
+              v-if="scope.row.col1 !== null && scope.row.col1 !== ''"
               :type="scope.row.col1 === '通过' ? 'success' : 'danger'"
             >
               {{ scope.row.col1 }}
@@ -400,7 +400,7 @@
 </template>
 
 <script>
-  import { updateStatus } from "@/api/departmentSecretary/secretaryFirst";
+  import { updateSocial } from "@/api/departmentSecretary/secretaryFirst";
   import { 
     searchPaper,
     updatePaper 
@@ -516,6 +516,7 @@
       // 1.查询学术论文
       async getPaperList() {  
         const { data: res } = await searchPaper(this.id, this.applyId);
+        console.log(res);
         this.paperList = res;
         this.commit_1 = ""; //清空上次的综合条件
         //判断论文材料审核是否通过
@@ -826,7 +827,7 @@
         obj.commit_1 = this.csDes
         console.log("00000000000000", this.applyId)
         this.updataList.push(obj);
-        updateStatus(this.updataList).then((res) => {
+        updateSocial(this.updataList).then((res) => {
           if (res.code == 20000) {
             this.$message.success("材料审核完成");
             this.goBack();
