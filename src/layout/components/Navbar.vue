@@ -13,7 +13,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img src="https://www.rexjoush.com/img/1.jpg" class="user-avatar">
+          <img :src="require('@/assets/nwu2.png')" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -49,9 +49,11 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=/dashboard`)
+    logout() {
+      this.$store.dispatch('user/logout').then((res) => {
+        // this.$router.push(res.data)
+        window.location.href = res.data
+      })
     }
   }
 }

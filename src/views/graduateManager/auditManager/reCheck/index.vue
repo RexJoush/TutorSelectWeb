@@ -54,7 +54,6 @@
       </el-row>
     </el-form>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" />
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
@@ -73,7 +72,7 @@
       </el-table-column>
       <el-table-column label="详情" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)">查 看
           </el-button>
         </template>
       </el-table-column>
@@ -106,7 +105,7 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">同意上分会</span>的所有数据</p>
+    <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">同意上校分会</span>的所有数据</p>
     <!-- 提交校分会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加需要提交给校会的备注信息(可以为空)</span>
@@ -203,8 +202,8 @@ export default {
   },
   methods: {
     // 详情页
-    toDetails: function(applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId)
+    toDetails: function(applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId)
     },
     // 查询数据
     search: function() {

@@ -54,7 +54,6 @@
       </el-row>
     </el-form>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" />
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
@@ -63,7 +62,7 @@
       <el-table-column label="职称" align="center" prop="title" />
       <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 15 || scope.row.status === 16 || scope.row.status === 17 || scope.row.status === 18" type="info">
+          <el-tag v-if="scope.row.status === 81 " type="success">
             {{ scope.row.inspectDescribe }}
           </el-tag>
           <el-tag v-else type="warning">
@@ -73,7 +72,7 @@
       </el-table-column>
       <el-table-column label="详情" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)">查 看
           </el-button>
         </template>
       </el-table-column>
@@ -175,8 +174,8 @@ export default {
   },
   methods: {
     // 详情页
-    toDetails: function(applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId)
+    toDetails: function(applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId)
     },
     // 查询数据
     search: function() {

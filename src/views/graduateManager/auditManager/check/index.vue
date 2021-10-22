@@ -163,22 +163,28 @@
           <el-tag v-else-if="scope.row.status === 399" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 初审待定 -->
           <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
-          <!--          &lt;!&ndash; 送审科研处 &ndash;&gt;-->
-          <!--          <el-tag v-else-if="scope.row.status === 31" type="info"> {{ scope.row.inspectDescribe }}</el-tag>-->
-          <!--          &lt;!&ndash; 送审社科处 &ndash;&gt;-->
-          <!--          <el-tag v-else-if="scope.row.status === 30" type="info"> {{ scope.row.inspectDescribe }}</el-tag>-->
+                    <!-- 科研处通过 -->
+                    <el-tag v-else-if="scope.row.status === 64" type="sucess"> {{ scope.row.inspectDescribe }}</el-tag>
+                    <!-- 社科处通过 -->
+                    <el-tag v-else-if="scope.row.status === 63" type="succss"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 科研处不通过 -->
+          <el-tag v-else-if="scope.row.status === 53" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 社科处不通过 -->
+          <el-tag v-else-if="scope.row.status === 42" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)">查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+      <el-table-column label="备注" align="center" width="160px">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
+          <el-button type="text" size="small" @click="findFun(scope.row)">查看备注</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -319,8 +325,8 @@ export default {
   },
   methods: {
     // 详情页
-    toDetails: function(applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId)
+    toDetails: function(applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId)
     },
     // 查询数据
     search: function() {
@@ -335,7 +341,7 @@ export default {
         this.getList()
       } else {
         if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['25', '388', '399'] // 申请状态码
+          this.queryParams.applyStatuss = ['25', '388', '399','42','53','63','64'] // 申请状态码
         }
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
@@ -350,7 +356,7 @@ export default {
 
     /** 查询用户列表 */
     async getList() {
-      const applyStatuss = ['25', '388', '399'] // 申请状态码
+      const applyStatuss = ['25', '388', '399','42','53','63','64'] // 申请状态码
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
@@ -410,6 +416,22 @@ export default {
         {
           'codeId': 31,
           'inspectDescribe': '送至科研处'
+        },
+        {
+          'codeId': 63,
+          'inspectDescribe': '社科处审核通过'
+        },
+        {
+          'codeId': 64,
+          'inspectDescribe': '科研处审核通过'
+        },
+        {
+          'codeId': 42,
+          'inspectDescribe': '社科处审核不通过'
+        },
+        {
+          'codeId': 53,
+          'inspectDescribe': '科研处审核不通过'
         }
       ]
     },
@@ -468,7 +490,7 @@ export default {
         })
         .catch(() => {
           console.log("cancel");
-        });       
+        });
         }
         if (num === 3) {
           // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给研究院主管
@@ -478,7 +500,7 @@ export default {
         })
         .catch(() => {
           console.log("cancel");
-        });  
+        });
         }
         if (num === 4) {
           // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
@@ -488,17 +510,17 @@ export default {
         })
         .catch(() => {
           console.log("cancel");
-        }); 
+        });
         }
         if (num === 5) {
-          // 需修改，送至驳回页面
-           this.$confirm("确认提交至驳回页面吗？")
+          // 需修改，驳回给院系秘书
+           this.$confirm("确认驳回给院系秘书吗？")
         .then((res) => {
-            this.upDateStatus(36)
+            this.upDateStatus(10)
         })
         .catch(() => {
           console.log("cancel");
-        }); 
+        });
         }
     },
     async submitCommit() {
@@ -533,37 +555,37 @@ export default {
         })
         .catch(() => {
           console.log("cancel");
-        });       
+        });
         }
         if (this.choose === 3) {
-          // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给研究院主管
+          // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给同意上校分会
          this.$confirm("确认修改为符合条件吗？")
         .then((res) => {
             this.upDateStatus(388)
         })
         .catch(() => {
           console.log("cancel");
-        });  
+        });
         }
         if (this.choose === 4) {
-          // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
+          // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一变为同意上校分会
         this.$confirm("确认修改为不符合条件吗？")
         .then((res) => {
             this.upDateStatus(399)
         })
         .catch(() => {
           console.log("cancel");
-        }); 
+        });
         }
         if (this.choose === 5) {
           // 需修改，送至驳回页面
-           this.$confirm("确认修改为不符合条件吗？")
+           this.$confirm("确认驳回给院系秘书吗？")
         .then((res) => {
-            this.upDateStatus(36)
+            this.upDateStatus(10)
         })
         .catch(() => {
           console.log("cancel");
-        }); 
+        });
         }
       } else {
         // 点击了提交按钮的确认，将符合条件以及不符合条件的一起提交给研究生院主管
@@ -626,10 +648,18 @@ export default {
       this.commit = row.commitYjsyCs
       this.row = row
     },
+    // 点击查看备注按钮，查看来自社科处或者科研处审核后的备注
+    findFun(row) {
+      this.$alert('' + row.commitSocial, '社科处/科研处备注', {
+        confirmButtonText: '确定',
+        callback: action => {
+        }
+      })
+    },
     // 提交按钮的方法
     submitFun() {
       // this.dialogVisibleSubmit = true
-         this.$confirm("确认提交所有符合以及不符合条件的信息至研究生院领导吗？")
+         this.$confirm("确认同意所有符合条件的信息上校分会吗？")
         .then((res) => {
           this.submitUpdate()
         })

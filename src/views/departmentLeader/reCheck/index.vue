@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
 
-    
+
     <!-- 搜索部分 -->
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
@@ -100,12 +100,12 @@
           <el-tag v-else-if="scope.row.status === 20 " type="danger">
             {{ scope.row.inspectDescribe }}
           </el-tag>
-          <p v-else>{{ scope.row.inspectDescribe }}</p> 
+          <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)">查 看
           </el-button>
         </template>
       </el-table-column>
@@ -252,8 +252,8 @@ export default {
     },
 
     // 详情页
-    toDetails: function(applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId)
+    toDetails: function(applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId)
     },
 
     // 查询数据
@@ -367,7 +367,7 @@ export default {
         console.log('cancel')
       })
     },
-   
+
     //当前选中
     handleSelectionChange(val) {
       if (val.length > 0) {

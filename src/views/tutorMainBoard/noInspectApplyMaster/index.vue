@@ -229,7 +229,7 @@
                       ref="upload"
                       class="upload-demo"
                       name="material"
-                      action="http://localhost:8081/user/upload/7"
+                      :action="getUrl(7)"
                       :file-list="fileList"
                       :on-success="uploadSuccessFunc"
                       :on-error="uploadErrorFunc"
@@ -375,7 +375,7 @@
     </Row>
     <!-- 第二页弹框内容 -->
     <!-- 添加科研项目 -->
-    <el-dialog :title="this.isEdit ?'编辑科研项目' :'添加科研项目'"  width="40%" :visible.sync="dialogSecond1">
+    <el-dialog :title="isEdit ?'编辑科研项目' :'添加科研项目'"  width="40%" :visible.sync="dialogSecond1">
       <el-form :model="researchProject">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -512,7 +512,7 @@
 
 <script>
 import { doctorPrimaryDiscipline } from '@/utils/data'
-
+import { baseUrl } from '@/api/url'
 import { deleteFile } from '@/api/tutor/mainboard'
 
 import {
@@ -538,7 +538,7 @@ export default {
         first: true,
         second: false
       },
-      //编辑或添加
+      // 编辑或添加
       isEdit: false,
       editIndex : -1,
       // 第二页弹框
@@ -599,6 +599,9 @@ export default {
     this.GetTutorInfoByClient()
   },
   methods: {
+    getUrl(type) {
+      return `${baseUrl}/user/upload/${type}`
+    },
     /* ============================================= 第一页 =====================================*/
     // 获取导师基本信息
     GetTutorInfoByClient: function() {
@@ -632,6 +635,7 @@ export default {
               // 回显第二页信息
               console.log(res.data)
               this.formSecond = res.data
+              this.applyId = res.data.applyId
               if (res.data.applySubject !== null) {
                 // console.log(appl)
                 this.formSecond.applySubject = res.data.applySubject * 1
@@ -736,7 +740,7 @@ export default {
       else{
         this.formSecond.teachingAwards.push(this.teachingAward);
       }
-      
+
       this.teachingAward = {
         awardsName: '',
         awardsRank: '',
@@ -749,7 +753,7 @@ export default {
     },
     //编辑科研教学奖励
     editTeachingAward: function(index,row){
-      this.isEdit = true 
+      this.isEdit = true
       this.editIndex = index
       this.teachingAward = this.formSecond.teachingAwards[index]
       this.dialogSecond2 = true
@@ -776,16 +780,19 @@ export default {
         .then(() => {
           console.log(this.formSecond)
           submitSecondPage(this.formSecond, this.applyId).then((res) => {
-            if (res.data != null) {
+            // if (res.data != null) {
               if (res.data.code === 1201) {
                 this.$message.error(res.data.message)
                 console.log(res.data.errorMessage)
+              } else if (res.data.code === 1202) {
+                this.$message.error(res.data.message)
+              } else {
+                this.$message.success('保存成功!')
+                this.formVisible.second = false // 关闭第二项
+                this.$router.push('/tutorApply/tutorMainBoard')
+                this.active = 2
               }
-            }
-            this.$message.success('保存成功!')
-            this.formVisible.second = false // 关闭第二项
-            this.$router.push('/tutorApply/tutorMainBoard')
-            this.active = 2
+            // }
           })
         })
         .catch(() => {

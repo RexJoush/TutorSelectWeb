@@ -24,9 +24,9 @@ export function changeStatus(data) {
 }
 
 /* 获取当前申请的详细信息 */
-export function getApplyDetails(applyId, isInspect) {
+export function getApplyDetails(applyId, isInspect, tutorId) {
   return request({
-    url: `${baseUrl}/common/tutor/getApplyDetails/${applyId}/${isInspect}`,
+    url: `${baseUrl}/common/tutor/getApplyDetails/${applyId}/${isInspect}/${tutorId}`,
     method: 'get'
   })
 }

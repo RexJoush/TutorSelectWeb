@@ -32,11 +32,12 @@
     * @param that 当前页面的 this 对象，需要用到 vue router，所以需要传 this
     * @param applyId 申请的 id 值
     * @param applyTypeId 申请的类型 id 值
+    * @param tutorId 教师工号
     */
     import { toDetails } from '@/utils/funcation'
     method: {
-      click: function(applyId, applyTypeId) {
-        toDetails(this, applyId, applyTypeId)
+      click: function(applyId, applyTypeId, tutorId) {
+        toDetails(this, applyId, applyTypeId, tutorId)
       }
     }
     ```

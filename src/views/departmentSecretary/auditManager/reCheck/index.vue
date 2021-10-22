@@ -135,7 +135,7 @@
       <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
           <el-tag
-            v-if="scope.row.status === 21 || scope.row.status === 22"
+            v-if="scope.row.status === 11"
             type="info"
             >{{ scope.row.inspectDescribe }}</el-tag
           >
@@ -152,7 +152,7 @@
           <el-button
             type="text"
             size="small"
-            @click="toDetails(scope.row.applyId, scope.row.applyTypeId)"
+            @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)"
             >查 看
           </el-button>
         </template>
@@ -284,12 +284,8 @@ export default {
       //和秘书初审有关的审核状态
       statusOptions: [
         {
-          value: 21,
+          value: 11,
           label: "同意上分会",
-        },
-        {
-          value: 22,
-          label: "不同意上分会",
         },
         {
           value: 23,
@@ -374,7 +370,7 @@ export default {
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
       this.loading = true;
-      const applyStatuss = ["21", "22", "23", "24"]; // 申请状态码
+      const applyStatuss = ["11", "23", "24"]; // 申请状态码
       const organizationId = this.getOrganizationId();
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
@@ -385,8 +381,8 @@ export default {
     },
 
     // 详情页
-    toDetails: function (applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId);
+    toDetails: function (applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId);
     },
 
     // 查询数据
@@ -403,7 +399,7 @@ export default {
         this.getSecretaryInit();
       } else {
         if (this.queryParams.applyStatus === "") {
-          this.queryParams.applyStatuss = ["21", "22", "23", "24"]; // 申请状态码
+          this.queryParams.applyStatuss = ["11",  "23", "24"]; // 申请状态码
         }
         this.queryParams.organization = this.getOrganizationId();
         search(this.queryParams, this.pageNumber)
@@ -518,7 +514,7 @@ export default {
         .then((res) => {
           let flag = true;
           for (let index = 0; index < this.updateList.length; index++) {
-            if (this.updateList[index].status_1 === 21 || this.updateList[index].status_1 === 22) {
+            if (this.updateList[index].status_1 === 11 ) {
               flag = false;
             }
           }

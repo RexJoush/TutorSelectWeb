@@ -7,7 +7,7 @@
             <h2>申请详情信息</h2>
           </el-col>
           <el-col :span="12">
-              <el-button style="float: right;" type="primary" @click="exportPdfBtn">导出pdf</el-button> 
+              <el-button style="float: right;" type="primary" @click="exportPdfBtn">导出pdf</el-button>
           </el-col>
         </el-row>
       </div>
@@ -609,8 +609,8 @@ export default {
       exportPdf(this.applyId,this.applyTypeId).then( res =>{
         if(res.data.code === 1201){
           //pdf下载
-          this.pdfHttpPath = res.data.pdfPath;  
-          window.open(this.pdfHttpPath);      
+          this.pdfHttpPath = res.data.pdfPath;
+          window.open(this.pdfHttpPath);
           this.$message.success("导出成功!")
         }
         else
@@ -621,7 +621,7 @@ export default {
     },
 
     getApplyDetails: function() {
-      getApplyDetails(this.applyId, this.applyTypeId === 3 || this.applyTypeId === 6 ? 0 : 1).then(res => {
+      getApplyDetails(this.applyId, this.applyTypeId === 3 || this.applyTypeId === 6 ? 0 : 1, this.$route.params.tutorId).then(res => {
         if (!(this.applyTypeId === 3 || this.applyTypeId === 6)) {
           const students = res.data.fourthPage.guidingStudents
           switch (this.applyTypeId) {

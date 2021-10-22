@@ -162,7 +162,7 @@
       </el-table-column>
       <el-table-column label="详情" align="center" >
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId)">查 看
+          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)">查 看
           </el-button>
         </template>
       </el-table-column>
@@ -280,8 +280,8 @@ export default {
   },
   methods: {
     // 详情页
-    toDetails: function(applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId)
+    toDetails: function(applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId)
     },
     // 查询数据
     search: function() {
@@ -395,7 +395,7 @@ export default {
        })
         .catch(() => {
           console.log("cancel");
-        }); 
+        });
       this.choose = num
     },
     // 审核通过确认弹框确认按钮

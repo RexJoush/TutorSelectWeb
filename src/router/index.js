@@ -72,7 +72,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true, roles: ['admin', 'tutor'] }
+        meta: { title: '首页', icon: 'dashboard', affix: true, roles: ['admin', 'tutor'] }
       }
     ]
   }
@@ -191,17 +191,17 @@ export const asyncRoutes = [
         component: () => import('@/views/graduateManager/auditManager/check/index'),
         meta: { title: '初审', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
-      {
-        path: 'rePass',
-        name: 'RePass',
-        component: () => import('@/views/graduateManager/auditManager/rePass/index'),
-        meta: { title: '材料审核通过', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
-      },
+      // {
+      //   path: 'rePass',
+      //   name: 'RePass',
+      //   component: () => import('@/views/graduateManager/auditManager/rePass/index'),
+      //   meta: { title: '材料审核通过', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+      // },
       {
         path: 'reCheck',
         name: 'ReCheck',
         component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
-        meta: { title: '复审', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '同意上校分会名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
       {
         path: 'inputComments',
@@ -214,13 +214,13 @@ export const asyncRoutes = [
         name: 'FinalList',
         component: () => import('@/views/graduateManager/auditManager/finalList/index'),
         meta: { title: '最终通过名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
-      },
-      {
-        path: 'reject',
-        name: 'Reject',
-        component: () => import('@/views/graduateManager/auditManager/reject/index'),
-        meta: { title: '院系驳回', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       }
+      // {
+      //   path: 'reject',
+      //   name: 'Reject',
+      //   component: () => import('@/views/graduateManager/auditManager/reject/index'),
+      //   meta: { title: '院系驳回', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+      // }
 
     ]
   },
@@ -406,7 +406,7 @@ export const asyncRoutes = [
         meta: { title: '我的申请', icon: 'dashboard', roles: ['admin', 'tutor'] }
       },
       {
-        path: '/applyDetails/:applyId/:applyTypeId',
+        path: '/applyDetails/:applyId/:applyTypeId/:tutorId',
         component: () => import('@/views/myApply/details/index'),
         name: 'Apply Details',
         meta: { title: '申请详情', roles: ['admin', 'tutor', 'departmentSecretary', 'departmentLeader', 'graduateProfessionalManager', 'graduateAcademicManager', 'socialScienceManager', 'scientificResearchManager', 'graduateLeader'] },

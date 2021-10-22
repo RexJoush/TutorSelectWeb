@@ -100,7 +100,7 @@
           <el-button
             type="text"
             size="small"
-            @click="toDetails(scope.row.applyId, scope.row.applyTypeId)"
+            @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)"
             >查 看
           </el-button>
         </template>
@@ -220,8 +220,8 @@ export default {
     },
 
     // 详情页
-    toDetails: function (applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId);
+    toDetails: function (applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId);
     },
 
     // 查询数据

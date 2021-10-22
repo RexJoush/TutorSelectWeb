@@ -333,7 +333,8 @@ export default {
       // const tutorId = row.tutorId
       const applyId = row.applyId
       const applyTypeId = row.applyTypeId
-      toDetails(this, applyId, applyTypeId)
+      const tutorId = row.tutorId
+      toDetails(this, applyId, applyTypeId, tutorId)
       // this.$router.push({ path: '/graduate/graduateDetail', query: { applyId: applyId, tutorId: tutorId}})
     },
 
@@ -368,13 +369,13 @@ export default {
         this.queryParams.subjectType === ""
       ) {
         this.getSocialCheckInit();
-      } else {  
+      } else {
         if (this.queryParams.applyStatus === "") {
           this.queryParams.applyStatuss = ["34", "38", "39","65", "66", "29"]; // 申请状态码
         }
         search(this.queryParams, 1).then(res => {
-          this.searchFlag = this.queryParams.applyStatus === 34 || 
-                            this.queryParams.applyStatus === 38 || 
+          this.searchFlag = this.queryParams.applyStatus === 34 ||
+                            this.queryParams.applyStatus === 38 ||
                             this.queryParams.applyStatus === 39 ||
                             this.queryParams.applyStatus === ''
           this.tutorList = res.data.data
@@ -401,7 +402,7 @@ export default {
       this.check(65)
     },
     // 初审不通过
-    unPassFun() {      
+    unPassFun() {
       this.check(66)
     },
     //驳回操作

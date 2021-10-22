@@ -101,10 +101,10 @@
       <el-table-column label="职称" align="center" prop="title" />
       <el-table-column label="审核状态" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 21" type="success">{{
+          <el-tag v-if="scope.row.status === 11" type="success">{{
             scope.row.inspectDescribe
           }}</el-tag>
-          <el-tag v-else-if="scope.row.status === 22" type="danger">
+          <el-tag v-else-if="scope.row.status === 12" type="danger">
             {{ scope.row.inspectDescribe }}</el-tag
           >
         </template>
@@ -114,7 +114,7 @@
           <el-button
             type="text"
             size="small"
-            @click="toDetails(scope.row.applyId, scope.row.applyTypeId)"
+            @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)"
             >查 看
           </el-button>
         </template>
@@ -231,11 +231,11 @@ export default {
       },
       statusOptions: [
         {
-          value: 21,
+          value: 11,
           label: "同意上分会",
         },
         {
-          value: 22,
+          value: 12,
           label: "不同意分会",
         },
       ],
@@ -268,7 +268,7 @@ export default {
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
       this.loading = true;
-      const applyStatuss = ["21", "22"]; // 申请状态码
+      const applyStatuss = ["11","12"]; // 同意上分会  不同意上分会
       const organizationId = this.getOrganizationId();
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
@@ -279,8 +279,8 @@ export default {
     },
 
     // 详情页
-    toDetails: function (applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId);
+    toDetails: function (applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId);
     },
 
     // 查询数据
@@ -297,7 +297,7 @@ export default {
         this.getSecretaryInit();
       } else {
         if (this.queryParams.applyStatus === "") {
-          this.queryParams.applyStatuss = ["21", "22"]; // 申请状态码
+          this.queryParams.applyStatuss = ["11","12"]; // 申请状态码
         }
         this.queryParams.organization = this.getOrganizationId();
         search(this.queryParams, this.pageNumber)
@@ -321,7 +321,7 @@ export default {
     // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
     dataOption(func) {
       this.loading = true;
-      const defaultStatus = ["21"];
+      const defaultStatus = ["11"];
       this.queryParams.organization = this.getOrganizationId();
       this.queryParams.organizationName = this.getOrganizationName();
       if (

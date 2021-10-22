@@ -111,15 +111,6 @@
         >不符合条件
       </el-button>
       <el-button
-        type="warning"
-        plain
-        icon="el-icon-share"
-        size="small"
-        :disabled="multiple"
-        @click="unEnsureFun()"
-        >待定
-      </el-button>
-      <el-button
         type="info"
         plain
         icon="el-icon-edit"
@@ -162,7 +153,7 @@
           <el-tag v-else-if="scope.row.status === 17" type="warning">
             {{ scope.row.inspectDescribe }}</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 18" type="info">
+          <el-tag v-else-if="scope.row.status === 18  || scope.row.status === 13 " type="info">
             {{ scope.row.inspectDescribe }}</el-tag
           >
           <p v-else>{{ scope.row.inspectDescribe }}</p>
@@ -173,7 +164,7 @@
           <el-button
             type="text"
             size="small"
-            @click="toDetails(scope.row.applyId, scope.row.applyTypeId)"
+            @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)"
             >查 看
           </el-button>
         </template>
@@ -225,7 +216,7 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0; color: #f56c6c">注意：导出上表所有的数据</p>
+    <p style="margin: 10px 0;">注意：导出上表所有的数据</p>
 
     <!-- 备注弹框 -->
     <el-dialog
@@ -299,10 +290,6 @@ export default {
         { value: 10, label: "待初审" },
         { value: 15, label: "符合条件" },
         { value: 16, label: "不符合条件" },
-        {
-          value: 17,
-          label: "待定",
-        },
         {
           value: 18,
           label: "需修改",
@@ -384,8 +371,8 @@ export default {
     },
 
     // 详情页
-    toDetails: function (applyId, applyTypeId) {
-      toDetails(this, applyId, applyTypeId);
+    toDetails: function (applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId);
     },
 
     // 查询数据

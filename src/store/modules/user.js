@@ -50,7 +50,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-        
+
         // debugger
         if (!data && !response.organizationId) {
           reject('Verification failed, please Login again.')
@@ -79,19 +79,19 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout(state.token).then((res) => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         Cookies.remove('organizationId')
         Cookies.remove('organizationName')
         removeToken()
-        resetRouter()
+        // resetRouter()
 
         // reset visited views and cached views
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
+        // dispatch('tagsView/delAllViews', null, { root: true })
 
-        resolve()
+        resolve(res)
       }).catch(error => {
         reject(error)
       })
