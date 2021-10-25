@@ -28,6 +28,18 @@ export function exportSXYFH(data) {
     responseType: 'blob'
   })
 }
+
+// 院系秘书  录入复审名单 导出学院分会同意的所有数据
+export function exportFinOrg(data) {
+  return request({
+    url: '/admin/export/finalOrg',
+    method: 'post',
+    data: data,
+    responseType: 'blob'
+  })
+}
+
+
 // 研究生院管理员   导出同意上校会的的所有名单
 export function exportQualification(data) {
   return request({
