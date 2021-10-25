@@ -112,6 +112,20 @@
         @current-change="handleCurrentChange"
       />
     </el-row>
+       <!-- 导出按钮 -->
+    <el-row>
+      <el-col :span="2">
+        <el-button
+          plain
+          icon="el-icon-download"
+          size="small"
+          :loading="exportLoading"
+          @click="exportFun()"
+          >导出excel
+        </el-button>
+      </el-col>
+    </el-row>
+     <p style="margin: 10px 0;">注意：导出最终通过名单</p>
   </div>
 </template>
 
@@ -123,6 +137,7 @@ import {
 } from "@/api/departmentSecretary/secretaryFirst";
 import { toDetails } from "@/utils/function";
 import Cookies from "js-cookie";
+import { exportFinOrg } from "@/api/departmentSecretary/exportExcel";
 export default {
   data() {
     return {
@@ -180,6 +195,13 @@ export default {
         console.log("error-organizationId is null");
       }
     },
+     getOrganizationName: function () {
+      if (Cookies.get("organizationName") !== null) {
+        return Cookies.get("organizationName");
+      } else {
+        console.log("error-organizationName is null");
+      }
+    },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
       this.loading = true;
@@ -196,6 +218,47 @@ export default {
     // 详情页
     toDetails: function (applyId, applyTypeId, tutorId) {
       toDetails(this, applyId, applyTypeId, tutorId);
+    },
+      // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
+    dataOption(func) {
+      this.loading = true;
+      const defaultStatus = ["81"];
+      this.queryParams.organization = this.getOrganizationId();
+      this.queryParams.organizationName = this.getOrganizationName();
+      if (
+        this.queryParams.applyStatus == null ||
+        this.queryParams.applyStatus === ""
+      ) {
+        this.queryParamCopy = JSON.parse(JSON.stringify(this.queryParams));
+        this.queryParamCopy.applyStatuss = defaultStatus;
+        func(this.queryParamCopy);
+      } else {
+        func(this.queryParams);
+      }
+    },
+
+    // excel导出，包含状态81
+    exportFun() {
+      this.dataOption(this.exportExcel);
+    },
+    // 导出excel实现
+    exportExcel(queryParams) {
+      const date = new Date();
+      const year = date.getFullYear(); // 获取当前年份
+      exportFinOrg(queryParams).then((res) => {
+        const blob = new Blob([res], { type: "application/vnd.ms-excel" });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download =
+          "西北大学" +
+          year +
+          "年" +
+          this.getOrganizationName() +
+          "导师遴选最终通过名单.xlsx"; // excel名称
+        link.href = url;
+        link.click();
+      });
+      this.loading = false;
     },
 
     // 查询数据

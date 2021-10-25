@@ -105,7 +105,7 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">同意上校分会</span>的所有数据</p>
+    <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">同意上校会</span>的所有数据</p>
     <!-- 提交校分会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加需要提交给校会的备注信息(可以为空)</span>
