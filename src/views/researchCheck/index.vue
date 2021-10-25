@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-25 11:07:23
+ * @LastEditTime: 2021-10-25 11:41:13
 -->
 <template>
   <div class="app-container">
@@ -157,7 +157,7 @@
     <!--  添加备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
-      <el-input v-model="returnCommit" autocomplete="off" />
+      <el-input type="textarea" autosize v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>

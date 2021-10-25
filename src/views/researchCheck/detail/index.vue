@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-25 11:22:35
+ * @LastEditTime: 2021-10-25 11:45:07
 -->
 <template>
   <div id="app-container">
@@ -377,7 +377,7 @@
         label-width="80px"
       >
         <el-form-item label="请输入驳回理由(可以为空)">
-          <el-input v-model="returnCommit1" autocomplete="off"></el-input>
+          <el-input type="textarea" autosize v-model="returnCommit1" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -394,7 +394,7 @@
         label-width="80px"
       >
         <el-form-item label="请输入驳回理由(可以为空)">
-          <el-input v-model="returnCommit2" autocomplete="off"></el-input>
+          <el-input type="textarea" autosize v-model="returnCommit2" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -407,7 +407,7 @@
     <el-dialog title="备注" :visible.sync="dialogVisible3" width="30%">
       <el-form ref="workRejectform" :model="workRejectform" label-width="80px">
         <el-form-item label="请输入驳回理由(可以为空)">
-          <el-input v-model="returnCommit3" autocomplete="off"></el-input>
+          <el-input type="textarea" autosize v-model="returnCommit3" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -424,7 +424,7 @@
         label-width="80px"
       >
         <el-form-item label="请输入驳回理由(可以为空)">
-          <el-input v-model="returnCommit4" autocomplete="off"></el-input>
+          <el-input type="textarea" autosize v-model="returnCommit4" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

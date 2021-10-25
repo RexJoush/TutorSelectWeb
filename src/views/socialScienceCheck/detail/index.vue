@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-25 11:25:52
+ * @LastEditTime: 2021-10-25 11:45:09
 -->
 <template>
   <div id="app-container"> 
@@ -348,7 +348,7 @@
       <el-dialog title="备注" :visible.sync="dialogVisible1" width="30%">
         <el-form ref="paperRejectform" :model="paperRejectform" label-width="80px">
           <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit1" autocomplete="off"></el-input>
+            <el-input type="textarea" autosize v-model="returnCommit1" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -361,7 +361,7 @@
       <el-dialog title="备注" :visible.sync="dialogVisible2" width="30%">
         <el-form ref="projectRejectform" :model="projectRejectform" label-width="80px">
           <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit2" autocomplete="off"></el-input>
+            <el-input type="textarea" autosize v-model="returnCommit2" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -374,7 +374,7 @@
       <el-dialog title="备注" :visible.sync="dialogVisible3" width="30%">
         <el-form ref="workRejectform" :model="workRejectform" label-width="80px">
           <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit3" autocomplete="off"></el-input>
+            <el-input type="textarea" autosize v-model="returnCommit3" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -387,7 +387,7 @@
       <el-dialog title="备注" :visible.sync="dialogVisible4" width="30%">
         <el-form ref="awardRejectform" :model="awardRejectform" label-width="80px">
           <el-form-item label="请输入驳回理由(可以为空)">
-            <el-input v-model="returnCommit4" autocomplete="off"></el-input>
+            <el-input type="textarea" autosize v-model="returnCommit4" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
