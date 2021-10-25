@@ -123,7 +123,7 @@
 
     </div>
     <el-table v-loading="loading" :data="tutorList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection"  align="center" />
+      <el-table-column type="selection" align="center" />
       <el-table-column label="工号" align="center" prop="tutorId" />
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="所在单位（院系）" align="center" prop="organizationName" />
@@ -153,14 +153,14 @@
       </el-table-column> -->
     </el-table>
     <el-row type="flex" justify="center">
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="total"
-      @current-change="handleCurrentChange"
-    />
+      <el-pagination
+        style="margin: 5px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="total"
+        @current-change="handleCurrentChange"
+      />
     </el-row>
   </div>
 </template>
@@ -352,11 +352,11 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
+        userId: '',
+        deptId: '',
+        userName: '',
         status: '0',
-        remark: undefined,
+        remark: '',
         postIds: [],
         roleIds: []
       }

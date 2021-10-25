@@ -84,14 +84,14 @@
     </el-table>
     <!-- 分页框 -->
     <el-row type="flex" justify="center">
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="total"
-      @current-change="handleCurrentChange"
-    />
+      <el-pagination
+        style="margin: 5px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="total"
+        @current-change="handleCurrentChange"
+      />
     </el-row>
     <!-- 导出提交按钮 -->
     <el-row>
@@ -109,7 +109,7 @@
     <!-- 提交校分会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加需要提交给校会的备注信息(可以为空)</span>
-      <el-input  type="textarea" v-model="commit" autocomplete="off" />
+      <el-input v-model="commit" type="textarea" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
@@ -333,10 +333,10 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.queryParams.userId = null // 工号
-      this.queryParams.userName = null // 姓名
-      this.queryParams.applyType = null // 申请类别id
-      this.queryParams.applyStatus = null // 审核状态码id
+      this.queryParams.userId = '' // 工号
+      this.queryParams.userName = '' // 姓名
+      this.queryParams.applyType = '' // 申请类别id
+      this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
       this.handleQuery()
     },

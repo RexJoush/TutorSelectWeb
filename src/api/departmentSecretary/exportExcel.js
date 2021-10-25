@@ -58,4 +58,12 @@ export function exportFinalistGraduate(data) {
     responseType: 'blob'
   })
 }
+// 研究生院管理员   导出学同意上校分会的的所有名单
+export function getFinalList() {
+  return request({
+    url: '/admin/export/getFinalList',
+    method: 'post',
+    responseType: 'blob'
+  })
+}
 

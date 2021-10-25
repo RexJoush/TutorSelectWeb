@@ -85,16 +85,16 @@
     </el-table>
     <!-- 分页框 -->
     <el-row type="flex" justify="center">
-    <el-pagination
-      style="margin: 5px 0"
-      :current-page="queryParams.pageNum"
-      :page-size="queryParams.pageSize"
-      layout="total, prev, pager, next"
-      :total="total"
-      @current-change="handleCurrentChange"
-    />
+      <el-pagination
+        style="margin: 5px 0"
+        :current-page="queryParams.pageNum"
+        :page-size="queryParams.pageSize"
+        layout="total, prev, pager, next"
+        :total="total"
+        @current-change="handleCurrentChange"
+      />
     </el-row>
-     <!-- 导出提交按钮 -->
+    <!-- 导出提交按钮 -->
     <el-row>
       <el-col :span="2">
         <el-button
@@ -114,7 +114,7 @@
 import { getInit, search } from '@/api/departmentSecretary/secretaryFirst'
 import { toDetails } from '@/utils/function'
 import { departmentList } from '@/utils/data'
-import { exportFinalistGraduate } from "@/api/departmentSecretary/exportExcel";
+import { exportFinalistGraduate } from '@/api/departmentSecretary/exportExcel'
 export default {
   data() {
     return {
@@ -166,14 +166,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: "", // 工号
-        userName: "", // 姓名
-        organization: "", // 院系id
-        applyType: "", // 申请类别id
-        subjectName: "", // 学科名称id
-        applyStatus: "", // 审核状态码id
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
+        applyStatus: '', // 审核状态码id
         applyStatuss: [],
-        subjectType: "" // 学科属性，文科，理科，交叉
+        subjectType: '' // 学科属性，文科，理科，交叉
       }
     }
   },
@@ -185,8 +185,8 @@ export default {
     this.getApplyStatus()
   },
   methods: {
-     exportFun() {
-       console.log("eeeeeee","i am running")
+    exportFun() {
+      console.log('eeeeeee', 'i am running')
       const date = new Date()
       const year = date.getFullYear() // 获取当前年份
       console.log(year)
@@ -194,7 +194,7 @@ export default {
       this.queryParams.applyStatus = 81 // 同意上校会通过
       this.queryParams.applyStatuss = ['81']
       this.queryParams.userId = ''
-       exportFinalistGraduate(this.queryParams).then((res) => {
+      exportFinalistGraduate(this.queryParams).then((res) => {
         const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
@@ -343,14 +343,14 @@ export default {
       this.queryParams = {
         pageNum: 1,
         pageSize: 10,
-        userId: undefined, // 工号
-        userName: undefined, // 姓名
-        organization: undefined, // 院系id
-        applyType: undefined, // 申请类别id
-        subjectName: undefined, // 学科名称id
+        userId: '', // 工号
+        userName: '', // 姓名
+        organization: '', // 院系id
+        applyType: '', // 申请类别id
+        subjectName: '', // 学科名称id
         applyStatus: 81, // 审核状态码id
         applyStatuss: [81], // 申请类别列表
-        subjectType: undefined // 学科属性，文科，理科，交叉
+        subjectType: '' // 学科属性，文科，理科，交叉
       }
       this.handleQuery()
     },
