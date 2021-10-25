@@ -201,7 +201,7 @@ export const asyncRoutes = [
         path: 'reCheck',
         name: 'ReCheck',
         component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
-        meta: { title: '同意上校分会名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '同意上校会名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
       {
         path: 'inputComments',
@@ -236,7 +236,19 @@ export const asyncRoutes = [
         path: 'socialScienceCheck',
         name: 'SocialScienceCheck',
         component: () => import('@/views/socialScienceCheck/index'),
-        meta: { title: '社科处审核', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
+        meta: { title: '社科处待审核', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
+      },
+      {
+        path: 'checkPass',
+        name: 'CheckPass',
+        component: () => import('@/views/socialScienceCheck/checkPass/index'),
+        meta: { title: '社科处审核通过', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
+      },
+      {
+        path: 'checkUnpass',
+        name: 'CheckUnpass',
+        component: () => import('@/views/socialScienceCheck/checkUnpass/index'),
+        meta: { title: '社科处审核不通过', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
       },
       {
         path: 'socialDetail',
@@ -258,7 +270,19 @@ export const asyncRoutes = [
         path: 'researchCheck',
         name: 'ResearchCheck',
         component: () => import('@/views/researchCheck/index'),
-        meta: { title: '科研处审核', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
+        meta: { title: '科研处待审核', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
+      },
+      {
+        path: 'checkPass',
+        name: 'CheckPass',
+        component: () => import('@/views/researchCheck/checkPass/index'),
+        meta: { title: '科研处审核通过', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
+      },
+      {
+        path: 'checkUnpass',
+        name: 'CheckUnpass',
+        component: () => import('@/views/researchCheck/checkUnpass/index'),
+        meta: { title: '科研处审核不通过', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
       },
       {
         path: 'researchDetail',

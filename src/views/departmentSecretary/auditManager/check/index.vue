@@ -111,7 +111,7 @@
         >不符合条件
       </el-button>
       <el-button
-        type="info"
+        type="warning"
         plain
         icon="el-icon-edit"
         size="small"
@@ -150,10 +150,7 @@
           <el-tag v-else-if="scope.row.status === 16" type="danger">
             {{ scope.row.inspectDescribe }}</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 17" type="warning">
-            {{ scope.row.inspectDescribe }}</el-tag
-          >
-          <el-tag v-else-if="scope.row.status === 18  || scope.row.status === 13 " type="info">
+          <el-tag v-else-if="scope.row.status === 18" type="warning">
             {{ scope.row.inspectDescribe }}</el-tag
           >
           <p v-else>{{ scope.row.inspectDescribe }}</p>
@@ -164,7 +161,13 @@
           <el-button
             type="text"
             size="small"
-            @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)"
+            @click="
+              toDetails(
+                scope.row.applyId,
+                scope.row.applyTypeId,
+                scope.row.tutorId
+              )
+            "
             >查 看
           </el-button>
         </template>
@@ -176,6 +179,7 @@
           >
         </template>
       </el-table-column>
+      <el-table-column label="驳回备注" align="center" prop="commitYjsyCs"> </el-table-column>
     </el-table>
 
     <!-- 分页框 -->
@@ -216,7 +220,7 @@
         </el-button>
       </el-col>
     </el-row>
-    <p style="margin: 10px 0;">注意：导出上表所有的数据</p>
+    <p style="margin: 10px 0">注意：导出上表所有的数据</p>
 
     <!-- 备注弹框 -->
     <el-dialog

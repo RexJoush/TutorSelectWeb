@@ -210,7 +210,7 @@ export default {
     getSecretaryInit: function () {
       this.loading = true;
       const organizationId = this.getOrganizationId(); // 院系zjz
-      const applyStatuss = ["25", "30", "31"]; // 申请状态码
+      const applyStatuss = ["25"]; // 申请状态码
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
@@ -238,7 +238,7 @@ export default {
         this.getSecretaryInit();
       } else {
         if (this.queryParams.applyStatus === "") {
-          this.queryParams.applyStatuss = ["25", "30", "31"]; // 申请状态码
+          this.queryParams.applyStatuss = ["25"]; // 申请状态码
         }
         this.queryParams.organization = this.getOrganizationId();
         search(this.queryParams, this.pageNumber)

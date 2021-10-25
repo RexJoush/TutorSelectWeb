@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-25 11:41:13
+ * @LastEditTime: 2021-10-24 22:21:49
 -->
 <template>
   <div class="app-container">
@@ -81,18 +81,10 @@
         </el-col>
       </el-row>
     </el-form>
-
-    <!-- 操作按钮 -->
-    <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-      <el-button v-if="searchFlag" type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
-      </el-button>
-      <el-button v-if="searchFlag" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
-      </el-button>
-    </div>
+    <br>
 
     <!-- 数据部分 -->
     <el-table ref="singleTable" :data="tutorList" highlight-current-row :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="序号" type="index" width="50" fixed />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
       <el-table-column label="姓名" align="center" prop="name" width="100" fixed />
@@ -111,26 +103,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="commitSocial">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
-          <!-- <el-tag v-if="scope.row.commitSocial === '材料审核通过'" type="success">
-            {{ scope.row.commitSocial }}
-          </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial === '材料审核不通过'" type="info">
-            {{ scope.row.commitSocial }}
-          </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial === '材料待审核'" type="warning">
-            {{ scope.row.commitSocial }}
-          </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial !== null" type="info">{{scope.row.commitSocial}}</el-tag> -->
-        </template>
-      </el-table-column>
-      <el-table-column label="详情" align="center" prop="mr">
-        <template slot-scope="scope">
-          <el-button size="small" type="text" @click="handleDetail(scope.row)">查看详情
-          </el-button>
-        </template>
+      <el-table-column :show-overflow-tooltip="true" label="备注" align="center" prop="commitSocial">
       </el-table-column>
     </el-table>
 
@@ -154,22 +127,13 @@
         <el-button type="primary" @click="rePassFun()">确 定</el-button>
       </span>
     </el-dialog>
-    <!--  添加备注弹框 -->
+    <!-- 驳回时的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
-      <el-input type="textarea" autosize v-model="returnCommit" autocomplete="off" />
+      <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
-      </span>
-    </el-dialog>
-    <!-- 驳回时的备注弹框 -->
-    <el-dialog title="备注" :visible.sync="dialogUnVisible" width="30%">
-      <span>确认驳回吗？</span>
-      <!-- <el-input v-model="returnCommit" autocomplete="off" /> -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="cancel()">取消</el-button>
-        <el-button type="primary" @click="returnUnFun()">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -191,10 +155,8 @@ export default {
       searchFlag: false,
       // 驳回时备注的内容
       returnCommit: '',
-      //备注的弹框
-      dialogVisible: false,
       // 驳回弹框默认不显示
-      dialogUnVisible: false,
+      dialogVisible: false,
       // 通过确认框
       dialogVisiblePass: false,
       // 非多个禁用
@@ -227,8 +189,8 @@ export default {
       // 科研处审核状态
       statusOptions: [
         {
-          value: 31,
-          label: '科研处待审核'
+          value: 64, // 理科科研处审核通过
+          label: '科研处审核通过'
         }
       ],
       // 审核后需要下发的List数据
@@ -241,17 +203,6 @@ export default {
     this.searchFlag = true
   },
   methods: {
-    // 点击备注按钮，添加备注
-    commitFun(row) {
-      this.updataList.length = 0;
-      this.dialogVisible = true;
-      this.returnCommit = row.commitSocial; // 回显数据
-      const obj = { id_1: 0, status_1: 0, commit_1: "" };
-      obj.id_1 = row.applyId;
-      obj.status_1 = row.status;
-      obj.commit_1 = row.commitSocial;
-      this.updataList.push(obj);
-    },
     // 高亮当前行
     setCurrent(row) {
       this.$refs.singleTable.setCurrentRow(row)
@@ -285,7 +236,7 @@ export default {
     // 查询科研处待初审的数据
     // 通过状态码查询
     getResearchCheckInit() {
-      this.queryParams.applyStatus = 31
+      this.queryParams.applyStatus = 64
       getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
         this.total = res.data.total
@@ -305,15 +256,9 @@ export default {
         this.getResearchCheckInit()
       } else {
         if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['31'] // 申请状态码
+          this.queryParams.applyStatuss = ['64'] // 申请状态码
         }
         search(this.queryParams, 1).then((res) => {
-          // if (this.queryParams.applyStatus === 31 || '') {
-          //   this.searchFlag = true
-          // } else {
-          //   this.searchFlag = false
-          // }
-          this.searchFlag = this.queryParams.applyStatus === 31
           this.tutorList = res.data.data
           this.total = res.data.total
         }).catch(error => {
@@ -327,7 +272,7 @@ export default {
       this.queryParams.userId = ''
       this.queryParams.userName = ''
       this.queryParams.organization = ''
-      this.queryParams.applyStatus = 31
+      this.queryParams.applyStatus = 64
       this.queryParams.applyStatuss = [] // 申请类别列表
     },
     // 初审通过
@@ -338,7 +283,7 @@ export default {
     rePassFun() {
       this.check(64)
       this.dialogVisiblePass = false
-      // window.location.reload() // 重新加载页面
+      window.location.reload() // 重新加载页面
     },
     // 初审不通过
     unPassFun() {
@@ -346,31 +291,21 @@ export default {
       if (this.multipleSelection.length > 1) {
         this.$message.warning('注意:只能选择一条数据审核！')
       } else {
-        this.dialogUnVisible = true
+        this.dialogVisible = true
       }
     },
     // 弹框确定按钮驳回操作
     returnFun() {
       // 备注
       this.updataList[0].commit_1 = this.returnCommit
-      this.check(31)
-      this.dialogVisible = false
-      // window.location.reload() // 重新加载页面
-    },
-
-    //弹框确定按钮驳回操作
-    returnUnFun() {
-      // 备注
-      // this.updataList[0].commit_1 = this.returnCommit
       this.check(53)
-      this.dialogUnVisible = false
-      // this.returnCommit = null
-      // window.location.reload() // 重新加载页面
+      this.dialogVisible = false
+      this.returnCommit = null
+      window.location.reload() // 重新加载页面
     },
 
     // 弹框取消按钮
     cancel() {
-      this.dialogUnVisible = false
       this.dialogVisible = false
       this.returnCommit = null
     },
@@ -386,7 +321,7 @@ export default {
         }
         this.updataList.length = 0
         this.resetQuery()
-        this.getResearchCheckInit()
+        this.getSecretaryInit()
       })
     },
 

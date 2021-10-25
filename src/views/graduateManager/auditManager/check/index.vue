@@ -137,7 +137,7 @@
       </el-button>
       <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="passFun(4)">不符合条件
       </el-button>
-      <el-button type="info" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
+      <el-button type="warning" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
       </el-button>
       <el-button type="warning" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
       </el-button>
@@ -163,10 +163,10 @@
           <el-tag v-else-if="scope.row.status === 399" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 初审待定 -->
           <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
-                    <!-- 科研处通过 -->
-                    <el-tag v-else-if="scope.row.status === 64" type="sucess"> {{ scope.row.inspectDescribe }}</el-tag>
-                    <!-- 社科处通过 -->
-                    <el-tag v-else-if="scope.row.status === 63" type="succss"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 科研处通过 -->
+          <el-tag v-else-if="scope.row.status === 64" type="sucess"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 社科处通过 -->
+          <el-tag v-else-if="scope.row.status === 63" type="succss"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 科研处不通过 -->
           <el-tag v-else-if="scope.row.status === 53" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 社科处不通过 -->
@@ -223,7 +223,7 @@
     <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加提交给操作的备注信息(可以为空)</span>
-      <el-input  type="textarea" v-model="commit" autocomplete="off" />
+      <el-input v-model="commit" type="textarea" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
@@ -341,7 +341,7 @@ export default {
         this.getList()
       } else {
         if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['25', '388', '399','42','53','63','64'] // 申请状态码
+          this.queryParams.applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
         }
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
@@ -356,7 +356,7 @@ export default {
 
     /** 查询用户列表 */
     async getList() {
-      const applyStatuss = ['25', '388', '399','42','53','63','64'] // 申请状态码
+      const applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
@@ -473,55 +473,55 @@ export default {
     // 初审通过
     passFun(num) {
       if (num === 1) {
-          // 送审社科处
-         this.$confirm("确认送审社科处吗？")
-        .then((res) => {
-          this.upDateStatus(30)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
-        }
-        if (num === 2) {
         // 送审社科处
-         this.$confirm("确认送审科研处吗？")
-        .then((res) => {
+        this.$confirm('确认送审社科处吗？')
+          .then((res) => {
+            this.upDateStatus(30)
+          })
+          .catch(() => {
+            console.log('cancel')
+          })
+      }
+      if (num === 2) {
+        // 送审社科处
+        this.$confirm('确认送审科研处吗？')
+          .then((res) => {
             this.upDateStatus(31)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
-        }
-        if (num === 3) {
-          // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给研究院主管
-         this.$confirm("确认修改为符合条件吗？")
-        .then((res) => {
+          })
+          .catch(() => {
+            console.log('cancel')
+          })
+      }
+      if (num === 3) {
+        // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给研究院主管
+        this.$confirm('确认修改为符合条件吗？')
+          .then((res) => {
             this.upDateStatus(388)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
-        }
-        if (num === 4) {
-          // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
-        this.$confirm("确认修改为不符合条件吗？")
-        .then((res) => {
+          })
+          .catch(() => {
+            console.log('cancel')
+          })
+      }
+      if (num === 4) {
+        // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一提交给研究院主管
+        this.$confirm('确认修改为不符合条件吗？')
+          .then((res) => {
             this.upDateStatus(399)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
-        }
-        if (num === 5) {
-          // 需修改，驳回给院系秘书
-           this.$confirm("确认驳回给院系秘书吗？")
-        .then((res) => {
+          })
+          .catch(() => {
+            console.log('cancel')
+          })
+      }
+      if (num === 5) {
+        // 需修改，驳回给院系秘书
+        this.$confirm('确认驳回给院系秘书吗？')
+          .then((res) => {
             this.upDateStatus(10)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
-        }
+          })
+          .catch(() => {
+            console.log('cancel')
+          })
+      }
     },
     async submitCommit() {
       this.row.commitYjsyCs = this.commit
@@ -539,53 +539,53 @@ export default {
       if (num === 1) {
         if (this.choose === 1) {
           // 送审社科处
-         this.$confirm("确认送审社科处吗？")
-        .then((res) => {
-          this.upDateStatus(30)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
+          this.$confirm('确认送审社科处吗？')
+            .then((res) => {
+              this.upDateStatus(30)
+            })
+            .catch(() => {
+              console.log('cancel')
+            })
         }
         if (this.choose === 2) {
         // 送审社科处
-         this.$confirm("确认送审科研处吗？")
-        .then((res) => {
-            this.upDateStatus(31)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
+          this.$confirm('确认送审科研处吗？')
+            .then((res) => {
+              this.upDateStatus(31)
+            })
+            .catch(() => {
+              console.log('cancel')
+            })
         }
         if (this.choose === 3) {
-          // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给同意上校分会
-         this.$confirm("确认修改为符合条件吗？")
-        .then((res) => {
-            this.upDateStatus(388)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
+          // 符合条件 中间状态 变更记录状态为符合条件点击提交按钮后统一提交给同意上校会
+          this.$confirm('确认修改为符合条件吗？')
+            .then((res) => {
+              this.upDateStatus(388)
+            })
+            .catch(() => {
+              console.log('cancel')
+            })
         }
         if (this.choose === 4) {
-          // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一变为同意上校分会
-        this.$confirm("确认修改为不符合条件吗？")
-        .then((res) => {
-            this.upDateStatus(399)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
+          // 不符合条件 中间状态 变更记录状态为不符合条件 点击提交按钮后统一变为同意上校会
+          this.$confirm('确认修改为不符合条件吗？')
+            .then((res) => {
+              this.upDateStatus(399)
+            })
+            .catch(() => {
+              console.log('cancel')
+            })
         }
         if (this.choose === 5) {
           // 需修改，送至驳回页面
-           this.$confirm("确认驳回给院系秘书吗？")
-        .then((res) => {
-            this.upDateStatus(10)
-        })
-        .catch(() => {
-          console.log("cancel");
-        });
+          this.$confirm('确认驳回给院系秘书吗？')
+            .then((res) => {
+              this.upDateStatus(10)
+            })
+            .catch(() => {
+              console.log('cancel')
+            })
         }
       } else {
         // 点击了提交按钮的确认，将符合条件以及不符合条件的一起提交给研究生院主管
@@ -659,13 +659,13 @@ export default {
     // 提交按钮的方法
     submitFun() {
       // this.dialogVisibleSubmit = true
-         this.$confirm("确认同意所有符合条件的信息上校分会吗？")
+      this.$confirm('确认同意所有符合条件的信息上校会吗？')
         .then((res) => {
           this.submitUpdate()
         })
         .catch(() => {
-          console.log("cancel");
-        });
+          console.log('cancel')
+        })
     }
 
   }
