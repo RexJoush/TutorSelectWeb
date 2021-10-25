@@ -12,19 +12,21 @@
         label-position="top"
       >
         <!-- 学术论文(近五年) -->
-        <el-card class="box-card" shadow="always">
+        <el-card class="box-card" shadow="always" v-loading = "load1">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">学术论文(近五年) </span>
             <el-button
               class="addButton"
               style="float: right; margin-left: 15px"
               type="primary"
+              plain             
               @click="addFunc(1)"
             >添加社科类论文</el-button>
             <el-button
               class="addButton"
               style="float: right"
-              type="primary"
+              type="primary"        
+              plain
               @click="addFunc(2)"
             >添加理工类论文</el-button>
           </div>
@@ -64,16 +66,21 @@
               </template>
             </el-table-column>
           </el-table>
+          <br>
+          <el-row type="flex" justify="center">
+            <el-col :span="2"><el-button @click="saveLearning(1)" type="primary">保 存</el-button></el-col>
+          </el-row>
         </el-card>
         <br>
         <!-- 科研项目（近五年） -->
-        <el-card class="box-card" shadow="always">
+        <el-card class="box-card" shadow="always"  v-loading = "load3">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">科研项目（近五年）</span>
             <el-button
               class="addButton"
               style="float: right"
               type="primary"
+              plain
               @click="addFunc(3)"
             >添加科研项目</el-button>
           </div>
@@ -124,16 +131,21 @@
               </template>
             </el-table-column>
           </el-table>
+          <br>
+          <el-row type="flex" justify="center">
+            <el-col :span="2"><el-button @click="saveLearning(3)" type="primary">保 存</el-button></el-col>
+          </el-row>
         </el-card>
         <br>
         <!-- 教材或学术著作（近五年） -->
-        <el-card class="box-card" shadow="always">
+        <el-card class="box-card" shadow="always"  v-loading = "load4">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">教材或学术著作（近五年）</span>
             <el-button
               style="float: right"
               class="addButton"
               type="primary"
+              plain
               @click="addFunc(4)"
             >添加教材或学术著作
             </el-button>
@@ -170,16 +182,21 @@
               </template>
             </el-table-column>
           </el-table>
+          <br>
+          <el-row type="flex" justify="center">
+            <el-col :span="2"><el-button @click="saveLearning(4)" type="primary">保 存</el-button></el-col>
+          </el-row>
         </el-card>
         <br>
         <!-- 科研教学奖励（近五年） -->
-        <el-card class="box-card" shadow="always">
+        <el-card class="box-card" shadow="always"  v-loading = "load5">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">科研教学奖励（近五年）</span>
             <el-button
               class="addButton"
               style="float: right"
               type="primary"
+              plain
               @click="addFunc(5)"
             >添加科研教学奖励</el-button>
           </div>
@@ -216,16 +233,22 @@
               </template>
             </el-table-column>
           </el-table>
+          <br>
+          <el-row type="flex" justify="center">
+            <el-col :span="2"><el-button @click="saveLearning(5)" type="primary">保 存</el-button></el-col>
+          </el-row>
+           
         </el-card>
         <br>
         <!-- 发明专利（近五年） -->
-        <el-card class="box-card" shadow="always">
+        <el-card class="box-card" shadow="always"  v-loading = "load6">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">发明专利（近五年）</span>
             <el-button
               class="addButton"
               style="float: right"
               type="primary"
+              plain
               @click="addFunc(6)"
             >添加发明专利</el-button>
           </div>
@@ -265,6 +288,11 @@
               </template>
             </el-table-column>
           </el-table>
+          <br>
+          <el-row type="flex" justify="center">
+            <el-col :span="2"><el-button @click="saveLearning(6)" type="primary">保 存</el-button></el-col>
+          </el-row>
+           
         </el-card>
         <br>
         <!-- 科研汇总 -->
@@ -274,6 +302,7 @@
             <el-button
               style="float: right"
               type="primary"
+              plain
               @click="getSummary"
             >汇总生成
             </el-button>
@@ -889,7 +918,7 @@
 </template>
 
 <script>
-import { submitThirdPage, deleteFile } from '@/api/tutor/inspect'
+import { submitThirdPage, deleteFile, saveThirdLearning } from '@/api/tutor/inspect'
 import { baseUrl } from '@/api/url'
 export default {
   name: 'Index',
@@ -900,6 +929,23 @@ export default {
   },
   data() {
     return {
+      load1: false,
+      load3: false,
+      load4: false,
+      load5: false,
+      load6: false,
+      
+      //添加,编辑，删除 false不能提交
+      addFlag: true, 
+      editFlag: true,
+      delFlag: true,
+
+      flag1: true,
+      flag3: true,
+      flag4: true,
+      flag5: true,
+      flag6: true,
+
       // 文件列表
       fileList: [],
 
@@ -933,7 +979,6 @@ export default {
         communicationAuthorName: '', // 通讯作者
         paperSubject: '', // 论文分科，文，理，交叉学科按文科算
         paperProveMaterials: '', // 论文证明材料
-        paperProveMaterialsName: '' // 名称
       },
 
       // 科研项目
@@ -949,7 +994,6 @@ export default {
         projectTotalPrice: '', // 总经费
         projectLevel: '', // 项目级别，国家级，省部级，厅局级
         projectProveMaterials: '', // 证明材料，图片，pdf等
-        projectProveMaterialsName: '' // 上传文件名字
       },
 
       // 教材或学术著作
@@ -962,7 +1006,6 @@ export default {
         totalWords: '', // 完成字数
         authorName: '', // 作者姓名
         worksProveMaterials: '', // 证明材料，图片，pdf等
-        worksProveMaterialsName: ''
       },
 
       // 科研教学奖励
@@ -975,7 +1018,6 @@ export default {
         awardsTime: '', // 获奖日期
         awardsAuthorName: '', // 获奖人姓名
         awardsProveMaterials: '', // 证明材料，图片，pdf等
-        awardsProveMaterialsName: ''
       },
 
       // 发明专利
@@ -987,7 +1029,6 @@ export default {
         patentGrantNumber: '', // 专利授权号
         patentType: '', // 专利类型
         patentProveMaterials: '', // 证明材料，图片，pdf等
-        patentProveMaterialsName: ''
       }
     }
   },
@@ -996,9 +1037,105 @@ export default {
       return `${baseUrl}/user/upload/${type}`
     },
     /* =========================  第 3 页  ================================= */
+    //保存每一项
+    saveLearning: function(learningType){
+      this.$confirm('保存此项?')
+        .then(() => {   
+          // this.$emit('load', true)
+          // this.load = true
+          switch(learningType){
+            case 1: 
+            case 2: 
+             this.flag1 = true
+             this.load1 = true
+              break
+            case 3:
+             this.flag3 = true
+             this.load3 = true
+             break
+            case 4:
+             this.flag4 = true
+             this.load4 = true
+             break
+            case 5:
+             this.flag5 = true
+             this.load5 = true
+             break
+            case 6:
+             this.flag6 = true
+             this.load6 = true
+             break
+          }
+          saveThirdLearning(
+            this.formThird,
+            this.applyId,
+            this.applyCondition,
+            learningType
+          ).then((res) => {
+            if (res.data.code === 1201) {
+              this.$message.error(res.data.message)
+              console.log(res.data.errorMessage)
+              return
+            }
+            else if(res.data.code ===1200 ){
+              this.$message.success('保存成功!')
+            }          
+            console.log("res.data",res.data)  
+            // this.load = false
+            switch(learningType){
+            case 1: 
+            case 2:
+             this.formThird.academicPapers = res.data.data.academicPapers
+             this.load1 = false
+            break
+            case 3:
+              this.formThird.researchProjects = res.data.data.researchProjects
+             this.load3 = false
+             break
+            case 4:
+              this.formThird.academicWorks = res.data.data.academicWorks
+             this.load4 = false
+             break
+            case 5:
+              this.formThird.teachingAwards = res.data.data.teachingAwards
+             this.load5 = false
+             break
+            case 6:
+              this.formThird.inventionPatents = res.data.data.inventionPatents
+             this.load6 = false
+             break
+          }            
+          })
+        })
+        .catch(() => {
+          console.log('cancel')
+        })
+        
+    },
+
     // 完成第 3 页学术信息的填写
     onSubmitThirdPage: function() {
-      if (!this.isSummary) {
+      if(!this.flag1){
+        this.$message.info("请保存学术论文后再提交！")
+        return
+      }
+      else if(!this.flag3){
+        this.$message.info("请保存科研项目后再提交！")
+        return
+      }
+      else if(!this.flag4){
+        this.$message.info("请保存教材或学术著作后再提交！")
+        return
+      }
+      else if(!this.flag5){
+        this.$message.info("请保存科研教学奖励后再提交！")
+        return
+      }
+      else if(!this.flag6){
+        this.$message.info("请保存发明专利后再提交！")
+        return
+      }
+      else if (!this.isSummary) {
         console.log('submit')
         this.$message.info('请生成汇总信息后再提交')
         return
@@ -1008,15 +1145,16 @@ export default {
         .then(() => {
           this.$emit('load', true)
           submitThirdPage(
-            this.formThird,
+            this.formThird.summary,
             this.applyId,
-            this.applyCondition
+            this.applyCondition,            
           ).then((res) => {
-            if (res.data.code === 1201) {
-              this.$message.error(res.data.message)
-              console.log(res.data.errorMessage)
-              return
-            }
+            // if (res.data.code === 1201) {
+            //   this.$message.error(res.data.message)
+            //   console.log(res.data.errorMessage)
+            //   return
+            // }
+            console.log("res",res)
             this.$message.success('保存成功!')
             this.$emit('func', res.data)
             console.log(res.data)
@@ -1040,23 +1178,30 @@ export default {
     addFunc: function(type) {
       // 添加或修改就将汇总信息变为 false
       this.isSummary = false
+      this.addFlag = false  //添加按钮不能提交
       switch (type) {
         case 1:
+          this.flag1 = false
           this.dialogThird1 = true
           break
         case 2:
+          this.flag1 = false
           this.dialogThird2 = true
           break
         case 3:
+          this.flag3 = false
           this.dialogThird3 = true
           break
         case 4:
+          this.flag4 = false
           this.dialogThird4 = true
           break
         case 5:
+          this.flag5 = false
           this.dialogThird5 = true
           break
         case 6:
+          this.flag6 = false
           this.dialogThird6 = true
           break
       }
@@ -1084,8 +1229,8 @@ export default {
       console.log('deltype', type)
       switch (type) {
         case 1:
-          deleteItem.deleteId =
-            this.applyCondition === '102' ? -1 : scope.paperId
+          this.flag1 = false
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.paperId
           deleteItem.deleteType = 1
           // 删除文件
           this.delFile(scope.paperProveMaterials)
@@ -1093,29 +1238,29 @@ export default {
           this.formThird.academicPapers.splice(index, 1)
           break
         case 3:
-          deleteItem.deleteId =
-            this.applyCondition === '102' ? -1 : scope.projectId
-          deleteItem.deleteType = 2
+          this.flag3 = false
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.projectId
+          deleteItem.deleteType = 3
           // 删除文件
-          console.log('----------------')
-          console.log(scope.projectProveMaterial)
           this.delFile(scope.projectProveMaterials)
           // 删除记录
           this.formThird.researchProjects.splice(index, 1)
           break
         case 4:
+          this.flag4 = false
           deleteItem.deleteId =
             this.applyCondition === '102' ? -1 : scope.worksId
-          deleteItem.deleteType = 3
+          deleteItem.deleteType = 4
           // 删除文件
           this.delFile(scope.worksProveMaterials)
           // 删除记录
           this.formThird.academicWorks.splice(index, 1)
           break
         case 5:
+          this.flag5 = false
           deleteItem.deleteId =
             this.applyCondition === '102' ? -1 : scope.awardsId
-          deleteItem.deleteType = 4
+          deleteItem.deleteType = 5
           // 删除文件
           this.delFile(scope.awardsProveMaterials)
           // 删除记录
@@ -1123,9 +1268,9 @@ export default {
           break
 
         case 6:
-          deleteItem.deleteId =
-            this.applyCondition === '102' ? -1 : scope.patentId
-          deleteItem.deleteType = 5
+          this.flag6 = false
+          deleteItem.deleteId = this.applyCondition === '102' ? -1 : scope.patentId
+          deleteItem.deleteType = 6
           // 删除文件
           this.delFile(scope.patentProveMaterials)
           // 删除记录
@@ -1146,11 +1291,12 @@ export default {
       this.editIndex = index
       switch (type) {
         case 1:
+          this.flag1 = false
           this.academicPaper = this.formThird.academicPapers[index]
           if (this.fileList.length === 0) { // 展示文件名
             obj = {}
-            obj.name = this.formThird.academicPapers[index].paperProveMaterialsName // 获取文件名称
             obj.url = this.formThird.academicPapers[index].paperProveMaterials // 获取路径
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
             this.fileList.push(obj)
           }
           if (scope.journalLevel !== '') {
@@ -1162,41 +1308,45 @@ export default {
           }
           break
         case 3:
+          this.flag3 = false
           this.researchProject = this.formThird.researchProjects[index]
           if (this.fileList.length === 0) {
             obj = {}
-            obj.name = this.formThird.researchProjects[index].projectProveMaterialsName // 获取文件名称
             obj.url = this.formThird.researchProjects[index].projectProveMaterials // 获取路径
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
             this.fileList.push(obj)
           }
           this.dialogThird3 = true
           break
         case 4:
+          this.flag4 = false
           this.academicWork = this.formThird.academicWorks[index]
           if (this.fileList.length === 0) {
             obj = {}
-            obj.name = this.formThird.academicWorks[index].worksProveMaterialsName // 获取文件名称
             obj.url = this.formThird.academicWorks[index].worksProveMaterials // 获取路径
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
             this.fileList.push(obj)
           }
           this.dialogThird4 = true
           break
         case 5:
+          this.flag5 = false
           this.teachingAward = this.formThird.teachingAwards[index]
           if (this.fileList.length === 0) {
-            obj = {}
-            obj.name = this.formThird.teachingAwards[index].awardsProveMaterialsName // 获取文件名称
+            let obj = new Object()
             obj.url = this.formThird.teachingAwards[index].awardsProveMaterials // 获取路径
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
             this.fileList.push(obj)
           }
           this.dialogThird5 = true
           break
         case 6:
+          this.flag6 = false
           this.inventionPatent = this.formThird.inventionPatents[index]
           if (this.fileList.length === 0) {
             obj = {}
-            obj.name = this.formThird.inventionPatents[index].patentProveMaterialsName // 获取文件名称
             obj.url = this.formThird.inventionPatents[index].patentProveMaterials // 获取路径
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
             this.fileList.push(obj)
           }
           this.dialogThird6 = true
@@ -1223,7 +1373,6 @@ export default {
             communicationAuthorName: '', // 通讯作者
             paperSubject: '', // 论文分科，文，理，交叉学科按文科算
             paperProveMaterials: '', // 论文证明材料
-            paperProveMaterialsName: ''
           }
           this.dialogThird1 = false
           break
@@ -1242,7 +1391,6 @@ export default {
             communicationAuthorName: '', // 通讯作者
             paperSubject: '', // 论文分科，文，理，交叉学科按文科算
             paperProveMaterials: '', // 论文证明材料
-            paperProveMaterialsName: ''
           }
           this.dialogThird2 = false
           break
@@ -1259,7 +1407,6 @@ export default {
             projectTotalPrice: '', // 总经费
             projectLevel: '', // 项目级别，国家级，省部级，厅局级
             projectProveMaterials: '', // 证明材料，图片，pdf等
-            projectProveMaterialsName: ''
           }
           this.dialogThird3 = false
           break
@@ -1273,7 +1420,6 @@ export default {
             totalWords: '', // 完成字数
             authorName: '', // 作者姓名
             worksProveMaterials: '', // 证明材料，图片，pdf等
-            worksProveMaterialsName: ''
           }
           this.dialogThird4 = false
           break
@@ -1288,7 +1434,6 @@ export default {
             awardsTime: '', // 获奖日期
             awardsAuthorName: '', // 获奖人姓名
             awardsProveMaterials: '', // 证明材料，图片，pdf等
-            awardsProveMaterialsName: ''
           }
           this.dialogThird5 = false
           break
@@ -1301,7 +1446,6 @@ export default {
             patentGrantNumber: '', // 专利授权号
             patentType: '', // 专利类型
             patentProveMaterials: '', // 证明材料，图片，pdf等
-            patentProveMaterialsName: ''
           }
           this.dialogThird6 = false
       }
@@ -1328,7 +1472,27 @@ export default {
     },
 
     // 汇总生成
-    getSummary: function() {
+    getSummary: function() {    
+      if(!this.flag1){
+        this.$message.info("请保存学术论文后再进行汇总生成！")
+        return
+      }
+      else if(!this.flag3){
+        this.$message.info("请保存科研项目后再进行汇总生成！")
+        return
+      }
+      else if(!this.flag4){
+        this.$message.info("请保存教材或学术著作后再进行汇总生成！")
+        return
+      }
+      else if(!this.flag5){
+        this.$message.info("请保存科研教学奖励后再进行汇总生成！")
+        return
+      }
+      else if(!this.flag6){
+        this.$message.info("请保存发明专利后再进行汇总生成！")
+        return
+      }
       this.isSummary = true
       // 论文部分
       this.formThird.summary.firstAuthorPaper = this.formThird.academicPapers.length
@@ -1458,7 +1622,6 @@ export default {
             communicationAuthorName: '',
             paperSubject: '',
             paperProveMaterials: '',
-            paperProveMaterialsName: ''
           }
           break
         case 2: // 理工
@@ -1490,7 +1653,6 @@ export default {
             communicationAuthorName: '',
             paperSubject: '',
             paperProveMaterials: '',
-            paperProveMaterialsName: ''
           }
 
           break
@@ -1522,7 +1684,6 @@ export default {
             projectTotalPrice: '',
             projectLevel: '',
             projectProveMaterials: '',
-            projectProveMaterialsName: ''
           }
 
           break
@@ -1552,7 +1713,6 @@ export default {
             totalWords: '',
             authorName: '',
             worksProveMaterials: '',
-            worksProveMaterialsName: ''
           }
 
           break
@@ -1581,7 +1741,6 @@ export default {
             awardsTime: '',
             awardsAuthorName: '',
             awardsProveMaterials: '',
-            awardsProveMaterialsName: ''
           }
 
           break
@@ -1608,7 +1767,6 @@ export default {
             patentGrantNumber: '',
             patentType: '',
             patentProveMaterials: '',
-            patentProveMaterialsName: ''
           }
           break
       }
@@ -1621,166 +1779,28 @@ export default {
       console.log('response', response)
       // 记录到 用于删除
       var obj = new Object()
-      obj.name = file.name
       obj.url = response.data.path
+      obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.url.length)
       this.fileList.push(obj)
       switch (response.data.fileType) {
         // 论文
         case 1:
         case 2:
           this.academicPaper.paperProveMaterials = response.data.path // 论文的存储地址
-          this.academicPaper.paperProveMaterialsName = file.name // 记录上传文件的名字
           break
         case 3:
           this.researchProject.projectProveMaterials = response.data.path // 科研项目的存储地址
-          this.researchProject.projectProveMaterialsName = file.name
           break
         case 4:
           this.academicWork.worksProveMaterials = response.data.path // 教材或学术著作的存储地址
-          this.academicWork.worksProveMaterialsName = file.name
           break
         case 5:
-          this.teachingAward.awardsProveMaterials = response.data.path
-          this.teachingAward.awardsProveMaterialsName = file.name
+          this.teachingAward.awardsProveMaterials = response.data.path          
           break
         case 6:
           this.inventionPatent.patentProveMaterials = response.data.path
-          this.inventionPatent.patentProveMaterialsName = file.name
           break
-      }
-
-      //
-      // switch (response.data.fileType) {
-      //   // 论文
-      //   case 1:
-      //   case 2:
-      //     this.academicPaper.paperProveMaterials = response.data.path  // 论文的存储地址
-      //     this.academicPaper.paperProveMaterialsName = file.name;      //记录上传文件的名字
-      //     if (this.isEdit) {
-      //       this.formThird.academicPapers[this.editIndex] = this.academicPaper; // 修改
-      //       this.isEdit = false;
-      //       this.editIndex = -1;
-      //     } else {
-      //       this.formThird.academicPapers.push(this.academicPaper); // 加入列表
-      //     }
-      //     // 置空论文
-      //     this.academicPaper = {
-      //       paperName: "",
-      //       paperPublicationTime: "",
-      //       journalName: "",
-      //       journalLevel: "",
-      //       journalCategory: "",
-      //       sciPart: "",
-      //       impactFactors: "",
-      //       firstAuthorName: "",
-      //       communicationAuthorName: "",
-      //       paperSubject: "",
-      //       paperProveMaterials: "",
-      //       paperProveMaterialsName: "",
-      //     };
-      //     if (response.data.fileType === 1) {
-      //       this.dialogThird1 = false;
-      //     } else {
-      //       this.dialogThird2 = false;
-      //     }
-      //     break;
-      //   // 科研项目
-      //   case 3:
-      //     this.researchProject.projectProveMaterials = response.data.path; // 论文的存储地址
-      //     if (this.isEdit) {
-      //       this.formThird.researchProjects[this.editIndex] =
-      //         this.researchProject; // 修改
-      //       this.isEdit = false;
-      //       this.editIndex = -1;
-      //     } else {
-      //       this.formThird.researchProjects.push(this.researchProject); // 加入列表
-      //     }
-      //     // 置空科研项目
-      //     this.researchProject = {
-      //       projectId: "",
-      //       projectName: "",
-      //       projectNumber: "",
-      //       approvalNumber: "",
-      //       projectChargeName: "",
-      //       projectStartTime: "",
-      //       projectEndTime: "",
-      //       projectCategory: "",
-      //       projectTotalPrice: "",
-      //       projectLevel: "",
-      //       projectProveMaterials: "",
-      //     };
-      //     this.dialogThird3 = false;
-      //     break;
-      //   // 教材或学术著作
-      //   case 4:
-      //     this.academicWork.worksProveMaterials = response.data.path; // 论文的存储地址
-      //     if (this.isEdit) {
-      //       this.formThird.academicWorks[this.editIndex] = this.academicWork; // 修改
-      //       this.isEdit = false;
-      //       this.editIndex = -1;
-      //     } else {
-      //       this.formThird.academicWorks.push(this.academicWork); // 加入列表
-      //     }
-      //     // 置空科研项目
-      //     this.academicWork = {
-      //       worksId: "",
-      //       worksName: "",
-      //       worksNumber: "",
-      //       worksPublicationTime: "",
-      //       worksPublicationUnit: "",
-      //       totalWords: "",
-      //       authorName: "",
-      //       worksProveMaterials: "",
-      //     };
-      //     this.dialogThird4 = false;
-      //     break;
-      //   // 科研或教学奖励
-      //   case 5:
-      //     this.teachingAward.awardsProveMaterials = response.data.path; // 论文的存储地址
-      //     if (this.isEdit) {
-      //       this.formThird.teachingAwards[this.editIndex] = this.teachingAward; // 修改
-      //       this.isEdit = false;
-      //       this.editIndex = -1;
-      //     } else {
-      //       this.formThird.teachingAwards.push(this.teachingAward); // 加入列表
-      //     }
-      //     // 置空科研或教学奖励
-      //     this.teachingAward = {
-      //       awardsId: "",
-      //       awardsName: "",
-      //       awardsRank: "",
-      //       awardsUnit: "",
-      //       awardsLevel: "",
-      //       awardsTime: "",
-      //       awardsAuthorName: "",
-      //       awardsProveMaterials: "",
-      //     };
-      //     this.dialogThird5 = false;
-      //     break;
-      //   // 发明专利
-      //   case 6:
-      //     this.inventionPatent.patentProveMaterials = response.data.path; // 论文的存储地址
-      //     if (this.isEdit) {
-      //       this.formThird.inventionPatents[this.editIndex] =
-      //         this.inventionPatent; // 修改
-      //       this.isEdit = false;
-      //       this.editIndex = -1;
-      //     } else {
-      //       this.formThird.inventionPatents.push(this.inventionPatent); // 加入列表
-      //     }
-      //     // 置空科研项目
-      //     this.inventionPatent = {
-      //       patentId: "",
-      //       patentName: "",
-      //       patentAuthorName: "",
-      //       patentGrantTime: "",
-      //       patentGrantNumber: "",
-      //       patentType: "",
-      //       patentProveMaterials: "",
-      //     };
-      //     this.dialogThird6 = false;
-      //     break;
-      // }
+      }    
     },
     // 移除文件
     removeFile(file, fileList) {
@@ -1789,34 +1809,6 @@ export default {
         this.delFile(this.fileList[0].url)
         this.fileList = []
       }
-
-      // if (this.fileList[0].url !== null) {
-      //   this.$confirm("确认删除已上传的文件？", "提示", {
-      //     confirmButtonText: "确定",
-      //     cancelButtonText: "取消",
-      //     type: "warning",
-      //   })
-      //     .then(action => {
-      //       console.log(action)
-      //       if (action === 'confirm'){
-      //         this.delFile(this.fileList[0].url);
-      //         this.fileList = [];
-      //       }
-      //     })
-      //     .catch( err => {
-      //       console.log(err)
-      //       if(err == 'cancel'){
-      //         this.$message({
-      //         type: "info",
-      //         message: "已取消删除",
-      //       });
-      //       // var obj = new Object()
-      //       // obj.name = '赵军壮'
-      //       // obj.url = 'hhh'
-      //       // this.fileList.push(obj)
-      //       }
-      //     });
-      // }
     },
     // 上传失败
     uploadErrorFunc: function(err, file, fileList) {

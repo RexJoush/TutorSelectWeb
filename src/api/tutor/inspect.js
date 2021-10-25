@@ -33,7 +33,15 @@ export function submitSecondPage(data, applyTypeId, applyId, applyCondition) {
   })
 }
 
-// 提交第三页
+//第三页每部分提交
+export function saveThirdLearning(data, applyId, applyCondition,learningType) {
+  return request({
+    url: `${baseUrl}/tutor/inspect/saveLearning/${applyId}/${applyCondition}/${learningType}`,
+    method: 'post',
+    data :data
+  })
+}
+// 第三页汇总提交
 export function submitThirdPage(data, applyId, applyCondition) {
   return request({
     url: `${baseUrl}/tutor/inspect/submitThirdPage/${applyId}/${applyCondition}`,
