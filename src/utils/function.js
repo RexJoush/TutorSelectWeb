@@ -7,8 +7,8 @@ import Cookies from 'js-cookie'
  * @param applyTypeId 申请的类型 id 值
  * @param tutorId 教师工号
  */
-export function toDetails(that, applyId, applyTypeId, tutorId) {
-  that.$router.push(`/applyDetails/${applyId}/${applyTypeId}/${tutorId}`)
+export function toDetails(that, applyId, applyTypeId, tutorId, applyStatus) {
+  that.$router.push(`/applyDetails/${applyId}/${applyTypeId}/${tutorId}/${applyStatus}`)
 }
 
 /**

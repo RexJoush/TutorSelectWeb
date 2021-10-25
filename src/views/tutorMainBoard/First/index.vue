@@ -18,7 +18,7 @@
             <Row>
               <Col :span="12">
                 <el-form-item label="姓名">
-                  <el-input v-model="formFirst.name" disabled />
+                  <el-input v-model="formFirst.name" disabled/>
                 </el-form-item>
               </Col>
               <Col :span="12">
@@ -28,51 +28,53 @@
               </Col>
               <Col :span="12">
                 <el-form-item label="所在单位">
-                  <el-input v-model="formFirst.organizationName" disabled />
+                  <el-input v-model="formFirst.organizationName" disabled/>
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="出生日期">
-                  <el-input v-model="formFirst.birthday" disabled />
+                  <el-input v-model="formFirst.birthday" disabled/>
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="工号">
-                  <el-input v-model="formFirst.tutorId" :disabled="true" />
+                  <el-input v-model="formFirst.tutorId" :disabled="true"/>
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="证件号码">
-                  <el-input v-model="formFirst.identity" disabled />
+                  <el-input v-model="formFirst.identity" disabled/>
                 </el-form-item>
               </Col>
               <Col :span="12">
-                <el-form-item label="联系电话">
-                  <el-input v-model="formFirst.phone" />
+                <el-form-item label="联系电话" :rules="{required: true}">
+                  <el-input v-model="formFirst.phone"/>
                 </el-form-item>
               </Col>
               <Col :span="12">
-                <el-form-item label="电子邮箱">
+                <el-form-item label="电子邮箱" :rules="{required: true}">
                   <el-input v-model="formFirst.email" />
                 </el-form-item>
               </Col>
-              <Col :span="12">
+<!--              <el-divider style="margin: 0 !important; height: 5px;"></el-divider>-->
+              <Col :span="12" >
                 <el-form-item label="职称">
-                  <el-input v-model="formFirst.title" disabled />
+                  <el-input v-model="formFirst.title" disabled/>
                 </el-form-item>
               </Col>
               <Col :span="12">
-                <el-form-item label="评定时间">
+                <el-form-item label="评定时间" style="margin-bottom: 5px" :rules="{required: true}">
                   <el-date-picker
                     v-model="formFirst.evaluateTime"
                     type="month"
                     style="width: 100%"
-                    placeholder="选择日期"
+                    placeholder="职称评定时间"
                     format="yyyy-MM"
                     value-format="yyyy-MM"
                   />
                 </el-form-item>
               </Col>
+<!--              <el-divider></el-divider>-->
             </Row>
           </Col>
           <Col span="8">
@@ -82,7 +84,7 @@
                 :src="formFirst.image"
                 fit="fit"
               >
-                <div slot="placeholder" class="image-slot"><i class="el-icon-picture-outline" /></div>
+                <div slot="placeholder" class="image-slot"><i class="el-icon-picture-outline"/></div>
               </el-image>
             </el-form-item>
           </Col>
@@ -92,17 +94,17 @@
             </el-form-item>
           </Col>
           <Col :span="8">
-            <el-form-item label="授予单位">
-              <el-input v-model="formFirst.awardDepartment" />
+            <el-form-item label="授予单位" :rules="{required: true}">
+              <el-input v-model="formFirst.awardDepartment" placeholder="最后学位授予单位" />
             </el-form-item>
           </Col>
           <Col :span="8">
-            <el-form-item label="授予时间">
+            <el-form-item label="授予时间" :rules="{required: true}">
               <el-date-picker
                 v-model="formFirst.awardTime"
                 type="month"
                 style="width: 100%"
-                placeholder="选择日期"
+                placeholder="最后学位授予时间"
                 format="yyyy-MM"
                 value-format="yyyy-MM"
               />
@@ -123,6 +125,7 @@
 
 <script>
 import { getFirstPage, submitFirstPage } from '@/api/tutor/inspect'
+import { getNoFirstPage, submitNoFirstPage } from '@/api/tutor/noInspect'
 
 export default {
   props: {
@@ -161,39 +164,102 @@ export default {
   methods: {
     // 拉取基本信息
     getFirstPage: function() {
-      getFirstPage(this.applyId).then((res) => {
-        if (res.data.code === 1201) {
-          this.$message.error(res.data.message)
-          this.$router.push('/tutorApply/tutorMainBoard')
-          return
-        }
-        this.formFirst = res.data
+      if (this.applyType === 3 || this.applyType === 6) {
+        getNoFirstPage(this.applyId).then((res) => {
+          this.formFirst = res.data
 
-        // 未申请过
-        if (this.applyCondition === 102) {
-          this.formFirst.image = 'data:image/png;base64,' + this.formFirst.blobImage
-        }
-        this.loadingFirst = false
-      })
+          console.log('first', this.formFirst)
+          // 未申请过
+          if (this.applyCondition === 102) {
+            this.formFirst.image =
+              'data:image/png;base64,' + this.formFirst.image
+          }
+          this.loadingFirst = false
+        })
+      } else {
+        getFirstPage(this.applyId).then((res) => {
+          if (res.data.code === 1201) {
+            this.$message.error(res.data.message)
+            this.$router.push('/tutorApply/tutorMainBoard')
+            return
+          }
+          this.formFirst = res.data
+
+          // 未申请过
+          if (this.applyCondition === 102) {
+            this.formFirst.image = 'data:image/png;base64,' + this.formFirst.blobImage
+          }
+          this.loadingFirst = false
+        })
+      }
     },
 
     // 完成第 1 页基本信息的填写
     onSubmitFirstPage: function() {
+      if (this.formFirst.phone === null || this.formFirst.phone === '') {
+        this.$message.warning('请填写联系电话')
+        return
+      }
+      // 正则电话号验证
+      if (!this.formFirst.phone.match(/\d{0,4}[-]\d{7,8}/) && !(/\d{11}/.test(this.formFirst.phone) && this.formFirst.phone.length === 11)) {
+        this.$message.warning('请填正确的联系电话')
+        return
+      }
+      if (this.formFirst.email === null || this.formFirst.email === '') {
+        this.$message.warning('请填写电子邮箱')
+        return
+      }
+      // 正则邮箱验证
+      if (!/^\s*\w+(?:[.]?[\w-]+)*@\w+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+\s*$/.test(this.formFirst.email)) {
+        this.$message.warning('请填正确的电子邮箱')
+        return
+      }
+      if (this.formFirst.evaluateTime === null || this.formFirst.evaluateTime === '') {
+        this.$message.warning('请填写职称评定时间')
+        return
+      }
+      if (this.formFirst.awardDepartment === null || this.formFirst.awardDepartment === '') {
+        this.$message.warning('请填写最后学位授予单位')
+        return
+      }
+      if (this.formFirst.awardTime === null || this.formFirst.awardTime === '') {
+        this.$message.warning('请填写最后学位授予时间')
+        return
+      }
       this.$confirm('提交填写?')
         // 提交保存第 1 页
         .then(() => {
+          // console.log(this.formFirst.email)
           this.$emit('load', true)
-          submitFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
-            .then(res => {
-              if (res.data.code === 1201) {
-                this.$message.error(res.data.message)
-                console.log(res.data.errorMessage)
-                return
-              }
-              this.loading = false
-              this.$message.success('保存成功!')
-              this.$emit('func', res.data, this.formFirst.name)
-            })
+          // 免审
+          if (this.applyType === 3 || this.applyType === 6) {
+            console.log('no inspect')
+            submitNoFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
+              .then((res) => {
+                console.log('first', res.data.applySubject)
+                if (res.data.code === 1201) {
+                  this.$message.error(res.data.message)
+                  console.log(res.data.errorMessage)
+                  return
+                }
+                this.loading = false
+                this.$message.success('保存成功!')
+                this.$emit('func', res.data, this.formFirst.name)
+              })
+          } else {
+            console.log('inspect')
+            submitFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
+              .then(res => {
+                if (res.data.code === 1201) {
+                  this.$message.error(res.data.message)
+                  console.log(res.data.errorMessage)
+                  return
+                }
+                this.loading = false
+                this.$message.success('保存成功!')
+                this.$emit('func', res.data, this.formFirst.name)
+              })
+          }
         })
         .catch(() => {
           console.log('cancel')
@@ -204,5 +270,11 @@ export default {
 </script>
 
 <style scoped>
-
+.el-divider {
+  margin: 10px !important;
+  width: 95%;
+  color: #DCDFE6;
+  position: relative;
+  left: 5%;
+}
 </style>

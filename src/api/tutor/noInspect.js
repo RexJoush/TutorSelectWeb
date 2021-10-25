@@ -1,9 +1,8 @@
 import request from '@/utils/request'
 import { baseUrl } from '@/api/url'
 
-
 // 获取第一页, 导师基础信息
-export function getFirstPage(applyId) {
+export function getNoFirstPage(applyId) {
   return request({
     url: `${baseUrl}/tutor/noInspect/getFirstPage/${applyId}`,
     method: 'get'
@@ -12,7 +11,7 @@ export function getFirstPage(applyId) {
 
 // 免审第一页提交
 // 提交第一页
-export function submitFirstPage(data, applyId, applyTypeId, applyCondition) {
+export function submitNoFirstPage(data, applyId, applyTypeId, applyCondition) {
   return request({
     url: `${baseUrl}/tutor/noInspect/saveFirstPage/${applyId}/${applyTypeId}/${applyCondition}`,
     method: 'post',

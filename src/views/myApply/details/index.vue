@@ -7,12 +7,13 @@
             <h2>申请详情信息</h2>
           </el-col>
           <el-col :span="12">
-              <el-button style="float: right;" type="primary" @click="exportPdfBtn">导出pdf</el-button>
+            <el-button v-if="applyStatus !== 6" style="float: right; margin-left: 10px;" type="primary" @click="exportPdfBtn">导出 PDF</el-button>
+            <el-button v-else style="float: right;" type="warning" @click="editApply">修改信息</el-button>
           </el-col>
         </el-row>
       </div>
       <!-- 非免审 -->
-      <div v-if="!(applyTypeId === 3 || applyTypeId === 6)">
+      <div v-if="applyTypeId !== 3 && applyTypeId !== 6">
         <!-- 第一页基础信息 -->
         <el-row>
           <el-col :span="18">
@@ -173,12 +174,13 @@
             <div class="summary-parent">
               <p>
                 1.以第一作者或通讯作者在核心及以上期刊发表与本学科相关的学术论文共
-                <span class="summary"> {{ details.thirdPage.summary.firstAuthorPaper }} </span>篇， 其中权威
-                <span class="summary"> {{ details.thirdPage.summary.authorityAmount }} </span>篇，
-                EI<span class="summary"> {{ details.thirdPage.summary.eiAmount }} </span> 篇，
-                CSSCI<span class="summary"> {{ details.thirdPage.summary.cssciAmount }} </span>
-                篇， SSCI<span class="summary"> {{ details.thirdPage.summary.ssciAmount }} </span> 篇
-                <!--，核心共 <span class="summary">{{ details.thirdPage.summary.directProject }}</span> 篇。 -->
+                <span class="summary"> {{ details.thirdPage.summary.firstAuthorPaper }} </span>篇，
+                其中权威<span class="summary"> {{ details.thirdPage.summary.authorityAmount }} </span>篇，
+                EI<span class="summary"> {{ details.thirdPage.summary.eiAmount }} </span>篇，
+                CSCD<span class="summary"> {{ details.thirdPage.summary.cscdAmount }} </span>篇，
+                A&HCI<span class="summary"> {{ details.thirdPage.summary.ahciAmount }} </span>篇，
+                CSSCI<span class="summary"> {{ details.thirdPage.summary.cssciAmount }} </span>篇，
+                CPCI<span class="summary"> {{ details.thirdPage.summary.cpciAmount }} </span>篇。
               </p>
               <p>
                 2.主持在研科研项目共<span class="summary"> {{ details.thirdPage.summary.directProject }} </span>项，
@@ -498,18 +500,17 @@
               <!-- 免审条件 -->
               <el-descriptions-item>
                 <template slot="label">
-                  免审条件
+                  免审条件 <br>
+                  <a v-if="details.noSecondPage.exemptionConditionsMaterials !== null" target="_blank" :href="details.noSecondPage.exemptionConditionsMaterials" style="margin-top: 10px">
+                    <el-button size="mini" type="primary" plain>查看材料</el-button>
+                  </a>
                 </template>
                 <p style="margin: 20px 0;">
                   <el-row>
                     <el-col :span="20">
                       {{ details.noSecondPage.exemptionConditions }}
                     </el-col>
-                    <el-col v-if="details.noSecondPage.exemptionConditionsMaterials !== null" :span="4">
-                      <a target="_blank" :href="details.noSecondPage.exemptionConditionsMaterials">
-                        <el-button size="mini" type="primary" plain>查看材料</el-button>
-                      </a>
-                    </el-col>
+
                   </el-row>
                 </p>
               </el-descriptions-item>
@@ -586,7 +587,7 @@
 </template>
 
 <script>
-import { getApplyDetails,exportPdf } from '@/api/tutor/myApply'
+import { getApplyDetails, exportPdf, changeStatus } from '@/api/tutor/myApply'
 
 export default {
   name: 'Index',
@@ -595,34 +596,59 @@ export default {
       loading: false,
       applyId: this.$route.params.applyId * 1,
       applyTypeId: this.$route.params.applyTypeId * 1,
+      applyStatus: this.$route.params.applyStatus * 1,
       details: {},
       pdfHttpPath: ''
     }
   },
   created() {
     this.getApplyDetails()
+    console.log(this.applyStatus)
     this.loading = true
   },
   methods: {
-    //导出pdf
-    exportPdfBtn :function(){
-      exportPdf(this.applyId,this.applyTypeId).then( res =>{
-        if(res.data.code === 1201){
-          //pdf下载
-          this.pdfHttpPath = res.data.pdfPath;
-          window.open(this.pdfHttpPath);
-          this.$message.success("导出成功!")
-        }
-        else
-        {
-          this.$message.error("导出失败!")
+    // 导出pdf
+    exportPdfBtn: function() {
+      exportPdf(this.applyId, this.applyTypeId).then(res => {
+        if (res.data.code === 1201) {
+          // pdf下载
+          this.pdfHttpPath = res.data.pdfPath
+          window.open(this.pdfHttpPath)
+          this.$message.success('导出成功!')
+        } else {
+          this.$message.error('导出失败!')
         }
       })
     },
 
+    // 修改申请信息
+    editApply: async function() {
+      console.log(this.details)
+      let url = '/tutorApply/'
+      switch (this.applyTypeId) {
+        case 1:
+          url += `firstApplyDoctor/1`
+          await changeStatus(this.applyId)
+          break
+        case 2: url += `addApplyDoctor/2`; break
+        case 3: url += `noInspectApplyDoctor/3`; break
+        case 4:
+          url += `firstApplyMaster/4`
+          await changeStatus(this.applyId)
+          break
+        case 5: url += `addApplyMaster/5`; break
+        case 6: url += `noInspectApplyMaster/6`; break
+        case 7: url += `firstApplyProfessional/7`; break
+        case 8: url += `addApplyProfessional/8`; break
+      }
+      // console.log(`${url}/101/${value.applyId}`)
+      this.$router.push(`${url}/101/${this.applyId}`)
+    },
+
+    // 获取所有信息
     getApplyDetails: function() {
       getApplyDetails(this.applyId, this.applyTypeId === 3 || this.applyTypeId === 6 ? 0 : 1, this.$route.params.tutorId).then(res => {
-        if (!(this.applyTypeId === 3 || this.applyTypeId === 6)) {
+        if (this.applyTypeId !== 3 && this.applyTypeId !== 6) {
           const students = res.data.fourthPage.guidingStudents
           switch (this.applyTypeId) {
             case 1: // 首次博导, 协助指导博士生 指导硕士生

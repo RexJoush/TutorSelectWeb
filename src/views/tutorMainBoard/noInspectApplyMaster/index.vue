@@ -10,136 +10,143 @@
     </el-row>
     <br>
     <!-- 第一页内容 -->
-    <el-row>
+    <el-row v-if="formVisible.first">
       <el-col :span="18" :offset="3">
-        <el-card v-if="formVisible.first" class="box-card">
-          <div slot="header" class="clearfix">
-            <h2>基本信息</h2>
-          </div>
-          <el-form
-            ref="formFirst"
-            v-loading="firstLoading"
-            :model="formFirst"
-            label-width="100px"
-            label-position="right"
-          >
-            <Row type="flex" justify="center" align="top" class="code-row-bg">
-              <Col :span="16">
-                <Row>
-                  <Col :span="12">
-                    <el-form-item label="姓名">
-                      <el-input v-model="formFirst.name" disabled />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="性别">
-                      <span style="color: #606266">{{ formFirst.gender }}</span>
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="所在单位">
-                      <el-input v-model="formFirst.organizationName" disabled />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="出生年月">
-                      <el-input v-model="formFirst.birthday" disabled />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="工号">
-                      <el-input v-model="formFirst.tutorId" :disabled="true" />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="证件号码">
-                      <el-input v-model="formFirst.identity" disabled />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="联系电话">
-                      <el-input v-model="formFirst.phone" />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="电子邮箱">
-                      <el-input v-model="formFirst.email" />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="职称">
-                      <el-input v-model="formFirst.title" disabled />
-                    </el-form-item>
-                  </Col>
-                  <Col :span="12">
-                    <el-form-item label="评定时间">
-                      <el-date-picker
-                        v-model="formFirst.evaluateTime"
-                        type="month"
-                        style="width: 100%"
-                        placeholder="选择日期"
-                        format="yyyy-MM"
-                        value-format="yyyy-MM"
-                      />
-                    </el-form-item>
-                  </Col>
-                </Row>
-              </Col>
-              <Col :span="8">
-                <br>
-                <br>
-                <br>
-                <el-form-item>
-                  <el-image
-                    style="width: 150px; height: 210px"
-                    :src="this.formFirst.image"
-                    fit="fit"
-                  >
-                    <div slot="placeholder" class="image-slot">
-                      <i class="el-icon-picture-outline" />
-                    </div>
-                  </el-image>
-                </el-form-item>
-              </Col>
-
-              <Col :span="8">
-                <el-form-item label="最后学位">
-                  <el-input v-model="formFirst.finalDegree" disabled />
-                </el-form-item>
-              </Col>
-              <Col :span="8">
-                <el-form-item label="授予单位">
-                  <el-input v-model="formFirst.awardDepartment" />
-                </el-form-item>
-              </Col>
-              <Col :span="8">
-                <el-form-item label="授予时间">
-                  <!--<el-input v-model="formFirst.col1" disabled />-->
-                  <el-date-picker
-                    v-model="formFirst.awardTime"
-                    type="month"
-                    style="width: 100%"
-                    placeholder="选择日期"
-                    format="yyyy-MM"
-                    value-format="yyyy-MM"
-                  />
-                </el-form-item>
-              </Col>
-            </Row>
-            <Row>
-              <Col :offset="8">
-                <el-form-item style="margin-top: 20px">
-                  <el-button
-                    type="primary"
-                    @click="onSubmitFirstPage"
-                  >保存此部分，填写下一项</el-button>
-                </el-form-item>
-              </Col>
-            </Row>
-          </el-form>
-        </el-card>
+        <transition name="el-fade-in-linear">
+          <First :apply-id="applyId" :apply-type="applyType" :apply-condition="applyCondition" @func="getFormSecond" @load="loading = true" />
+        </transition>
       </el-col>
     </el-row>
+    <!--    <el-row>-->
+    <!--      <el-col :span="18" :offset="3">-->
+    <!--        <el-card v-if="formVisible.first" class="box-card">-->
+    <!--          <div slot="header" class="clearfix">-->
+    <!--            <h2>基本信息</h2>-->
+    <!--          </div>-->
+    <!--          <el-form-->
+    <!--            ref="formFirst"-->
+    <!--            v-loading="firstLoading"-->
+    <!--            :model="formFirst"-->
+    <!--            label-width="100px"-->
+    <!--            label-position="right"-->
+    <!--          >-->
+    <!--            <Row type="flex" justify="center" align="top" class="code-row-bg">-->
+    <!--              <Col :span="16">-->
+    <!--                <Row>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="姓名">-->
+    <!--                      <el-input v-model="formFirst.name" disabled />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="性别">-->
+    <!--                      <span style="color: #606266">{{ formFirst.gender }}</span>-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="所在单位">-->
+    <!--                      <el-input v-model="formFirst.organizationName" disabled />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="出生年月">-->
+    <!--                      <el-input v-model="formFirst.birthday" disabled />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="工号">-->
+    <!--                      <el-input v-model="formFirst.tutorId" :disabled="true" />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="证件号码">-->
+    <!--                      <el-input v-model="formFirst.identity" disabled />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="联系电话">-->
+    <!--                      <el-input v-model="formFirst.phone" />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="电子邮箱">-->
+    <!--                      <el-input v-model="formFirst.email" />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="职称">-->
+    <!--                      <el-input v-model="formFirst.title" disabled />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                  <Col :span="12">-->
+    <!--                    <el-form-item label="评定时间">-->
+    <!--                      <el-date-picker-->
+    <!--                        v-model="formFirst.evaluateTime"-->
+    <!--                        type="month"-->
+    <!--                        style="width: 100%"-->
+    <!--                        placeholder="选择日期"-->
+    <!--                        format="yyyy-MM"-->
+    <!--                        value-format="yyyy-MM"-->
+    <!--                      />-->
+    <!--                    </el-form-item>-->
+    <!--                  </Col>-->
+    <!--                </Row>-->
+    <!--              </Col>-->
+    <!--              <Col :span="8">-->
+    <!--                <br>-->
+    <!--                <br>-->
+    <!--                <br>-->
+    <!--                <el-form-item>-->
+    <!--                  <el-image-->
+    <!--                    style="width: 150px; height: 210px"-->
+    <!--                    :src="this.formFirst.image"-->
+    <!--                    fit="fit"-->
+    <!--                  >-->
+    <!--                    <div slot="placeholder" class="image-slot">-->
+    <!--                      <i class="el-icon-picture-outline" />-->
+    <!--                    </div>-->
+    <!--                  </el-image>-->
+    <!--                </el-form-item>-->
+    <!--              </Col>-->
+
+    <!--              <Col :span="8">-->
+    <!--                <el-form-item label="最后学位">-->
+    <!--                  <el-input v-model="formFirst.finalDegree" disabled />-->
+    <!--                </el-form-item>-->
+    <!--              </Col>-->
+    <!--              <Col :span="8">-->
+    <!--                <el-form-item label="授予单位">-->
+    <!--                  <el-input v-model="formFirst.awardDepartment" />-->
+    <!--                </el-form-item>-->
+    <!--              </Col>-->
+    <!--              <Col :span="8">-->
+    <!--                <el-form-item label="授予时间">-->
+    <!--                  &lt;!&ndash;<el-input v-model="formFirst.col1" disabled />&ndash;&gt;-->
+    <!--                  <el-date-picker-->
+    <!--                    v-model="formFirst.awardTime"-->
+    <!--                    type="month"-->
+    <!--                    style="width: 100%"-->
+    <!--                    placeholder="选择日期"-->
+    <!--                    format="yyyy-MM"-->
+    <!--                    value-format="yyyy-MM"-->
+    <!--                  />-->
+    <!--                </el-form-item>-->
+    <!--              </Col>-->
+    <!--            </Row>-->
+    <!--            <Row>-->
+    <!--              <Col :offset="8">-->
+    <!--                <el-form-item style="margin-top: 20px">-->
+    <!--                  <el-button-->
+    <!--                    type="primary"-->
+    <!--                    @click="onSubmitFirstPage"-->
+    <!--                  >保存此部分，填写下一项</el-button>-->
+    <!--                </el-form-item>-->
+    <!--              </Col>-->
+    <!--            </Row>-->
+    <!--          </el-form>-->
+    <!--        </el-card>-->
+    <!--      </el-col>-->
+    <!--    </el-row>-->
     <!-- 第二页研究信息 -->
     <Row>
       <Col :span="18" :offset="3">
@@ -292,7 +299,7 @@
                     <el-table-column prop="projectLevel" label="项目级别" />
                     <el-table-column label="操作" align="center" width="180">
                       <template slot-scope="scope">
-                         <el-button
+                        <el-button
                           size="mini"
                           type="info"
                           plain
@@ -364,7 +371,7 @@
                     <el-button
                       type="primary"
                       @click="onSubmitSecondPage"
-                    >保存此部分，填写下一项</el-button>
+                    >填写完成，提交申请</el-button>
                   </el-form-item>
                 </Col>
               </Row>
@@ -375,7 +382,7 @@
     </Row>
     <!-- 第二页弹框内容 -->
     <!-- 添加科研项目 -->
-    <el-dialog :title="isEdit ?'编辑科研项目' :'添加科研项目'"  width="40%" :visible.sync="dialogSecond1">
+    <el-dialog :title="isEdit ?'编辑科研项目' :'添加科研项目'" width="40%" :visible.sync="dialogSecond1">
       <el-form :model="researchProject">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -515,13 +522,11 @@ import { doctorPrimaryDiscipline } from '@/utils/data'
 import { baseUrl } from '@/api/url'
 import { deleteFile } from '@/api/tutor/mainboard'
 
-import {
-  submitFirstPage,
-  submitSecondPage,
-  getFirstPage
-} from '@/api/tutor/noInspect'
+import { submitSecondPage } from '@/api/tutor/noInspect'
+import First from '@/views/tutorMainBoard/First'
 
 export default {
+  components: { First },
   data() {
     return {
       fileList: [],
@@ -540,7 +545,7 @@ export default {
       },
       // 编辑或添加
       isEdit: false,
-      editIndex : -1,
+      editIndex: -1,
       // 第二页弹框
       dialogSecond1: false, // 科研项目
       dialogSecond2: false,
@@ -549,7 +554,7 @@ export default {
       /** 第一页 */
       // 第 1 页表单
       applyId: 0, // 回传apply中id主键值
-      applyTypeId: 0,
+      applyType: 0,
       formFirst: {},
       // ===========================================================第 2 页表单===================================
       childNodes: [], // 院系的子专业信息
@@ -591,12 +596,10 @@ export default {
     }
   },
   created() {
-    this.applyId = this.$route.params.applyId
-    this.applyCondition = this.$route.params.applyCondition
-    this.applyTypeId = this.$route.params.applyType
-    console.log('ooooooooooo')
-    console.log(this.applyTypeId)
-    this.GetTutorInfoByClient()
+    this.applyId = this.$route.params.applyId * 1
+    this.applyCondition = this.$route.params.applyCondition * 1
+    this.applyType = this.$route.params.applyType * 1
+    // this.GetTutorInfoByClient()
   },
   methods: {
     getUrl(type) {
@@ -604,57 +607,85 @@ export default {
     },
     /* ============================================= 第一页 =====================================*/
     // 获取导师基本信息
-    GetTutorInfoByClient: function() {
-      getFirstPage(this.applyId).then((res) => {
-        this.formFirst = res.data
-        console.log(this.formFirst)
-        // 未申请过
-        if (this.applyCondition === 102) {
-          this.formFirst.image =
-            'data:image/png;base64,' + this.formFirst.blobImage
-        }
-        this.firstLoading = false
-      })
-    },
+    // GetTutorInfoByClient: function() {
+    //   getFirstPage(this.applyId).then((res) => {
+    //     this.formFirst = res.data
+    //     console.log(this.formFirst)
+    //     // 未申请过
+    //     if (this.applyCondition === 102) {
+    //       this.formFirst.image =
+    //         'data:image/png;base64,' + this.formFirst.blobImage
+    //     }
+    //     this.firstLoading = false
+    //   })
+    // },
     //* *****************************************************第一页 *****************************************
-    onSubmitFirstPage: function() {
-      this.$confirm('提交填写?')
-        // 提交保存第一页
-        .then(() => {
-          // 学硕免审提交到后台
-          this.formFirst.image = ''
-          submitFirstPage(
-            this.formFirst,
-            this.applyId,
-            this.applyTypeId,
-            this.applyCondition
-          ).then((res) => {
-            if (res.code === 20000) {
-              this.$message.success('保存成功！')
-              this.formVisible.first = false // 关闭第一项
-              // 回显第二页信息
-              console.log(res.data)
-              this.formSecond = res.data
-              this.applyId = res.data.applyId
-              if (res.data.applySubject !== null) {
-                // console.log(appl)
-                this.formSecond.applySubject = res.data.applySubject * 1
-              } else {
-                this.formSecond.applySubject = ''
-              }
-              this.fileList.name = '111'
-              this.fileList.url = this.formSecond.exemptionConditionsMaterials
-              this.formVisible.second = true // 打开第二项
-              this.active = 1
-            }
-          })
-        })
-        .catch(() => {
-          console.log('cancel')
-        })
-    },
+    // onSubmitFirstPage: function() {
+    //   this.$confirm('提交填写?')
+    //     // 提交保存第一页
+    //     .then(() => {
+    //       // 学硕免审提交到后台
+    //       this.formFirst.image = ''
+    //       submitFirstPage(
+    //         this.formFirst,
+    //         this.applyId,
+    //         this.applyType,
+    //         this.applyCondition
+    //       ).then((res) => {
+    //         if (res.code === 20000) {
+    //           this.$message.success('保存成功！')
+    //           this.formVisible.first = false // 关闭第一项
+    //           // 回显第二页信息
+    //           console.log(res.data)
+    //           this.formSecond = res.data
+    //           this.applyId = res.data.applyId
+    //           if (res.data.applySubject !== null) {
+    //             // console.log(appl)
+    //             this.formSecond.applySubject = res.data.applySubject * 1
+    //           } else {
+    //             this.formSecond.applySubject = ''
+    //           }
+    //           this.fileList.name = '111'
+    //           this.fileList.url = this.formSecond.exemptionConditionsMaterials
+    //           this.formVisible.second = true // 打开第二项
+    //           this.active = 1
+    //         }
+    //       })
+    //     })
+    //     .catch(() => {
+    //       console.log('cancel')
+    //     })
+    // },
     /* ====================================第二页============================ */
+    getFormSecond: function(data, tutorName) {
+      console.log('second', data)
+      this.applyId = data.applyId
+      this.formSecond = data
+      console.log('formSecond', this.formSecond)
+      console.log('data', data)
+      console.log('data.applySubject', data.applySubject)
+      if (data.applySubject !== null) {
+        this.formSecond.applySubject = data.applySubject * 1
+        // this.formSecond.applySubject = ''
+        console.log('true')
+      } else {
+        this.formSecond.applySubject = null
+        console.log('false')
+      }
+      this.tutorName = tutorName // 设置导师姓名，第四页用到
+      if (data.applySubject !== null) {
+        this.formSecond.applySubject = data.applySubject * 1
+      } else {
+        this.formSecond.applySubject = ''
+      }
+      this.fileList.name = '111'
+      this.fileList.url = this.formSecond.exemptionConditionsMaterials
 
+      this.formVisible.first = false // 关闭第 1 页
+      this.formVisible.second = true // 打开第 2 页
+      this.loading = false
+      this.active = 1
+    },
     // 上传成功
     uploadSuccessFunc: function(response, file, fileList) {
       console.log('上传成功', file)
@@ -692,16 +723,15 @@ export default {
     },
     // 第 2 页 添科研项目情况 弹框
     addResearchProject: function() {
-      if(this.isEdit){
-        //修改
+      if (this.isEdit) {
+        // 修改
         this.formSecond.researchProjects[this.editIndex] = this.researchProject
         this.editIndex = -1
         this.isEdit = false
-      }
-      else{
-        //添加
-        console.log("添加")
-        this.formSecond.researchProjects.push(this.researchProject);
+      } else {
+        // 添加
+        console.log('添加')
+        this.formSecond.researchProjects.push(this.researchProject)
       }
       this.dialogSecond1 = false
       // 科研项目
@@ -716,13 +746,13 @@ export default {
         projectChargeName: ''
       }
     },
-    //编辑科研项目
-    editResearchProject: function(index,row){
+    // 编辑科研项目
+    editResearchProject: function(index, row) {
       this.isEdit = true
       this.editIndex = index
-      //打开
+      // 打开
       this.dialogSecond1 = true
-      //将数据回显
+      // 将数据回显
       this.researchProject = this.formSecond.researchProjects[index]
     },
     // 删除某项科研项目情况
@@ -731,14 +761,13 @@ export default {
     },
     // 第 2 页添加科研教学奖励
     addTeachingAward: function() {
-     if(this.isEdit){
-        //编辑
+      if (this.isEdit) {
+        // 编辑
         this.formSecond.teachingAwards[this.editIndex] = this.teachingAward
         this.editIndex = -1
         this.isEdit = false
-      }
-      else{
-        this.formSecond.teachingAwards.push(this.teachingAward);
+      } else {
+        this.formSecond.teachingAwards.push(this.teachingAward)
       }
 
       this.teachingAward = {
@@ -748,16 +777,15 @@ export default {
         awardsTime: '',
         awardsAuthorName: '',
         awardsLevel: ''
-      },
+      }
       this.dialogSecond2 = false
     },
-    //编辑科研教学奖励
-    editTeachingAward: function(index,row){
+    // 编辑科研教学奖励
+    editTeachingAward: function(index, row) {
       this.isEdit = true
       this.editIndex = index
       this.teachingAward = this.formSecond.teachingAwards[index]
       this.dialogSecond2 = true
-
     },
     // 删除某项科研教学奖励
     delTeachingAward: function(index) {
@@ -775,24 +803,26 @@ export default {
     //* *********************************************** 完成第二页基本信息的填写 表单提交按钮********************************************
     onSubmitSecondPage: function() {
       console.log(this.formSecond)
+      if (this.formSecond.applySubject === '' || this.formSecond.applySubject === null) {
+        this.$message.warning('请填写申请学科信息')
+        return
+      }
       this.$confirm('提交填写?')
         // 提交保存第二页
         .then(() => {
           console.log(this.formSecond)
           submitSecondPage(this.formSecond, this.applyId).then((res) => {
             // if (res.data != null) {
-              if (res.data.code === 1201) {
-                this.$message.error(res.data.message)
-                console.log(res.data.errorMessage)
-              } else if (res.data.code === 1202) {
-                this.$message.error(res.data.message)
-              } else {
-                this.$message.success('保存成功!')
-                this.formVisible.second = false // 关闭第二项
-                this.$router.push('/tutorApply/tutorMainBoard')
-                this.active = 2
-              }
-            // }
+            if (res.data.code === 1201) {
+              this.$message.error(res.data.message)
+              console.log(res.data.errorMessage)
+            }
+            this.$alert('填写成功，请前往我的申请页面查看填写信息，并提交至院系审核', {
+              showClose: false
+            }).then(() => {
+              this.$message.success('填写成功')
+              this.$router.push('/myApply')
+            })
           })
         })
         .catch(() => {

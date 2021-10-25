@@ -421,6 +421,10 @@ export default {
     },
     // 保存第二页
     onSubmitSecondPage: function() {
+      if (this.formSecond.applySubject === '' || this.formSecond.applySubject === null) {
+        this.$message.warning('请填写申请学科信息')
+        return
+      }
       this.$confirm('提交填写?')
         // 提交保存第 2 页
         .then(() => {

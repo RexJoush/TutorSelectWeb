@@ -532,6 +532,10 @@ export default {
     // ************************************************ 完成第二页基本信息的填写 表单提交按钮********************************************
     onSubmitSecondPage: function() {
       console.log(this.formSecond)
+      if (this.formSecond.applySubject === '' || this.formSecond.applySubject === null) {
+        this.$message.warning('请填写申请学科信息')
+        return
+      }
       this.$confirm('提交填写?')
         // 提交保存第二页
         .then(() => {
