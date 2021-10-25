@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-20 20:28:17
+ * @LastEditTime: 2021-10-25 11:07:23
 -->
 <template>
   <div class="app-container">
@@ -111,9 +111,10 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center">
+      <el-table-column label="备注" align="center" prop="commitSocial">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.commitSocial === '材料审核通过'" type="success">
+          <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
+          <!-- <el-tag v-if="scope.row.commitSocial === '材料审核通过'" type="success">
             {{ scope.row.commitSocial }}
           </el-tag>
           <el-tag v-else-if="scope.row.commitSocial === '材料审核不通过'" type="info">
@@ -122,7 +123,7 @@
           <el-tag v-else-if="scope.row.commitSocial === '材料待审核'" type="warning">
             {{ scope.row.commitSocial }}
           </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial !== null" type="info">{{scope.row.commitSocial}}</el-tag>
+          <el-tag v-else-if="scope.row.commitSocial !== null" type="info">{{scope.row.commitSocial}}</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column label="详情" align="center" prop="mr">
@@ -153,13 +154,22 @@
         <el-button type="primary" @click="rePassFun()">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 驳回时的备注弹框 -->
+    <!--  添加备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
       <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 驳回时的备注弹框 -->
+    <el-dialog title="备注" :visible.sync="dialogUnVisible" width="30%">
+      <span>确认驳回吗？</span>
+      <!-- <el-input v-model="returnCommit" autocomplete="off" /> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel()">取消</el-button>
+        <el-button type="primary" @click="returnUnFun()">确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -181,8 +191,10 @@ export default {
       searchFlag: false,
       // 驳回时备注的内容
       returnCommit: '',
-      // 驳回弹框默认不显示
+      //备注的弹框
       dialogVisible: false,
+      // 驳回弹框默认不显示
+      dialogUnVisible: false,
       // 通过确认框
       dialogVisiblePass: false,
       // 非多个禁用
@@ -217,14 +229,6 @@ export default {
         {
           value: 31,
           label: '科研处待审核'
-        },
-        {
-          value: 64, // 理科科研处审核通过
-          label: '科研处审核通过'
-        },
-        {
-          value: 53, // 理科科研处审核不通过
-          label: '科研处审核不通过'
         }
       ],
       // 审核后需要下发的List数据
@@ -237,6 +241,17 @@ export default {
     this.searchFlag = true
   },
   methods: {
+    // 点击备注按钮，添加备注
+    commitFun(row) {
+      this.updataList.length = 0;
+      this.dialogVisible = true;
+      this.returnCommit = row.commitSocial; // 回显数据
+      const obj = { id_1: 0, status_1: 0, commit_1: "" };
+      obj.id_1 = row.applyId;
+      obj.status_1 = row.status;
+      obj.commit_1 = row.commitSocial;
+      this.updataList.push(obj);
+    },
     // 高亮当前行
     setCurrent(row) {
       this.$refs.singleTable.setCurrentRow(row)
@@ -323,7 +338,7 @@ export default {
     rePassFun() {
       this.check(64)
       this.dialogVisiblePass = false
-      window.location.reload() // 重新加载页面
+      // window.location.reload() // 重新加载页面
     },
     // 初审不通过
     unPassFun() {
@@ -331,21 +346,31 @@ export default {
       if (this.multipleSelection.length > 1) {
         this.$message.warning('注意:只能选择一条数据审核！')
       } else {
-        this.dialogVisible = true
+        this.dialogUnVisible = true
       }
     },
     // 弹框确定按钮驳回操作
     returnFun() {
       // 备注
       this.updataList[0].commit_1 = this.returnCommit
-      this.check(53)
+      this.check(31)
       this.dialogVisible = false
-      this.returnCommit = null
-      window.location.reload() // 重新加载页面
+      // window.location.reload() // 重新加载页面
+    },
+
+    //弹框确定按钮驳回操作
+    returnUnFun() {
+      // 备注
+      // this.updataList[0].commit_1 = this.returnCommit
+      this.check(53)
+      this.dialogUnVisible = false
+      // this.returnCommit = null
+      // window.location.reload() // 重新加载页面
     },
 
     // 弹框取消按钮
     cancel() {
+      this.dialogUnVisible = false
       this.dialogVisible = false
       this.returnCommit = null
     },
@@ -361,7 +386,7 @@ export default {
         }
         this.updataList.length = 0
         this.resetQuery()
-        this.getSecretaryInit()
+        this.getResearchCheckInit()
       })
     },
 

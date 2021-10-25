@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-24 22:18:09
+ * @LastEditTime: 2021-10-24 22:21:49
 -->
 <template>
   <div class="app-container">
@@ -103,7 +103,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="commitSocial">
+      <el-table-column :show-overflow-tooltip="true" label="备注" align="center" prop="commitSocial">
       </el-table-column>
     </el-table>
 

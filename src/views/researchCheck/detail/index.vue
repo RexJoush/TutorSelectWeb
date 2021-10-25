@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-24 10:00:38
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-20 20:25:16
+ * @LastEditTime: 2021-10-25 11:22:35
 -->
 <template>
   <div id="app-container">
@@ -364,7 +364,7 @@
     <br />
     <el-row type="flex" justify="end">
       <el-col :span="4" :offset="21">
-        <el-button type="primary" @click="submitMaterials">确认提交</el-button>
+        <el-button type="primary" @click="submitPass()">确认提交</el-button>
       </el-col>
     </el-row>
     <br /><br />
@@ -432,6 +432,16 @@
         <el-button type="primary" @click="returnFun4()">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 确认提交的确认弹框 -->
+    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+      <span>确认提交吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePass = false">取 消</el-button>
+        <el-button type="primary" @click="submitMaterials()">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -456,6 +466,8 @@ import {
 export default {
   data() {
     return {
+      // 确认提交按钮
+      dialogVisiblePass: false,
       paperUrl: "", //论文下载地址
       paperRejectform: {}, //论文驳回的表单
       projectRejectform: {},
@@ -487,6 +499,11 @@ export default {
       projectList: [], //科研项目
       workList: [], //教材或学术著作
       awardList: [], //科研教学奖励
+      //各个表格回显的字符串
+      re1: "",
+      re2: "",
+      re3: "",
+      re4: "",
 
       //学术论文表单查询参数
       paperQueryParams: {
@@ -554,6 +571,16 @@ export default {
       this.paperList = res;
       // console.log("paperList", this.paperList);
       this.commit_1 = ""; //清空上次的综合条件
+      //论文回显字符串拼接
+      let re11 = "";
+      for(let i = 0; i < this.paperList.length; i++){
+        if(this.paperList[i].col1 === "不通过"){
+          re11 += `论文${i+1}名称：${this.paperList[i].paperName} ;` + `论文${i+1}驳回原因:${this.paperList[i].col2} 。`;
+        }
+      }
+      if(re11 !== null && re11 !== '') this.re1 = re11
+      else this.re1 = '论文审批通过'
+      console.log("---------回显论文--------",this.re1)
       //判断论文材料审核是否通过
       for (let item1 of this.paperList) {
         if (item1.col1 === null) {
@@ -573,6 +600,17 @@ export default {
       const { data: res } = await searchProject(this.id, this.applyId);
       this.projectList = res;
       this.commit_2 = ""; //清空上次的综合条件
+      //论文回显字符串拼接
+      let re22 = "";
+      for(let i = 0; i < this.projectList.length; i++){
+        if(this.projectList[i].col1 === "不通过"){
+          re22 += `项目${i+1}名称：${this.projectList[i].projectName} ;` + `项目${i+1}驳回原因:${this.projectList[i].col2} 。`;
+        }
+      }
+      if(re22 !== null && re22 !== '') this.re2 = re22
+      else this.re2 = '科研项目审批通过'
+      console.log("---------科研项目回显--------",this.re2)
+
       for (let item of this.projectList) {
         if (item.col1 == undefined) {
           this.commit_2 = 0;
@@ -590,6 +628,17 @@ export default {
       const { data: res } = await searchWorks(this.id, this.applyId);
       this.workList = res;
       this.commit_3 = ""; //清空上次的综合条件
+      //教材或学术著作回显字符串拼接
+      let re33 = "";
+      for(let i = 0; i < this.workList.length; i++){
+        if(this.workList[i].col1 === "不通过"){
+          re33 += `项目${i+1}名称：${this.workList[i].worksName} ;` + `项目${i+1}驳回原因:${this.workList[i].col2} 。`;
+        }
+      }
+      if(re33 !== null && re33 !== '') this.re3 = re33
+      else this.re3 = '教材或学术著作审批通过'
+      console.log("---------教材或学术著作回显--------",this.re3)
+      
       for (let item of this.workList) {
         if (item.col1 == undefined) {
           this.commit_3 = 0;
@@ -607,6 +656,17 @@ export default {
       const { data: res } = await searchAwards(this.id, this.applyId);
       this.awardList = res;
       this.commit_4 = ""; //清空上次的综合条件
+      //科研教学奖励回显字符串拼接
+      let re44 = "";
+      for(let i = 0; i < this.awardList.length; i++){
+        if(this.awardList[i].col1 === "不通过"){
+          re44 += `项目${i+1}名称:${this.awardList[i].awardsName} ;` + `项目${i+1}驳回原因:${this.awardList[i].col2} 。`;
+        }
+      }
+      if(re44 !== null && re44 !== '') this.re4 = re44
+      else this.re4 = '科研教学奖励'        
+      console.log("---------科研教学奖励回显--------",this.re4)
+
       for (let item2 of this.awardList) {
         if (item2.col1 == undefined) {
           this.commit_4 = 0;
@@ -652,7 +712,7 @@ export default {
       this.id1 = unInfoId1;
       this.paperRejectform = row;
       this.dialogVisible1 = true;
-      this.returnCommit1 = "";
+      this.returnCommit1 = row.col2;
     },
     //弹框确定按钮驳回操作
     returnFun1() {
@@ -673,7 +733,7 @@ export default {
     //弹框取消按钮
     cancel1() {
       this.dialogVisible1 = false;
-      this.returnCommit1 = null;
+      this.returnCommit1 = '';
     },
 
     //------------------------2.科研项目表----------------
@@ -701,7 +761,7 @@ export default {
       this.id2 = unInfoId2;
       this.projectRejectform = row;
       this.dialogVisible2 = true;
-      this.returnCommit2 = "";
+      this.returnCommit2 = row.col2;
     },
     //弹框确定按钮驳回操作
     returnFun2() {
@@ -723,7 +783,7 @@ export default {
     //弹框取消按钮
     cancel2() {
       this.dialogVisible2 = false;
-      this.returnCommit2 = null;
+      this.returnCommit2 = '';
     },
 
     // //-------------------3.教材或学术著作表----------------
@@ -751,7 +811,7 @@ export default {
       this.id3 = unInfoId3;
       this.dialogVisible3 = true;
       this.workRejectform = row;
-      this.returnCommit3 = "";
+      this.returnCommit3 = row.col2;
     },
     //弹框确定按钮驳回操作
     returnFun3() {
@@ -773,7 +833,7 @@ export default {
     //弹框取消按钮
     cancel3() {
       this.dialogVisible3 = false;
-      this.returnCommit3 = null;
+      this.returnCommit3 = '';
     },
 
     // //----------------------4.科研教学奖励表----------------
@@ -801,7 +861,7 @@ export default {
       this.id4 = unInfoId4;
       this.dialogVisible4 = true;
       this.awardRejectform = row;
-      this.returnCommit4 = "";
+      this.returnCommit4 = row.col2;
     },
     //弹框确定按钮驳回操作
     returnFun4() {
@@ -823,11 +883,18 @@ export default {
     //弹框取消按钮
     cancel4() {
       this.dialogVisible4 = false;
-      this.returnCommit4 = null;
+      this.returnCommit4 = '';
+    },
+
+    //确认提交弹框
+    submitPass() {
+      this.dialogVisiblePass = true
     },
 
     //返回主界面
     async submitMaterials() {
+      let reVisible = ""
+      this.dialogVisiblePass = false
       await this.getPaperList();
       await this.getProjectList();
       await this.getWorkList();
@@ -856,12 +923,16 @@ export default {
       ) {
         this.csDes = "材料审核不通过";
       }
+      //拼接回显字符串
+      reVisible = this.re1 + " ;" + this.re2 + " ;" + this.re3 + " ;" + this.re4
+      console.log("详情页回显得是：", reVisible)
       // this.$router.push({path:"/research/researchCheck", query:{applyId:this.applyId, csDes: this.csDes}});
       let obj = { id_1: 0, status_1: 0, commit_1: "" };
       obj.id_1 = this.applyId;
       obj.status_1 = "31";
       console.log("csdes", this.csDes);
-      obj.commit_1 = this.csDes;
+      // obj.commit_1 = this.csDes;
+      obj.commit_1 = reVisible
       this.updataList.push(obj);
       console.log("======updatelist", this.updataList);
       console.log("学术论文1111", this.commit_1);

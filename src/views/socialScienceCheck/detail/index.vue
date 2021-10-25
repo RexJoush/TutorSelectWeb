@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-25 12:01:41
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-24 22:06:50
+ * @LastEditTime: 2021-10-25 11:25:52
 -->
 <template>
   <div id="app-container"> 
@@ -397,13 +397,13 @@
       </el-dialog>
 
       <!-- 确认提交的确认弹框 -->
-    <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
-      <span>确认提交吗？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisiblePass = false">取 消</el-button>
-        <el-button type="primary" @click="submitMaterials()">确 定</el-button>
-      </span>
-    </el-dialog>
+      <el-dialog title="提示" :visible.sync="dialogVisiblePass" width="30%">
+        <span>确认提交吗？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisiblePass = false">取 消</el-button>
+          <el-button type="primary" @click="submitMaterials()">确 定</el-button>
+        </span>
+      </el-dialog>
 
   </div>
 </template>
@@ -672,7 +672,7 @@
         this.id1 = unInfoId1;
         this.paperRejectform = row;
         this.dialogVisible1 = true
-        this.returnCommit1 = ""
+        this.returnCommit1 = row.col2
       },
     
       //弹框确定按钮驳回操作
@@ -722,7 +722,7 @@
         this.id2 = unInfoId2;
         this.projectRejectform = row;
         this.dialogVisible2 = true;
-        this.returnCommit2 = ""
+        this.returnCommit2 = row.col2
       },
       //弹框确定按钮驳回操作
       returnFun2() {
@@ -773,7 +773,7 @@
         this.id3 = unInfoId3;
         this.dialogVisible3 = true;
         this.workRejectform = row;
-        this.returnCommit3 = ""      
+        this.returnCommit3 = row.col2      
       },
       //弹框确定按钮驳回操作
       returnFun3() {
@@ -825,7 +825,7 @@
         this.id4 = unInfoId4;
         this.dialogVisible4 = true;
         this.awardRejectform = row;
-        this.returnCommit4 = ""
+        this.returnCommit4 = row.col2
       },
       //弹框确定按钮驳回操作
       returnFun4() {

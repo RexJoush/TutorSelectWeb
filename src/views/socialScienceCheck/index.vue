@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-24 18:34:59
+ * @LastEditTime: 2021-10-25 11:29:48
 -->
 <template>
   <div class="app-container">
@@ -147,7 +147,7 @@
     </el-dialog>
     <!-- 添加备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
-      <span>确认驳回吗？</span>
+      <span>添加备注：</span>
       <el-input v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
@@ -157,7 +157,7 @@
     <!-- 驳回的弹框 -->
     <el-dialog title="备注" :visible.sync="dialogUnVisible" width="30%">
       <span>确认驳回吗？</span>
-      <el-input v-model="returnCommit" autocomplete="off" />
+      <!-- <el-input v-model="returnCommit" autocomplete="off" /> -->
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnUnFun()">确定</el-button>
@@ -179,7 +179,7 @@ export default {
   data() {
     return {
       searchFlag: false,
-      // 驳回时备注的内容
+      // 添加备注的内容
       returnCommit: '',
       //备注的弹框
       dialogVisible: false,
@@ -318,7 +318,7 @@ export default {
       this.check(63)
       // console.log("000000",this.updataList)
       this.dialogVisiblePass = false
-      window.location.reload() // 重新加载页面
+      // window.location.reload() // 重新加载页面
     },
 
     // 初审不通过
@@ -343,15 +343,16 @@ export default {
     //弹框确定按钮驳回操作
     returnUnFun() {
       // 备注
-      this.updataList[0].commit_1 = this.returnCommit
+      // this.updataList[0].commit_1 = this.returnCommit
       this.check(42)
       this.dialogUnVisible = false
-      this.returnCommit = null
-      window.location.reload() // 重新加载页面
+      // this.returnCommit = null
+      // window.location.reload() // 重新加载页面
     },
 
     // 弹框取消按钮
     cancel() {
+      this.dialogUnVisible = false
       this.dialogVisible = false
       this.returnCommit = null
     },
