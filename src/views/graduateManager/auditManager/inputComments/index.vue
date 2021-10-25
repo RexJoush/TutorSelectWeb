@@ -360,7 +360,7 @@ export default {
         },
         {
           'codeId': 61,
-          'inspectDescribe': '同意上校会'
+          'inspectDescribe': '同意上校会（待录入）'
         },
         {
           'codeId': 81,
