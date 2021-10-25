@@ -176,7 +176,7 @@
         <el-button type="primary" @click="rePassFun()">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 提交校分会的备注弹框 -->
+    <!-- 提交校会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加学位委员会的备注信息(可以为空)</span>
       <el-input v-model="commit" type="textarea" autocomplete="off" />
@@ -277,7 +277,7 @@ export default {
     }
   },
   created() {
-    // 研究生院领导通过的状态即同意上分会，即研究生院管理员需要录入校分会意见的名单
+    // 研究生院领导通过的状态即同意上校会，即研究生院管理员需要录入校会意见的名单
     this.queryParams.applyStatus = ''
     this.getList()
     this.getApplyType()
@@ -360,7 +360,7 @@ export default {
         },
         {
           'codeId': 61,
-          'inspectDescribe': '同意上校分会'
+          'inspectDescribe': '同意上校会'
         },
         {
           'codeId': 81,

@@ -106,7 +106,7 @@
       </el-col>
     </el-row>
     <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">同意上校会</span>的所有数据</p>
-    <!-- 提交校分会的备注弹框 -->
+    <!-- 提交校会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加需要提交给校会的备注信息(可以为空)</span>
       <el-input v-model="commit" type="textarea" autocomplete="off" />
@@ -354,7 +354,7 @@ export default {
       const year = date.getFullYear() // 获取当前年份
       console.log(year)
       this.loading = true
-      this.queryParams.applyStatus = 61 // 同意上校分会通过
+      this.queryParams.applyStatus = 61 // 同意上校会通过
       this.queryParams.applyStatuss = ['61']
       this.queryParams.userId = ''
       exportQualification(this.queryParams).then((res) => {
