@@ -6,7 +6,7 @@
  */
 
 
-export const baseUrl = 'http://10.8.47.148:8081'
+export const baseUrl = 'http://10.8.98.196:8081'
 
 
 

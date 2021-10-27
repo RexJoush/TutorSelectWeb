@@ -68,7 +68,7 @@
           </el-table>
           <br>
           <el-row type="flex" justify="center">
-            <el-col :span="2"><el-button @click="saveLearning(1)" type="primary">保 存</el-button></el-col>
+            <el-col :span="4"><el-button @click="saveLearning(1)" type="primary">保存学术论文</el-button></el-col>
           </el-row>
         </el-card>
         <br>
@@ -133,7 +133,7 @@
           </el-table>
           <br>
           <el-row type="flex" justify="center">
-            <el-col :span="2"><el-button @click="saveLearning(3)" type="primary">保 存</el-button></el-col>
+            <el-col :span="4"><el-button @click="saveLearning(3)" type="primary">保存科研项目</el-button></el-col>
           </el-row>
         </el-card>
         <br>
@@ -184,7 +184,7 @@
           </el-table>
           <br>
           <el-row type="flex" justify="center">
-            <el-col :span="2"><el-button @click="saveLearning(4)" type="primary">保 存</el-button></el-col>
+            <el-col :span="4"><el-button @click="saveLearning(4)" type="primary">保存学术著作</el-button></el-col>
           </el-row>
         </el-card>
         <br>
@@ -235,7 +235,7 @@
           </el-table>
           <br>
           <el-row type="flex" justify="center">
-            <el-col :span="2"><el-button @click="saveLearning(5)" type="primary">保 存</el-button></el-col>
+            <el-col :span="4"><el-button @click="saveLearning(5)" type="primary">保存教学奖励</el-button></el-col>
           </el-row>
            
         </el-card>
@@ -290,7 +290,7 @@
           </el-table>
           <br>
           <el-row type="flex" justify="center">
-            <el-col :span="2"><el-button @click="saveLearning(6)" type="primary">保 存</el-button></el-col>
+            <el-col :span="4"><el-button @click="saveLearning(6)" type="primary">保存发明专利</el-button></el-col>
           </el-row>
            
         </el-card>
@@ -1460,10 +1460,11 @@ export default {
       const path = encodeURI(filePath)
       deleteFile(path)
         .then((res) => {
-          if (res.code === 20000) {
-            this.$message.success('删除成功！')
+          console.log("fielres",res)
+          if (res.data.code === 1201) {
+            this.$message.error('删除失败！')            
           } else {
-            this.$message.error('删除失败！')
+            this.$message.success('删除成功！')
           }
         })
         .catch(() => {
@@ -1816,6 +1817,7 @@ export default {
       console.log('err', err)
       console.log('file', file)
       console.log('fileList', fileList)
+      this.$message.error("上传失败！")
     }
   }
 }
