@@ -222,6 +222,8 @@ export default {
         case 8:
           url += `addApplyProfessional/8`
           break
+        case 9:
+          url += 'noInspectApplyProfessional/9'
       }
       // console.log(`${url}/101/${value.applyId}`)
       this.$router.push(`${url}/101/${value.applyId}`)
@@ -237,7 +239,7 @@ export default {
 
     // 查看申请信息
     toApplyDetails: function(apply) {
-      console.log(apply)
+      console.log('apply', apply)
       toDetails(this, apply.applyId, apply.applyTypeId, apply.tutorId, apply.status)
     }
   }

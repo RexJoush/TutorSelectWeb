@@ -75,7 +75,9 @@
           </div>
         </el-col>
         <el-col :span="7">
-          <div />
+          <div>
+            <el-button :disabled="isOk" class="grid-content" type="primary" @click="checkApply(9)">专硕导师免审申请</el-button>
+          </div>
         </el-col>
       </el-row>
     </el-card>
@@ -157,6 +159,8 @@ export default {
           case 8:
             url += `addApplyProfessional/8`
             break
+          case 9:
+            url += `noInspectApplyProfessional/9`
         }
 
         // 查询出来的状态为 0 ，老师可以进去修改

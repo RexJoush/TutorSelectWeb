@@ -898,5 +898,5 @@ export const departmentList = [
   { departmentId: '50030', organizationName: '网络和数据中心' },
   { departmentId: '30100', organizationName: '艺术学院' },
   { departmentId: '40030', organizationName: '中东研究所' },
-  { departmentId: '30081', organizationName: '哲学学院' },
+  { departmentId: '30081', organizationName: '哲学学院' }
 ]

@@ -151,6 +151,13 @@ export const asyncRoutes = [
         hidden: true,
         component: () => import('@/views/tutorMainBoard/addApplyProfessional/index'),
         meta: { title: '专硕导师增列岗位', roles: ['admin', 'tutor'] }
+      },
+      {
+        path: 'noInspectApplyProfessional/:applyType/:applyCondition/:applyId',
+        name: 'noInspectApplyProfessional',
+        hidden: true,
+        component: () => import('@/views/tutorMainBoard/noInspectApplyProfessional/index'),
+        meta: { title: '专硕导师免审申请', roles: ['admin', 'tutor'] }
       }
     ]
   },

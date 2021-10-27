@@ -8,12 +8,15 @@
           </el-col>
           <el-col :span="12">
             <el-button v-if="applyStatus !== 6" style="float: right; margin-left: 10px;" type="primary" @click="exportPdfBtn">导出 PDF</el-button>
-            <el-button v-else style="float: right;" type="warning" @click="editApply">修改信息</el-button>
+            <div v-else>
+              <el-button style="float: right; margin-left: 10px;" type="success" @click="submitApply">提交申请</el-button>
+              <el-button style="float: right;" type="warning" @click="editApply">修改信息</el-button>
+            </div>
           </el-col>
         </el-row>
       </div>
       <!-- 非免审 -->
-      <div v-if="applyTypeId !== 3 && applyTypeId !== 6">
+      <div v-if="applyTypeId !== 3 && applyTypeId !== 6 && applyTypeId !== 9">
         <!-- 第一页基础信息 -->
         <el-row>
           <el-col :span="18">
@@ -96,8 +99,8 @@
         </el-row>
         <!-- 第二页信息 -->
         <el-row>
-          <!-- 非免审 -->
-          <el-col v-if="applyTypeId !== 3 && applyTypeId !== 7" :span="24">
+          <!-- 研究信息 -->
+          <el-col :span="24">
             <el-descriptions class="margin-top" :column="1" border label-class-name="description-item-second">
               <!-- 主要研究方向 -->
               <el-descriptions-item>
@@ -126,6 +129,7 @@
               </el-descriptions-item>
             </el-descriptions>
           </el-col>
+          <!-- 申请信息 -->
           <el-col :span="24">
             <el-descriptions class="margin-top" :column="1" border label-class-name="description-item-second">
               <el-descriptions-item content-class-name="clear-padding">
@@ -502,24 +506,24 @@
                 <template slot="label">
                   免审条件 <br>
                   <a v-if="details.noSecondPage.exemptionConditionsMaterials !== null" target="_blank" :href="details.noSecondPage.exemptionConditionsMaterials" style="margin-top: 10px">
-                    <el-button size="mini" type="primary" plain>查看材料</el-button>
+                    <el-button size="mini" type="text" style="text-decoration: underline;">查看材料</el-button>
                   </a>
                 </template>
                 <p style="margin: 20px 0;">
-                  <el-row>
-                    <el-col :span="20">
-                      {{ details.noSecondPage.exemptionConditions }}
-                    </el-col>
-
-                  </el-row>
+                  {{ details.noSecondPage.exemptionConditions }}
                 </p>
               </el-descriptions-item>
-            </el-descriptions><br>
+            </el-descriptions>
+          </el-col>
+          <el-col :span="24">
             <!-- 申请信息 -->
             <el-descriptions class="margin-top" :column="1" border label-class-name="description-item-second">
               <el-descriptions-item content-class-name="clear-padding">
-                <template slot="label">申请学科</template>
-                <el-descriptions class="margin-top" :column="1" border label-class-name="description-item-apply">
+                <template slot="label">
+                  {{ applyTypeId >= 7 ? '申请类别' : '申请学科' }}
+                </template>
+                <!-- 学硕，博导免审 -->
+                <el-descriptions v-if="applyTypeId === 3 || applyTypeId === 6" class="margin-top" :column="1" border label-class-name="description-item-second">
                   <el-descriptions-item>
                     <template slot="label">申请学科负责单位: </template>{{ details.noSecondPage.appliedSubjectUnit }}
                   </el-descriptions-item>
@@ -530,8 +534,26 @@
                     <template slot="label">一级学科名称: </template>{{ details.noSecondPage.appliedSubjectName }}
                   </el-descriptions-item>
                 </el-descriptions>
+                <!-- 专硕免审 -->
+                <el-descriptions v-else class="margin-top" :column="2" border label-class-name="description-item-apply">
+                  <el-descriptions-item :span="2">
+                    <template slot="label">申请类别负责单位: </template>{{ details.noSecondPage.professionalApplicationSubjectUnit }}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">类别代码: </template>{{ details.noSecondPage.professionalApplicationSubjectCode }}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">类别名称: </template>{{ details.noSecondPage.professionalApplicationSubjectName }}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">领域代码: </template>{{ details.noSecondPage.professionalFieldCode }}
+                  </el-descriptions-item>
+                  <el-descriptions-item>
+                    <template slot="label">领域名称: </template>{{ details.noSecondPage.professionalFieldName }}
+                  </el-descriptions-item>
+                </el-descriptions>
               </el-descriptions-item>
-            </el-descriptions><br>
+            </el-descriptions>
             <el-divider content-position="center"><h3>科研教学情况</h3></el-divider>
             <!-- 科研项目 -->
             <el-descriptions direction="vertical" :colon="false" :column="1" border content-class-name="clear-padding">
@@ -579,6 +601,7 @@
                 </el-table>
               </el-descriptions-item>
             </el-descriptions><br>
+
           </el-col>
         </el-row><br>
       </div>
@@ -621,6 +644,26 @@ export default {
       })
     },
 
+    // 提交申请
+    submitApply: function() {
+      this.$alert('请务必点击查看，确认信息填写正确后再提交，提交后不可修改！', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        changeStatus(this.applyId, 2).then(res => {
+          if (res.code === 1201) {
+            this.$message.error(res.data.message())
+          } else {
+            this.$message.success('提交成功！')
+            this.applyStatus = 10
+          }
+        })
+      }).catch(() => {
+        console.log('cancel')
+      })
+    },
+
     // 修改申请信息
     editApply: async function() {
       console.log(this.details)
@@ -640,6 +683,7 @@ export default {
         case 6: url += `noInspectApplyMaster/6`; break
         case 7: url += `firstApplyProfessional/7`; break
         case 8: url += `addApplyProfessional/8`; break
+        case 9: url += `noInspectApplyProfessional/9`; break
       }
       // console.log(`${url}/101/${value.applyId}`)
       this.$router.push(`${url}/101/${this.applyId}`)
@@ -647,8 +691,8 @@ export default {
 
     // 获取所有信息
     getApplyDetails: function() {
-      getApplyDetails(this.applyId, this.applyTypeId === 3 || this.applyTypeId === 6 ? 0 : 1, this.$route.params.tutorId).then(res => {
-        if (this.applyTypeId !== 3 && this.applyTypeId !== 6) {
+      getApplyDetails(this.applyId, this.applyTypeId === 3 || this.applyTypeId === 6 || this.applyTypeId === 9 ? 0 : 1, this.$route.params.tutorId).then(res => {
+        if (this.applyTypeId !== 3 && this.applyTypeId !== 6 && this.applyTypeId !== 9) {
           const students = res.data.fourthPage.guidingStudents
           switch (this.applyTypeId) {
             case 1: // 首次博导, 协助指导博士生 指导硕士生
@@ -676,6 +720,8 @@ export default {
               break
             case 8: // 专硕增岗, 指导硕士生
               res.data.fourthPage.masterStudents = students
+              break
+            case 9: // 专硕免审
               break
           }
         }

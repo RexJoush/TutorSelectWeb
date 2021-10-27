@@ -104,7 +104,7 @@
                 <!-- 何时参加何种学术团体、任何种职务，有何社会兼职 -->
                 <el-col :span="24">
                   <el-form-item label="何时参加何种学术团体、任何种职务，有何社会兼职">
-                    <el-button type="primary" class="addButton" @click="dialogSecond1 = true">添加</el-button>
+                    <el-button type="primary" plain class="addButton" @click="dialogSecond1 = true">添加</el-button>
                     <el-table :data="formSecond.groupsOrPartTimeJobs" border style="width: 100%">
                       <el-table-column type="index" width="50" label="序号" />
                       <el-table-column prop="time" label="参加时间" width="180" />
@@ -122,7 +122,7 @@
                 <!-- 获何专家称号及时间 -->
                 <el-col :span="24">
                   <el-form-item v-model="formSecond.expertTitles" label="获何专家称号及时间">
-                    <el-button type="primary" class="addButton" @click="dialogSecond2 = true">添加</el-button>
+                    <el-button type="primary" plain class="addButton" @click="dialogSecond2 = true">添加</el-button>
                     <el-table :data="formSecond.expertTitles" border style="width: 100%">
                       <el-table-column type="index" width="50" label="序号" />
                       <el-table-column label="获得时间" prop="time" width="180" />
@@ -163,7 +163,7 @@
     <el-row v-if="formVisible.fourth">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <Fourth :apply-id="applyId" :form-fourth="formFourth" :tutor-name="tutorName" />
+          <Fourth :apply-id="applyId" :apply-type="applyType" :apply-condition="applyCondition" :form-fourth="formFourth" :tutor-name="tutorName" @load="loading = true" />
         </transition>
       </el-col>
     </el-row>

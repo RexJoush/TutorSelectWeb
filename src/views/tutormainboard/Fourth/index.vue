@@ -14,7 +14,7 @@
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
             <span style="font-size: 18px">研究生课程教学情况</span>
-            <el-button class="addButton" style="float:right" type="primary" @click="dialogFourth1 = true">添加研究生课程教学信息
+            <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth1 = true">添加研究生课程教学信息
             </el-button>
           </div>
           <!-- <el-row>
@@ -39,13 +39,12 @@
           </el-table>
         </el-card>
         <br>
-
         <!-- 指导博士生情况, 博导增岗 -->
         <div v-if="applyType === 2">
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
               <span style="font-size: 18px">指导博士生情况</span>
-              <el-button class="addButton" style="float:right" type="primary" @click="dialogFourth2 = true">添加学生</el-button>
+              <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth2 = true">添加学生</el-button>
             </div>
             <!-- <el-row>
               <el-col :span="4">
@@ -75,7 +74,7 @@
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
               <span style="font-size: 18px">协助指导博士生情况</span>
-              <el-button class="addButton" style="float:right" type="primary" @click="dialogFourth3 = true">添加学生</el-button>
+              <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth3 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.assistDoctorStudents" border style="width: 100%">
               <el-table-column align="center" type="index" label="序号" width="50px" />
@@ -100,7 +99,7 @@
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
               <span style="font-size: 18px">指导硕士生情况</span>
-              <el-button class="addButton" style="float:right" type="primary" @click="dialogFourth4 = true">添加学生</el-button>
+              <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth4 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.masterStudents" border style="width: 100%">
               <el-table-column align="center" type="index" label="序号" width="50px" />
@@ -125,7 +124,7 @@
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
               <span style="font-size: 18px">协助指导硕士生情况</span>
-              <el-button class="addButton" style="float:right" type="primary" @click="dialogFourth5 = true">添加学生</el-button>
+              <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth5 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.assistMasterStudents" border style="width: 100%">
               <el-table-column align="center" type="index" label="序号" width="50px" />
@@ -150,7 +149,7 @@
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
               <span style="font-size: 18px">指导本科生毕业情况</span>
-              <el-button type="primary" style="float :right" class="addButton" @click="dialogFourth6 = true">添加学生</el-button>
+              <el-button type="primary" plain style="float :right" class="addButton" @click="dialogFourth6 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.undergraduateStudents" border style="width: 100%">
               <el-table-column align="center" type="index" label="序号" width="50px" />

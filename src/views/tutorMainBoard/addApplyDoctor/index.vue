@@ -154,6 +154,7 @@
                     <el-button
                       type="primary"
                       class="addButton"
+                      plain
                       @click="dialogSecond1 = true"
                     >添加
                     </el-button>
@@ -203,6 +204,7 @@
                     <el-button
                       type="primary"
                       class="addButton"
+                      plain
                       @click="dialogSecond2 = true"
                     >添加
                     </el-button>

@@ -13,7 +13,13 @@
     <el-row v-if="formVisible.first">
       <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
-          <First :apply-id="applyId" :apply-type="applyType" :apply-condition="applyCondition" @func="getFormSecond" @load="loading = true" />
+          <First
+            :apply-id="applyId"
+            :apply-type="applyType"
+            :apply-condition="applyCondition"
+            @func="getFormSecond"
+            @load="loading = true"
+          />
         </transition>
       </el-col>
     </el-row>
@@ -53,15 +59,15 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="申请学科负责单位：">
+                      <el-form-item label="申请类别负责单位：">
                         <el-select
-                          v-model="formSecond.appliedSubjectUnit"
-                          style="width: 100%"
+                          v-model="formSecond.professionalApplicationSubjectUnit"
                           placeholder="请选择"
-                          @change="setChildNode"
+                          style="width: 100%"
+                          @change="setChildProfessional"
                         >
                           <el-option
-                            v-for="item in doctorPrimaryDiscipline"
+                            v-for="item in professionalMasterDiscipline"
                             :key="item.department"
                             :label="item.department"
                             :value="item"
@@ -71,40 +77,33 @@
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="一级学科代码及名称">
+                      <el-form-item label="申请类别代码及名称">
                         <el-select
-                          v-model="formSecond.doctoralMasterSubjectCodeName"
-                          style="width: 100%"
+                          v-model="formSecond.professionalApplicationSubjectCodeName"
                           placeholder="请选择"
+                          style="width: 100%"
+                          @change="setChildDomain"
                         >
                           <el-option
-                            v-for="item in childNodes"
+                            v-for="item in childProfessional"
                             :key="item.code"
-                            :label="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
-                            :value="
-                              item.code + ' ' + item.degreeAuthorizationPoint
-                            "
+                            :label="item.code + ' ' + item.professionalDegreeCategory"
+                            :value="item"
+                            style="color: #606266; font-weight: normal"
                           />
                         </el-select>
                       </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                      <el-form-item label="硕士招生学科">
-                        <el-input v-model="formSecond.masterDirectorSubject" />
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="8">
-                      <el-form-item label="硕导上岗时间">
-                        <el-date-picker
-                          v-model="formSecond.masterDirectorTime"
-                          format="yyyy-MM"
-                          value-format="yyyy-MM"
-                          type="month"
-                          style="width: 100%"
-                          placeholder="选择时间"
-                        />
+                      <el-form-item v-if="isDomain" label="申请领域代码及名称">
+                        <el-select v-model="formSecond.professionalFieldCodeName" placeholder="请选择" style="width: 100%">
+                          <el-option
+                            v-for="item in childDomain"
+                            :key="item.domainCode"
+                            :label="item.domainCode + ' ' + item.domainName"
+                            :value="item.domainCode + ' ' + item.domainName"
+                          />
+                        </el-select>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -119,7 +118,6 @@
                     />
                   </el-form-item>
                 </el-col>
-                <!-- 免审信息 -->
                 <el-col :span="24">
                   <el-form-item label="免审条件">
                     <el-upload
@@ -141,7 +139,8 @@
                         size="small"
                         type="primary"
                         style="margin-bottom: 10px"
-                      >上传免审资料</el-button>
+                      >上传免审资料
+                      </el-button>
                       &nbsp;&nbsp;&nbsp; 上传资料仅支持.rar/.zip文件
                     </el-upload>
                     <el-input
@@ -152,55 +151,27 @@
                     />
                   </el-form-item>
                 </el-col>
-                <!-- 科研项目（近五年） -->
                 <el-col :span="24">
+                  <!-- 科研项目（近五年） -->
                   <el-card class="box-card" shadow="always">
                     <div slot="header" class="clearfix">
                       <span style="font-size: 18px">科研项目（近五年）</span>
-                      <el-button
-                        class="addButton"
-                        style="float: right"
-                        type="primary"
-                        plain
-                        @click="dialogSecond1 = true"
-                      >添加</el-button>
+                      <el-button class="addButton" style="float: right" type="primary" plain @click="dialogSecond1 = true">添加</el-button>
                     </div>
-                    <el-table
-                      :data="formSecond.researchProjects"
-                      border
-                      style="width: 100%"
-                    >
+                    <el-table :data="formSecond.researchProjects" border style="width: 100%">
                       <el-table-column type="index" label="序号" width="50" />
                       <el-table-column prop="projectName" label="项目名称" />
                       <el-table-column prop="approvalNumber" label="批准号" />
-                      <el-table-column
-                        prop="projectChargeName"
-                        label="负责人姓名"
-                        width="100"
-                      />
+                      <el-table-column prop="projectChargeName" label="负责人姓名" />
                       <el-table-column prop="projectStartTime" label="开始日期" />
                       <el-table-column prop="projectEndTime" label="结束日期" />
                       <el-table-column prop="projectCategory" label="项目分类" />
-                      <el-table-column
-                        prop="projectTotalPrice"
-                        label="总经费"
-                        width="120"
-                      />
+                      <el-table-column prop="projectTotalPrice" label="总经费" />
                       <el-table-column prop="projectLevel" label="项目级别" />
                       <el-table-column label="操作" align="center" width="180">
                         <template slot-scope="scope">
-                          <el-button
-                            size="mini"
-                            type="info"
-                            plain
-                            @click="editResearchProject(scope.$index,scope.row)"
-                          >编 辑</el-button>
-                          <el-button
-                            size="mini"
-                            type="danger"
-                            plain
-                            @click="delResearchProject(scope.$index)"
-                          >删 除</el-button>
+                          <el-button size="mini" type="info" plain @click="editResearchProject(scope.$index,scope.row)">编 辑</el-button>
+                          <el-button size="mini" type="danger" plain @click="delResearchProject(scope.$index)">删 除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -212,43 +183,20 @@
                   <el-card class="box-card" shadow="always">
                     <div slot="header" class="clearfix">
                       <span style="font-size: 18px">科研教学奖励（近五年）</span>
-                      <el-button
-                        style="float: right"
-                        class="addButton"
-                        type="primary"
-                        plain
-                        @click="dialogSecond2 = true"
-                      >添加</el-button>
+                      <el-button style="float: right" class="addButton" type="primary" plain @click="dialogSecond2 = true">添加</el-button>
                     </div>
-                    <el-table
-                      :data="formSecond.teachingAwards"
-                      border
-                      style="width: 100%"
-                    >
+                    <el-table :data="formSecond.teachingAwards" border style="width: 100%">
                       <el-table-column type="index" label="序号" width="50px" />
                       <el-table-column prop="awardsName" label="奖励名称" />
                       <el-table-column prop="awardsRank" label="排名" />
                       <el-table-column prop="awardsUnit" label="颁奖单位" />
                       <el-table-column prop="awardsLevel" label="获奖级别" />
                       <el-table-column prop="awardsTime" label="获奖日期" />
-                      <el-table-column
-                        prop="awardsAuthorName"
-                        label="获奖人姓名"
-                      />
+                      <el-table-column prop="awardsAuthorName" label="获奖人姓名" />
                       <el-table-column label="操作" align="center" width="180">
                         <template slot-scope="scope">
-                          <el-button
-                            size="mini"
-                            type="info"
-                            plain
-                            @click="editTeachingAward(scope.$index,scope.row)"
-                          >编 辑</el-button>
-                          <el-button
-                            size="mini"
-                            type="danger"
-                            plain
-                            @click="delTeachingAward(scope.$index)"
-                          >删 除</el-button>
+                          <el-button size="mini" type="info" plain @click="editTeachingAward(scope.$index,scope.row)">编 辑</el-button>
+                          <el-button size="mini" type="danger" plain @click="delTeachingAward(scope.$index)">删 除</el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -258,10 +206,7 @@
               <el-row>
                 <el-col :offset="8">
                   <el-form-item style="margin-top: 20px">
-                    <el-button
-                      type="primary"
-                      @click="onSubmitSecondPage"
-                    >填写完成，提交申请</el-button>
+                    <el-button type="primary" @click="onSubmitSecondPage">填写完成，提交申请</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -272,7 +217,7 @@
     </el-row>
     <!-- 第二页弹框内容 -->
     <!-- 添加科研项目 -->
-    <el-dialog :title="isEdit ? '编辑科研项目' : '添加科研项目'" width="40%" :visible.sync="dialogSecond1">
+    <el-dialog :title="isEdit ?'编辑科研项目' :'添加科研项目'" width="40%" :visible.sync="dialogSecond1">
       <el-form :model="researchProject">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -324,7 +269,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="总经费">
-              <el-input v-model="researchProject.projectTotalPrice" type="number" :percesion="2" :step="1" placeholder="0.00" />
+              <el-input v-model="researchProject.projectTotalPrice" type="number" :percesion="2" :step="0.01" placeholder="0.00" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -349,7 +294,7 @@
     </el-dialog>
 
     <!-- 添加科研教学奖励 -->
-    <el-dialog :title="isEdit ? '编辑科研教学奖励' : '添加科研教学奖励'" width="40%" :visible.sync="dialogSecond2">
+    <el-dialog :title="isEdit ?'编辑科研教学奖励' :'添加科研教学奖励'" width="40%" :visible.sync="dialogSecond2">
       <el-form :model="teachingAward">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -408,12 +353,11 @@
 </template>
 
 <script>
-import { doctorPrimaryDiscipline } from '@/utils/data'
-
+import { professionalMasterDiscipline } from '@/utils/data'
+import { baseUrl } from '@/api/url'
 import { deleteFile } from '@/api/tutor/mainboard'
 
 import { submitSecondPage } from '@/api/tutor/noInspect'
-import { baseUrl } from '@/api/url'
 import First from '@/views/tutorMainBoard/First'
 
 export default {
@@ -425,18 +369,21 @@ export default {
       firstLoading: true,
       // 提交的加载状态
       loading: false,
-      // 博士学科代码
-      doctorPrimaryDiscipline: doctorPrimaryDiscipline,
+      // 专硕学科代码
+      professionalMasterDiscipline: professionalMasterDiscipline,
       // 步骤条
       active: 0,
-      // 编辑或添加
-      isEdit: false,
-      editIndex: -1,
       // 页数的隐藏和展示
       formVisible: {
         first: true,
         second: false
       },
+      // 编辑或添加
+      isEdit: false,
+      editIndex: -1,
+      childProfessional: [], // 院系的子类别信息
+      childDomain: [], // 类别的子领域信息
+      isDomain: false, // 领域的框是否显示
       // 第二页弹框
       dialogSecond1: false, // 科研项目
       dialogSecond2: false,
@@ -457,8 +404,10 @@ export default {
         { label: '理工', value: 2 },
         { label: '交叉学科', value: 3 }
       ],
-
       formSecond: {
+        professionalApplicationSubjectUnit: '', // 申请类别负责单位
+        professionalApplicationSubjectCodeName: '', // 专业类别代码 + " " + 名称
+        professionalFieldCodeName: '', // 领域代码 + " " + 名称
         applySubject: '', // 申请学科
         researchProjects: [],
         teachingAwards: []
@@ -497,76 +446,34 @@ export default {
       return `${baseUrl}/user/upload/${type}`
     },
     /* ============================================= 第一页 =====================================*/
-    // 获取导师基本信息
-    // GetTutorInfoByClient: function() {
-    //   getNoFirstPage(this.applyId).then((res) => {
-    //     this.formFirst = res.data
-    //
-    //     console.log('first', this.formFirst)
-    //     // 未申请过
-    //     if (this.applyCondition === 102) {
-    //       this.formFirst.image =
-    //         'data:image/png;base64,' + this.formFirst.blobImage
-    //     }
-    //     this.firstLoading = false
-    //   })
-    // },
-    //* *****************************************************第一页 *****************************************
-    // onSubmitFirstPage: function() {
-    //   this.$confirm('提交填写?')
-    //     // 提交保存第一页
-    //     .then(() => {
-    //       // 博士免审提交到后台
-    //       this.formFirst.image = ''
-    //
-    //       submitNoFirstPage(
-    //         this.formFirst,
-    //         this.applyId,
-    //         this.applyType,
-    //         this.applyCondition
-    //       ).then((res) => {
-    //         if (res.code === 20000) {
-    //           this.$message.success('保存成功！')
-    //           this.formVisible.first = false // 关闭第一项
-    //           // 回显第二页信息
-    //           console.log(res.data)
-    //           this.formSecond = res.data
-    //           this.applyId = res.data.applyId
-    //           if (res.data.applySubject !== null) {
-    //             // console.log(appl)
-    //             this.formSecond.applySubject = res.data.applySubject * 1
-    //           } else {
-    //             this.formSecond.applySubject = ''
-    //           }
-    //           this.fileList.name = '111'
-    //           this.fileList.url = this.formSecond.exemptionConditionsMaterials
-    //           this.formVisible.second = true // 打开第二项
-    //           this.active = 1
-    //         }
-    //       })
-    //     })
-    //     .catch(() => {
-    //       console.log('cancel')
-    //     })
-    // },
+
     /* ====================================第二页============================ */
     getFormSecond: function(data, tutorName) {
       console.log('second', data)
       this.applyId = data.applyId
       this.formSecond = data
-      console.log('applySubject', data.applySubject)
       if (data.applySubject !== null) {
-        console.log('true')
         this.formSecond.applySubject = data.applySubject * 1
       } else {
-        console.log('false')
-        this.formSecond.applySubject = ''
+        this.formSecond.applySubject = null
       }
       this.tutorName = tutorName // 设置导师姓名，第四页用到
       if (data.applySubject !== null) {
         this.formSecond.applySubject = data.applySubject * 1
       } else {
         this.formSecond.applySubject = ''
+      }
+      // 设置院系
+      this.formSecond.professionalApplicationSubjectUnit = data.professionalApplicationSubjectUnit
+
+      // 设置类别
+      this.formSecond.professionalApplicationSubjectCodeName = data.professionalApplicationSubjectCodeName
+
+      // 设置领域
+      this.formSecond.professionalFieldCodeName = data.professionalFieldCodeName
+      this.formSecond.major = data.major
+      if (data.professionalFieldCodeName !== '' && data.professionalFieldCodeName != null) {
+        this.isDomain = true
       }
       this.fileList.name = '111'
       this.fileList.url = this.formSecond.exemptionConditionsMaterials
@@ -602,7 +509,8 @@ export default {
     beforeRemove: function() {
       return this.$confirm('确定要移除选取的文件吗?').then(() => {
         deleteFile(this.formSecond.exemptionConditionsMaterials).then(
-          (res) => {}
+          (res) => {
+          }
         )
       })
     },
@@ -610,6 +518,46 @@ export default {
     removeFile: function() {
       this.formSecond.exemptionConditionsMaterials = ''
       return this.$message.success('删除成功！')
+    },
+
+    // 设置选择院系的子类别代码
+    setChildProfessional: function(value) {
+      // 将两级子列表的选择置空
+      this.formSecond.professionalApplicationSubjectCodeName = ''
+      this.formSecond.professionalFieldCodeName = ''
+      this.isDomain = false
+
+      // 修改当前页面的显示院系
+      // this.currentDepartment = value.department
+
+      // 修改第二页的提交信息
+      this.formSecond.professionalApplicationSubjectUnit = value.department
+
+      // 设置子领域为当前院系的专业
+      this.childProfessional = value.professional
+      this.childDomain = []
+    },
+
+    // 设置领域的子选择
+    setChildDomain: function(value) {
+      console.log(value)
+      // 将子列表的选择置空
+      this.formSecond.professionalFieldCodeName = ''
+
+      // 修改当前页面的显示专业类别信息
+      // this.currentProfessional = value.code + ' ' + value.professionalDegreeCategory
+
+      // 修改提交信息
+      this.formSecond.professionalApplicationSubjectCodeName = value.code + ' ' + value.professionalDegreeCategory
+
+      // 设置子领域为当前院系的专业
+      this.childDomain = value.domain
+      if (value.domain.length !== 0) {
+        this.isDomain = true
+        this.childDomain = value.domain
+      } else {
+        this.isDomain = false
+      }
     },
     // 第 2 页 添科研项目情况 弹框
     addResearchProject: function() {
@@ -702,6 +650,7 @@ export default {
         .then(() => {
           this.loading = true
           submitSecondPage(this.formSecond, this.applyId).then((res) => {
+            // if (res.data != null) {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
               console.log(res.data.errorMessage)
@@ -723,30 +672,7 @@ export default {
 </script>
 
 <style>
-/**导航栏 */
-.navigation_bar {
-  background: #99a9bf;
-  font-size: 30px;
-  line-height: 50px;
-  height: 50px;
-  margin-bottom: 30px;
-}
-.bg-purple {
-  background: #99a9bf;
-}
-/**控制内容及意义一下的label宽度 */
-.my-label {
-  width: 230px;
-}
-/**申请学科的label宽度 */
-.my-applysubject {
-  width: 230px;
-}
 p {
   font-size: 20px;
-}
-.summary {
-  font-weight: bold;
-  color: #f56c6c;
 }
 </style>

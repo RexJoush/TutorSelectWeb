@@ -164,7 +164,7 @@ export default {
   methods: {
     // 拉取基本信息
     getFirstPage: function() {
-      if (this.applyType === 3 || this.applyType === 6) {
+      if (this.applyType === 3 || this.applyType === 6 || this.applyType === 9) {
         getNoFirstPage(this.applyId).then((res) => {
           this.formFirst = res.data
 
@@ -232,7 +232,7 @@ export default {
           // console.log(this.formFirst.email)
           this.$emit('load', true)
           // 免审
-          if (this.applyType === 3 || this.applyType === 6) {
+          if (this.applyType === 3 || this.applyType === 6 || this.applyType === 9) {
             console.log('no inspect')
             submitNoFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
               .then((res) => {
