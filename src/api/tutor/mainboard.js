@@ -41,6 +41,15 @@ export function deleteFile(httpPath) {
   })
 }
 
+//删除免审资料文件的方法
+export function NoDeleteFile(httpPath,applyId) { 
+  return request({
+    url:`${baseUrl}/user/noDelFile/${applyId}`,
+    method: 'post',
+    data: httpPath
+  })
+}
+
 // 获取当前院系的申请时间范围
 export function getOrganizationTime(organizationId) {
   return request({

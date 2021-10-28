@@ -133,6 +133,7 @@
                       :before-upload="checkFileType"
                       :before-remove="beforeRemove"
                       :on-remove="removeFile"
+                      :on-exceed="oversizeFile"
                       :limit="1"
                       accept=".zip , .rar"
                     >
@@ -410,7 +411,7 @@
 <script>
 import { doctorPrimaryDiscipline } from '@/utils/data'
 
-import { deleteFile } from '@/api/tutor/mainboard'
+import { NoDeleteFile } from '@/api/tutor/mainboard'
 
 import { submitSecondPage } from '@/api/tutor/noInspect'
 import { baseUrl } from '@/api/url'
@@ -568,20 +569,31 @@ export default {
       } else {
         this.formSecond.applySubject = ''
       }
-      this.fileList.name = '111'
-      this.fileList.url = this.formSecond.exemptionConditionsMaterials
-
+      if(this.formSecond.exemptionConditionsMaterials !== "" && this.formSecond.exemptionConditionsMaterials !== null){
+        let obj = new Object()
+        obj.url = this.formSecond.exemptionConditionsMaterials
+        obj.name = this.formSecond.exemptionConditionsMaterials.substring(obj.url.lastIndexOf('/')+1,this.formSecond.exemptionConditionsMaterials.length)
+        this.fileList.push(obj);
+      }
       this.formVisible.first = false // 关闭第 1 页
       this.formVisible.second = true // 打开第 2 页
       this.loading = false
       this.active = 1
     },
+    //文件超出限制
+    oversizeFile: function(files,fileList){
+      this.$message.warning('上传文件超出限制!')
+      return
+    },
     // 上传成功
     uploadSuccessFunc: function(response, file, fileList) {
       console.log('上传成功', file)
-      this.fileList.name = file.name
-      this.fileList.url = response.data.path
+      let obj = new Object()
+      obj.url = response.data.path
+      obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.url.length)
+      this.fileList.push(obj)
       this.formSecond.exemptionConditionsMaterials = response.data.path
+      this.$message.success("文件上传成功！")
     },
     // 上传镜像失败
     uploadErrorFunc: function(err, file, fileList) {
@@ -600,16 +612,43 @@ export default {
     },
     // 文件移除之前
     beforeRemove: function() {
-      return this.$confirm('确定要移除选取的文件吗?').then(() => {
-        deleteFile(this.formSecond.exemptionConditionsMaterials).then(
-          (res) => {}
-        )
-      })
+       let flag = this.$confirm('确定要移除选取的文件吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          beforeClose(action, instance, done){
+            if (action == 'confirm'){
+              instance.$refs['confirm'].$el.onclick = function(e){
+                e = e|| window.event
+                console.log(e.detail)
+                if(e.detail != 0 ){ //鼠标事件为1
+                  done()
+                  return true                 
+                }
+              }
+            }else
+            {
+              done()  //关闭弹窗
+              return false
+            }
+          }
+        })
+        return flag   
     },
     // 移除文件的钩子
     removeFile: function() {
-      this.formSecond.exemptionConditionsMaterials = ''
-      return this.$message.success('删除成功！')
+      console.log("移除文件")
+       NoDeleteFile(this.formSecond.exemptionConditionsMaterials,this.applyId).then((res)=>{
+        if(res.data.code === 1200){
+          this.$message.success("文件删除成功！")
+          this.formSecond.exemptionConditionsMaterials = ''
+          this.fileList = []
+        }
+        else{
+            this.$message.error("文件删除失败！")
+        }
+      })
+    
     },
     // 第 2 页 添科研项目情况 弹框
     addResearchProject: function() {
