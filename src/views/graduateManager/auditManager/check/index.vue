@@ -137,11 +137,11 @@
       </el-button>
       <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="passFun(4)">不符合条件
       </el-button>
-      <el-button type="warning" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">需修改
-      </el-button>
       <el-button type="warning" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(1)">送审社科处
       </el-button>
       <el-button type="warning" plain icon="el-icon-success" size="small" :disabled="multiple" @click="passFun(2)">送审科研处
+      </el-button>
+      <el-button type="danger" plain icon="el-icon-edit" size="small" :disabled="multiple" @click="passFun(5)">驳回至院系
       </el-button>
     </div>
 
@@ -223,7 +223,7 @@
     <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加提交给操作的备注信息(可以为空)</span>
-      <el-input v-model="commit" type="textarea" autocomplete="off" />
+      <el-input v-model="commitYjsyCs" type="textarea" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
@@ -311,7 +311,7 @@ export default {
         subjectType: '' // 学科属性，文科，理科，交叉
       },
       choose: 0,
-      commit: '',
+      commitYjsyCs: '',
       row: {},
       currentSelection: []
     }
@@ -320,7 +320,7 @@ export default {
     // 院系秘书复审通过的状态即研究生院管理员初审状态
     this.getList()
     this.getApplyType()
-    this.getOrginization()
+    // this.getOrginization()
     this.getApplyStatus()
   },
   methods: {
@@ -355,16 +355,32 @@ export default {
     },
 
     /** 查询用户列表 */
-    async getList() {
-      const applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
-      this.loading = true
-      this.queryParams.pageNum = this.currentPage || 1
-      getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
-        this.tutorList = res.data.data
-        this.total = res.data.total
-        console.log('res', res)
-        this.loading = false
-      })
+    getList: async function() {
+      if ((this.queryParams.applyStatus === '' &&
+        this.queryParams.userName === '' &&
+        this.queryParams.organization === '' &&
+        this.queryParams.applyType === '' &&
+        this.queryParams.subjectName === '' &&
+        this.queryParams.subjectType === '')) {
+        const applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
+        this.loading = true
+        this.queryParams.pageNum = this.currentPage || 1
+        getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          console.log('res', res)
+          this.loading = false
+        })
+      } else {
+        search(this.queryParams, this.queryParams.pageNum).then(res => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          console.log('queryParams', this.queryParams)
+          this.loading = false
+        }).catch(error => {
+          throw error
+        })
+      }
     },
     async upDateStatus(code) {
       const updateStatus = []
@@ -372,7 +388,7 @@ export default {
         var json = {
           'id_1': this.ids[i],
           'status_1': code,
-          'commit_1': this.commit
+          'commit_1': ''
         }
         updateStatus[i] = json
       }
@@ -383,7 +399,7 @@ export default {
         this.$message.success('操作成功!')
       }
       this.getList()
-      this.commit = undefined
+      this.commitYjsyCs = ''
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -399,7 +415,7 @@ export default {
         },
         {
           'codeId': 36,
-          'inspectDescribe': '需修改'
+          'inspectDescribe': '驳回至秘书'
         },
         {
           'codeId': 388,
@@ -468,6 +484,7 @@ export default {
       this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
       this.queryParams.organization = '' // 院系
+      this.queryParams.subjectType = '' // 学科属性
       // this.handleQuery()
     },
     // 初审通过
@@ -516,7 +533,7 @@ export default {
         // 需修改，驳回给院系秘书
         this.$confirm('确认驳回给院系秘书吗？')
           .then((res) => {
-            this.upDateStatus(10)
+            this.upDateStatus(37)
           })
           .catch(() => {
             console.log('cancel')
@@ -524,7 +541,7 @@ export default {
       }
     },
     async submitCommit() {
-      this.row.commitYjsyCs = this.commit
+      this.row.commitYjsyCs = this.commitYjsyCs
       const { code: res } = await this.$http.post(
         '/admin/update-status/updateCommitByGraduate', this.row
       )
@@ -623,7 +640,7 @@ export default {
     // 弹框取消按钮
     cancel() {
       this.dialogVisible = false
-      this.commit = undefined
+      this.commitYjsyCs = ''
     },
 
     // 多选框选中数据
@@ -645,7 +662,7 @@ export default {
     // 点击备注按钮，添加备注
     commitFun(row) {
       this.dialogVisible = true
-      this.commit = row.commitYjsyCs
+      this.commitYjsyCs = row.commitYjsyCs
       this.row = row
     },
     // 点击查看备注按钮，查看来自社科处或者科研处审核后的备注
