@@ -189,7 +189,7 @@ export default {
 
         subjectType: '' // 学科属性，文科，理科，交叉
       },
-      commit: undefined
+      commit: ''
 
     }
   },
@@ -197,7 +197,7 @@ export default {
     // 研究生院管理员的复审界面，研究生院管理员可在该页面查看研究生院主管的审核状态，若研究生院主管审核后，会在该页面显示
     this.getList()
     this.getApplyType()
-    this.getOrginization()
+    // this.getOrginization()
     this.getApplyStatus()
   },
   methods: {
@@ -247,7 +247,7 @@ export default {
         var json = {
           'id_1': this.ids[i],
           'status_1': code,
-          'commit_1': '研究生院返回返回修改'
+          'commit_1': ''
         }
         updateStatus[i] = json
       }
@@ -301,30 +301,10 @@ export default {
       this.organizationOptions = res
       console.info(this.organizationOptions)
     },
-    async getSubject() {
-      // const { data: res } = await this.$http.get(
-      //   '/apply-type/getAll'
-      // )
-      // if(res.code != 1000) return this.$message("获取类别失败")
-      // this.applyTypeOptions = res.data
-    },
-
     // 取消按钮
     cancel() {
       this.open = false
       this.reset()
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
-        status: '0',
-        remark: undefined,
-        postIds: [],
-        roleIds: []
-      }
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -338,6 +318,7 @@ export default {
       this.queryParams.applyType = '' // 申请类别id
       this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
+      this.queryParams.subjectType = '' // 学科属性
       this.handleQuery()
     },
     // 多选框选中数据
