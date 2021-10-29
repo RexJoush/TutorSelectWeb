@@ -100,17 +100,19 @@
                 </el-col>
                 <!-- 主要研究方向 -->
                 <el-col :span="24">
-                  <el-form-item label="主要研究方向的内容及其意义">
+                  <el-form-item label="主要研究方向的内容及其意义（500字以内）">
                     <el-input
                       v-model="formSecond.researchDirections"
                       type="textarea"
+                      maxlength="500"
+                      show-word-limit
                       :autosize="{ minRows: 6 }"
                     />
                   </el-form-item>
                 </el-col>
                 <!-- 免审条件 -->
                 <el-col :span="24">
-                  <el-form-item label="免审条件">
+                  <el-form-item label="免审条件（500字以内）">
                     <el-upload
                       ref="upload"
                       class="upload-demo"
@@ -138,6 +140,8 @@
                     <el-input
                       v-model="formSecond.exemptionConditions"
                       type="textarea"
+                      maxlength="500"
+                      show-word-limit
                       placeholder="免审条件填写"
                       :autosize="{ minRows: 6 }"
                     />
@@ -157,15 +161,15 @@
                       >添加
                       </el-button>
                     </div>
-                    <el-table :data="formSecond.researchProjects" border style="width: 100%">
+                    <el-table :data="formSecond.researchProjects" border :fit="true" style="width: 100%">
                       <el-table-column type="index" label="序号" width="50" />
                       <el-table-column prop="projectName" label="项目名称" />
                       <el-table-column prop="approvalNumber" label="批准号" />
-                      <el-table-column prop="projectChargeName" label="负责人姓名" />
+                      <el-table-column prop="projectChargeName" min-width="100px" label="负责人姓名" />
                       <el-table-column prop="projectStartTime" label="开始日期" />
                       <el-table-column prop="projectEndTime" label="结束日期" />
                       <el-table-column prop="projectCategory" label="项目分类" />
-                      <el-table-column prop="projectTotalPrice" label="总经费(万元)" />
+                      <el-table-column prop="projectTotalPrice" min-width="110px" label="总经费(万元)" />
                       <el-table-column prop="projectLevel" label="项目级别" />
                       <el-table-column label="操作" align="center" width="180">
                         <template slot-scope="scope">
