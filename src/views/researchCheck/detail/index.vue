@@ -141,7 +141,7 @@
               prop="projectLevel"
             />
             <el-table-column
-              label="总经费"
+              label="总经费(万元)"
               align="center"
               prop="projectTotalPrice"
             />
@@ -638,7 +638,7 @@ export default {
       if(re33 !== null && re33 !== '') this.re3 = re33
       else this.re3 = '教材或学术著作审批通过'
       console.log("---------教材或学术著作回显--------",this.re3)
-      
+
       for (let item of this.workList) {
         if (item.col1 == undefined) {
           this.commit_3 = 0;
@@ -664,7 +664,7 @@ export default {
         }
       }
       if(re44 !== null && re44 !== '') this.re4 = re44
-      else this.re4 = '科研教学奖励'        
+      else this.re4 = '科研教学奖励'
       console.log("---------科研教学奖励回显--------",this.re4)
 
       for (let item2 of this.awardList) {

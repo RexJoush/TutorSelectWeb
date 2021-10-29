@@ -36,32 +36,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
     this.handleLogin()
   },
-  mounted() {
-    // window.location.reload()
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
-    }
-  },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
-    },
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
-    },
     handleLogin() {
       this.$store.dispatch('user/login', this.loginForm)
         .then(() => {

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container"  style="margin-top:8%;">
     <el-row>
-      <el-col :span="4" :offset="4" >
+      <el-col :span="6" :offset="2" >
         <div class="grid-content bg-purple">
           <span class="demonstration" style="font-size:16px;">设置系统提交申请的时间范围 </span>
         </div>

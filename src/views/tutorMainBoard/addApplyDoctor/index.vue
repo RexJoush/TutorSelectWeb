@@ -20,8 +20,8 @@
       </el-col>
     </el-row>
     <!-- 第二页研究信息 -->
-    <Row>
-      <Col :span="18" :offset="3">
+    <el-row>
+      <el-col :span="18" :offset="3">
         <transition name="el-fade-in-linear">
           <el-card v-if="formVisible.second" class="box-card">
             <div slot="header" class="clearfix">
@@ -34,10 +34,10 @@
               label-width="100px"
               label-position="top"
             >
-              <Row>
-                <Col :span="24">
-                  <Row :gutter="20">
-                    <Col :span="8">
+              <el-row>
+                <el-col :span="24">
+                  <el-row :gutter="20">
+                    <el-col :span="8">
                       <el-form-item label="申请学科">
                         <el-select
                           v-model="formSecond.applySubject"
@@ -52,8 +52,8 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="申请学科负责单位：">
                         <el-select
                           v-model="formSecond.doctoralMasterApplicationSubjectUnit"
@@ -70,8 +70,8 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="一级学科代码及名称">
                         <el-select
                           v-model="formSecond.doctoralMasterSubjectCodeName"
@@ -86,8 +86,8 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="博导在岗学科">
                         <el-select
                           v-model="formSecond.doctoralTutorOnDuty"
@@ -102,8 +102,8 @@
                           />
                         </el-select>
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="上岗时间">
                         <el-date-picker
                           v-model="formSecond.doctoralStartTime"
@@ -114,16 +114,16 @@
                           placeholder="选择时间"
                         />
                       </el-form-item>
-                    </Col>
-                  </Row>
+                    </el-col>
+                  </el-row>
                   <el-divider content-position="left"><b><span style="color: red;">*</span> 仅外单位调入填写</b></el-divider>
-                  <Row :gutter="20">
-                    <Col :span="8">
+                  <el-row :gutter="20">
+                    <el-col :span="8">
                       <el-form-item label="原单位名称">
                         <el-input v-model="formSecond.sourceUnitName" />
                       </el-form-item>
-                    </Col>
-                    <Col :span="8">
+                    </el-col>
+                    <el-col :span="8">
                       <el-form-item label="调入时间">
                         <el-date-picker
                           v-model="formSecond.transferInTime"
@@ -134,11 +134,11 @@
                           placeholder="选择时间"
                         />
                       </el-form-item>
-                    </Col>
-                  </Row>
+                    </el-col>
+                  </el-row>
                   <el-divider />
-                </Col>
-                <Col :span="24">
+                </el-col>
+                <el-col :span="24">
                   <el-form-item label="主要研究方向的内容及其意义">
                     <el-input
                       v-model="formSecond.major"
@@ -146,8 +146,8 @@
                       :autosize="{ minRows: 6 }"
                     />
                   </el-form-item>
-                </Col>
-                <Col :span="24">
+                </el-col>
+                <el-col :span="24">
                   <el-form-item
                     label="何时参加何种学术团体、任何种职务，有何社会兼职"
                   >
@@ -194,9 +194,9 @@
                       </el-table-column>
                     </el-table>
                   </el-form-item>
-                </Col>
+                </el-col>
 
-                <Col :span="24">
+                <el-col :span="24">
                   <el-form-item
                     v-model="formSecond.expertTitles"
                     label="获何专家称号及时间"
@@ -239,21 +239,21 @@
                       </el-table-column>
                     </el-table>
                   </el-form-item>
-                </Col>
-              </Row>
-              <Row>
-                <Col :offset="8">
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :offset="8">
                   <el-form-item style="margin-top: 20px">
                     <el-button type="primary" @click="onSubmitSecondPage">保存此部分，填写下一项
                     </el-button>
                   </el-form-item>
-                </Col>
-              </Row>
+                </el-col>
+              </el-row>
             </el-form>
           </el-card>
         </transition>
-      </Col>
-    </Row>
+      </el-col>
+    </el-row>
     <!-- 第 3 页学术信息 -->
     <el-row v-if="formVisible.third">
       <el-col :span="18" :offset="3">

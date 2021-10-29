@@ -53,28 +53,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="审核状态">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择"
-              size="small"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in statuOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <!-- 搜索、重置按钮 -->
-      <el-row :gutter="20">
-        <el-col :span="2" :offset="20">
+        <!-- 搜索、重置按钮 -->
+        <el-col :span="2" :offset="2">
           <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
         </el-col>
         <el-col :span="2">
@@ -104,11 +84,14 @@
       <el-table-column label="最后学位" align="center" prop="finalDegree" />
       <el-table-column label="审核状态" align="center" prop="inspectDescribe">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 42 || scope.row.status === 63" type="info">
+          <el-tag v-if="scope.row.status === 301" type="success">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+          <el-tag v-else-if="scope.row.status === 302" type="danger">
             {{ scope.row.inspectDescribe }}
           </el-tag>
           <el-tag v-else type="warning">
-            社科处待审核 
+            社科处待审核
           </el-tag>
         </template>
       </el-table-column>
@@ -282,7 +265,7 @@ export default {
     // 查询社科处待初审的数据
     // 通过状态码查询
     getSocialCheckInit() {
-      this.queryParams.applyStatus = 30
+      this.queryParams.applyStatus = [30, 301, 302]
       getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
         console.log(res.data.data)
         this.tutorList = res.data.data

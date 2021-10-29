@@ -53,28 +53,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="审核状态">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择"
-              size="small"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in statuOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <!-- 搜索、重置按钮 -->
-      <el-row :gutter="20">
-        <el-col :span="2" :offset="20">
+        <!-- 搜索、重置按钮 -->
+        <el-col :span="2" :offset="2">
           <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
         </el-col>
         <el-col :span="2">
@@ -86,7 +66,7 @@
     <br>
 
     <!-- 数据部分 -->
-    <el-table border ref="singleTable" :data="tutorList" highlight-current-row :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
+    <el-table ref="singleTable" :data="tutorList" highlight-current-row :row-class-name="tableRowClassName" @selection-change="handleSelectionChange">
       <!-- <el-table-column type="selection" width="50" align="center" /> -->
       <el-table-column label="序号" type="index" width="50" fixed />
       <el-table-column label="工号" align="center" prop="tutorId" width="100" fixed />
@@ -98,11 +78,11 @@
       <el-table-column label="最后学位" align="center" prop="finalDegree" />
       <el-table-column label="审核状态" align="center" prop="inspectDescribe">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 42 || scope.row.status === 63" type="info">
+          <el-tag v-if="scope.row.status === 63" type="success">
             {{ scope.row.inspectDescribe }}
           </el-tag>
-          <el-tag v-else type="warning">
-            社科处待审核 
+          <el-tag v-else type="info">
+            {{ scope.row.inspectDescribe }}
           </el-tag>
         </template>
       </el-table-column>

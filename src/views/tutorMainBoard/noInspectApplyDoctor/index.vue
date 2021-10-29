@@ -182,11 +182,7 @@
                       <el-table-column prop="projectStartTime" label="开始日期" />
                       <el-table-column prop="projectEndTime" label="结束日期" />
                       <el-table-column prop="projectCategory" label="项目分类" />
-                      <el-table-column
-                        prop="projectTotalPrice"
-                        label="总经费"
-                        width="120"
-                      />
+                      <el-table-column prop="projectTotalPrice" label="总经费(万元)"/>
                       <el-table-column prop="projectLevel" label="项目级别" />
                       <el-table-column label="操作" align="center" width="180">
                         <template slot-scope="scope">
@@ -324,7 +320,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="总经费">
+            <el-form-item label="总经费（万元）">
               <el-input v-model="researchProject.projectTotalPrice" type="number" :percesion="2" :step="1" placeholder="0.00" />
             </el-form-item>
           </el-col>
@@ -497,59 +493,6 @@ export default {
     getUrl(type) {
       return `${baseUrl}/user/upload/${type}`
     },
-    /* ============================================= 第一页 =====================================*/
-    // 获取导师基本信息
-    // GetTutorInfoByClient: function() {
-    //   getNoFirstPage(this.applyId).then((res) => {
-    //     this.formFirst = res.data
-    //
-    //     console.log('first', this.formFirst)
-    //     // 未申请过
-    //     if (this.applyCondition === 102) {
-    //       this.formFirst.image =
-    //         'data:image/png;base64,' + this.formFirst.blobImage
-    //     }
-    //     this.firstLoading = false
-    //   })
-    // },
-    //* *****************************************************第一页 *****************************************
-    // onSubmitFirstPage: function() {
-    //   this.$confirm('提交填写?')
-    //     // 提交保存第一页
-    //     .then(() => {
-    //       // 博士免审提交到后台
-    //       this.formFirst.image = ''
-    //
-    //       submitNoFirstPage(
-    //         this.formFirst,
-    //         this.applyId,
-    //         this.applyType,
-    //         this.applyCondition
-    //       ).then((res) => {
-    //         if (res.code === 20000) {
-    //           this.$message.success('保存成功！')
-    //           this.formVisible.first = false // 关闭第一项
-    //           // 回显第二页信息
-    //           console.log(res.data)
-    //           this.formSecond = res.data
-    //           this.applyId = res.data.applyId
-    //           if (res.data.applySubject !== null) {
-    //             // console.log(appl)
-    //             this.formSecond.applySubject = res.data.applySubject * 1
-    //           } else {
-    //             this.formSecond.applySubject = ''
-    //           }
-    //           this.fileList.name = '111'
-    //           this.fileList.url = this.formSecond.exemptionConditionsMaterials
-    //           this.formVisible.second = true // 打开第二项
-    //           this.active = 1
-    //         }
-    //       })
-    //     })
-    //     .catch(() => {
-    //       console.log('cancel')
-    //     })
-    // },
     /* ====================================第二页============================ */
     getFormSecond: function(data, tutorName) {
       console.log('second', data)
@@ -561,7 +504,7 @@ export default {
         this.formSecond.applySubject = data.applySubject * 1
       } else {
         console.log('false')
-        this.formSecond.applySubject = ''
+        this.formSecond.applySubject = null
       }
       this.tutorName = tutorName // 设置导师姓名，第四页用到
       if (data.applySubject !== null) {

@@ -163,7 +163,7 @@ export default {
             url += `noInspectApplyProfessional/9`
         }
 
-        // 查询出来的状态为 0 ，老师可以进去修改
+        // 查询出来的状态为 0，老师可以进去修改
         if (res.data.applyCondition === 101) {
           url += `/101/${res.data.applyId}`
           this.$router.push(url)
@@ -172,16 +172,24 @@ export default {
           url += `/102/${res.data.applyId}`
           this.$router.push(url)
         } else {
-          // 已交过该申请
+          // 已交过该申请，首次仅允许一次，非首次允许继续填写
           if (type === 1 || type === 4 || type === 7) {
-            this.$confirm('您已提交过该申请，请前往我的申请中查看', '提示').then(
-              (res) => {
+            this.$confirm('您已提交过此类申请，此类申请仅允许提交一次，请前往我的申请中查看！', '提示').then(
+              () => {
                 this.$router.push('/myApply') // 去我的申请页面
               }
-            )
+            ).catch(() => {
+              console.log('cancel')
+            })
           } else {
-            url += `/102/${res.data.applyId}`
-            this.$router.push(url)
+            this.$confirm('您已提交过此类申请，是否继续填写新的此类申请？', '提示')
+              .then(() => {
+                url += `/102/${res.data.applyId}`
+                this.$router.push(url)
+              }
+              ).catch(() => {
+                console.log('cancel')
+              })
           }
         }
       })

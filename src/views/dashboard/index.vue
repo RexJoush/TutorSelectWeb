@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="dashboard-container">
-    <h1>欢迎使用导师遴选系统</h1>
+    <h1>欢迎使用导师上岗系统</h1>
   </div>
 </template>
 

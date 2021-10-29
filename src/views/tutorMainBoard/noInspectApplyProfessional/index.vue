@@ -167,7 +167,7 @@
                       <el-table-column prop="projectStartTime" label="开始日期" />
                       <el-table-column prop="projectEndTime" label="结束日期" />
                       <el-table-column prop="projectCategory" label="项目分类" />
-                      <el-table-column prop="projectTotalPrice" label="总经费" />
+                      <el-table-column prop="projectTotalPrice" label="总经费(万元)" />
                       <el-table-column prop="projectLevel" label="项目级别" />
                       <el-table-column label="操作" align="center" width="180">
                         <template slot-scope="scope">
@@ -269,7 +269,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="总经费">
+            <el-form-item label="总经费（万元）">
               <el-input v-model="researchProject.projectTotalPrice" type="number" :percesion="2" :step="0.01" placeholder="0.00" />
             </el-form-item>
           </el-col>

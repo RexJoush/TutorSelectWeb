@@ -671,13 +671,13 @@ export default {
       switch (this.applyTypeId) {
         case 1:
           url += `firstApplyDoctor/1`
-          await changeStatus(this.applyId)
+          await changeStatus(this.applyId, 1)
           break
         case 2: url += `addApplyDoctor/2`; break
         case 3: url += `noInspectApplyDoctor/3`; break
         case 4:
           url += `firstApplyMaster/4`
-          await changeStatus(this.applyId)
+          await changeStatus(this.applyId, 1)
           break
         case 5: url += `addApplyMaster/5`; break
         case 6: url += `noInspectApplyMaster/6`; break
