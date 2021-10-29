@@ -488,8 +488,9 @@ export default {
       } else {
         this.formSecond.applySubject = ''
       }
-      if (this.formSecond.exemptionConditionsMaterials !== '' && this.formSecond.exemptionConditionsMaterials !== null) {
-        const obj = {}
+
+      if(this.formSecond.exemptionConditionsMaterials !== "" && this.formSecond.exemptionConditionsMaterials !== null){
+        let obj = new Object()
         obj.url = this.formSecond.exemptionConditionsMaterials
         obj.name = this.formSecond.exemptionConditionsMaterials.substring(obj.url.lastIndexOf('/') + 1, this.formSecond.exemptionConditionsMaterials.length)
         this.fileList.push(obj)
