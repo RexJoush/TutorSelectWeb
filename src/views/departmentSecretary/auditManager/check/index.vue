@@ -111,13 +111,13 @@
         >不符合条件
       </el-button>
       <el-button
-        type="warning"
+        type="danger"
         plain
         icon="el-icon-edit"
         size="small"
         :disabled="multiple"
         @click="alterFun()"
-        >需修改
+        >驳回至导师
       </el-button>
     </div>
 
@@ -179,7 +179,7 @@
           >
         </template>
       </el-table-column>
-      <el-table-column label="驳回备注" align="center" prop="commitYjsyCs"> </el-table-column>
+
     </el-table>
 
     <!-- 分页框 -->
@@ -296,7 +296,7 @@ export default {
         { value: 16, label: "不符合条件" },
         {
           value: 18,
-          label: "需修改",
+          label: "驳回至导师",
         },
         {
           value: 63,
@@ -372,6 +372,8 @@ export default {
         console.log("res", res);
         this.loading = false;
       });
+      //清空搜索框，调用重置按钮函数
+      this.resetQuery()
     },
 
     // 详情页

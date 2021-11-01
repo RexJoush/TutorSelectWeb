@@ -43,24 +43,24 @@
             </el-select>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="2" :offset="20">
-          <el-button
-            type="primary"
-            icon="el-icon-search"
-            size="small"
-            @click="search"
-            >搜索</el-button
-          >
-        </el-col>
-        <el-col :span="2">
-          <el-button
-            icon="el-icon-refresh"
-            size="small"
-            @click="resetQuery(queryParams)"
-            >重置</el-button
-          >
+        <el-col :span="6">
+          <el-col :span="6" :offset="6">
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="small"
+              @click="search"
+              >搜索</el-button
+            >
+          </el-col>
+          <el-col :span="6" :offset="2">
+            <el-button
+              icon="el-icon-refresh"
+              size="small"
+              @click="resetQuery(queryParams)"
+              >重置</el-button
+            >
+          </el-col>
         </el-col>
       </el-row>
     </el-form>
@@ -93,7 +93,13 @@
           <el-button
             type="text"
             size="small"
-            @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)"
+            @click="
+              toDetails(
+                scope.row.applyId,
+                scope.row.applyTypeId,
+                scope.row.tutorId
+              )
+            "
             >查 看
           </el-button>
         </template>
@@ -112,7 +118,7 @@
         @current-change="handleCurrentChange"
       />
     </el-row>
-       <!-- 导出按钮 -->
+    <!-- 导出按钮 -->
     <el-row>
       <el-col :span="2">
         <el-button
@@ -125,7 +131,7 @@
         </el-button>
       </el-col>
     </el-row>
-     <p style="margin: 10px 0;">注意：导出最终通过名单</p>
+    <p style="margin: 10px 0">注意：导出最终通过名单</p>
   </div>
 </template>
 
@@ -195,7 +201,7 @@ export default {
         console.log("error-organizationId is null");
       }
     },
-     getOrganizationName: function () {
+    getOrganizationName: function () {
       if (Cookies.get("organizationName") !== null) {
         return Cookies.get("organizationName");
       } else {
@@ -213,13 +219,15 @@ export default {
         console.log("res", res);
         this.loading = false;
       });
+      //清空搜索框，调用重置按钮函数
+      this.resetQuery()
     },
 
     // 详情页
     toDetails: function (applyId, applyTypeId, tutorId) {
       toDetails(this, applyId, applyTypeId, tutorId);
     },
-      // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
+    // 导出excel或数据的筛选,不选择条件，审核状态为请选择（默认）时的数据
     dataOption(func) {
       this.loading = true;
       const defaultStatus = ["81"];

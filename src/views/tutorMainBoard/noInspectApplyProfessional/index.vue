@@ -459,6 +459,7 @@ export default {
         this.formSecond.applySubject = null
       }
       this.tutorName = tutorName // 设置导师姓名，第四页用到
+      
       if (data.applySubject !== null) {
         this.formSecond.applySubject = data.applySubject * 1
       } else {

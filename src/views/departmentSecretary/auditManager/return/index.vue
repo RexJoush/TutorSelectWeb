@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-
     <!-- 搜索部分 -->
     <el-form ref="queryForm" label-width="70px">
       <el-row :gutter="20">
@@ -44,27 +43,46 @@
             </el-select>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="2" :offset="20">
-          <el-button type="primary" icon="el-icon-search" size="small" @click="search">搜索</el-button>
-        </el-col>
-        <el-col :span="2">
-          <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
+        <el-col :span="6">
+          <el-col :span="6" :offset="6">
+            <el-button
+              type="primary"
+              icon="el-icon-search"
+              size="small"
+              @click="search"
+              >搜索</el-button
+            >
+          </el-col>
+          <el-col :span="6" :offset="2">
+            <el-button
+              icon="el-icon-refresh"
+              size="small"
+              @click="resetQuery(queryParams)"
+              >重置</el-button
+            >
+          </el-col>
         </el-col>
       </el-row>
     </el-form>
 
     <!-- 数据部分 -->
     <el-table v-loading="loading" :data="tutorList">
-      <el-table-column label="工号" align="center" prop="tutorId"  />
-      <el-table-column label="姓名" align="center" prop="name"/>
-      <el-table-column label="所在单位（院系）" align="center" prop="organizationName"/>
-      <el-table-column label="申请学科或类别代码" align="center" prop="applySubject" />
+      <el-table-column label="工号" align="center" prop="tutorId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column
+        label="所在单位（院系）"
+        align="center"
+        prop="organizationName"
+      />
+      <el-table-column
+        label="申请学科或类别代码"
+        align="center"
+        prop="applySubject"
+      />
       <el-table-column label="申请类别" align="center" prop="applyName" />
-      <el-table-column label="职称" align="center" prop="title"/>
+      <el-table-column label="职称" align="center" prop="title" />
       <el-table-column label="审核状态" align="center" prop="inspectDescribe">
-         <template slot-scope="scope">
+        <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 14" type="info">
             {{ scope.row.inspectDescribe }}
           </el-tag>
@@ -72,11 +90,21 @@
       </el-table-column>
       <el-table-column label="详情" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetails(scope.row.applyId, scope.row.applyTypeId, scope.row.tutorId)">查 看
+          <el-button
+            type="text"
+            size="small"
+            @click="
+              toDetails(
+                scope.row.applyId,
+                scope.row.applyTypeId,
+                scope.row.tutorId
+              )
+            "
+            >查 看
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="commit"/>
+      <el-table-column label="备注" align="center" prop="commit" />
     </el-table>
 
     <!-- 分页框 -->
@@ -97,15 +125,15 @@
 import {
   getApplyType,
   getInit,
-  search
-} from '@/api/departmentSecretary/secretaryFirst'
-import { toDetails } from '@/utils/function'
+  search,
+} from "@/api/departmentSecretary/secretaryFirst";
+import { toDetails } from "@/utils/function";
 import Cookies from "js-cookie";
 export default {
   data() {
     return {
       // 备注内容
-      returnCommit: '',
+      returnCommit: "",
       // 备注弹框显示
       dialogVisible: false,
       // 通过确认框
@@ -131,27 +159,27 @@ export default {
       pageNumber: 1,
       // 查询参数
       queryParams: {
-        userId: '', // 工号
-        userName: '', // 姓名
+        userId: "", // 工号
+        userName: "", // 姓名
         organization: "", // 院系id 30130 50030
         organizationName: "", // 院系名称
-        applyType: '', // 申请类别id
-        subjectName: '', // 学科名称id
-        applyStatus: '', // 审核状态 id
+        applyType: "", // 申请类别id
+        subjectName: "", // 学科名称id
+        applyStatus: "", // 审核状态 id
         applyStatuss: [], // 审核状态码数组 id
-        subjectType: '' // 学科属性，文科，理科，交叉
+        subjectType: "", // 学科属性，文科，理科，交叉
       },
       // 查询参数
       queryParamCopy: {},
-      tutorList: []
-    }
+      tutorList: [],
+    };
   },
-  created(){
+  created() {
     this.getSecretaryInit(); //初始化待初审的数据
     this.getApplyTypeList(); //初始化申请的所有类别（下拉框）
   },
   methods: {
-     //获取cookie中的院系zjz
+    //获取cookie中的院系zjz
     getOrganizationId: function () {
       if (Cookies.get("organizationId") !== null) {
         return Cookies.get("organizationId");
@@ -159,71 +187,76 @@ export default {
         console.log("error-organizationId is null");
       }
     },
-   // 查询院系秘书待初审的数据
-    getSecretaryInit: function() {
-      console.log('getInit')
-      this.loading = true
+    // 查询院系秘书待初审的数据
+    getSecretaryInit: function () {
+      console.log("getInit");
+      this.loading = true;
       const organizationId = this.getOrganizationId();
-      console.log("院系",organizationId)
-      const applyStatuss = ['14'] // 申请状态码
+      console.log("院系", organizationId);
+      const applyStatuss = ["14"]; // 申请状态码
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
-        this.tutorList = res.data.data
-        this.totalData = res.data.total
-        console.log('res', res)
-        this.loading = false
-      })
+        this.tutorList = res.data.data;
+        this.totalData = res.data.total;
+        console.log("res", res);
+        this.loading = false;
+      });
+      //清空搜索框，调用重置按钮函数
+      this.resetQuery()
     },
 
     // 详情页
-    toDetails: function(applyId, applyTypeId, tutorId) {
-      toDetails(this, applyId, applyTypeId, tutorId)
+    toDetails: function (applyId, applyTypeId, tutorId) {
+      toDetails(this, applyId, applyTypeId, tutorId);
     },
 
     // 查询数据
-    search: function() {
-      console.log('queryParams', this.queryParams)
-      if (this.queryParams.applyStatus === '' &&
-        this.queryParams.userName === '' &&
-        this.queryParams.organization === '' &&
-        this.queryParams.applyType === '' &&
-        this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === ''
+    search: function () {
+      console.log("queryParams", this.queryParams);
+      if (
+        this.queryParams.applyStatus === "" &&
+        this.queryParams.userName === "" &&
+        this.queryParams.organization === "" &&
+        this.queryParams.applyType === "" &&
+        this.queryParams.subjectName === "" &&
+        this.queryParams.subjectType === ""
       ) {
-        this.getSecretaryInit()
+        this.getSecretaryInit();
       } else {
-        if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['14'] // 申请状态码
+        if (this.queryParams.applyStatus === "") {
+          this.queryParams.applyStatuss = ["14"]; // 申请状态码
         }
         this.queryParams.organization = this.getOrganizationId();
-        search(this.queryParams, this.pageNumber).then(res => {
-          this.tutorList = res.data.data
-          this.totalData = res.data.total
-          console.log('res', res)
-          this.loading = false
-        }).catch(error => {
-          throw error
-        })
+        search(this.queryParams, this.pageNumber)
+          .then((res) => {
+            this.tutorList = res.data.data;
+            this.totalData = res.data.total;
+            console.log("res", res);
+            this.loading = false;
+          })
+          .catch((error) => {
+            throw error;
+          });
       }
     },
 
     // 清空选择申请状态
-    changeApplyStatus: function() {
-      this.queryParams.applyStatuss = []
+    changeApplyStatus: function () {
+      this.queryParams.applyStatuss = [];
     },
 
- // 初始化申请的所有类别（下拉框）
+    // 初始化申请的所有类别（下拉框）
     async getApplyTypeList() {
       getApplyType().then((res) => {
-        this.applyTypeList = res.data
-      })
+        this.applyTypeList = res.data;
+      });
     },
-     // 重置按钮
+    // 重置按钮
     resetQuery() {
-      this.queryParams.userId = '' // 工号
-      this.queryParams.userName = '' // 姓名
-      this.queryParams.applyType = '' // 申请类别id
-      this.queryParams.applyStatus = '' // 审核状态码id
-      this.queryParams.applyStatuss = [] // 申请类别列表
+      this.queryParams.userId = ""; // 工号
+      this.queryParams.userName = ""; // 姓名
+      this.queryParams.applyType = ""; // 申请类别id
+      this.queryParams.applyStatus = ""; // 审核状态码id
+      this.queryParams.applyStatuss = []; // 申请类别列表
       this.pageNumber = 1;
     },
 

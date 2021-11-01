@@ -378,6 +378,8 @@ export default {
         console.log("res", res);
         this.loading = false;
       });
+      //清空搜索框，调用重置按钮函数
+      this.resetQuery()
     },
 
     // 详情页
