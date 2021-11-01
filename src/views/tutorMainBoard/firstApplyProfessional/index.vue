@@ -45,7 +45,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科">
+                      <el-form-item label="申请学科" :rules="{required: true}">
                         <el-select v-model="formSecond.applySubject" placeholder="请选择" style="width: 100%">
                           <el-option
                             v-for="item in applySubjects"
@@ -98,7 +98,7 @@
                 </el-col>
                 <el-col :span="24">
                   <el-form-item label="主要研究方向的内容及其意义（500字以内）">
-                    <el-input v-model="formSecond.major" type="textarea" 
+                    <el-input v-model="formSecond.major" type="textarea"
                       maxlength="500"
                       show-word-limit
                     :autosize="{ minRows: 6 }" />

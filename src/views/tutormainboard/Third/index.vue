@@ -14,18 +14,18 @@
         <!-- 学术论文(近五年) -->
         <el-card class="box-card" shadow="always" v-loading = "load1">
           <div slot="header" class="clearfix">
-            <span style="font-size: 18px">学术论文(近五年) </span>
+            <span style="font-size: 18px">学术论文（近五年）（最多填写 6 篇）</span>
             <el-button
               class="addButton"
               style="float: right; margin-left: 15px"
               type="primary"
-              plain             
+              plain
               @click="addFunc(1)"
             >添加社科类论文</el-button>
             <el-button
               class="addButton"
               style="float: right"
-              type="primary"        
+              type="primary"
               plain
               @click="addFunc(2)"
             >添加理工类论文</el-button>
@@ -75,7 +75,7 @@
         <!-- 科研项目（近五年） -->
         <el-card class="box-card" shadow="always"  v-loading = "load3">
           <div slot="header" class="clearfix">
-            <span style="font-size: 18px">科研项目（近五年）</span>
+            <span style="font-size: 18px">科研项目（近五年）（最多填写 5 个）</span>
             <el-button
               class="addButton"
               style="float: right"
@@ -140,7 +140,7 @@
         <!-- 教材或学术著作（近五年） -->
         <el-card class="box-card" shadow="always"  v-loading = "load4">
           <div slot="header" class="clearfix">
-            <span style="font-size: 18px">教材或学术著作（近五年）</span>
+            <span style="font-size: 18px">教材或学术著作（近五年）（最多填写 2 个）</span>
             <el-button
               style="float: right"
               class="addButton"
@@ -191,7 +191,7 @@
         <!-- 科研教学奖励（近五年） -->
         <el-card class="box-card" shadow="always"  v-loading = "load5">
           <div slot="header" class="clearfix">
-            <span style="font-size: 18px">科研教学奖励（近五年）</span>
+            <span style="font-size: 18px">科研教学奖励（近五年）（最多填写 2 个）</span>
             <el-button
               class="addButton"
               style="float: right"
@@ -237,13 +237,13 @@
           <el-row type="flex" justify="center">
             <el-col :span="4"><el-button @click="saveLearning(5)" type="primary">保存教学奖励</el-button></el-col>
           </el-row>
-           
+
         </el-card>
         <br>
         <!-- 发明专利（近五年） -->
         <el-card class="box-card" shadow="always"  v-loading = "load6">
           <div slot="header" class="clearfix">
-            <span style="font-size: 18px">发明专利（近五年）</span>
+            <span style="font-size: 18px">发明专利（近五年）（最多填写 2 个）</span>
             <el-button
               class="addButton"
               style="float: right"
@@ -292,7 +292,7 @@
           <el-row type="flex" justify="center">
             <el-col :span="4"><el-button @click="saveLearning(6)" type="primary">保存发明专利</el-button></el-col>
           </el-row>
-           
+
         </el-card>
         <br>
         <!-- 科研汇总 -->
@@ -526,7 +526,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="影响因子">
-              <el-input v-model="academicPaper.impactFactors" type="number" :percesion="2" :step="0.01" placeholder="0.00" />
+              <el-input v-model="academicPaper.impactFactors" type="number" :percesion="2" :step="0.01" placeholder="0.00" :min="0.00" />
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -620,7 +620,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="总经费（万元）">
-              <el-input v-model="researchProject.projectTotalPrice" type="number" :percesion="2" :step="1" placeholder="0.00" />
+              <el-input v-model="researchProject.projectTotalPrice" type="number" :percesion="2" :step="1" placeholder="0.00" :min="0.00" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -707,7 +707,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="完成字数（万字）">
-              <el-input v-model="academicWork.totalWords" type="number" :percesion="2" :step="0.1" placeholder="0.00" />
+              <el-input v-model="academicWork.totalWords" type="number" :percesion="2" :step="0.1" placeholder="0.00" :min="0.00" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -934,9 +934,9 @@ export default {
       load4: false,
       load5: false,
       load6: false,
-      
+
       //添加,编辑，删除 false不能提交
-      addFlag: true, 
+      addFlag: true,
       editFlag: true,
       delFlag: true,
 
@@ -1040,12 +1040,12 @@ export default {
     //保存每一项
     saveLearning: function(learningType){
       this.$confirm('保存此项?')
-        .then(() => {   
+        .then(() => {
           // this.$emit('load', true)
           // this.load = true
           switch(learningType){
-            case 1: 
-            case 2: 
+            case 1:
+            case 2:
              this.flag1 = true
              this.load1 = true
               break
@@ -1079,11 +1079,11 @@ export default {
             }
             else if(res.data.code ===1200 ){
               this.$message.success('保存成功!')
-            }          
-            console.log("res.data",res.data)  
+            }
+            console.log("res.data",res.data)
             // this.load = false
             switch(learningType){
-            case 1: 
+            case 1:
             case 2:
              this.formThird.academicPapers = res.data.data.academicPapers
              this.load1 = false
@@ -1104,13 +1104,13 @@ export default {
               this.formThird.inventionPatents = res.data.data.inventionPatents
              this.load6 = false
              break
-          }            
+          }
           })
         })
         .catch(() => {
           console.log('cancel')
         })
-        
+
     },
 
     // 完成第 3 页学术信息的填写
@@ -1147,7 +1147,7 @@ export default {
           submitThirdPage(
             this.formThird.summary,
             this.applyId,
-            this.applyCondition,            
+            this.applyCondition,
           ).then((res) => {
             // if (res.data.code === 1201) {
             //   this.$message.error(res.data.message)
@@ -1296,7 +1296,7 @@ export default {
           if (this.fileList.length === 0) { // 展示文件名
             obj = {}
             obj.url = this.formThird.academicPapers[index].paperProveMaterials // 获取路径
-            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称
             this.fileList.push(obj)
           }
           if (scope.journalLevel !== '') {
@@ -1313,7 +1313,7 @@ export default {
           if (this.fileList.length === 0) {
             obj = {}
             obj.url = this.formThird.researchProjects[index].projectProveMaterials // 获取路径
-            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称
             this.fileList.push(obj)
           }
           this.dialogThird3 = true
@@ -1324,7 +1324,7 @@ export default {
           if (this.fileList.length === 0) {
             obj = {}
             obj.url = this.formThird.academicWorks[index].worksProveMaterials // 获取路径
-            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称
             this.fileList.push(obj)
           }
           this.dialogThird4 = true
@@ -1335,7 +1335,7 @@ export default {
           if (this.fileList.length === 0) {
             let obj = new Object()
             obj.url = this.formThird.teachingAwards[index].awardsProveMaterials // 获取路径
-            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称
             this.fileList.push(obj)
           }
           this.dialogThird5 = true
@@ -1346,7 +1346,7 @@ export default {
           if (this.fileList.length === 0) {
             obj = {}
             obj.url = this.formThird.inventionPatents[index].patentProveMaterials // 获取路径
-            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称            
+            obj.name = obj.url.substring(obj.url.lastIndexOf('/')+1,obj.length) // 获取文件名称
             this.fileList.push(obj)
           }
           this.dialogThird6 = true
@@ -1462,7 +1462,7 @@ export default {
         .then((res) => {
           console.log("fielres",res)
           if (res.data.code === 1201) {
-            this.$message.error('删除失败！')            
+            this.$message.error('删除失败！')
           } else {
             this.$message.success('删除成功！')
           }
@@ -1473,7 +1473,7 @@ export default {
     },
 
     // 汇总生成
-    getSummary: function() {    
+    getSummary: function() {
       if(!this.flag1){
         this.$message.info("请保存学术论文后再进行汇总生成！")
         return
@@ -1796,12 +1796,12 @@ export default {
           this.academicWork.worksProveMaterials = response.data.path // 教材或学术著作的存储地址
           break
         case 5:
-          this.teachingAward.awardsProveMaterials = response.data.path          
+          this.teachingAward.awardsProveMaterials = response.data.path
           break
         case 6:
           this.inventionPatent.patentProveMaterials = response.data.path
           break
-      }    
+      }
     },
     // 移除文件
     removeFile(file, fileList) {

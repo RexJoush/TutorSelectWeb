@@ -43,7 +43,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科类别" :rules="{required: true}">
+                      <el-form-item label="申请学科" :rules="{required: true}">
                         <el-select
                           v-model="formSecond.applySubject"
                           style="width: 100%"
@@ -67,7 +67,7 @@
                           @change="setChildNode"
                         >
                           <el-option
-                            v-for="item in doctorPrimaryDiscipline"
+                            v-for="item in academicMasterPrimaryDiscipline"
                             :key="item.department"
                             :label="item.department"
                             :value="item"
@@ -383,7 +383,7 @@
 </template>
 
 <script>
-import { doctorPrimaryDiscipline } from '@/utils/data'
+import { academicMasterPrimaryDiscipline } from '@/utils/data'
 import { baseUrl } from '@/api/url'
 import { NoDeleteFile } from '@/api/tutor/mainboard'
 
@@ -400,7 +400,7 @@ export default {
       // 提交的加载状态
       loading: false,
       // 博士学科代码
-      doctorPrimaryDiscipline: doctorPrimaryDiscipline,
+      academicMasterPrimaryDiscipline: academicMasterPrimaryDiscipline,
       // 步骤条
       active: 0,
       // 页数的隐藏和展示

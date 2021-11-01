@@ -39,8 +39,8 @@
             >
 <!--              <el-option label="导师" value="1" />-->
               <el-option label="院系秘书" value="2" />
-              <el-option label="研究生院专硕管理员" value="4" />
-              <el-option label="研究生院学硕管理员" value="5" />
+              <el-option label="研究生院管理员" value="4" />
+<!--              <el-option label="研究生院学硕管理员" value="5" />-->
               <el-option label="社科处管理员" value="6" />
               <el-option label="科研处管理员" value="7" />
             </el-select>
@@ -83,7 +83,7 @@
           <el-table-column
             label="操作"
             align="center"
-            class-name="small-padding fixed-width"
+            class-name="small-padding"
           >
             <template v-if="scope.row.userId !== 1" slot-scope="scope">
               <el-button
@@ -130,8 +130,8 @@
                 placeholder="请输入学工号"
                 :trigger-on-focus="false"
                 style="width: 100%"
-                @select="handleSelect"
                 :disabled="isEdit"
+                @select="handleSelect"
               />
             </el-form-item>
           </el-col>
@@ -145,8 +145,8 @@
               <el-select v-model="roleId" filterable placeholder="请选择" style="width: 100%">
 <!--                <el-option label="导师" value="1" />-->
                 <el-option label="院系秘书" value="2" />
-                <el-option label="研究生院专硕管理员" value="4" />
-                <el-option label="研究生院学硕管理员" value="5" />
+                <el-option label="研究生院管理员" value="4" />
+<!--                <el-option label="研究生院学硕管理员" value="5" />-->
                 <el-option label="社科处管理员" value="6" />
                 <el-option label="科研处管理员" value="7" />
               </el-select>
@@ -279,6 +279,7 @@ export default {
         console.log(this.roleId)
         editSystemUser(this.tutorId, this.roleId).then(res => {
           if (res.code === 20000) {
+            this.open = false
             this.$message.success('修改成功')
             this.tutorId = ''
             this.name = ''
@@ -314,51 +315,7 @@ export default {
       }
     },
 
-    // async getOrginization() {
-    //   const { data: res } = await this.$http.get(
-    //     '/admin/organization/getAll'
-    //   )
-    //   this.organizationOptions = res
-    //   console.info(this.organizationOptions)
-    // },
-    // async getRole() {
-    //   const { data: res } = await this.$http.get(
-    //     '/admin/role/getAll'
-    //   )
-    //   this.roleOptions = res
-    // },
-
     // 用户状态修改
-    handleStatusChange(row) {
-      const text = row.status === '1' ? '停用' : '启用'
-      this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async() => {
-        const { data: res } = await this.$http.post(
-          '/admin/system-user/updateUser', row
-        )
-        let mes = text
-        if (res === 20000) {
-          mes = text + '成功'
-        } else {
-          mes = text + '失败'
-        }
-        console.info(res)
-        this.$message({
-          type: 'success',
-          message: mes
-        })
-      }).catch(() => {
-        row.status = row.status === '0' ? '1' : '0'
-        this.getList()
-        this.$message({
-          type: 'info',
-          message: '已取消修改'
-        })
-      })
-    },
     // 取消按钮
     cancel() {
       this.open = false

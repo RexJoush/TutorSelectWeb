@@ -38,7 +38,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科">
+                      <el-form-item label="申请学科" :rules="{required: true}">
                         <el-select
                           v-model="formSecond.applySubject"
                           placeholder="请选择"

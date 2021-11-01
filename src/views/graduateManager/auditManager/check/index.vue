@@ -334,6 +334,7 @@ export default {
     search: function() {
       this.queryParams.pageNum = 1
       if (this.queryParams.applyStatus === '' &&
+        this.queryParams.userId === '' &&
         this.queryParams.userName === '' &&
         this.queryParams.organization === '' &&
         this.queryParams.applyType === '' &&

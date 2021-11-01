@@ -37,7 +37,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科类别">
+                      <el-form-item label="申请学科" :rules="{required: true}">
                         <el-select
                           v-model="formSecond.applySubject"
                           style="width: 100%"
@@ -181,7 +181,7 @@
                       <el-table-column
                         prop="projectChargeName"
                         label="负责人姓名"
-                        min-width="100px"                 
+                        min-width="100px"
                       />
                       <el-table-column prop="projectStartTime" label="开始日期" />
                       <el-table-column prop="projectEndTime" label="结束日期" />
@@ -570,7 +570,7 @@ export default {
                 console.log(e.detail)
                 if(e.detail != 0 ){ //鼠标事件为1
                   done()
-                  return true                 
+                  return true
                 }
               }
             }else
@@ -580,7 +580,7 @@ export default {
             }
           }
         })
-        return flag   
+        return flag
     },
     // 移除文件的钩子
     removeFile: function() {
@@ -595,7 +595,7 @@ export default {
             this.$message.error("文件删除失败！")
         }
       })
-    
+
     },
     // 第 2 页 添科研项目情况 弹框
     addResearchProject: function() {
