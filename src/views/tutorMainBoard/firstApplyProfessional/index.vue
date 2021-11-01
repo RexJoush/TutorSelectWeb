@@ -97,8 +97,11 @@
                   </el-row>
                 </el-col>
                 <el-col :span="24">
-                  <el-form-item label="主要研究方向的内容及其意义">
-                    <el-input v-model="formSecond.major" type="textarea" :autosize="{ minRows: 6 }" />
+                  <el-form-item label="主要研究方向的内容及其意义（500字以内）">
+                    <el-input v-model="formSecond.major" type="textarea" 
+                      maxlength="500"
+                      show-word-limit
+                    :autosize="{ minRows: 6 }" />
                   </el-form-item>
                 </el-col>
                 <!-- 何时参加何种学术团体、任何种职务，有何社会兼职 -->

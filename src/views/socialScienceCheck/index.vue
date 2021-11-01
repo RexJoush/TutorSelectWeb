@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-25 11:42:48
+ * @LastEditTime: 2021-10-29 20:53:30
 -->
 <template>
   <div class="app-container">
@@ -65,9 +65,9 @@
 
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-      <el-button v-if="searchFlag" type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
+      <el-button type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
       </el-button>
-      <el-button v-if="searchFlag" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
+      <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
       </el-button>
     </div>
 
@@ -131,7 +131,7 @@
     <!-- 添加备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
-      <el-input type="textarea" autosize v-model="returnCommit" autocomplete="off" />
+      <el-input type="textarea" :autosize="{minRows: 6}" v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
@@ -161,7 +161,6 @@ import { departmentList } from '@/utils/data'
 export default {
   data() {
     return {
-      searchFlag: false,
       // 添加备注的内容
       returnCommit: '',
       //备注的弹框
@@ -219,7 +218,6 @@ export default {
   },
   created() {
     this.getSocialCheckInit() // 初始化待初审的数据
-    this.searchFlag = true
   },
   methods: {
     // 点击备注按钮，添加备注
@@ -265,8 +263,8 @@ export default {
     // 查询社科处待初审的数据
     // 通过状态码查询
     getSocialCheckInit() {
-      this.queryParams.applyStatus = [30, 301, 302]
-      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
+      this.queryParams.applyStatuss = [30, 301, 302]
+      getInit(0, this.queryParams.applyStatuss, this.queryParams.pageNum).then((res) => {
         console.log(res.data.data)
         this.tutorList = res.data.data
         this.totalData = res.data.total
@@ -277,7 +275,6 @@ export default {
     searchQuery() {
       console.log("55555555",this.queryParams)
       search(this.queryParams, 1).then((res) => {
-        this.searchFlag = this.queryParams.applyStatus === 30
         this.tutorList = res.data.data
         this.totalData = res.data.total
         console.log("查询数据："+ this.tutorList)
@@ -289,8 +286,7 @@ export default {
       this.queryParams.userId = ''
       this.queryParams.userName = ''
       this.queryParams.organization = ''
-      this.queryParams.applyStatuss = [] // 申请类别列表
-      this.queryParams.applyStatus = 30
+      this.queryParams.applyStatuss = [30, 301, 302] // 申请类别列表
     },
     // 初审通过
     passFun() {

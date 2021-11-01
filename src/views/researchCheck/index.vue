@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-25 11:41:13
+ * @LastEditTime: 2021-10-29 21:15:13
 -->
 <template>
   <div class="app-container">
@@ -53,27 +53,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="审核状态" prop="applyStatus">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择"
-              size="small"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!-- 搜索、重置按钮 -->
-      <el-row :gutter="20">
-        <el-col :span="2" :offset="20">
+        <!-- 搜索、重置按钮 -->
+        <el-col :span="2" :offset="2">
           <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
         </el-col>
         <el-col :span="2">
@@ -84,9 +65,9 @@
 
     <!-- 操作按钮 -->
     <div style="margin: 10px 0; border-bottom: 1px solid #DCDFE6; padding-bottom: 10px">
-      <el-button v-if="searchFlag" type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
+      <el-button type="success" plain icon="el-icon-success" size="small" @click="passFun()">通过
       </el-button>
-      <el-button v-if="searchFlag" type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
+      <el-button type="danger" plain icon="el-icon-error" size="small" :disabled="multiple" @click="unPassFun()">驳回
       </el-button>
     </div>
 
@@ -103,7 +84,10 @@
       <el-table-column label="最后学位" align="center" prop="finalDegree" />
       <el-table-column label="审核状态" align="center" width="130">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 53 || scope.row.status === 64" type="info">
+          <el-tag v-if="scope.row.status === 311" type="success">
+            {{ scope.row.inspectDescribe }}
+          </el-tag>
+          <el-tag v-else-if="scope.row.status === 312" type="danger">
             {{ scope.row.inspectDescribe }}
           </el-tag>
           <el-tag v-else type="warning">
@@ -114,17 +98,7 @@
       <el-table-column label="备注" align="center" prop="commitSocial">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="commitFun(scope.row)">添加备注</el-button>
-          <!-- <el-tag v-if="scope.row.commitSocial === '材料审核通过'" type="success">
-            {{ scope.row.commitSocial }}
-          </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial === '材料审核不通过'" type="info">
-            {{ scope.row.commitSocial }}
-          </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial === '材料待审核'" type="warning">
-            {{ scope.row.commitSocial }}
-          </el-tag>
-          <el-tag v-else-if="scope.row.commitSocial !== null" type="info">{{scope.row.commitSocial}}</el-tag> -->
-        </template>
+          </template>
       </el-table-column>
       <el-table-column label="详情" align="center" prop="mr">
         <template slot-scope="scope">
@@ -157,7 +131,7 @@
     <!--  添加备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <span>请输入驳回理由(可以为空)</span>
-      <el-input type="textarea" autosize v-model="returnCommit" autocomplete="off" />
+      <el-input type="textarea" :autosize="{minRows: 6}" v-model="returnCommit" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取消</el-button>
         <el-button type="primary" @click="returnFun()">确定</el-button>
@@ -188,7 +162,6 @@ import { departmentList } from '@/utils/data'
 export default {
   data() {
     return {
-      searchFlag: false,
       // 驳回时备注的内容
       returnCommit: '',
       //备注的弹框
@@ -238,7 +211,6 @@ export default {
   },
   created() {
     this.getResearchCheckInit() // 初始化待初审的数据
-    this.searchFlag = true
   },
   methods: {
     // 点击备注按钮，添加备注
@@ -285,11 +257,10 @@ export default {
     // 查询科研处待初审的数据
     // 通过状态码查询
     getResearchCheckInit() {
-      this.queryParams.applyStatus = 31
-      getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
+      this.queryParams.applyStatuss = [31, 311, 312]
+      getInit(0, this.queryParams.applyStatuss, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
         this.total = res.data.total
-        console.log('8888888', res.data)
       })
     },
 
@@ -305,15 +276,9 @@ export default {
         this.getResearchCheckInit()
       } else {
         if (this.queryParams.applyStatus === '') {
-          this.queryParams.applyStatuss = ['31'] // 申请状态码
+          this.queryParams.applyStatuss = [31, 311, 312] // 申请状态码
         }
         search(this.queryParams, 1).then((res) => {
-          // if (this.queryParams.applyStatus === 31 || '') {
-          //   this.searchFlag = true
-          // } else {
-          //   this.searchFlag = false
-          // }
-          this.searchFlag = this.queryParams.applyStatus === 31
           this.tutorList = res.data.data
           this.total = res.data.total
         }).catch(error => {
@@ -327,8 +292,7 @@ export default {
       this.queryParams.userId = ''
       this.queryParams.userName = ''
       this.queryParams.organization = ''
-      this.queryParams.applyStatus = 31
-      this.queryParams.applyStatuss = [] // 申请类别列表
+      this.queryParams.applyStatuss = [31, 311, 312] // 申请类别列表
     },
     // 初审通过
     passFun() {
@@ -338,7 +302,6 @@ export default {
     rePassFun() {
       this.check(64)
       this.dialogVisiblePass = false
-      // window.location.reload() // 重新加载页面
     },
     // 初审不通过
     unPassFun() {
@@ -355,17 +318,13 @@ export default {
       this.updataList[0].commit_1 = this.returnCommit
       this.check(31)
       this.dialogVisible = false
-      // window.location.reload() // 重新加载页面
     },
 
     //弹框确定按钮驳回操作
     returnUnFun() {
       // 备注
-      // this.updataList[0].commit_1 = this.returnCommit
       this.check(53)
       this.dialogUnVisible = false
-      // this.returnCommit = null
-      // window.location.reload() // 重新加载页面
     },
 
     // 弹框取消按钮

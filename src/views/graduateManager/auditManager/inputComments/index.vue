@@ -179,7 +179,7 @@
     <!-- 提交校会的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加学位委员会的备注信息(可以为空)</span>
-      <el-input v-model="commit" type="textarea" autocomplete="off" />
+      <el-input v-model="commitYjsyLr" type="textarea" autocomplete="off" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancel()">取 消</el-button>
         <el-button type="primary" @click="submitCommit()">确 定</el-button>
@@ -189,7 +189,7 @@
     <!--    <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">-->
     <!--      <span v-if="multiple">批量不通过只能批量添加备注</span>-->
     <!--      <span v-if="multiple==false">逐条通过可逐条添加备注</span>-->
-    <!--      <el-input v-model="commit" autocomplete="off" />-->
+    <!--      <el-input v-model="commitYjsyLr" autocomplete="off" />-->
     <!--      <span slot="footer" class="dialog-footer">-->
     <!--        <el-button @click="cancel()">取 消</el-button>-->
     <!--        <el-button type="primary" @click="returnFun()">确 定</el-button>-->
@@ -273,7 +273,7 @@ export default {
 
         subjectType: '' // 学科属性，文科，理科，交叉
       },
-      commit: ''
+      commitYjsyLr: ''
     }
   },
   created() {
@@ -316,15 +316,31 @@ export default {
     },
     /** 查询用户列表 */
     async getList() {
-      this.loading = true
-      const applyStatuss = ['61', '81', '82']
-      this.queryParams.pageNum = this.currentPage || 1
-      getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
-        this.tutorList = res.data.data
-        this.total = res.data.total
-        console.log('res', res)
-        this.loading = false
-      })
+      if (this.queryParams.applyStatus === '' &&
+        this.queryParams.userName === '' &&
+        this.queryParams.organization === '' &&
+        this.queryParams.applyType === '' &&
+        this.queryParams.subjectName === '' &&
+        this.queryParams.subjectType === ''
+      ) {
+        this.loading = true
+        const applyStatuss = ['61', '81', '82']
+        this.queryParams.pageNum = this.currentPage || 1
+        getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          this.loading = false
+        })
+      } else {
+        search(this.queryParams, this.queryParams.pageNum).then(res => {
+          this.tutorList = res.data.data
+          this.total = res.data.total
+          console.log('res', res)
+          this.loading = false
+        }).catch(error => {
+          throw error
+        })
+      }
     },
     async upDateStatus(code) {
       const updateStatus = []
@@ -332,7 +348,7 @@ export default {
         var json = {
           'id_1': this.ids[i],
           'status_1': code,
-          'commit_1': this.commit
+          'commit_1': ''
         }
         updateStatus[i] = json
       }
@@ -344,7 +360,7 @@ export default {
         this.$message.success('操作成功!')
       }
       this.getList()
-      this.commit = undefined
+      this.commitYjsyLr = ''
     },
     async getApplyType() {
       const { data: res } = await this.$http.get(
@@ -386,22 +402,11 @@ export default {
       // if(res.code != 1000) return this.$message("获取类别失败")
       // this.applyTypeOptions = res.data
     },
-    // 表单重置
-    reset() {
-      this.form = {
-        userId: undefined,
-        deptId: undefined,
-        userName: undefined,
-        status: '0',
-        remark: undefined,
-        postIds: [],
-        roleIds: []
-      }
-    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1
       this.getList()
+      console.log('eeeeeeeeeeeeee')
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -410,6 +415,7 @@ export default {
       this.queryParams.applyType = '' // 申请类别id
       this.queryParams.applyStatus = '' // 审核状态码id
       this.queryParams.applyStatuss = [] // 申请类别列表
+      this.queryParams.organization = '' // 院系
       this.handleQuery()
     },
     // 校会通过
@@ -421,7 +427,6 @@ export default {
         .catch(() => {
           console.log('cancel')
         })
-      this.commit = '校会通过，学位委员会通过'
     },
     // 审核通过确认弹框确认按钮
     rePassFun() {
@@ -437,7 +442,6 @@ export default {
         .catch(() => {
           console.log('cancel')
         })
-      this.commit = '校会不通过，学位委员会不通过'
     },
     // 弹框确定按钮驳回操作
     returnFun() {
@@ -448,7 +452,7 @@ export default {
     // 弹框取消按钮
     cancel() {
       this.dialogVisible = false
-      this.commit = undefined
+      this.commitYjsyLr = ''
     },
 
     // 多选框选中数据
@@ -474,11 +478,11 @@ export default {
     // 点击备注按钮，添加备注
     commitFun(row) {
       this.dialogVisible = true
-      this.commit = row.commitYjsyLr
+      this.commitYjsyLr = row.commitYjsyLr
       this.row = row
     },
     async submitCommit() {
-      this.row.commitYjsyLr = this.commit
+      this.row.commitYjsyLr = this.commitYjsyLr
       const { code: res } = await this.$http.post(
         '/admin/update-status/updateCommitByGraduate', this.row
       )

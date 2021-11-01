@@ -4,12 +4,12 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:32
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-24 22:22:32
+ * @LastEditTime: 2021-10-29 20:54:18
 -->
 <template>
   <div class="app-container">
     <!-- 搜索部分 -->
-    <el-form v-show="showSearch" ref="queryForm" label-width="68px">
+    <el-form ref="queryForm" label-width="68px">
       <el-row :gutter="20">
         <el-col :span="6">
           <el-form-item label="工号">
@@ -115,8 +115,6 @@ import { departmentList } from '@/utils/data'
 export default {
   data() {
     return {
-      // 显示搜索条件
-      showSearch: true,
       // 分页总条数
       totalData: 0,
       // 待社科处初审列表

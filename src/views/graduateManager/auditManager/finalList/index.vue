@@ -181,7 +181,7 @@ export default {
     this.queryParams.applyStatus = 81
     this.getList()
     this.getApplyType()
-    this.getOrginization()
+    // this.getOrginization()
     this.getApplyStatus()
   },
   methods: {
@@ -255,7 +255,7 @@ export default {
         var json = {
           'id_1': this.ids[i],
           'status_1': code,
-          'commit_1': '研究生院返回返回修改'
+          'commit_1': ''
         }
         updateStatus[i] = json
       }

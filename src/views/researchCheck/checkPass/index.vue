@@ -4,7 +4,7 @@
  * @Author: Anna
  * @Date: 2021-08-19 18:31:23
  * @LastEditors: Anna
- * @LastEditTime: 2021-10-24 22:21:49
+ * @LastEditTime: 2021-10-29 20:55:40
 -->
 <template>
   <div class="app-container">
@@ -53,33 +53,15 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
-          <el-form-item label="审核状态" prop="applyStatus">
-            <el-select
-              v-model="queryParams.applyStatus"
-              placeholder="请选择"
-              size="small"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in statusOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!-- 搜索、重置按钮 -->
-      <el-row :gutter="20">
-        <el-col :span="2" :offset="20">
+        <!-- 搜索、重置按钮 -->
+        <el-col :span="2" :offset="2">
           <el-button type="primary" icon="el-icon-search" size="small" @click="searchQuery()">搜索</el-button>
         </el-col>
         <el-col :span="2">
           <el-button icon="el-icon-refresh" size="small" @click="resetQuery(queryParams)">重置</el-button>
         </el-col>
       </el-row>
+      
     </el-form>
     <br>
 
