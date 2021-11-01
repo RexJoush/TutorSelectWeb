@@ -336,6 +336,11 @@ export default {
           this.loading = false
         })
       } else {
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = ['61', '81', '82'] // 申请状态码
+        } else {
+          this.queryParams.applyStatuss[0] = this.queryParams.applyStatus
+        }
         this.queryParams.pageNum = this.currentPage || 1
         search(this.queryParams, this.queryParams.pageNum).then(res => {
           this.tutorList = res.data.data

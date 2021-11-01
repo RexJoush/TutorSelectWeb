@@ -345,6 +345,8 @@ export default {
       } else {
         if (this.queryParams.applyStatus === '') {
           this.queryParams.applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
+        } else {
+          this.queryParams.applyStatuss[0] = this.queryParams.applyStatus
         }
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
@@ -377,6 +379,11 @@ export default {
         })
       } else {
         this.queryParams.pageNum = this.currentPage || 1
+        if (this.queryParams.applyStatus === '') {
+          this.queryParams.applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
+        } else {
+          this.queryParams.applyStatuss[0] = this.queryParams.applyStatus
+        }
         search(this.queryParams, this.queryParams.pageNum).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
