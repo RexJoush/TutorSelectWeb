@@ -289,6 +289,7 @@ export default {
     search: function () {
       this.pageNumber = 1;
       if (
+        this.queryParams.userId === "" &&
         this.queryParams.applyStatus === "" &&
         this.queryParams.userName === "" &&
         this.queryParams.organization === "" &&
@@ -376,7 +377,7 @@ export default {
       this.queryParams.applyType = ""; // 申请类别id
       this.queryParams.applyStatus = ""; // 审核状态码id
       this.queryParams.applyStatuss = []; // 申请类别列表
-      this.pageNumber = 1;
+      // this.pageNumber = 1;
     },
 
     // 点击备注按钮，添加备注

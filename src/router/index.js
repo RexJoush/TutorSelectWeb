@@ -357,13 +357,13 @@ export const asyncRoutes = [
         path: 'graducateComments',
         component: () => import('@/views/departmentSecretary/auditManager/graducateComments/index'),
         name: 'GraducateComments',
-        meta: { title: '查看研究生院意见', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '研究生院驳回列表', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'finalListDS',
         component: () => import('@/views/departmentSecretary/auditManager/finalList/index'),
         name: 'FinalListDS',
-        meta: { title: '最终通过名单', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '学校最终通过名单', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
       }
     ]
   },

@@ -179,6 +179,22 @@
         <el-button type="primary" @click="returnFun()">确 定</el-button>
       </span>
     </el-dialog>
+      <!-- 备注信息 -->
+    <el-dialog
+      title="驳回意见"
+      :visible.sync="dialogVisibleReturn"
+      width="25%"
+      :show-close="false"
+      center
+    >
+      <el-descriptions :column="1" border class="margin-top" label-class-name="commit">
+        <el-descriptions-item label="研究生院意见"><span style="white-space: pre-wrap;"> {{ commitYjsyCs }} </span></el-descriptions-item>
+        <el-descriptions-item label="社科处/科研处意见"><span style="white-space: pre-wrap;"> {{ commitSocial }} </span></el-descriptions-item>
+      </el-descriptions>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisibleReturn = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -194,6 +210,10 @@ import Cookies from "js-cookie";
 export default {
   data() {
     return {
+      commitSocial:'',
+      commitYjsyCs:'',
+      //查看驳回意见弹框
+      dialogVisibleReturn : false,
       // 备注弹框显示
       dialogVisible: false,
       // 备注内容
@@ -286,6 +306,7 @@ export default {
     search: function () {
       this.pageNumber = 1;
       if (
+        this.queryParams.userId === "" &&
         this.queryParams.applyStatus === "" &&
         this.queryParams.userName === "" &&
         this.queryParams.organization === "" &&
@@ -323,7 +344,7 @@ export default {
       this.queryParams.applyType = ""; // 申请类别id
       this.queryParams.applyStatus = ""; // 审核状态码id
       this.queryParams.applyStatuss = []; // 申请类别列表
-      this.pageNumber = 1;
+      // this.pageNumber = 1;
     },
      // 驳回至导师
     unPassFun() {
@@ -349,11 +370,10 @@ export default {
     },
     //点击查看备注按钮，查看来自研究生院和社科或者科研处的备注
     commitFind(row){
-      this.$alert('（1）社科和科研处:' + row.commitSocial+'；（2）研究生院：'+ row.commitYjsyCs, '驳回备注', {
-        confirmButtonText: '确定',
-        callback: action => {
-        }
-      })
+      this.dialogVisibleReturn = true
+       // 查看修改意见
+      this.commitSocial = row.commitSocial
+      this.commitYjsyCs = row.commitYjsyCs
     },
     // 更新tutorList和updateList中的commit
     updateTutorListDataCommit(currentId) {
