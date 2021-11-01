@@ -133,8 +133,13 @@ export default {
       this.$http.get('/admin/system-time/get/' + orgId)
         .then(res => {
           this.time = []
-          this.time.push(res.data[0])
-          this.time.push(res.data[1])
+          if (res.data === '' || res.data === null) {
+            this.$message.warning('请先设置本院导师申请的时间范围！')
+          }
+          else {
+            this.time.push(res.data[0])
+            this.time.push(res.data[1])
+          }
         })
 
       // 获取系统时间
