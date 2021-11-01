@@ -336,7 +336,8 @@ export default {
         this.queryParams.organization === '' &&
         this.queryParams.applyType === '' &&
         this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === ''
+        this.queryParams.subjectType === '' &&
+        this.queryParams.userId === ''
       ) {
         this.getList()
       } else {
@@ -361,7 +362,8 @@ export default {
         this.queryParams.organization === '' &&
         this.queryParams.applyType === '' &&
         this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === '')) {
+        this.queryParams.subjectType === '' &&
+        this.queryParams.userId === '')) {
         const applyStatuss = ['25', '388', '399', '42', '53', '63', '64'] // 申请状态码
         this.loading = true
         this.queryParams.pageNum = this.currentPage || 1
@@ -414,8 +416,8 @@ export default {
           'inspectDescribe': '待初审'
         },
         {
-          'codeId': 36,
-          'inspectDescribe': '驳回至秘书'
+          'codeId': 37,
+          'inspectDescribe': '驳回至院系'
         },
         {
           'codeId': 388,

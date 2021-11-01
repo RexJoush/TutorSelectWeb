@@ -296,12 +296,15 @@ export default {
         this.queryParams.organization === '' &&
         this.queryParams.applyType === '' &&
         this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === ''
+        this.queryParams.subjectType === '' &&
+        this.queryParams.userId === ''
       ) {
         this.getList()
       } else {
         if (this.queryParams.applyStatus === '') {
           this.queryParams.applyStatuss = ['61', '81', '82'] // 申请状态码
+        } else {
+          this.queryParams.applyStatuss[0] = this.queryParams.applyStatus
         }
         this.queryParams.pageNum = 1
         search(this.queryParams, 1).then(res => {
@@ -321,7 +324,8 @@ export default {
         this.queryParams.organization === '' &&
         this.queryParams.applyType === '' &&
         this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === ''
+        this.queryParams.subjectType === '' &&
+        this.queryParams.userId === ''
       ) {
         this.loading = true
         const applyStatuss = ['61', '81', '82']

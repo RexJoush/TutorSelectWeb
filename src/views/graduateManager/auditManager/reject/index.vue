@@ -258,7 +258,8 @@ export default {
         this.queryParams.organization === '' &&
         this.queryParams.applyType === '' &&
         this.queryParams.subjectName === '' &&
-        this.queryParams.subjectType === ''
+        this.queryParams.subjectType === '' &&
+        this.queryParams.userId === ''
       ) {
         this.getList()
       } else {
