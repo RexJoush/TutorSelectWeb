@@ -264,6 +264,9 @@ export default {
       const organizationId = this.getOrganizationId(); // 院系zjz
       const applyStatuss = ["37","137"]; // 申请状态码
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
+        // for(var i = 0;i < res.data.data.length; i++){
+        //     res.data.data[i].commit = " "
+        // }
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
         console.log("res", res);
@@ -346,7 +349,7 @@ export default {
     },
     //点击查看备注按钮，查看来自研究生院和社科或者科研处的备注
     commitFind(row){
-      this.$alert('社科和科研处:' + row.commitSocial+'研究生院：'+ row.commitYjsyCs, '驳回备注', {
+      this.$alert('（1）社科和科研处:' + row.commitSocial+'；（2）研究生院：'+ row.commitYjsyCs, '驳回备注', {
         confirmButtonText: '确定',
         callback: action => {
         }

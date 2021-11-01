@@ -150,7 +150,7 @@
           <el-tag v-else-if="scope.row.status === 16" type="danger">
             {{ scope.row.inspectDescribe }}</el-tag
           >
-          <el-tag v-else-if="scope.row.status === 18" type="warning">
+          <el-tag v-else-if="scope.row.status === 18" type="danger">
             {{ scope.row.inspectDescribe }}</el-tag
           >
           <p v-else>{{ scope.row.inspectDescribe }}</p>
