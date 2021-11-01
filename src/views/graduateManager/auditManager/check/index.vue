@@ -164,13 +164,15 @@
           <!-- 初审待定 -->
           <el-tag v-else-if="scope.row.status === 17" type="warning"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 科研处通过 -->
-          <el-tag v-else-if="scope.row.status === 64" type="sucess"> {{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 64" type="success"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 社科处通过 -->
-          <el-tag v-else-if="scope.row.status === 63" type="succss"> {{ scope.row.inspectDescribe }}</el-tag>
+          <el-tag v-else-if="scope.row.status === 63" type="success"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 科研处不通过 -->
           <el-tag v-else-if="scope.row.status === 53" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <!-- 社科处不通过 -->
           <el-tag v-else-if="scope.row.status === 42" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
+          <!-- 驳回至院系 -->
+          <el-tag v-else-if="scope.row.status === 37" type="danger"> {{ scope.row.inspectDescribe }}</el-tag>
           <p v-else>{{ scope.row.inspectDescribe }}</p>
         </template>
       </el-table-column>
@@ -374,6 +376,7 @@ export default {
           this.loading = false
         })
       } else {
+        this.queryParams.pageNum = this.currentPage || 1
         search(this.queryParams, this.queryParams.pageNum).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total

@@ -336,6 +336,7 @@ export default {
           this.loading = false
         })
       } else {
+        this.queryParams.pageNum = this.currentPage || 1
         search(this.queryParams, this.queryParams.pageNum).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
