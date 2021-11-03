@@ -1074,13 +1074,11 @@ export default {
           ).then((res) => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
-              console.log(res.data.errorMessage)
               return
             }
             else if(res.data.code ===1200 ){
               this.$message.success('保存成功!')
             }
-            console.log("res.data",res.data)
             // this.load = false
             switch(learningType){
             case 1:
@@ -1136,7 +1134,6 @@ export default {
         return
       }
       else if (!this.isSummary) {
-        console.log('submit')
         this.$message.info('请生成汇总信息后再提交')
         return
       }
@@ -1149,15 +1146,8 @@ export default {
             this.applyId,
             this.applyCondition,
           ).then((res) => {
-            // if (res.data.code === 1201) {
-            //   this.$message.error(res.data.message)
-            //   console.log(res.data.errorMessage)
-            //   return
-            // }
-            console.log("res",res)
             this.$message.success('保存成功!')
             this.$emit('func', res.data)
-            console.log(res.data)
           })
         })
         .catch(() => {
@@ -1226,7 +1216,6 @@ export default {
         deletePath: '', // 删除的路径
         deleteType: '' // 删除的项类型，论文，项目等
       }
-      console.log('deltype', type)
       switch (type) {
         case 1:
           this.flag1 = false
@@ -1282,7 +1271,6 @@ export default {
 
     editFunc: function(index, scope, type) {
       let obj
-      console.log('scope', scope)
       // 添加或修改就将汇总信息变为 false
       this.isSummary = false
       // 标记修改
@@ -1456,11 +1444,9 @@ export default {
 
     // 删除文件 参数 文件的路径
     delFile(filePath) {
-      console.log(filePath)
       const path = encodeURI(filePath)
       deleteFile(path)
         .then((res) => {
-          console.log("fielres",res)
           if (res.data.code === 1201) {
             this.$message.error('删除失败！')
           } else {
@@ -1577,7 +1563,6 @@ export default {
 
     // 检查上传的文件类型
     checkFileType: function(file) {
-      console.log('check')
       if (file.name.endsWith('.zip') || file.name.endsWith('.rar')) {
         return true
       } else {
@@ -1592,10 +1577,8 @@ export default {
     },
     // 各项内容的提交文件上传 确定按钮
     addFile: function(type) {
-      console.log('type', type)
       switch (type) {
         case 1: // 社科
-          console.log('filelist===', this.fileList)
           if (this.fileList.length === 1) {
             if (this.isEdit) {
               // 编辑
@@ -1689,7 +1672,6 @@ export default {
 
           break
         case 4:
-          console.log('type4', this.fileList.length)
           // console.log("url4",this.fileList[0].url)
           if (this.fileList.length === 1) {
             if (this.isEdit) {
@@ -1776,8 +1758,6 @@ export default {
 
     // 上传成功
     uploadSuccessFunc: function(response, file, fileList) {
-      console.log('上传成功！')
-      console.log('response', response)
       // 记录到 用于删除
       var obj = new Object()
       obj.url = response.data.path
@@ -1806,17 +1786,12 @@ export default {
     // 移除文件
     removeFile(file, fileList) {
       if (this.fileList[0].url !== null) {
-        console.log('list', this.fileList)
         this.delFile(this.fileList[0].url)
         this.fileList = []
       }
     },
     // 上传失败
     uploadErrorFunc: function(err, file, fileList) {
-      console.log('error')
-      console.log('err', err)
-      console.log('file', file)
-      console.log('fileList', fileList)
       this.$message.error("上传失败！")
     }
   }

@@ -167,12 +167,11 @@ export default {
       if (this.applyType === 3 || this.applyType === 6 || this.applyType === 9) {
         getNoFirstPage(this.applyId).then((res) => {
           this.formFirst = res.data
-
-          console.log('first', this.formFirst)
           // 未申请过
           if (this.applyCondition === 102) {
+            console.log('nofirst', res)
             this.formFirst.image =
-              'data:image/png;base64,' + this.formFirst.image
+              'data:image/png;base64,' + this.formFirst.blobImage
           }
           this.loadingFirst = false
         })
@@ -184,6 +183,7 @@ export default {
             return
           }
           this.formFirst = res.data
+          console.log('first', res)
 
           // 未申请过
           if (this.applyCondition === 102) {
@@ -233,13 +233,10 @@ export default {
           this.$emit('load', true)
           // 免审
           if (this.applyType === 3 || this.applyType === 6 || this.applyType === 9) {
-            console.log('no inspect')
             submitNoFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
               .then((res) => {
-                console.log('first', res.data.applySubject)
                 if (res.data.code === 1201) {
                   this.$message.error(res.data.message)
-                  console.log(res.data.errorMessage)
                   return
                 }
                 this.loading = false
@@ -247,12 +244,10 @@ export default {
                 this.$emit('func', res.data, this.formFirst.name)
               })
           } else {
-            console.log('inspect')
             submitFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
               .then(res => {
                 if (res.data.code === 1201) {
                   this.$message.error(res.data.message)
-                  console.log(res.data.errorMessage)
                   return
                 }
                 this.loading = false

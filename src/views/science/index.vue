@@ -502,7 +502,6 @@ export default {
     // 获取所有数据
     init() {
       init(this.tutorId, this.applyId).then((res) => {
-        console.log('init', res)
         this.paperList = res.data.paperList
         this.projectList = res.data.projectList
         this.workList = res.data.workList
@@ -769,7 +768,6 @@ export default {
       if (this.science === 1) {
         path = '/social/socialScienceCheck'
       } else {
-        console.log('科研处')
         path = '/research/researchCheck'
       }
       this.$router.push({

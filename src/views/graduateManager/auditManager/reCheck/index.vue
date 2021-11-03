@@ -224,7 +224,6 @@ export default {
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('res', res)
           this.loading = false
         }).catch(error => {
           throw error
@@ -334,7 +333,6 @@ export default {
     exportFun() {
       const date = new Date()
       const year = date.getFullYear() // 获取当前年份
-      console.log(year)
       this.loading = true
       this.queryParams.applyStatus = 61 // 同意上校会通过
       this.queryParams.applyStatuss = ['61']

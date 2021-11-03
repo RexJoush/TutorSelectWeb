@@ -298,7 +298,6 @@ export default {
 
     // 获取第一页传回来的第二页信息
     getFormSecond: function(data, tutorName) {
-      console.log('second', data)
       this.applyId = data.applyId
       this.tutorName = tutorName // 设置导师姓名，第四页用到
       if (data.applySubject !== null) {
@@ -330,10 +329,8 @@ export default {
           submitSecondPage(this.formSecond, 4, this.applyId, this.applyCondition).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
-              console.log(res.data.errorMessage)
               return
             }
-            console.log(res.data)
             this.formThird = res.data
             this.$message.success('保存成功!')
             this.formVisible.second = false // 关闭第 2 页
@@ -446,7 +443,6 @@ export default {
     /* =========================  第 4 页  ================================= */
     // 获取第三页传来的初始化信息
     getFormFourth: function(data) {
-      console.log('fourth', data)
       this.formFourth = data
       this.formVisible.third = false // 关闭第 3 页
       this.loading = false

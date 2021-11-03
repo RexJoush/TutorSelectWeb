@@ -141,11 +141,9 @@ export default {
       const organizationId = getOrganizationId()
       getOrganizationTime(organizationId)
         .then((res) => {
-          console.log('res', res)
           const currentDate = new Date() // 获取当前时间;
           const begin = getStartTime(res.data.startTime) // 北京时间八点
           const end = getEndTime(res.data.endTime)
-          console.log(begin, end)
           if (currentDate > end || currentDate < begin) {
             // 若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
             // 提交按钮置灰
@@ -163,7 +161,6 @@ export default {
     getApplyList: function() {
       getApplyList()
         .then(res => {
-          console.log(res)
           this.applyList = res.data
           this.loading = false
         })
@@ -239,7 +236,6 @@ export default {
 
     // 查看申请信息
     toApplyDetails: function(apply) {
-      console.log('apply', apply)
       toDetails(this, apply.applyId, apply.applyTypeId, apply.tutorId, apply.status)
     }
   }

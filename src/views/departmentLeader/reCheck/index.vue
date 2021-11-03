@@ -246,7 +246,6 @@ export default {
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
-        console.log('res', res)
         this.loading = false
       })
     },
@@ -258,7 +257,6 @@ export default {
 
     // 查询数据
     search: function() {
-      console.log('queryParams', this.queryParams)
       this.pageNumber = 1;
       if (this.queryParams.applyStatus === '' &&
           this.queryParams.userName === '' &&
@@ -276,7 +274,6 @@ export default {
         search(this.queryParams, this.pageNumber).then(res => {
           this.tutorList = res.data.data
           this.totalData = res.data.total
-          console.log('res', res)
           this.loading = false
         }).catch(error => {
           throw error
@@ -319,13 +316,11 @@ export default {
           this.updateList[index].status_1 = this.updateList[index].status_1 + 2 // +2是因为数据库绑定状态的原因，勿动
         }
       } else {
-        console.log(status)
         for (let index = 0; index < this.updateList.length; index++) {
           this.updateList[index].status_1 = status
         }
       }
       this.updateStatusFun(this.updateList, true)
-      console.log('更新状态', this.updateList)
     },
     // 更新状态
     updateStatusFun(updateList, isInit) {

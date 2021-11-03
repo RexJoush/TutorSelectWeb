@@ -284,7 +284,6 @@ export default {
       getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
-        console.log('res', res)
         this.loading = false
       })
     },

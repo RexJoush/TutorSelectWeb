@@ -185,7 +185,6 @@ export default {
     },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
-      console.log("getInit");
       this.loading = true;
       const organizationId = this.getOrganizationId();  // 院系
       const applyStatuss = ["21", "22"]; // 申请状态码
@@ -193,7 +192,6 @@ export default {
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
-        console.log("res", res);
         this.loading = false;
       });
     },
@@ -224,7 +222,6 @@ export default {
           .then((res) => {
             this.tutorList = res.data.data;
             this.totalData = res.data.total;
-            console.log("res", res);
             this.loading = false;
           })
           .catch((error) => {

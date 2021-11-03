@@ -350,7 +350,6 @@ export default {
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('queryParams', this.queryParams)
           this.loading = false
         }).catch(error => {
           throw error
@@ -373,7 +372,6 @@ export default {
         getInit(0, applyStatuss, this.queryParams.pageNum).then((res) => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('res', res)
           this.loading = false
         })
       } else {
@@ -381,7 +379,6 @@ export default {
         search(this.queryParams, this.queryParams.pageNum).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('queryParams', this.queryParams)
           this.loading = false
         }).catch(error => {
           throw error

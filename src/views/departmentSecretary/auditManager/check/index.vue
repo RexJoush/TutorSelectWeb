@@ -348,7 +348,6 @@ export default {
       // const begin = this.getZoneTime(new Date(res[0]), 0);
       const begin = getStartTime(res[0]); // 北京时间八点
       const end = getEndTime(res[1]);
-      console.log(currentDate, begin, end);
       if (currentDate > end || currentDate < begin) {
         //若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
         //提交按钮置灰
@@ -369,7 +368,6 @@ export default {
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
-        console.log("res", res);
         this.loading = false;
       });
       //清空搜索框，调用重置按钮函数
@@ -403,7 +401,6 @@ export default {
           .then((res) => {
             this.tutorList = res.data.data;
             this.totalData = res.data.total;
-            console.log("res", res);
             this.loading = false;
           })
           .catch((error) => {
@@ -504,7 +501,6 @@ export default {
     returnFun() {
       this.commitArrays[0].commit_1 = this.returnCommit;
       this.updateStatusFun(this.commitArrays, false);
-      console.log("备注确定按钮", this.commitArrays);
       this.dialogVisible = false;
     },
     // 更新tutorList和updateList中的commit
@@ -518,7 +514,6 @@ export default {
       for (let i = 0; i < this.updateList.length; i++) {
         if (currentId === this.updateList[i].id_1) {
           this.updateList[i].commit_1 = this.returnCommit;
-          console.log(this.updateList[i]);
           break;
         }
       }
@@ -536,13 +531,11 @@ export default {
           this.updateList[index].status_1 = this.updateList[index].status_1 - 4; // -4是因为数据库绑定状态的原因，勿动
         }
       } else {
-        console.log(status);
         for (let index = 0; index < this.updateList.length; index++) {
           this.updateList[index].status_1 = status;
         }
       }
       this.updateStatusFun(this.updateList, true);
-      console.log("更新状态", this.updateList);
     },
     // 更新状态
     updateStatusFun(updateList, isInit) {

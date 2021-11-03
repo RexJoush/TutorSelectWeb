@@ -105,11 +105,9 @@ export default {
       const organizationId = getOrganizationId()
       getOrganizationTime(organizationId)
         .then((res) => {
-          console.log('res', res)
           const currentDate = new Date() // 获取当前时间;
           const begin = getStartTime(res.data.startTime) // 北京时间八点
           const end = getEndTime(res.data.endTime)
-          console.log(begin, end)
           if (currentDate > end || currentDate < begin) {
             // 若当前时间不在系统的设置时间范围内，则提交按钮不可以操作
             // 提交按钮置灰
@@ -132,7 +130,6 @@ export default {
     // 检测申请状态函数
     checkApply: function(type) {
       checkApply(type).then((res) => {
-        console.log(res.data)
         let url = ''
         switch (type) {
           case 1:

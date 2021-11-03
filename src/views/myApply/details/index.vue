@@ -624,7 +624,6 @@ export default {
   },
   created() {
     this.getApplyDetails()
-    console.log(this.applyStatus)
     this.loading = true
   },
   methods: {
@@ -664,7 +663,6 @@ export default {
 
     // 修改申请信息
     editApply: async function() {
-      console.log(this.details)
       let url = '/tutorApply/'
       switch (this.applyTypeId) {
         case 1:
@@ -725,7 +723,6 @@ export default {
         }
         this.details = res.data
         this.loading = false
-        console.log('details', this.details)
       }).catch(error => {
         throw error
       })

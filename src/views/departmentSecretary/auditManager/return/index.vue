@@ -189,15 +189,12 @@ export default {
     },
     // 查询院系秘书待初审的数据
     getSecretaryInit: function () {
-      console.log("getInit");
       this.loading = true;
       const organizationId = this.getOrganizationId();
-      console.log("院系", organizationId);
       const applyStatuss = ["14"]; // 申请状态码
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
-        console.log("res", res);
         this.loading = false;
       });
       //清空搜索框，调用重置按钮函数
@@ -211,7 +208,6 @@ export default {
 
     // 查询数据
     search: function () {
-      console.log("queryParams", this.queryParams);
       if (
         this.queryParams.userId === "" &&
         this.queryParams.applyStatus === "" &&
@@ -231,7 +227,6 @@ export default {
           .then((res) => {
             this.tutorList = res.data.data;
             this.totalData = res.data.total;
-            console.log("res", res);
             this.loading = false;
           })
           .catch((error) => {

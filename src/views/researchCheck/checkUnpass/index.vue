@@ -227,7 +227,6 @@ export default {
       getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
         this.tutorList = res.data.data
         this.total = res.data.total
-        console.log('8888888', res.data)
       })
     },
 
@@ -329,7 +328,6 @@ export default {
         obj.id_1 = this.multipleSelection[index].applyId
         obj.status_1 = this.multipleSelection[index].status
         obj.commit_1 = ''
-        console.log(obj)
         this.updataList.push(obj)
       }
     },

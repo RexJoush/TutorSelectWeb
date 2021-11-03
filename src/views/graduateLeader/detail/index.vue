@@ -7,9 +7,9 @@
  * @LastEditTime: 2021-09-06 15:16:00
 -->
 <template>
-  <div id="app-container"> 
+  <div id="app-container">
       <!-- 1. 教师基本信息表 -->
-      <p class="info_title">基本信息</p>               
+      <p class="info_title">基本信息</p>
       <el-table
         :data="teacherList"
         style="width: 90%; margin: 20px auto"
@@ -33,26 +33,26 @@
           align="center"
           prop="sjh"
         />
-        <el-table-column 
+        <el-table-column
           label="单位"
-          align="center" 
+          align="center"
           prop="mc">
         </el-table-column>
-        <el-table-column 
+        <el-table-column
           label="职称"
-          align="center" 
+          align="center"
           prop="zcmc">
         </el-table-column>
-        <el-table-column 
+        <el-table-column
           label="最高学位"
-          align="center" 
+          align="center"
           prop="zgxw">
         </el-table-column>
-      </el-table> 
-      
+      </el-table>
+
       <!-- 2. 科研教学奖励表 (!!!!!!!!!不需要修改)-->
-      <p class="info_title">科研教学奖励</p>            
-      <el-table        
+      <p class="info_title">科研教学奖励</p>
+      <el-table
         :data="awardList"
         style="width: 90%; margin: 20px auto"
         border
@@ -80,9 +80,9 @@
           align="center"
           prop="awardsTime"
         />
-        <el-table-column 
+        <el-table-column
           label="证明材料"
-          align="center" 
+          align="center"
           prop="awardsProveMaterials">
           <template slot-scope="scope">
             <el-button @click="handleDetail(scope.row)" type="text" size="small">
@@ -94,7 +94,7 @@
 
 
       <!-- 3. 指导学生情况 -->
-      <p class="info_title">指导学生情况</p>       
+      <p class="info_title">指导学生情况</p>
       <el-table
         :data="studentList"
         style="width: 90%; margin: 20px auto"
@@ -118,9 +118,9 @@
           align="center"
           prop="isGainDegree"
         />
-        <el-table-column 
+        <el-table-column
           label="指导类型"
-          align="center" 
+          align="center"
           prop="directType">
         </el-table-column>
         <el-table-column label="教师姓名" align="center" prop="tutorName" />
@@ -144,7 +144,7 @@ export default {
       teacherList: [], //教师基本信息
       awardList: [],//科研教学奖励
       studentList: [],//指导学生情况
-      
+
       // 1. 教师基本信息表
       teacherQueryParams:{
         ZGH: "",//工号
@@ -179,7 +179,7 @@ export default {
         tutorName: "",//教师姓名
         graduateTime: "",//毕业时间
       },
-      
+
     }
   },
   created() {
@@ -189,22 +189,17 @@ export default {
   },
   methods: {
     // 1.查询教师基本信息
-    getTeacherList() {  
+    getTeacherList() {
       this.id = this.$route.query.tutorId
       this.applyId = this.$route.query.applyId
-      console.log("【【【【【【【【【【【【【【【【【【【【【")
-      console.log("教师工号："+this.id) //可以获取到
-      console.log("教师申请的ID："+this.applyId)
       searchTeachers(this.id).then((res)=>{
         this.teacherList = res.data
-        console.log(this.teacherList);       
       })
     },
     // 2.查询科研教学奖励
     getAwardList() {
       searchAwards(this.id, this.applyId).then(res => {
         this.awardList = res.data
-        console.log(this.awardList)
       })
     },
     // 3.查询指导学生情况
@@ -212,9 +207,7 @@ export default {
       searchStudents(this.id, this.applyId).then(res => {
         this.studentList = res.data
       })
-    },
-      
-
+    }
   },
 }
 </script>
@@ -231,5 +224,5 @@ export default {
     /* margin-bottom: 5px; */
     text-align: center;
   }
-  
+
 </style>

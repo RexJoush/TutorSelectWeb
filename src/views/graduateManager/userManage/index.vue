@@ -233,7 +233,6 @@ export default {
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       getSystemUsers(this.queryParams).then(res => {
-        console.log(res)
         this.userList = res.data.users
         this.total = res.data.total
         this.loading = false
@@ -244,7 +243,6 @@ export default {
 
     /* 添加用户，输入工号查询 */
     querySearch(queryString, cb) {
-      console.log('tutorId', queryString)
       this.name = ''
       this.organizationName = ''
       getQueryTutorId(queryString).then(res => {
@@ -260,9 +258,7 @@ export default {
     },
     /* 选定用户，填写信息 */
     handleSelect(item) {
-      console.log(item.value)
       getSystemUserByTutorId(item.value).then(res => {
-        console.log(res)
         this.organizationName = res.data.organizationName
         this.name = res.data.name
         this.user = res.data
@@ -275,8 +271,6 @@ export default {
     commitSystemUser() {
       // 编辑用户
       if (this.isEdit) {
-        console.log(this.tutorId)
-        console.log(this.roleId)
         editSystemUser(this.tutorId, this.roleId).then(res => {
           if (res.code === 20000) {
             this.open = false
@@ -291,9 +285,7 @@ export default {
       } else {
         // 添加用户
         if (this.user !== null && this.roleId !== '') {
-          console.log(this.user, this.roleId)
           addSystemUser(this.user, this.roleId).then(res => {
-            console.log(res)
             if (res.code === 20001) {
               this.$message.warning('此用户已经存在，若需修改权限，请在页面中修改')
             } else {
