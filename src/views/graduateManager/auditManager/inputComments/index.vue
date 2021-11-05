@@ -310,7 +310,6 @@ export default {
         search(this.queryParams, 1).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('res', res)
           this.loading = false
         }).catch(error => {
           throw error
@@ -345,7 +344,6 @@ export default {
         search(this.queryParams, this.queryParams.pageNum).then(res => {
           this.tutorList = res.data.data
           this.total = res.data.total
-          console.log('res', res)
           this.loading = false
         }).catch(error => {
           throw error
@@ -416,7 +414,6 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1
       this.getList()
-      console.log('eeeeeeeeeeeeee')
     },
     /** 重置按钮操作 */
     resetQuery() {

@@ -365,7 +365,6 @@ export default {
         obj.id_1 = this.multipleSelection[index].applyId
         obj.status_1 = this.multipleSelection[index].status
         obj.commit_1 = ''
-        console.log(obj)
         this.updataList.push(obj)
       }
     },

@@ -265,7 +265,6 @@ export default {
     getSocialCheckInit() {
       this.queryParams.applyStatuss = [30, 301, 302]
       getInit(0, this.queryParams.applyStatuss, this.queryParams.pageNum).then((res) => {
-        console.log(res.data.data)
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })
@@ -273,11 +272,9 @@ export default {
 
     // 搜索按钮
     searchQuery() {
-      console.log("55555555",this.queryParams)
       search(this.queryParams, 1).then((res) => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
-        console.log("查询数据："+ this.tutorList)
       })
     },
 
@@ -314,7 +311,6 @@ export default {
     returnFun() {
       // 添加备注
       this.updataList[0].commit_1 = this.returnCommit;
-      console.log("备注确定按钮", this.updataList[0].commit_1);
       this.check(30)
       this.dialogVisible = false
     },
@@ -368,7 +364,6 @@ export default {
         obj.id_1 = this.multipleSelection[index].applyId
         obj.status_1 = this.multipleSelection[index].status
         obj.commit_1 = ''
-        console.log(obj)
         this.updataList.push(obj)
       }
     },

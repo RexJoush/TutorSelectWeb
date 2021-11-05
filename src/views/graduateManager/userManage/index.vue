@@ -39,8 +39,8 @@
             >
 <!--              <el-option label="导师" value="1" />-->
               <el-option label="院系秘书" value="2" />
-              <el-option label="研究生院专硕管理员" value="4" />
-              <el-option label="研究生院学硕管理员" value="5" />
+              <el-option label="研究生院管理员" value="4" />
+<!--              <el-option label="研究生院学硕管理员" value="5" />-->
               <el-option label="社科处管理员" value="6" />
               <el-option label="科研处管理员" value="7" />
             </el-select>
@@ -83,7 +83,7 @@
           <el-table-column
             label="操作"
             align="center"
-            class-name="small-padding fixed-width"
+            class-name="small-padding"
           >
             <template v-if="scope.row.userId !== 1" slot-scope="scope">
               <el-button
@@ -130,8 +130,8 @@
                 placeholder="请输入学工号"
                 :trigger-on-focus="false"
                 style="width: 100%"
-                @select="handleSelect"
                 :disabled="isEdit"
+                @select="handleSelect"
               />
             </el-form-item>
           </el-col>
@@ -145,8 +145,8 @@
               <el-select v-model="roleId" filterable placeholder="请选择" style="width: 100%">
 <!--                <el-option label="导师" value="1" />-->
                 <el-option label="院系秘书" value="2" />
-                <el-option label="研究生院专硕管理员" value="4" />
-                <el-option label="研究生院学硕管理员" value="5" />
+                <el-option label="研究生院管理员" value="4" />
+<!--                <el-option label="研究生院学硕管理员" value="5" />-->
                 <el-option label="社科处管理员" value="6" />
                 <el-option label="科研处管理员" value="7" />
               </el-select>
@@ -233,7 +233,6 @@ export default {
       this.loading = true
       this.queryParams.pageNum = this.currentPage || 1
       getSystemUsers(this.queryParams).then(res => {
-        console.log(res)
         this.userList = res.data.users
         this.total = res.data.total
         this.loading = false
@@ -244,7 +243,6 @@ export default {
 
     /* 添加用户，输入工号查询 */
     querySearch(queryString, cb) {
-      console.log('tutorId', queryString)
       this.name = ''
       this.organizationName = ''
       getQueryTutorId(queryString).then(res => {
@@ -260,9 +258,7 @@ export default {
     },
     /* 选定用户，填写信息 */
     handleSelect(item) {
-      console.log(item.value)
       getSystemUserByTutorId(item.value).then(res => {
-        console.log(res)
         this.organizationName = res.data.organizationName
         this.name = res.data.name
         this.user = res.data
@@ -275,10 +271,9 @@ export default {
     commitSystemUser() {
       // 编辑用户
       if (this.isEdit) {
-        console.log(this.tutorId)
-        console.log(this.roleId)
         editSystemUser(this.tutorId, this.roleId).then(res => {
           if (res.code === 20000) {
+            this.open = false
             this.$message.success('修改成功')
             this.tutorId = ''
             this.name = ''
@@ -290,9 +285,7 @@ export default {
       } else {
         // 添加用户
         if (this.user !== null && this.roleId !== '') {
-          console.log(this.user, this.roleId)
           addSystemUser(this.user, this.roleId).then(res => {
-            console.log(res)
             if (res.code === 20001) {
               this.$message.warning('此用户已经存在，若需修改权限，请在页面中修改')
             } else {
@@ -314,51 +307,7 @@ export default {
       }
     },
 
-    // async getOrginization() {
-    //   const { data: res } = await this.$http.get(
-    //     '/admin/organization/getAll'
-    //   )
-    //   this.organizationOptions = res
-    //   console.info(this.organizationOptions)
-    // },
-    // async getRole() {
-    //   const { data: res } = await this.$http.get(
-    //     '/admin/role/getAll'
-    //   )
-    //   this.roleOptions = res
-    // },
-
     // 用户状态修改
-    handleStatusChange(row) {
-      const text = row.status === '1' ? '停用' : '启用'
-      this.$confirm('确认要"' + text + '""' + row.userName + '"用户吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async() => {
-        const { data: res } = await this.$http.post(
-          '/admin/system-user/updateUser', row
-        )
-        let mes = text
-        if (res === 20000) {
-          mes = text + '成功'
-        } else {
-          mes = text + '失败'
-        }
-        console.info(res)
-        this.$message({
-          type: 'success',
-          message: mes
-        })
-      }).catch(() => {
-        row.status = row.status === '0' ? '1' : '0'
-        this.getList()
-        this.$message({
-          type: 'info',
-          message: '已取消修改'
-        })
-      })
-    },
     // 取消按钮
     cancel() {
       this.open = false

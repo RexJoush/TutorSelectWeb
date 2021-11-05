@@ -216,7 +216,6 @@ export default {
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
-        console.log("res", res);
         this.loading = false;
       });
       //清空搜索框，调用重置按钮函数
@@ -291,7 +290,6 @@ export default {
           .then((res) => {
             this.tutorList = res.data.data;
             this.totalData = res.data.total;
-            console.log("res", res);
             this.loading = false;
           })
           .catch((error) => {

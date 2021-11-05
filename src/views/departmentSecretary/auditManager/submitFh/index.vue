@@ -273,7 +273,6 @@ export default {
       getInit(organizationId, applyStatuss, this.pageNumber).then((res) => {
         this.tutorList = res.data.data;
         this.totalData = res.data.total;
-        console.log("res", res);
         this.loading = false;
       });
       //清空搜索框，调用重置按钮函数
@@ -307,7 +306,6 @@ export default {
           .then((res) => {
             this.tutorList = res.data.data;
             this.totalData = res.data.total;
-            console.log("res", res);
             this.loading = false;
           })
           .catch((error) => {
@@ -345,7 +343,6 @@ export default {
     },
     // 导出excel实现
     exportExcel(queryParams) {
-      console.log(queryParams)
       const date = new Date();
       const year = date.getFullYear(); // 获取当前年份
       exportSFH(queryParams).then((res) => {
@@ -395,7 +392,6 @@ export default {
     returnFun() {
       this.commitArrays[0].commit_1 = this.returnCommit;
       this.updateStatusFun(this.commitArrays, false);
-      console.log("备注确定按钮", this.commitArrays);
       this.dialogVisible = false;
     },
     // 更新状态

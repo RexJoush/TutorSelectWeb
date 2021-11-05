@@ -38,7 +38,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科">
+                      <el-form-item label="申请学科" :rules="{required: true}">
                         <el-select
                           v-model="formSecond.applySubject"
                           placeholder="请选择"
@@ -334,7 +334,6 @@ export default {
 
     /* ====================================第二页============================ */
     getFormSecond: function(data, tutorName) {
-      console.log('second', data)
       this.applyId = data.applyId
       this.tutorName = tutorName // 设置导师姓名，第四页用到
       if (data.applySubject !== null) {
@@ -463,7 +462,6 @@ export default {
             (res) => {
               if (res.data.code === 1201) {
                 this.$message.error(res.data.message)
-                console.log(res.data.errorMessage)
                 return
               }
               this.formThird = res.data
@@ -484,7 +482,6 @@ export default {
 
     /* ==================================== 第 4 页 ============================ */
     getFormFourth: function(data) {
-      console.log('data', data)
       this.formFourth = data
       this.formVisible.third = false // 关闭第 3 页
       this.loading = false

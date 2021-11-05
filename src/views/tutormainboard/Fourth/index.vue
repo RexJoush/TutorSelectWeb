@@ -13,7 +13,7 @@
         <!-- 研究生课程教学情况 -->
         <el-card class="box-card" shadow="always">
           <div slot="header" class="clearfix">
-            <span style="font-size: 18px">研究生课程教学情况</span>
+            <span style="font-size: 18px">研究生课程教学情况（最多填写 3 个）</span>
             <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth1 = true">添加研究生课程教学信息
             </el-button>
           </div>
@@ -43,7 +43,7 @@
         <div v-if="applyType === 2">
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">指导博士生情况</span>
+              <span style="font-size: 18px">指导博士生情况（最多填写 3 个）</span>
               <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth2 = true">添加学生</el-button>
             </div>
             <!-- <el-row>
@@ -73,7 +73,7 @@
         <div v-if="applyType === 1">
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">协助指导博士生情况</span>
+              <span style="font-size: 18px">协助指导博士生情况（最多填写 3 个）</span>
               <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth3 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.assistDoctorStudents" border style="width: 100%">
@@ -98,7 +98,7 @@
         <div v-if="applyType === 1 || applyType === 2 || applyType === 5 || applyType === 8">
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">指导硕士生情况</span>
+              <span style="font-size: 18px">指导硕士生情况（最多填写 3 个）</span>
               <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth4 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.masterStudents" border style="width: 100%">
@@ -123,7 +123,7 @@
         <div v-if="applyType === 4 || applyType === 7">
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">协助指导硕士生情况</span>
+              <span style="font-size: 18px">协助指导硕士生情况（最多填写 3 个）</span>
               <el-button class="addButton" plain style="float:right" type="primary" @click="dialogFourth5 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.assistMasterStudents" border style="width: 100%">
@@ -148,7 +148,7 @@
         <div v-if="applyType === 4 || applyType === 7">
           <el-card class="box-card" shadow="always">
             <div slot="header" class="clearfix">
-              <span style="font-size: 18px">指导本科生毕业情况</span>
+              <span style="font-size: 18px">指导本科生毕业情况（最多填写 3 个）</span>
               <el-button type="primary" plain style="float :right" class="addButton" @click="dialogFourth6 = true">添加学生</el-button>
             </div>
             <el-table :data="formFourth.undergraduateStudents" border style="width: 100%">
@@ -207,7 +207,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="授课总课时">
-              <el-input v-model="courseTeaching.courseDuration" type="number" />
+              <el-input v-model="courseTeaching.courseDuration" type="number" placeholder="0" :step="1" :min="0"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -507,7 +507,6 @@ export default {
   },
 
   methods: {
-
     // 完成第 4 页教学信息的填写
     onSubmitFourthPage: function() {
       this.$confirm('提交填写?')
@@ -517,7 +516,6 @@ export default {
           submitFourthPage(this.formFourth, this.applyId).then(res => {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message)
-              console.log(res.data.errorMessage)
               return
             }
             this.$alert('填写成功，请前往我的申请页面查看填写信息，并提交至院系审核', {
@@ -617,7 +615,6 @@ export default {
 
     // 添加指导硕士学生
     addMasterStudents: function() {
-      console.log(this.guidingStudent)
       this.guidingStudent.studentType = '硕士'
       this.guidingStudent.directType = '指导'
       this.guidingStudent.tutorName = this.tutorName
@@ -634,7 +631,6 @@ export default {
 
     // 添加协助指导硕士学生
     addAssistMasterStudents: function() {
-      console.log(this.guidingStudent)
       this.guidingStudent.studentType = '硕士'
       this.guidingStudent.directType = '协助指导'
       this.guidingStudent.tutorName = this.tutorName
@@ -651,7 +647,6 @@ export default {
 
     // 添加指导本科生
     addUndergraduateStudent: function() {
-      console.log(this.guidingStudent)
       this.guidingStudent.studentType = '本科'
       this.guidingStudent.isGainDegree = '是'
       this.guidingStudent.tutorName = this.tutorName
@@ -694,7 +689,6 @@ export default {
      *        6, 指导本科生情况：首次学硕，首次专硕
      * */
     deleteFunc: function(index, scope, type) {
-      console.log(index, scope, type)
       const deleteItem = {
         deleteId: '', // 删除的项 id
         deletePath: '', // 删除的路径
@@ -735,7 +729,6 @@ export default {
       if (deleteItem.deleteId !== undefined) {
         this.formFourth.deleteItems.push(deleteItem)
       }
-      console.log(this.formFourth.deleteItems)
     }
   }
 }

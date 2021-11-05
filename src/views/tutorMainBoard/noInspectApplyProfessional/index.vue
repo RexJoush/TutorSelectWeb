@@ -43,7 +43,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科类别">
+                      <el-form-item label="申请学科"  :rules="{required: true}">
                         <el-select
                           v-model="formSecond.applySubject"
                           style="width: 100%"
@@ -553,7 +553,6 @@ export default {
 
     /* ====================================第二页============================ */
     getFormSecond: function (data, tutorName) {
-      console.log("second", data);
       this.applyId = data.applyId;
       this.formSecond = data;
       if (data.applySubject !== null) {
@@ -610,7 +609,6 @@ export default {
     },
     // 上传成功
     uploadSuccessFunc: function (response, file, fileList) {
-      console.log("response", response);
       let obj = new Object();
       obj.url = response.data.path;
       obj.name = obj.url.substring(
@@ -623,9 +621,6 @@ export default {
     },
     // 上传镜像失败
     uploadErrorFunc: function (err, file, fileList) {
-      console.log(err);
-      console.log(file);
-      console.log(fileList);
       this.$message.error("文件上传失败！");
     },
     // 检查上传的文件类型 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
@@ -647,7 +642,6 @@ export default {
           if (action == "confirm") {
             instance.$refs["confirm"].$el.onclick = function (e) {
               e = e || window.event;
-              console.log(e.detail);
               if (e.detail != 0) {
                 //鼠标事件为1
                 done();
@@ -664,7 +658,6 @@ export default {
     },
     // 移除文件的钩子
     removeFile: function () {
-      console.log("移除文件");
       NoDeleteFile(
         this.formSecond.exemptionConditionsMaterials,
         this.applyId
@@ -699,7 +692,6 @@ export default {
 
     // 设置领域的子选择
     setChildDomain: function (value) {
-      console.log(value);
       // 将子列表的选择置空
       this.formSecond.professionalFieldCodeName = "";
 
@@ -728,7 +720,6 @@ export default {
         this.isEdit = false;
       } else {
         // 添加
-        console.log("添加");
         this.formSecond.researchProjects.push(this.researchProject);
       }
       this.dialogSecond1 = false;
@@ -800,7 +791,6 @@ export default {
     },
     //* *********************************************** 完成第二页基本信息的填写 表单提交按钮********************************************
     onSubmitSecondPage: function () {
-      console.log(this.formSecond);
       if (
         this.formSecond.applySubject === "" ||
         this.formSecond.applySubject === null
@@ -816,7 +806,6 @@ export default {
             // if (res.data != null) {
             if (res.data.code === 1201) {
               this.$message.error(res.data.message);
-              console.log(res.data.errorMessage);
             }
             this.$alert(
               "填写成功，请前往我的申请页面查看填写信息，并提交至院系审核",

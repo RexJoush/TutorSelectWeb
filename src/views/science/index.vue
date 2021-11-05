@@ -8,7 +8,7 @@
 -->
 <template>
   <div id="app-container">
-    <br />
+    <br>
     <el-row type="flex" justify="center">
       <el-col :span="21">
         <el-card class="box-card">
@@ -34,7 +34,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <br />
+    <br>
     <!-- 1.学术论文 -->
     <el-row type="flex" justify="center">
       <el-col :span="21">
@@ -83,14 +83,14 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
                   size="mini"
                   plain
                   @click="checkIn(scope.row.paperId, scope.$index, 1)"
-                  >通过
+                >通过
                 </el-button>
                 <el-button
                   type="danger"
@@ -100,7 +100,7 @@
                   @click="
                     checkOut(scope.row.paperId, scope.$index, 1, scope.row.col2)
                   "
-                  >驳回
+                >驳回
                 </el-button>
               </template>
             </el-table-column>
@@ -108,7 +108,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <br />
+    <br>
 
     <!-- 2.科研项目表 -->
     <el-row type="flex" justify="center">
@@ -169,14 +169,14 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
                   size="mini"
                   plain
                   @click="checkIn(scope.row.projectId, scope.$index, 2)"
-                  >通过
+                >通过
                 </el-button>
                 <el-button
                   type="danger"
@@ -191,7 +191,7 @@
                       scope.row.col2
                     )
                   "
-                  >驳回
+                >驳回
                 </el-button>
               </template>
             </el-table-column>
@@ -199,7 +199,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <br />
+    <br>
 
     <!-- 3.教材或学术著作表 -->
     <el-row type="flex" justify="center">
@@ -251,14 +251,14 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
                   size="mini"
                   plain
                   @click="checkIn(scope.row.worksId, scope.$index, 3)"
-                  >通过
+                >通过
                 </el-button>
                 <el-button
                   type="danger"
@@ -268,7 +268,7 @@
                   @click="
                     checkOut(scope.row.worksId, scope.$index, 3, scope.row.col2)
                   "
-                  >驳回
+                >驳回
                 </el-button>
               </template>
             </el-table-column>
@@ -276,7 +276,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <br />
+    <br>
 
     <!-- 4.科研教学奖励表 -->
     <el-row type="flex" justify="center">
@@ -328,14 +328,14 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
                   size="mini"
                   plain
                   @click="checkIn(scope.row.awardsId, scope.$index, 4)"
-                  >通过
+                >通过
                 </el-button>
                 <el-button
                   type="danger"
@@ -350,7 +350,7 @@
                       scope.row.col2
                     )
                   "
-                  >驳回
+                >驳回
                 </el-button>
               </template>
             </el-table-column>
@@ -358,7 +358,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <br />
+    <br>
 
     <!-- 5.发明专利 -->
     <el-row type="flex" justify="center">
@@ -404,14 +404,14 @@
               width="160"
               class-name="small-padding fixed-width"
             >
-              <template slot-scope="scope" v-if="scope.row.tutorId !== 1">
+              <template v-if="scope.row.tutorId !== 1" slot-scope="scope">
                 <el-button
                   type="success"
                   icon="el-icon-success"
                   size="mini"
                   plain
                   @click="checkIn(scope.row.patentId, scope.$index, 5)"
-                  >通过
+                >通过
                 </el-button>
                 <el-button
                   type="danger"
@@ -426,7 +426,7 @@
                       scope.row.col2
                     )
                   "
-                  >驳回
+                >驳回
                 </el-button>
               </template>
             </el-table-column>
@@ -434,25 +434,25 @@
         </el-card>
       </el-col>
     </el-row>
-    <br />
+    <br>
 
-    <br />
+    <br>
     <el-row type="flex" justify="end">
       <el-col :span="4" :offset="21">
         <el-button type="primary" @click="submitPass">确认提交</el-button>
       </el-col>
     </el-row>
-    <br /><br />
+    <br><br>
 
     <!-- 驳回时的备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="30%">
       <el-form label-width="80px">
         <el-form-item label="请输入驳回理由(可以为空)">
           <el-input
+            v-model="reject.col2"
             type="textarea"
             :autosize="{ minRows: 6 }"
-            v-model="reject.col2"
-          ></el-input>
+          />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -464,7 +464,7 @@
 </template>
 
 <script>
-import { init, check, commitMaterial } from "@/api/scienceDepartment/index";
+import { init, check, commitMaterial } from '@/api/scienceDepartment/index'
 
 export default {
   props: {
@@ -473,45 +473,44 @@ export default {
   data() {
     return {
       reject: {
-        id: "", // 驳回的材料 id
+        id: '', // 驳回的材料 id
         index: -1, // 索引
-        col2: "", // 驳回备注
-        type: -1, // 驳回类型
+        col2: '', // 驳回备注
+        type: -1 // 驳回类型
       },
 
       rejectList: [], // 不通过列表
-      applyId: "",
-      tutorId: "",
+      applyId: '',
+      tutorId: '',
       name: '',
       organizationName: '',
-      dialogVisible: false, //备注弹框显示
+      dialogVisible: false, // 备注弹框显示
 
-      paperList: [], //学术论文
-      projectList: [], //科研项目
-      workList: [], //教材或学术著作
-      awardList: [], //科研教学奖励
-      patentList: [], //发明专利
-    };
+      paperList: [], // 学术论文
+      projectList: [], // 科研项目
+      workList: [], // 教材或学术著作
+      awardList: [], // 科研教学奖励
+      patentList: [] // 发明专利
+    }
   },
   created() {
-    this.tutorId = this.$route.query.tutorId;
-    this.applyId = this.$route.query.applyId;
-    this.init();
+    this.tutorId = this.$route.query.tutorId
+    this.applyId = this.$route.query.applyId
+    this.init()
   },
   methods: {
     // 获取所有数据
     init() {
       init(this.tutorId, this.applyId).then((res) => {
-        console.log("init", res);
-        this.paperList = res.data.paperList;
-        this.projectList = res.data.projectList;
-        this.workList = res.data.workList;
-        this.awardList = res.data.awardList;
-        this.patentList = res.data.patentList;
-        this.name = res.data.name;
-        this.tutorId = res.data.tutorId;
+        this.paperList = res.data.paperList
+        this.projectList = res.data.projectList
+        this.workList = res.data.workList
+        this.awardList = res.data.awardList
+        this.patentList = res.data.patentList
+        this.name = res.data.name
+        this.tutorId = res.data.tutorId
         this.organizationName = res.data.organizationName
-      });
+      })
     },
 
     /**
@@ -522,93 +521,97 @@ export default {
         if (res.code === 20000) {
           switch (type) {
             case 1:
-              this.paperList[index].col1 = "通过";
-              this.paperList[index].col2 = "";
-              break;
+              this.paperList[index].col1 = '通过'
+              this.paperList[index].col2 = ''
+              break
             case 2:
-              this.projectList[index].col1 = "通过";
-              this.projectList[index].col2 = "";
-              break;
+              this.projectList[index].col1 = '通过'
+              this.projectList[index].col2 = ''
+              break
             case 3:
-              this.workList[index].col1 = "通过";
-              this.workList[index].col2 = "";
-              break;
+              this.workList[index].col1 = '通过'
+              this.workList[index].col2 = ''
+              break
             case 4:
-              this.awardList[index].col1 = "通过";
-              this.awardList[index].col2 = "";
-              break;
+              this.awardList[index].col1 = '通过'
+              this.awardList[index].col2 = ''
+              break
             case 5:
-              this.patentList[index].col1 = "通过";
-              this.patentList[index].col2 = "";
-              break;
+              this.patentList[index].col1 = '通过'
+              this.patentList[index].col2 = ''
+              break
           }
-          this.$message.success("审核成功！");
+          this.$message.success('审核成功！')
         } else {
-          this.$message.error("网络出现问题，请稍后再试！");
+          this.$message.error('网络出现问题，请稍后再试！')
         }
-      });
+      })
     },
 
     // 审批驳回
     checkOut(id, index, type, col2) {
-      this.reject.id = id;
-      this.reject.index = index;
-      this.reject.type = type;
-      this.reject.col2 = col2;
-      this.dialogVisible = true;
+      this.reject.id = id
+      this.reject.index = index
+      this.reject.type = type
+      this.reject.col2 = col2
+      this.dialogVisible = true
     },
 
     // 审批驳回提交
     rejectConfirm() {
       check(this.reject.id, this.reject.type, 2, {
-        col2: this.reject.col2,
+        col2: this.reject.col2
       }).then((res) => {
-        const index = this.reject.index;
+        const index = this.reject.index
         if (res.code === 20000) {
           switch (this.reject.type) {
             case 1:
-              this.paperList[index].col1 = "不通过";
-              this.paperList[index].col2 = this.reject.col2;
-              break;
+              this.paperList[index].col1 = '不通过'
+              this.paperList[index].col2 = this.reject.col2
+              break
             case 2:
-              this.projectList[index].col1 = "不通过";
-              this.projectList[index].col2 = this.reject.col2;
-              break;
+              this.projectList[index].col1 = '不通过'
+              this.projectList[index].col2 = this.reject.col2
+              break
             case 3:
-              this.workList[index].col1 = "不通过";
-              this.workList[index].col2 = this.reject.col2;
-              break;
+              this.workList[index].col1 = '不通过'
+              this.workList[index].col2 = this.reject.col2
+              break
             case 4:
-              this.awardList[index].col1 = "不通过";
-              this.awardList[index].col2 = this.reject.col2;
-              break;
+              this.awardList[index].col1 = '不通过'
+              this.awardList[index].col2 = this.reject.col2
+              break
             case 5:
-              this.patentList[index].col1 = "不通过";
-              this.patentList[index].col2 = this.reject.col2;
-              break;
+              this.patentList[index].col1 = '不通过'
+              this.patentList[index].col2 = this.reject.col2
+              break
           }
-          this.$message.success("审核成功！");
-          this.reject.col2 = "";
-          this.dialogVisible = false;
+          this.$message.success('审核成功！')
+          this.reject.col2 = ''
+          this.dialogVisible = false
         } else {
-          this.$message.error("网络出现问题，请稍后再试！");
+          this.$message.error('网络出现问题，请稍后再试！')
         }
-      });
+      })
     },
 
     // 提交审核弹框
     submitPass() {
-      this.$confirm("确认提交?", "提示")
+      this.$confirm('确认提交?', '提示')
         .then(() => {
           // 计算通过信息
-          this.calculationCheck();
-          let commitSocial = "";
-          let type = 1;
+          if (!this.calculationCheck()) {
+            this.rejectList = []
+            this.$message.warning('材料审核未完成！')
+            return
+          }
+          let commitSocial = ''
+          let type = 1
           // 审核不通过
           if (this.rejectList.length !== 0) {
             // 获取拒绝的拼接备注
-            commitSocial = this.getCommitSocial();
-            type = 2;
+            commitSocial = this.getCommitSocial()
+            type = 2
           }
           commitMaterial(
             this.applyId,
@@ -616,122 +619,134 @@ export default {
             type,
             this.science
           ).then((res) => {
-            if (res.code == 20000) {
-              this.$message.success("材料审核完成");
-              this.rejectList = [];
-              this.goBack();
+            if (res.code === 20000) {
+              this.$message.success('材料审核完成')
+              this.rejectList = []
+              this.goBack()
             }
-          });
+          })
         })
         .catch(() => {
-          console.log("cancel");
-        });
+          console.log('cancel')
+        })
     },
 
     // 计算审核情况
     calculationCheck() {
+      let isCheckOk = true
       // 论文
       this.paperList.forEach((item) => {
-        if (item.col1 === "" || item.col1 === null || item.col1 === "待审核") {
-          this.$message.warning("材料审核未完成！");
-          this.rejectList = [];
-          return;
-        } else if (item.col1 === "不通过") {
-          this.addRejectItem(1, item.paperName, item.col2);
+        if (item.col1 === '' || item.col1 === null || item.col1 === '待审核') {
+          isCheckOk = false
+          return false
+        } else if (item.col1 === '不通过') {
+          this.addRejectItem(1, item.paperName, item.col2)
         }
-      });
+      })
+      if (!isCheckOk) {
+        return false
+      }
 
       // 项目
       this.projectList.forEach((item) => {
-        if (item.col1 === "" || item.col1 === null || item.col1 === "待审核") {
-          this.$message.warning("材料审核未完成！");
-          this.rejectList = [];
-          return;
-        } else if (item.col1 === "不通过") {
-          this.addRejectItem(2, item.projectName, item.col2);
+        if (item.col1 === '' || item.col1 === null || item.col1 === '待审核') {
+          isCheckOk = false
+          return false
+        } else if (item.col1 === '不通过') {
+          this.addRejectItem(2, item.projectName, item.col2)
         }
-      });
+      })
+      if (!isCheckOk) {
+        return false
+      }
+
       // 教材或学术著作
       this.workList.forEach((item) => {
-        if (item.col1 === "" || item.col1 === null || item.col1 === "待审核") {
-          this.$message.warning("材料审核未完成！");
-          this.rejectList = [];
-          return;
-        } else if (item.col1 === "不通过") {
-          this.addRejectItem(3, item.worksName, item.col2);
+        if (item.col1 === '' || item.col1 === null || item.col1 === '待审核') {
+          isCheckOk = false
+          return false
+        } else if (item.col1 === '不通过') {
+          this.addRejectItem(3, item.worksName, item.col2)
         }
-      });
+      })
+      if (!isCheckOk) {
+        return false
+      }
+
       // 科研教学奖励
       this.awardList.forEach((item) => {
-        if (item.col1 === "" || item.col1 === null || item.col1 === "待审核") {
-          this.$message.warning("材料审核未完成！");
-          this.rejectList = [];
-          return;
-        } else if (item.col1 === "不通过") {
-          this.addRejectItem(4, item.awardsName, item.col2);
+        if (item.col1 === '' || item.col1 === null || item.col1 === '待审核') {
+          isCheckOk = false
+          return false
+        } else if (item.col1 === '不通过') {
+          this.addRejectItem(4, item.awardsName, item.col2)
         }
-      });
+      })
+      if (!isCheckOk) {
+        return false
+      }
+
       // 发明专利
       this.patentList.forEach((item) => {
-        if (item.col1 === "" || item.col1 === null || item.col1 === "待审核") {
-          this.$message.warning("材料审核未完成！");
-          this.rejectList = [];
-          return;
-        } else if (item.col1 === "不通过") {
-          this.addRejectItem(5, item.patentName, item.col2);
+        if (item.col1 === '' || item.col1 === null || item.col1 === '待审核') {
+          isCheckOk = false
+          return false
+        } else if (item.col1 === '不通过') {
+          this.addRejectItem(5, item.patentName, item.col2)
         }
-      });
+      })
+      return isCheckOk;
     },
 
     // 获取拒绝拼接字段
     getCommitSocial() {
-      let commitSocial = "";
-      const paper = this.rejectList.filter((item) => item.type === 1);
+      let commitSocial = ''
+      const paper = this.rejectList.filter((item) => item.type === 1)
       if (paper.length !== 0) {
-        commitSocial += "学术论文：\n";
+        commitSocial += '学术论文：\n'
         paper.forEach((item, index) => {
           commitSocial += `论文${index + 1}: ${item.name}, 驳回原因: ${
             item.col2
-          } \n`;
-        });
+          } \n`
+        })
       }
-      const project = this.rejectList.filter((item) => item.type === 2);
+      const project = this.rejectList.filter((item) => item.type === 2)
       if (project.length !== 0) {
-        commitSocial += "\n科研项目：\n";
+        commitSocial += '\n科研项目：\n'
         project.forEach((item, index) => {
           commitSocial += `项目${index + 1}: ${item.name}, 驳回原因: ${
             item.col2
-          } \n`;
-        });
+          } \n`
+        })
       }
-      const work = this.rejectList.filter((item) => item.type === 3);
+      const work = this.rejectList.filter((item) => item.type === 3)
       if (work.length !== 0) {
-        commitSocial += "\n教材或学术著作\n";
+        commitSocial += '\n教材或学术著作\n'
         work.forEach((item, index) => {
           commitSocial += `著作${index + 1}: ${item.name}, 驳回原因: ${
             item.col2
-          } \n`;
-        });
+          } \n`
+        })
       }
-      const award = this.rejectList.filter((item) => item.type === 4);
+      const award = this.rejectList.filter((item) => item.type === 4)
       if (award.length !== 0) {
-        commitSocial += "\n科研教学奖励\n";
+        commitSocial += '\n科研教学奖励\n'
         award.forEach((item, index) => {
           commitSocial += `奖励${index + 1}: ${item.name}, 驳回原因: ${
             item.col2
-          } \n`;
-        });
+          } \n`
+        })
       }
-      const patent = this.rejectList.filter((item) => item.type === 5);
+      const patent = this.rejectList.filter((item) => item.type === 5)
       if (patent.length !== 0) {
-        commitSocial += "\n发明专利\n";
+        commitSocial += '\n发明专利\n'
         patent.forEach((item, index) => {
           commitSocial += `专利${index + 1}: ${item.name}, 驳回原因: ${
             item.col2
-          } \n`;
-        });
+          } \n`
+        })
       }
-      return commitSocial;
+      return commitSocial
     },
 
     // 添加拒绝项目列表
@@ -739,30 +754,29 @@ export default {
       const rejectItem = {
         type: Number,
         name: String,
-        col2: String,
-      };
-      rejectItem.type = type;
-      rejectItem.name = name;
-      rejectItem.col2 = col2;
-      this.rejectList.push(rejectItem);
+        col2: String
+      }
+      rejectItem.type = type
+      rejectItem.name = name
+      rejectItem.col2 = col2
+      this.rejectList.push(rejectItem)
     },
 
     // 返回
     goBack() {
-      let path = "";
+      let path = ''
       if (this.science === 1) {
         path = '/social/socialScienceCheck'
       } else {
-        console.log('科研处')
         path = '/research/researchCheck'
       }
       this.$router.push({
         path: path,
-        query: { applyId: this.applyId },
-      });
-    },
-  },
-};
+        query: { applyId: this.applyId }
+      })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 a {

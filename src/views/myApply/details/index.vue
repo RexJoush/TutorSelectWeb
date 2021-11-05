@@ -499,7 +499,7 @@
                 <template slot="label">
                   主要研究方向
                 </template>
-                <p style="margin: 20px 0;">{{ details.noSecondPage.researchDirections }}</p>
+                {{ details.noSecondPage.researchDirections }}
               </el-descriptions-item>
               <!-- 免审条件 -->
               <el-descriptions-item>
@@ -509,9 +509,7 @@
                     <el-button size="mini" type="text" style="text-decoration: underline;">查看材料</el-button>
                   </a>
                 </template>
-                <p style="margin: 20px 0;">
-                  {{ details.noSecondPage.exemptionConditions }}
-                </p>
+                {{ details.noSecondPage.exemptionConditions }}
               </el-descriptions-item>
             </el-descriptions>
           </el-col>
@@ -626,7 +624,6 @@ export default {
   },
   created() {
     this.getApplyDetails()
-    console.log(this.applyStatus)
     this.loading = true
   },
   methods: {
@@ -666,7 +663,6 @@ export default {
 
     // 修改申请信息
     editApply: async function() {
-      console.log(this.details)
       let url = '/tutorApply/'
       switch (this.applyTypeId) {
         case 1:
@@ -727,7 +723,6 @@ export default {
         }
         this.details = res.data
         this.loading = false
-        console.log('details', this.details)
       }).catch(error => {
         throw error
       })

@@ -158,7 +158,6 @@ export default {
     getSocialCheckInit() {
       this.queryParams.applyStatus = 42
       getInit(0, this.queryParams.applyStatus, this.queryParams.pageNum).then((res) => {
-        console.log(res.data.data)
         this.tutorList = res.data.data
         this.totalData = res.data.total
       })
@@ -166,11 +165,9 @@ export default {
 
     // 搜索按钮
     searchQuery() {
-      console.log("55555555",this.queryParams)
       search(this.queryParams, 1).then((res) => {
         this.tutorList = res.data.data
         this.totalData = res.data.total
-        console.log("查询数据："+ this.tutorList)
       })
     },
 

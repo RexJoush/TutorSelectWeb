@@ -38,7 +38,7 @@
                 <el-col :span="24">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-form-item label="申请学科">
+                      <el-form-item label="申请学科" :rules="{required: true}">
                         <el-select
                           v-model="formSecond.applySubject"
                           style="width: 100%;"
@@ -420,7 +420,6 @@ export default {
     // ******************************************************第一页 *****************************************
     /* ====================================第二页============================ */
     getFormSecond: function(data, tutorName) {
-      console.log('second', data)
       this.applyId = data.applyId
       this.tutorName = tutorName // 设置导师姓名，第四页用到
       if (data.applySubject !== null) {
@@ -535,7 +534,6 @@ export default {
     },
     // ************************************************ 完成第二页基本信息的填写 表单提交按钮********************************************
     onSubmitSecondPage: function() {
-      console.log(this.formSecond)
       if (this.formSecond.applySubject === '' || this.formSecond.applySubject === null) {
         this.$message.warning('请填写申请学科信息')
         return
@@ -548,7 +546,6 @@ export default {
             (res) => {
               if (res.data.code === 1201) {
                 this.$message.error(res.data.message)
-                console.log(res.data.errorMessage)
                 return
               }
               this.formThird = res.data
@@ -570,7 +567,6 @@ export default {
     /* =========================  第 4 页  ================================= */
     // 获取第三页传来的初始化信息 this.$emit
     getFormFourth: function(data) {
-      console.log('data', data)
       this.formFourth = data
       this.formVisible.third = false // 关闭第 3 页
       this.loading = false

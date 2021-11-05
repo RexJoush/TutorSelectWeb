@@ -380,7 +380,6 @@ export default {
                             this.queryParams.applyStatus === ''
           this.tutorList = res.data.data
           this.totalData = res.data.total
-          console.log("查询数据："+ this.tutorList)
         })
       }
     },
@@ -425,7 +424,6 @@ export default {
     returnFun() {
       this.commitArrays[0].commit_1 = this.returnCommit;
       this.updateStatusFun(this.commitArrays, false);
-      console.log("备注确定按钮", this.commitArrays);
       this.dialogVisible = false
     },
     // 更新tutorList和updateList中的commit
@@ -439,7 +437,6 @@ export default {
       for (let i = 0; i < this.updateList.length; i++) {
         if (currentId === this.updateList[i].id_1) {
           this.updateList[i].commit_1 = this.returnCommit;
-          console.log(this.updateList[i]);
           break;
         }
       }
@@ -472,16 +469,13 @@ export default {
         // 如果status是submit，则执行提交按钮
         for (let index = 0; index < this.updateList.length; index++) {
           this.updateList[index].status_1 = this.updateList[index].status_1 - 4; // -4是因为数据库绑定状态的原因，勿动
-          console.log("提交按钮",this.updateList)
         }
       } else {
-        console.log(status);
         for (let index = 0; index < this.updateList.length; index++) {
           this.updateList[index].status_1 = status;
         }
       }
       this.updateStatusFun(this.updateList, true);
-      console.log("更新状态", this.updateList);
     },
     // 更新状态
     updateStatusFun(updateList, isInit) {
@@ -542,7 +536,6 @@ export default {
         obj.id_1 = this.multipleSelection[index].applyId
         obj.status_1 = this.multipleSelection[index].status
         obj.commit_1 = ''
-        console.log(obj)
         this.updateList.push(obj)
       }
     },
