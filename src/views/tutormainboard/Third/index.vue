@@ -925,7 +925,8 @@ export default {
   props: {
     applyId: Number,
     formThird: Object,
-    loading: Boolean
+    loading: Boolean,
+    applyCondition: Number
   },
   data() {
     return {
@@ -950,7 +951,6 @@ export default {
       fileList: [],
 
       // 申请状态
-      applyCondition: this.$route.params.applyCondition,
       applyType: this.$route.params.applyType * 1,
 
       isEdit: false, // 是否为编辑选项

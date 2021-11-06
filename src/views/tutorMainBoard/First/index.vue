@@ -18,7 +18,7 @@
             <Row>
               <Col :span="12">
                 <el-form-item label="姓名">
-                  <el-input v-model="formFirst.name" disabled/>
+                  <el-input v-model="formFirst.name" disabled />
                 </el-form-item>
               </Col>
               <Col :span="12">
@@ -28,27 +28,27 @@
               </Col>
               <Col :span="12">
                 <el-form-item label="所在单位">
-                  <el-input v-model="formFirst.organizationName" disabled/>
+                  <el-input v-model="formFirst.organizationName" disabled />
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="出生日期">
-                  <el-input v-model="formFirst.birthday" disabled/>
+                  <el-input v-model="formFirst.birthday" disabled />
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="工号">
-                  <el-input v-model="formFirst.tutorId" :disabled="true"/>
+                  <el-input v-model="formFirst.tutorId" :disabled="true" />
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="证件号码">
-                  <el-input v-model="formFirst.identity" disabled/>
+                  <el-input v-model="formFirst.identity" disabled />
                 </el-form-item>
               </Col>
               <Col :span="12">
                 <el-form-item label="联系电话" :rules="{required: true}">
-                  <el-input v-model="formFirst.phone"/>
+                  <el-input v-model="formFirst.phone" />
                 </el-form-item>
               </Col>
               <Col :span="12">
@@ -56,10 +56,10 @@
                   <el-input v-model="formFirst.email" />
                 </el-form-item>
               </Col>
-<!--              <el-divider style="margin: 0 !important; height: 5px;"></el-divider>-->
-              <Col :span="12" >
+              <!--              <el-divider style="margin: 0 !important; height: 5px;"></el-divider>-->
+              <Col :span="12">
                 <el-form-item label="职称">
-                  <el-input v-model="formFirst.title" disabled/>
+                  <el-input v-model="formFirst.title" disabled />
                 </el-form-item>
               </Col>
               <Col :span="12">
@@ -74,7 +74,7 @@
                   />
                 </el-form-item>
               </Col>
-<!--              <el-divider></el-divider>-->
+              <!--              <el-divider></el-divider>-->
             </Row>
           </Col>
           <Col span="8">
@@ -84,7 +84,7 @@
                 :src="formFirst.image"
                 fit="fit"
               >
-                <div slot="placeholder" class="image-slot"><i class="el-icon-picture-outline"/></div>
+                <div slot="placeholder" class="image-slot"><i class="el-icon-picture-outline" /></div>
               </el-image>
             </el-form-item>
           </Col>
@@ -126,6 +126,7 @@
 <script>
 import { getFirstPage, submitFirstPage } from '@/api/tutor/inspect'
 import { getNoFirstPage, submitNoFirstPage } from '@/api/tutor/noInspect'
+import { getApplyId } from '@/api/tutor/mainboard'
 
 export default {
   props: {
@@ -137,6 +138,7 @@ export default {
   data() {
     return {
       loadingFirst: false, // 加载状态
+      condition: 0, // 申请状态
       formFirst: {
         tutorId: '', // 教师工号
         name: '', // 姓名
@@ -156,9 +158,14 @@ export default {
     }
   },
 
-  created() {
+  async created() {
     // 拉取首页基本信息
     this.loadingFirst = true
+    const res = await getApplyId(this.applyType)
+    if (res.data !== -1) {
+      this.applyId = res.data
+      this.applyCondition = 101
+    }
     this.getFirstPage()
   },
   methods: {
@@ -183,7 +190,6 @@ export default {
             return
           }
           this.formFirst = res.data
-          console.log('first', res)
 
           // 未申请过
           if (this.applyCondition === 102) {
@@ -241,9 +247,10 @@ export default {
                 }
                 this.loading = false
                 this.$message.success('保存成功!')
-                this.$emit('func', res.data, this.formFirst.name)
+                this.$emit('func', res.data, this.formFirst.name, this.applyCondition)
               })
           } else {
+            this.condition = this.applyCondition
             submitFirstPage(this.formFirst, this.applyId, this.applyType, this.applyCondition)
               .then(res => {
                 if (res.data.code === 1201) {
@@ -252,7 +259,7 @@ export default {
                 }
                 this.loading = false
                 this.$message.success('保存成功!')
-                this.$emit('func', res.data, this.formFirst.name)
+                this.$emit('func', res.data, this.formFirst.name, this.condition)
               })
           }
         })

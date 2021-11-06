@@ -387,9 +387,12 @@ export default {
 
     /* 第 2 页 */
     // 获取第二页的信息
-    getFormSecond: function(data, tutorName) {
+    getFormSecond: function(data, tutorName, applyCondition) {
       this.applyId = data.applyId
       this.tutorName = tutorName // 设置导师姓名，第四页用到
+      this.applyCondition = applyCondition
+      console.log('applyCondition', applyCondition)
+      console.log('applyCondition', this.applyCondition)
       if (data.applySubject !== null) {
         this.formSecond.applySubject = data.applySubject * 1
       } else {

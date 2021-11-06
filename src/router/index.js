@@ -88,7 +88,7 @@ export const asyncRoutes = [
     path: '/tutorApply',
     component: Layout,
     redirect: '/tutorApply/tutorMainBoard',
-    meta: { title: '教师申请', icon: 'dashboard', roles: ['admin', 'tutor'] },
+    meta: { title: '教师申请', icon: 'apply', roles: ['admin', 'tutor'] },
     children: [
       {
         path: 'tutorMainBoard',
@@ -168,7 +168,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/graduateManager/basicManagement/user',
     name: 'BasicManagement',
-    meta: { title: '研究生院基础管理', icon: 'el-icon-s-help', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
+    meta: { title: '研究生院基础管理', icon: 'basic-manage', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
     children: [
       {
         path: 'user',
@@ -180,7 +180,7 @@ export const asyncRoutes = [
         path: 'systemTime',
         name: 'SystemTime',
         component: () => import('@/views/graduateManager/systemTime/index'),
-        meta: { title: '设置系统时间', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '设置系统时间', icon: 'set-time', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       }
     ]
   },
@@ -190,13 +190,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/graduateManager/auditManager/check',
     name: 'AuditManagement',
-    meta: { title: '研究生院申报流程', icon: 'el-icon-s-help', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
+    meta: { title: '研究生院申报流程', icon: 'apply-process', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] },
     children: [
       {
         path: 'check',
         name: 'Check',
         component: () => import('@/views/graduateManager/auditManager/check/index'),
-        meta: { title: '初审', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '研究生院初审', icon: 'first-check', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
       // {
       //   path: 'rePass',
@@ -208,19 +208,19 @@ export const asyncRoutes = [
         path: 'reCheck',
         name: 'ReCheck',
         component: () => import('@/views/graduateManager/auditManager/reCheck/index'),
-        meta: { title: '同意上校会名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '同意上校会名单', icon: 'check-pass', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
       {
         path: 'inputComments',
         name: 'InputComments',
         component: () => import('@/views/graduateManager/auditManager/inputComments/index'),
-        meta: { title: '录入校会意见', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '录入校会意见', icon: 'opinion', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       },
       {
         path: 'finalList',
         name: 'FinalList',
         component: () => import('@/views/graduateManager/auditManager/finalList/index'),
-        meta: { title: '最终通过名单', icon: 'tree', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
+        meta: { title: '最终通过名单', icon: 'final-pass', roles: ['admin', 'graduateProfessionalManager', 'graduateAcademicManager'] }
       }
       // {
       //   path: 'reject',
@@ -237,25 +237,25 @@ export const asyncRoutes = [
   {
     path: '/social',
     component: Layout,
-    meta: { title: '社科处管理员', icon: 'el-icon-s-help', roles: ['admin', 'socialScienceManager'] },
+    meta: { title: '社科处基础管理', icon: 'basic-manage', roles: ['admin', 'socialScienceManager'] },
     children: [
       {
         path: 'socialScienceCheck',
         name: 'SocialScienceCheck',
         component: () => import('@/views/socialScienceCheck/index'),
-        meta: { title: '社科处待审核', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
+        meta: { title: '社科处待审核', icon: 'first-check', roles: ['admin', 'socialScienceManager'] }
       },
       {
         path: 'checkPass',
         name: 'CheckPass',
         component: () => import('@/views/socialScienceCheck/checkPass/index'),
-        meta: { title: '社科处审核通过', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
+        meta: { title: '社科处审核通过', icon: 'check-pass', roles: ['admin', 'socialScienceManager'] }
       },
       {
         path: 'checkUnpass',
         name: 'CheckUnpass',
         component: () => import('@/views/socialScienceCheck/checkUnpass/index'),
-        meta: { title: '社科处审核不通过', icon: 'tree', roles: ['admin', 'socialScienceManager'] }
+        meta: { title: '社科处审核不通过', icon: 'check-un-pass', roles: ['admin', 'socialScienceManager'] }
       },
       {
         path: 'socialDetail',
@@ -271,25 +271,25 @@ export const asyncRoutes = [
   {
     path: '/research',
     component: Layout,
-    meta: { title: '科研处管理员', icon: 'el-icon-s-help', roles: ['admin', 'scientificResearchManager'] },
+    meta: { title: '科研处基础管理', icon: 'basic-manage', roles: ['admin', 'scientificResearchManager'] },
     children: [
       {
         path: 'researchCheck',
         name: 'ResearchCheck',
         component: () => import('@/views/researchCheck/index'),
-        meta: { title: '科研处待审核', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
+        meta: { title: '科研处待审核', icon: 'first-check', roles: ['admin', 'scientificResearchManager'] }
       },
       {
         path: 'checkPass',
         name: 'CheckPass',
         component: () => import('@/views/researchCheck/checkPass/index'),
-        meta: { title: '科研处审核通过', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
+        meta: { title: '科研处审核通过', icon: 'check-pass', roles: ['admin', 'scientificResearchManager'] }
       },
       {
         path: 'checkUnpass',
         name: 'CheckUnpass',
         component: () => import('@/views/researchCheck/checkUnpass/index'),
-        meta: { title: '科研处审核不通过', icon: 'tree', roles: ['admin', 'scientificResearchManager'] }
+        meta: { title: '科研处审核不通过', icon: 'check-un-pass', roles: ['admin', 'scientificResearchManager'] }
       },
       {
         path: 'researchDetail',
@@ -309,13 +309,13 @@ export const asyncRoutes = [
     redirect: '/departmentSecretary/basicManagement/systemTimeDepartment',
     name: 'BasicManagementDS',
     alwaysShow: true,
-    meta: { title: '院系秘书基础管理', icon: 'el-icon-s-help', roles: ['admin', 'departmentSecretary'] },
+    meta: { title: '院系秘书基础管理', icon: 'basic-manage', roles: ['admin', 'departmentSecretary'] },
     children: [
       {
         path: 'systemTimeDepartment',
         name: 'SystemTimeDepartment',
         component: () => import('@/views/departmentSecretary/systemTime/index'),
-        meta: { title: '设置导师申请时间', icon: 'dashboard', roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '设置导师申请时间', icon: 'set-time', roles: ['admin', 'departmentSecretary'] }
       }
     ]
   },
@@ -327,43 +327,43 @@ export const asyncRoutes = [
     component: Layout,
     redirect: 'departmentSecretary/auditManager/checkDS',
     name: 'AuditManagementDS',
-    meta: { title: '院系秘书申报流程', icon: 'el-icon-s-help', roles: ['admin', 'departmentSecretary'] },
+    meta: { title: '院系秘书申报流程', icon: 'apply-process', roles: ['admin', 'departmentSecretary'] },
     children: [
       {
         path: 'checkDS',
         component: () => import('@/views/departmentSecretary/auditManager/check/index'),
         name: 'CheckDS',
-        meta: { title: '秘书初审', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '秘书初审', icon: 'first-check', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'return',
         component: () => import('@/views/departmentSecretary/auditManager/return/index'),
         name: 'ReturnDS',
-        meta: { title: '返还教师修改列表', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '返还教师修改列表', icon: 'check-un-pass', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'submitFh',
         component: () => import('@/views/departmentSecretary/auditManager/submitFh/index'),
         name: 'SubmitFh',
-        meta: { title: '提交分会', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '提交分会', icon: 'check-pass', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'reCheckDS',
         component: () => import('@/views/departmentSecretary/auditManager/reCheck/index'),
         name: 'ReCheckDS',
-        meta: { title: '录入分会意见', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '录入分会意见', icon: 'opinion', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'graducateComments',
         component: () => import('@/views/departmentSecretary/auditManager/graducateComments/index'),
         name: 'GraducateComments',
-        meta: { title: '研究生院驳回列表', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '研究生院驳回列表', icon: 'check-un-pass', affix: true, roles: ['admin', 'departmentSecretary'] }
       },
       {
         path: 'finalListDS',
         component: () => import('@/views/departmentSecretary/auditManager/finalList/index'),
         name: 'FinalListDS',
-        meta: { title: '学校最终通过名单', icon: 'dashboard', affix: true, roles: ['admin', 'departmentSecretary'] }
+        meta: { title: '学校最终通过名单', icon: 'final-pass', affix: true, roles: ['admin', 'departmentSecretary'] }
       }
     ]
   },
@@ -373,19 +373,19 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/dashboard',
     name: 'AuditManagementDL',
-    meta: { title: '院系主管申报流程', icon: 'el-icon-s-help', roles: ['admin', 'departmentLeader'] },
+    meta: { title: '院系主管申报流程', icon: 'apply-process', roles: ['admin', 'departmentLeader'] },
     children: [
       {
         path: 'reCheckDL',
         component: () => import('@/views/departmentLeader/reCheck/index'),
         name: 'CheckDL',
-        meta: { title: '院系主管复审', icon: 'dashboard', affix: true, roles: ['admin', 'departmentLeader'] }
+        meta: { title: '院系主管复审', icon: 'first-check', affix: true, roles: ['admin', 'departmentLeader'] }
       },
       {
         path: 'finishDL',
         component: () => import('@/views/departmentLeader/checkFinish/index'),
         name: 'FinishDL',
-        meta: { title: '院系主管已审核', icon: 'dashboard', affix: true, roles: ['admin', 'departmentLeader'] }
+        meta: { title: '院系主管已审核', icon: 'check-pass', affix: true, roles: ['admin', 'departmentLeader'] }
       }
     ]
   },
@@ -400,7 +400,7 @@ export const asyncRoutes = [
         path: 'graduateLeader',
         name: 'GraduateLeader',
         component: () => import('@/views/graduateLeader/index'),
-        meta: { title: '研究生院领导审核', icon: 'tree', roles: ['admin', 'graduateLeader'] }
+        meta: { title: '研究生院领导审核', icon: 'apply-process', roles: ['admin', 'graduateLeader'] }
       },
       {
         path: 'graduateDetail',
@@ -411,6 +411,26 @@ export const asyncRoutes = [
       }
     ]
 
+  },
+  // 导师查看我的申请页面
+  {
+    path: '/myApply',
+    component: Layout,
+    children: [
+      {
+        path: '/myApply',
+        component: () => import('@/views/myApply/index'),
+        name: 'My Apply',
+        meta: { title: '我的申请', icon: 'my-apply', roles: ['admin', 'tutor'] }
+      },
+      {
+        path: '/applyDetails/:applyId/:applyTypeId/:tutorId/:applyStatus',
+        component: () => import('@/views/myApply/details/index'),
+        name: 'Apply Details',
+        meta: { title: '申请详情', roles: ['admin', 'tutor', 'departmentSecretary', 'departmentLeader', 'graduateProfessionalManager', 'graduateAcademicManager', 'socialScienceManager', 'scientificResearchManager', 'graduateLeader'] },
+        hidden: true
+      }
+    ]
   },
   {
     path: '/icon',
@@ -425,26 +445,7 @@ export const asyncRoutes = [
     ]
   },
 
-  // 导师查看我的申请页面
-  {
-    path: '/myApply',
-    component: Layout,
-    children: [
-      {
-        path: '/myApply',
-        component: () => import('@/views/myApply/index'),
-        name: 'My Apply',
-        meta: { title: '我的申请', icon: 'dashboard', roles: ['admin', 'tutor'] }
-      },
-      {
-        path: '/applyDetails/:applyId/:applyTypeId/:tutorId/:applyStatus',
-        component: () => import('@/views/myApply/details/index'),
-        name: 'Apply Details',
-        meta: { title: '申请详情', roles: ['admin', 'tutor', 'departmentSecretary', 'departmentLeader', 'graduateProfessionalManager', 'graduateAcademicManager', 'socialScienceManager', 'scientificResearchManager', 'graduateLeader'] },
-        hidden: true
-      }
-    ]
-  },
+
 
   /** when your routing map is too long, you can split it into small modules **/
   // chartsRouter,

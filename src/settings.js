@@ -5,7 +5,7 @@
  * @LastEditTime: 2021-08-11 16:08:57
  */
 module.exports = {
-  title: '导师遴选系统',
+  title: '导师上岗系统',
 
   /**
    * @type {boolean} true | false

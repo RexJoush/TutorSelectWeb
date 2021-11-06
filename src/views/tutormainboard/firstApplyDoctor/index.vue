@@ -265,7 +265,7 @@ export default {
       doctorPrimaryDiscipline: doctorPrimaryDiscipline,
       masterFirstDiscipline: masterFirstDiscipline,
       // 此次申请的id，在第一页提交时传回
-      applyId: 0,
+      applyId: -1,
       // 当前申请的类型
       applyType: 0,
       // 当前的申请状态
@@ -333,9 +333,10 @@ export default {
     /* ============================================= 第一页 =====================================*/
 
     /* ====================================第二页============================ */
-    getFormSecond: function(data, tutorName) {
+    getFormSecond: function(data, tutorName, applyCondition) {
       this.applyId = data.applyId
       this.tutorName = tutorName // 设置导师姓名，第四页用到
+      this.applyCondition = applyCondition
       if (data.applySubject !== null) {
         this.formSecond.applySubject = data.applySubject * 1
       } else {
