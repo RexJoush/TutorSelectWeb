@@ -202,15 +202,6 @@
       />
     </el-row>
     <el-row>
-      <!-- <el-col :span="2">
-        <el-button
-          plain
-          icon="el-icon-download"
-          size="small"
-          @click="exportFun()"
-        >导出excel
-        </el-button>
-      </el-col> -->
       <el-col :span="2" :offset="22">
         <el-button
           type="success"
@@ -222,6 +213,19 @@
         </el-button>
       </el-col>
     </el-row>
+    <!-- 导出提交按钮 -->
+    <el-row>
+      <el-col :span="2">
+        <el-button
+          plain
+          icon="el-icon-download"
+          size="small"
+          @click="exportFun()"
+        >导出excel
+        </el-button>
+      </el-col>
+    </el-row>
+    <p style="margin: 10px 0; ">注意：导出上表中<span style="margin: 10px 0; color: #F56C6C">审核状态为初审</span>的所有数据</p>
     <!-- 备注弹框 -->
     <el-dialog title="备注" :visible.sync="dialogVisible" width="20%">
       <span>请添加提交给操作的备注信息(可以为空)</span>
@@ -241,6 +245,7 @@ import { toDetails } from '@/utils/function'
 
 // 负责院系
 import { departmentList } from '@/utils/data'
+import { exportFirstCheck, exportQualification } from '@/api/departmentSecretary/exportExcel'
 
 export default {
   data() {
@@ -326,6 +331,29 @@ export default {
     this.getApplyStatus()
   },
   methods: {
+    // 导出初审数据
+    exportFun() {
+      const date = new Date()
+      const year = date.getFullYear() // 获取当前年份
+      this.loading = true
+      this.queryParams.applyStatus = 25 // 同意上校会通过
+      this.queryParams.applyStatuss = ['25']
+      this.queryParams.userId = ''
+      exportFirstCheck(this.queryParams).then((res) => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' })
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download =
+          '西北大学' +
+          year +
+          '年' +
+          '初审汇总表.xlsx' // excel名称
+        link.href = url
+        link.click()
+      })
+      this.loading = false
+    },
+
     // 详情页
     toDetails: function(applyId, applyTypeId, tutorId) {
       toDetails(this, applyId, applyTypeId, tutorId)

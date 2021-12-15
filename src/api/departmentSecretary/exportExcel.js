@@ -39,6 +39,15 @@ export function exportFinOrg(data) {
   })
 }
 
+// 研究生院管理员   导出初审的的所有名单
+export function exportFirstCheck(data) {
+  return request({
+    url: '/admin/export/firstcheck',
+    method: 'post',
+    data: data,
+    responseType: 'blob'
+  })
+}
 
 // 研究生院管理员   导出同意上校会的的所有名单
 export function exportQualification(data) {
