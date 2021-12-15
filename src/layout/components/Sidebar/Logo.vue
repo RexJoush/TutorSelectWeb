@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      title: '导师遴选系统',
+      title: '导师上岗系统',
       logo: true
     }
   }

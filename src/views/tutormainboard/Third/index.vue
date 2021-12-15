@@ -633,6 +633,7 @@
                 <el-option label="国家级" value="国家级" />
                 <el-option label="省部级" value="省部级" />
                 <el-option label="厅局级" value="厅局级" />
+                <el-option label="横向项目" value="横向项目" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -925,7 +926,8 @@ export default {
   props: {
     applyId: Number,
     formThird: Object,
-    loading: Boolean
+    loading: Boolean,
+    applyCondition: Number
   },
   data() {
     return {
@@ -934,6 +936,7 @@ export default {
       load4: false,
       load5: false,
       load6: false,
+
 
       //添加,编辑，删除 false不能提交
       addFlag: true,
@@ -950,7 +953,6 @@ export default {
       fileList: [],
 
       // 申请状态
-      applyCondition: this.$route.params.applyCondition,
       applyType: this.$route.params.applyType * 1,
 
       isEdit: false, // 是否为编辑选项
@@ -1527,7 +1529,7 @@ export default {
           0
         )
       this.formThird.summary.horizontalProject = this.formThird.researchProjects
-        .filter((item) => item.projectCategory === '横向')
+        .filter((item) => item.projectLevel === '横向项目')
         .reduce((total, item) => total + item.projectTotalPrice * 1, 0)
 
       // 著作

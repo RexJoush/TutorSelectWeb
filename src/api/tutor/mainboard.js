@@ -7,6 +7,14 @@
 import { baseUrl } from '@/api/url'
 import request from '@/utils/request'
 
+// 首次申请刷新页面，检查申请状态
+export function getApplyId(applyTypeId) {
+  return request({
+    url: `${baseUrl}/tutor/getApplyId/${applyTypeId}`,
+    method: 'get'
+  })
+}
+
 // 所有首次申请，检查当前此类申请的状态
 export function checkApply(applyTypeId) {
   return request({
@@ -42,7 +50,7 @@ export function deleteFile(httpPath) {
 }
 
 //删除免审资料文件的方法
-export function NoDeleteFile(httpPath,applyId) { 
+export function NoDeleteFile(httpPath,applyId) {
   return request({
     url:`${baseUrl}/user/noDelFile/${applyId}`,
     method: 'post',

@@ -549,6 +549,16 @@ export const professionalMasterDiscipline = [
         code: '0453',
         professionalDegreeCategory: '汉语国际教育硕士（MTCSOL）',
         domain: []
+      },
+      {
+        code: '1351',
+        professionalDegreeCategory: '艺术硕士（MFA）',
+        domain: [
+          {
+            domainCode: '135104',
+            domainName: '电影'
+          }
+        ]
       }
     ]
   },
@@ -586,7 +596,11 @@ export const professionalMasterDiscipline = [
         domain: [
           {
             domainCode: '085402',
-            domainName: '新一代电子信息技术'
+            domainName: '新一代电子信息技术（含量子技术等）'
+          },
+          {
+            domainCode: '085405',
+            domainName: '软件工程'
           }
         ]
       }
@@ -614,10 +628,6 @@ export const professionalMasterDiscipline = [
         code: '1351',
         professionalDegreeCategory: '艺术硕士（MFA）',
         domain: [
-          {
-            domainCode: '135104',
-            domainName: '电影'
-          },
           {
             domainCode: '135107',
             domainName: '美术'

@@ -470,9 +470,10 @@ export default {
       return `${baseUrl}/user/upload/${type}`
     },
     /* ====================================第二页============================ */
-    getFormSecond: function(data, tutorName) {
+    getFormSecond: function(data, tutorName, applyCondition) {
       this.applyId = data.applyId
       this.formSecond = data
+      this.applyCondition = applyCondition
       if (data.applySubject !== null) {
         this.formSecond.applySubject = data.applySubject * 1
       } else {

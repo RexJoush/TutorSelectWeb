@@ -55,7 +55,7 @@
                 <template slot="label">{{ applyTypeId >= 7 ? '现任专业技术职务' : '职称' }}</template>{{ details.firstPage.title }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <template slot="label">评定时间</template>{{ details.firstPage.awardTime }}
+                <template slot="label">评定时间</template>{{ details.firstPage.evaluateTime }}
               </el-descriptions-item>
               <!-- 首次博导 -->
               <el-descriptions-item v-if="applyTypeId === 1">
@@ -472,7 +472,7 @@
                 <template slot="label">职称</template>{{ details.noFirstPage.title }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <template slot="label">评定时间</template>{{ details.noFirstPage.awardTime }}
+                <template slot="label">评定时间</template>{{ details.noFirstPage.evaluateTime }}
               </el-descriptions-item>
               <!-- 博导免审 -->
               <el-descriptions-item v-if="applyTypeId === 3">
