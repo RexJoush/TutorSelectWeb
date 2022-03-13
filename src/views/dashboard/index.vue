@@ -14,7 +14,7 @@
         <img style="position: relative; top: 50px" src="@/assets/nwu2.png" alt="西北大学" />
       </el-main>
       <el-footer style="font-size: 16px">
-        <b>版本 v1.0.1</b><br>
+        <b>版本 v1.0.2</b><br>
         <b>最终解释权归研究生院所有 </b><br>
         <p>© 2019 - <span>{{ year }}</span> | <a href="https://www.nwu.edu.cn/tzgg/xxhc_wlhsjzx_.htm" target="_blank" style="text-decoration: underline">西北大学网络和数据中心</a> | <a href="https://yjs.nwu.edu.cn/" target="_blank" style="text-decoration: underline">西北大学研究生院</a></p></p>
       </el-footer>
